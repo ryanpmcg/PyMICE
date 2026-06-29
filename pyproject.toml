@@ -1,0 +1,94 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pymice"
+version = "0.1.0"
+description = "Multivariate Imputation by Chained Equations (MICE / FCS) for Python"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Ryan P. McGehee" }]
+keywords = ["missing-data", "imputation", "mice", "fcs", "statistics"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+]
+
+[project.optional-dependencies]
+pandas = ["pandas>=2.0"]
+plot = ["matplotlib>=3.7"]
+ml = ["scikit-learn>=1.3"]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ryanpmcg/pymice"
+Documentation = "https://github.com/ryanpmcg/pymice#readme"
+Repository = "https://github.com/ryanpmcg/pymice"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pymice"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/pymice/data" = "pymice/data"
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/Commands"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["pymice"]
+omit = ["tests/*"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "UP",   # pyupgrade
+    "ANN",  # flake8-annotations (type hints)
+    "NPY",  # numpy rules
+    "RUF",  # ruff-specific rules
+]
+ignore = [
+    "ANN401", # Dynamically typed expressions (Any) are allowed
+    "RUF001", # Ambiguous unicode characters in strings
+    "RUF002", # Ambiguous unicode characters in docstrings
+    "RUF003", # Ambiguous unicode characters in comments
+    "E741",   # Ambiguous variable name 'l'
+    "E501",   # Line too long
+    "ANN001", # Missing type annotation for function argument
+    "ANN201", # Missing return type annotation for public function
+    "ANN202", # Missing return type annotation for private function
+    "NPY002", # Legacy np.random.seed
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ANN"]
+"Commands/**/*.py" = ["ANN"]
+"demo/**/*.py" = ["ANN"]
+"scripts/**/*.py" = ["ANN"]
+"apply_edits.py" = ["ANN"]
