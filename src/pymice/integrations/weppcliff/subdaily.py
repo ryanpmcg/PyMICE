@@ -1,4 +1,4 @@
-"""Sub-daily precipitation imputation via storm templates (Phase 6c)."""
+"""Sub-daily precipitation imputation via storm templates."""
 
 from __future__ import annotations
 

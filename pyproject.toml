@@ -84,6 +84,8 @@ ignore = [
     "ANN201", # Missing return type annotation for public function
     "ANN202", # Missing return type annotation for private function
     "NPY002", # Legacy np.random.seed
+    "W291",   # Trailing whitespace
+    "W293",   # Blank line contains whitespace
 ]
 
 [tool.ruff.lint.per-file-ignores]

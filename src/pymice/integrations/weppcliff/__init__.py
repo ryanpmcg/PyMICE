@@ -1,4 +1,4 @@
-"""WEPPCLIFF gap-fill adapter (Phase 6a–6d)."""
+"""WEPPCLIFF gap-fill adapter for climate and weather models."""
 
 from pymice.integrations.weppcliff.adapter import ImputeConfig, impute_by_cluster, impute_by_df
 from pymice.integrations.weppcliff.cluster import (

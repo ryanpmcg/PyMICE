@@ -53,7 +53,7 @@ bash scripts/export_vignette_datasets.sh
 | 02 | Convergence and pooling | R-numbered steps **1–8**; predictor matrix, convergence, pooling |
 | 03 | Missingness inspection | R-numbered steps **1–15**; boys missingness, mammalsleep pooling |
 | 04 | Passive imputation | R-numbered steps **1–9**; passive `ts`, boys `bmi`, `post`/`squeeze` on `tv` |
-| 05 | Multilevel | ✅ R-aligned (steps 1–26); 2l.* + Phase 7a JOMO/PAN (partial RNG) |
+| 05 | Multilevel | ✅ R-aligned (steps 1–26); 2l.* + JOMO/PAN (partial RNG) |
 | 06 | Sensitivity | ✅ R-aligned (steps 1–13); Cox PH skipped (11–12); δ/post steps run |
 | 07 | ampute | ✅ MCAR + MAR/MNAR; legacy report layout |
 | 08 | futuremice | ✅ `mice()` equivalent (steps 1–6); parallel wrapper skipped (R-only) |

@@ -1,4 +1,4 @@
-"""Smoke tests for the Phase 1 FCS engine."""
+"""Smoke tests for the FCS engine."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Phase 6d: ampute weather scenarios and imputation quality benchmarks."""
+"""Tests for amputed weather scenario validation and imputation quality metrics."""
 
 from __future__ import annotations
 

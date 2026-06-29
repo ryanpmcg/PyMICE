@@ -1,4 +1,4 @@
-"""Synthetic weather panels and ampute-based imputation validation (Phase 6d)."""
+"""Synthetic weather panels and ampute-based imputation validation."""
 
 from __future__ import annotations
 

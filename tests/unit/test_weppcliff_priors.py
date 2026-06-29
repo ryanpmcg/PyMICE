@@ -1,4 +1,4 @@
-"""Phase 6b: priors, missingness, resilience."""
+"""Tests for WEPPCLIFF priors, missingness profiles, and imputation resilience."""
 
 from __future__ import annotations
 

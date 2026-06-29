@@ -39,23 +39,41 @@ Eight vignettes from [gerkovink.com/miceVignettes](https://www.gerkovink.com/mic
 
 ## Getting started (developers)
 
+### On UNIX (Linux / macOS):
 ```bash
-cd /Users/home/Software/Grok/PyMICE
-python3 scripts/extract_vignette_code.py   # refresh R extracts from HTML
-bash scripts/fetch_reference_r.sh        # refresh Reference/*.R
+# Clone and enter the repository
+cd PyMICE
 
-pip install -e ".[dev,plot]"
-pytest tests/ -q
-bash scripts/run_r_goldens.sh   # optional: requires R + mice
-```
+# Set up local virtual environment and install package in editable mode
+bash Commands/setup_venv.sh
+source Commands/.venv/bin/activate
 
-Read [`agent.md`](agent.md) before contributing.
+# Run tests
+pytest
 
-### Vignette reports (local verification)
-
-```bash
-bash Commands/run_all.sh
+# Compile visual parity reports
+python Commands/run_vignettes.py
 open Commands/output/index.html
 ```
 
-See [`Commands/README.md`](Commands/README.md). This folder is excluded from the published package.
+### On Windows (Command Prompt / PowerShell):
+```powershell
+# Clone and enter the repository
+cd PyMICE
+
+# Set up local virtual environment
+python -m venv Commands\.venv
+Commands\.venv\Scripts\activate
+
+# Install package with development dependencies
+python -m pip install -e .[dev,plot,pandas,ml]
+
+# Run tests
+pytest
+
+# Compile visual parity reports
+python Commands/run_vignettes.py
+# Open Commands\output\index.html in your browser
+```
+
+See [Commands/README.md](file:///Users/home/Software/Grok/PyMICE/Commands/README.md) for more details. This folder is excluded from the published package.

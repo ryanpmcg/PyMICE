@@ -61,3 +61,6 @@ Documentation/IMPLEMENTATION_PLAN.md
 apply_edits.py
 mice_codebase_study.md
 vignette_alignment_plan.md
+
+# Unignore Commands/lib so it is tracked correctly
+!Commands/lib/

@@ -1,4 +1,4 @@
-"""Phase 6c: storm-template sub-daily, overlap, EI validation."""
+"""Tests for sub-daily storm template imputation and event-based overlap validation."""
 
 from __future__ import annotations
 
