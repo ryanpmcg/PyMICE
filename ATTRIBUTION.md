@@ -2,7 +2,7 @@
 
 ## Python package (`pymice`)
 
-Copyright (c) 2026 Ryan P. McGehee and contributors.
+Copyright (c) 2026 Ryan P. McGehee.
 
 Distributed under the **MIT License** (`LICENSE`). This is an **independent implementation** of algorithms described in the academic literature and in the R `mice` package documentation.
 
@@ -41,8 +41,4 @@ This project is not affiliated with, endorsed by, or maintained by Stef van Buur
 
 ## Reproducibility
 
-Cross-language RNG behavior and publication reporting guidance: `Documentation/REPRODUCIBILITY.md`.
-
-## Future WEPPCLIFF integration
-
-WEPPCLIFF (GPL-3.0-or-later) may depend on `pymice` (MIT) as an optional backend once parity is demonstrated. That integration will be documented separately in the WEPPCLIFF repository.
+Cross-language RNG behavior and publication reporting guidance are provided in: `Documentation/REPRODUCIBILITY.md`.
