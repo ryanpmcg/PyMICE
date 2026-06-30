@@ -27,7 +27,7 @@ Each subdirectory also contains `vignette.html` (downloaded snapshot).
 ## Regenerating extracted R
 
 ```bash
-python3 scripts/extract_vignette_code.py
+python3 Vignettes/extract_vignette_code.py
 ```
 
 ## License note

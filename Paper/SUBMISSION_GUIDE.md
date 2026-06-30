@@ -52,7 +52,7 @@ JOSS uses a unique, open peer-review process conducted entirely on GitHub:
 4.  **Review Thread:** A dedicated "Review" issue is opened on GitHub. Reviewers are given a checkbox list of criteria to verify:
     *   Does the installation succeed? (e.g., `pip install -e .`)
     *   Do the tests pass? (e.g., running `pytest`)
-    *   Do the examples run and match the paper's claims? (e.g., running `python demo/simulation_study.py` to check the bias/coverage results).
+    *   Do the examples run and match the paper's claims? (e.g., running `python Demonstration/simulation_study.py` to check the bias/coverage results).
 5.  **Addressing Feedback:** Any suggestions or bugs found by the reviewers will be reported as comments in the review issue. You can address them by pushing commits to your repository and responding to comments in the thread.
 
 ---

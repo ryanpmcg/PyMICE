@@ -39,12 +39,12 @@ Each vignette runner mirrors the exercises from [gerkovink.com/miceVignettes](ht
 
 **Vignettes 07–08** still use the earlier step-per-exercise layout (conversion pending).
 
-Golden text comes from `Vignettes/*/vignette_extracted.R`. Prose is extracted with `scripts/extract_vignette_prose.py`.
+Golden text comes from `Vignettes/*/vignette_extracted.R`. Prose is extracted with `Vignettes/extract_vignette_prose.py`.
 
 Export reference datasets first (requires R + network):
 
 ```bash
-bash scripts/export_vignette_datasets.sh
+bash Vignettes/export_vignette_datasets.sh
 ```
 
 | # | R vignette | PyMICE coverage |
@@ -75,5 +75,5 @@ Commands/
 Vignette tests that compare to R still use `tests/goldens/r/`. Refresh with:
 
 ```bash
-bash scripts/run_r_goldens.sh
+bash tests/run_r_goldens.sh
 ```

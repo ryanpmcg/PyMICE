@@ -204,5 +204,5 @@ if __name__ == "__main__":
     sim_results = run_simulation(n_trials=50, n_obs=500, seed=42)
     print_summary_table(sim_results)
 
-    # Save the figure to demo/simulation_results.png
-    plot_results(sim_results, "demo/simulation_results.png")
+    # Save the figure to Demonstration/simulation_results.png
+    plot_results(sim_results, "Demonstration/simulation_results.png")

@@ -79,7 +79,7 @@ def test_nhanes_method_golden(method: str, atol: float):
 
 @pytest.mark.skipif(
     not (GOLDEN / "nhanes2_default_m2_maxit3_complete1.csv").exists(),
-    reason="Run scripts/run_r_goldens.sh first",
+    reason="Run tests/run_r_goldens.sh first",
 )
 def test_nhanes2_default_methods_runs():
     """Default R methods on factor-coded nhanes2: polyreg/logreg/pmm."""

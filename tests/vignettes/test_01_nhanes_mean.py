@@ -27,7 +27,7 @@ def _load_nhanes() -> tuple[np.ndarray, list[str]]:
     return matrix, names
 
 
-@pytest.mark.skipif(not GOLDEN.exists(), reason="Run scripts/run_r_goldens.sh first")
+@pytest.mark.skipif(not GOLDEN.exists(), reason="Run tests/run_r_goldens.sh first")
 def test_nhanes_mean_matches_r_golden():
     data, names = _load_nhanes()
     result = mice(data, column_names=names, method="mean", m=2, maxit=3, seed=123)

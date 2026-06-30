@@ -70,7 +70,7 @@ As expected theoretically [@vanbuuren2018flexible]:
 *   **Regression Imputation** (`norm.predict`) recovers the coefficient but underestimates the variance, causing standard errors to be too narrow and resulting in a confidence interval coverage of only 44.0% (nominal is 95%).
 *   **Predictive Mean Matching (`pmm`)** successfully recovers the parameter with negligible bias and achieves a 92.0% coverage rate, verifying the correct propagation of imputation uncertainty by `PyMICE`.
 
-The simulation results can be reproduced by running the script `demo/simulation_study.py`.
+The simulation results can be reproduced by running the script `Demonstration/simulation_study.py`.
 
 # Acknowledgements
 
