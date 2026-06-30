@@ -24,7 +24,11 @@ def with_mids(
     for i in range(1, data.m + 1):
         completed = complete(data, i)
         if formula is not None:
-            if family is not None:
+            if "Surv(" in formula:
+                from pymice.analysis.survival import coxph
+
+                analyses.append(coxph(formula, completed, data.column_names))
+            elif family is not None:
                 from pymice.analysis.glm import glm
 
                 analyses.append(glm(formula, completed, data.column_names, family=family))

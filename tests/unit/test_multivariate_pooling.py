@@ -118,3 +118,9 @@ def test_coxph_importer_or_run():
         assert fit.terms == ["x"]
         assert "x" in fit.estimate
         assert fit.df_residual == 49.0
+
+        # Verify automatic routing in with_mids
+        imp = mice(data, column_names=names, method="mean", m=2, maxit=1, seed=12)
+        fit_mids = with_mids(imp, formula="Surv(time, status) ~ x")
+        assert fit_mids.m == 2
+        assert fit_mids.analyses[0].terms == ["x"]
