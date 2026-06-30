@@ -35,7 +35,7 @@ Eight vignettes from [gerkovink.com/miceVignettes](https://www.gerkovink.com/mic
 
 - **Python package (`src/pymice/`):** MIT — see `LICENSE`
 - **Reference R snapshots:** GPL-2|GPL-3 (upstream `mice`); development reference only, not distributed in the wheel
-- **Vignettes:** third-party tutorial material; see `ATTRIBUTION.md`
+- **Vignettes:** third-party tutorial material; see [Documentation/ATTRIBUTION.md](file:///Users/home/Software/Grok/PyMICE/Documentation/ATTRIBUTION.md)
 
 ## Getting started (developers)
 

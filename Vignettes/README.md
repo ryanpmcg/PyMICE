@@ -32,4 +32,4 @@ python3 Vignettes/extract_vignette_code.py
 
 ## License note
 
-Vignette HTML and extracted R code are **third-party tutorial material** (van Buuren, Vink, Schouten, and the `mice` authors). They are stored here for reproducibility testing only and are **not** redistributed as part of the Python wheel. See `ATTRIBUTION.md`.
+Vignette HTML and extracted R code are **third-party tutorial material** (van Buuren, Vink, Schouten, and the `mice` authors). They are stored here for reproducibility testing only and are **not** redistributed as part of the Python wheel. See [Documentation/ATTRIBUTION.md](file:///Users/home/Software/Grok/PyMICE/Documentation/ATTRIBUTION.md).
