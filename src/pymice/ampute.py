@@ -153,6 +153,67 @@ def _ampute_continuous(
     return out
 
 
+def _bin_search_positive(target: float, fn) -> float:
+    lo, hi = 0.0, 100.0
+    for _ in range(100):
+        if hi - lo <= 1e-4:
+            break
+        center = (hi + lo) / 2.0
+        val = fn(center)
+        if val < target:
+            hi = center
+        else:
+            lo = center
+    return (lo + hi) / 2.0
+
+
+def _ampute_discrete(
+    p: NDArray[np.int_],
+    scores: list[NDArray[np.float64]],
+    prop: float,
+    types: list[str],
+    rng: np.random.Generator,
+) -> list[NDArray[np.int_]]:
+    out: list[NDArray[np.int_]] = []
+    for i, score_vec in enumerate(scores):
+        code = i + 2
+        if score_vec.size == 1 and score_vec[0] == 0:
+            out.append(np.zeros_like(p, dtype=np.int_))
+            continue
+
+        kind = types[i] if i < len(types) else "RIGHT"
+
+        if kind == "LEFT":
+            odds_template = np.array([4.0, 3.0, 2.0, 1.0])
+        elif kind == "MID":
+            odds_template = np.array([1.0, 4.0, 4.0, 1.0])
+        elif kind == "TAIL":
+            odds_template = np.array([4.0, 1.0, 1.0, 4.0])
+        else:  # RIGHT
+            odds_template = np.array([1.0, 2.0, 3.0, 4.0])
+
+        if score_vec.size == 1 or np.all(score_vec == score_vec[0]):
+            probs = np.full(score_vec.shape, prop, dtype=np.float64)
+        else:
+            quantiles = np.percentile(score_vec, [25, 50, 75])
+            group_indices = np.digitize(score_vec, quantiles)
+            # Map group indices (0-3) to odds values
+            odds = odds_template[np.clip(group_indices, 0, 3)]
+
+            def _formula(odds_val: NDArray[np.float64], b: float) -> NDArray[np.float64]:
+                return odds_val / (odds_val + b)
+
+            b_shift = _bin_search_positive(prop, lambda b: float(np.mean(_formula(odds, b))))
+            probs = _formula(odds, b_shift)
+
+        draws = 1 - rng.binomial(1, np.clip(probs, 0.0, 1.0))
+        r_temp = p.copy()
+        r_temp[p == code] = draws
+        r_temp[p != code] = 1
+        out.append(r_temp)
+    return out
+
+
 def _weighted_sum_scores(
     p: NDArray[np.int_],
     data: NDArray[np.float64],
@@ -270,7 +331,7 @@ def ampute(
             if cont:
                 r_list = _ampute_continuous(p, scores_list, round(work_prop, 3), types, rng)
             else:
-                raise NotImplementedError("discrete amputation (cont=False) is not implemented")
+                r_list = _ampute_discrete(p, scores_list, round(work_prop, 3), types, rng)
 
         for i in range(n_pat):
             if not np.any(p == i + 2):

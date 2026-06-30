@@ -41,3 +41,18 @@ def test_ampute_mnar_smoke():
     result = ampute(data, mech="MNAR", prop=0.3, seed=12)
     assert result.mech == "MNAR"
     assert np.isnan(result.amp).sum() > 0
+
+
+def test_ampute_discrete_odds_smoke():
+    rng = np.random.default_rng(42)
+    data = rng.normal(size=(500, 3))
+    
+    # Run with cont=False (discrete odds ampute)
+    result = ampute(data, mech="MAR", prop=0.3, cont=False, seed=42)
+    assert result.cont is False
+    assert np.isnan(result.amp).sum() > 0
+    
+    # Test all different types
+    for t in ["LEFT", "MID", "TAIL", "RIGHT"]:
+        res_t = ampute(data, mech="MAR", prop=0.3, cont=False, type=t, seed=42)
+        assert np.isnan(res_t.amp).sum() > 0

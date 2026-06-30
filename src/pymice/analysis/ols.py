@@ -47,4 +47,5 @@ def lm(
         variance=variance,
         df_residual=df_residual,
         n_obs=int(n),
+        rss=rss,
     )

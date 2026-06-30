@@ -1,7 +1,9 @@
 """PyMICE — Multivariate Imputation by Chained Equations (MICE / FCS)."""
 
 from pymice.ampute import AmputeResult, ampute
+from pymice.analysis.glm import glm
 from pymice.analysis.ols import lm
+from pymice.analysis.survival import coxph
 from pymice.complete import complete
 from pymice.continue_mids import continue_imputation
 from pymice.datasets import (
@@ -31,7 +33,7 @@ from pymice.imputation_setup import (
 from pymice.pandas_api import mice_df
 from pymice.parallel import merge_mids, parallel_mice
 from pymice.passive_formula import PassiveFormula
-from pymice.pool import anova, pool, pool_scalar, summary_pool
+from pymice.pool import D1, D2, D3, anova, pool, pool_scalar, summary_pool
 from pymice.postprocess import PostContext, post_add, post_squeeze, squeeze
 from pymice.quickpred import quickpred
 from pymice.types import (
@@ -48,6 +50,9 @@ from pymice.types import (
 from pymice.with_mids import with_imputations, with_mids
 
 __all__ = [
+    "D1",
+    "D2",
+    "D3",
     "AmputeResult",
     "BlockPartition",
     "FitResult",
@@ -68,7 +73,9 @@ __all__ = [
     "complete",
     "continue_imputation",
     "convergence",
+    "coxph",
     "filter_imputations",
+    "glm",
     "help",
     "help_topics",
     "ibind",

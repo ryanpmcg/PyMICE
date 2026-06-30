@@ -19,6 +19,7 @@ class FitResult:
     variance: dict[str, float]
     df_residual: float
     n_obs: int
+    rss: float | None = None
 
 
 @dataclass

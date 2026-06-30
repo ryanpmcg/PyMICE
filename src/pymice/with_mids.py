@@ -14,6 +14,7 @@ def with_mids(
     expr: Callable[[object], FitResult] | str | None = None,
     *,
     formula: str | None = None,
+    family: str | None = None,
 ) -> ImputationFits:
     """Run a complete-data analysis on each imputation (R ``with.mids``)."""
     if formula is None and isinstance(expr, str):
@@ -23,7 +24,12 @@ def with_mids(
     for i in range(1, data.m + 1):
         completed = complete(data, i)
         if formula is not None:
-            analyses.append(lm(formula, completed, data.column_names))
+            if family is not None:
+                from pymice.analysis.glm import glm
+
+                analyses.append(glm(formula, completed, data.column_names, family=family))
+            else:
+                analyses.append(lm(formula, completed, data.column_names))
         elif expr is not None and callable(expr):
             analyses.append(expr(completed))
         else:
@@ -37,7 +43,8 @@ def with_imputations(
     data: Mids,
     *,
     formula: str,
+    family: str | None = None,
     expr: Callable[[object], FitResult] | None = None,
 ) -> ImputationFits:
     """Pythonic alias for ``with_mids`` with formula-first API."""
-    return with_mids(data, expr=expr, formula=formula)
+    return with_mids(data, expr=expr, formula=formula, family=family)
