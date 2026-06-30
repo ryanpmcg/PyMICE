@@ -31,7 +31,7 @@ from pymice.imputation_setup import (
 from pymice.pandas_api import mice_df
 from pymice.parallel import merge_mids, parallel_mice
 from pymice.passive_formula import PassiveFormula
-from pymice.pool import pool, pool_scalar, summary_pool
+from pymice.pool import anova, pool, pool_scalar, summary_pool
 from pymice.postprocess import PostContext, post_add, post_squeeze, squeeze
 from pymice.quickpred import quickpred
 from pymice.types import (
@@ -42,6 +42,8 @@ from pymice.types import (
     PoolResult,
     VariableKind,
     VariableSpec,
+    filter_imputations,
+    ibind,
 )
 from pymice.with_mids import with_imputations, with_mids
 
@@ -61,12 +63,15 @@ __all__ = [
     "VariableKind",
     "VariableSpec",
     "ampute",
+    "anova",
     "check_blocks",
     "complete",
     "continue_imputation",
     "convergence",
+    "filter_imputations",
     "help",
     "help_topics",
+    "ibind",
     "lm",
     "load_boys",
     "load_leiden",

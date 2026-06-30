@@ -147,3 +147,50 @@ def test_help_new_symbols():
 def test_parse_regression_formula_transform():
     _y, preds = parse_regression_formula("sws ~ log10(bw) + odi", ["bw", "odi", "sws"])
     assert preds[0].label == "log10(bw)"
+
+
+def test_ibind_combines_imputations():
+    from pymice import ibind
+    data, names = load_nhanes()
+    mids1 = mice(data, column_names=names, m=2, maxit=2, seed=1)
+    mids2 = mice(data, column_names=names, m=3, maxit=2, seed=2)
+
+    combined = ibind(mids1, mids2)
+    assert combined.m == 5
+    for col in names:
+        if col in mids1.imp:
+            assert combined.imp[col].shape[1] == 5
+
+    # Check validation errors
+    mids_diff_cols = mice(data[:, :3], column_names=names[:3], m=1, maxit=1, seed=3)
+    with pytest.raises(ValueError, match="different column names"):
+        ibind(mids1, mids_diff_cols)
+
+
+def test_filter_imputations_subsets():
+    from pymice import filter_imputations
+    data, names = load_nhanes()
+    result = mice(data, column_names=names, m=5, maxit=2, seed=4)
+
+    sub1 = filter_imputations(result, 2)
+    assert sub1.m == 1
+    assert sub1.imp["bmi"].shape[1] == 1
+
+    sub2 = filter_imputations(result, [0, 2, 4])
+    assert sub2.m == 3
+    for col in result.imp:
+        assert sub2.imp[col].shape[1] == 3
+
+    # Check IndexError bounds
+    with pytest.raises(IndexError, match="out of range"):
+        filter_imputations(result, 5)
+
+
+def test_mids_repr():
+    data, names = load_nhanes()
+    result = mice(data, column_names=names, m=2, maxit=1, seed=5)
+    representation = repr(result)
+    assert "Class: Mids" in representation
+    assert "Number of multiple imputations (m): 2" in representation
+    assert "bmi:" in representation
+

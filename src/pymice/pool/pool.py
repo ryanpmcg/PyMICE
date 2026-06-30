@@ -114,3 +114,50 @@ def _pool_single(fit: FitResult) -> PoolResult:
         for term in fit.terms
     ]
     return PoolResult(m=1, rule="rubin1987", dfcom=fit.df_residual, rows=rows)
+
+
+def anova(fit1: Mira, fit2: Mira) -> dict[str, object]:
+    """Compare nested models pooled across multiple imputations (R ``anova.mira``)."""
+    terms1 = set(fit1.analyses[0].terms)
+    terms2 = set(fit2.analyses[0].terms)
+
+    # Determine which model is nested (smaller) vs larger
+    if terms1.issubset(terms2) and terms1 != terms2:
+        _, larger = fit1, fit2
+        s_terms, l_terms = terms1, terms2
+    elif terms2.issubset(terms1) and terms1 != terms2:
+        _, larger = fit2, fit1
+        s_terms, l_terms = terms2, terms1
+    else:
+        raise ValueError("Models must be strictly nested to perform ANOVA comparison")
+
+    extra_terms = sorted(list(l_terms - s_terms))
+    pooled_larger = pool(larger)
+    summary_larger = summary_pool(pooled_larger)
+
+    t_stats = []
+    dfs = []
+    for row in summary_larger:
+        if row["term"] in extra_terms:
+            t_stats.append(float(row["statistic"]))
+            dfs.append(float(row["df"]))
+
+    q = len(extra_terms)
+    f_stat = float(np.mean([t**2 for t in t_stats]))
+    df_den = float(np.mean(dfs))
+    pval = float(1.0 - stats.f.cdf(f_stat, q, df_den))
+
+    print("Nested Model ANOVA Comparison:")
+    print(f"  Smaller model terms: {sorted(list(s_terms))}")
+    print(f"  Larger model terms:  {sorted(list(l_terms))}")
+    print(f"  Extra terms:         {extra_terms}")
+    print(f"  F-statistic:         {f_stat:.4f} on {q} and {df_den:.1f} df")
+    print(f"  p-value:             {pval:.4e}")
+
+    return {
+        "F": f_stat,
+        "df1": q,
+        "df2": df_den,
+        "p_value": pval,
+        "extra_terms": extra_terms,
+    }

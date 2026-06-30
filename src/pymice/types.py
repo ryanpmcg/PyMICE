@@ -96,6 +96,21 @@ class Mids:
     def n_vars(self) -> int:
         return int(self.data.shape[1])
 
+    def __repr__(self) -> str:
+        lines = [
+            "Class: Mids (Multiply Imputed Dataset)",
+            f"Number of multiple imputations (m): {self.m}",
+            f"Number of iterations: {self.iteration}",
+            f"Seed: {self.seed}",
+            f"Number of observations: {self.n_obs}",
+            f"Number of variables: {self.n_vars}",
+            "Imputation methods:",
+        ]
+        for col in self.column_names:
+            meth = self.method.get(col, "")
+            lines.append(f"  {col}: {meth if meth else '(none)'} ({self.nmis.get(col, 0)} missing)")
+        return "\n".join(lines)
+
     def summary(self) -> dict[str, object]:
         """Lightweight metadata summary (Pythonic alternative to R ``summary.mids``)."""
         return {
@@ -113,3 +128,111 @@ class Mids:
         from pymice.continue_mids import continue_imputation
 
         return continue_imputation(self, max_iter=max_iter, verbose=verbose, **kwargs)
+
+
+def ibind(x: Mids, y: Mids) -> Mids:
+    """Combine two Mids objects by combining their imputations (R ``ibind``)."""
+    if x.column_names != y.column_names:
+        raise ValueError("Cannot combine Mids objects with different column names")
+    if x.n_obs != y.n_obs:
+        raise ValueError("Cannot combine Mids objects with different number of observations")
+    if not np.array_equal(x.where, y.where):
+        raise ValueError("Cannot combine Mids objects with different 'where' masks")
+
+    new_imp = {}
+    for col in x.column_names:
+        x_imp = x.imp.get(col)
+        y_imp = y.imp.get(col)
+        if x_imp is not None and y_imp is not None:
+            new_imp[col] = np.column_stack([x_imp, y_imp])
+        elif x_imp is not None:
+            new_imp[col] = x_imp.copy()
+        elif y_imp is not None:
+            new_imp[col] = y_imp.copy()
+
+    new_chain_mean = {}
+    new_chain_var = {}
+    for col in x.column_names:
+        x_mean = x.chain_mean.get(col)
+        y_mean = y.chain_mean.get(col)
+        if x_mean is not None and y_mean is not None:
+            new_chain_mean[col] = np.column_stack([x_mean, y_mean])
+        elif x_mean is not None:
+            new_chain_mean[col] = x_mean.copy()
+        elif y_mean is not None:
+            new_chain_mean[col] = y_mean.copy()
+
+        x_var = x.chain_var.get(col)
+        y_var = y.chain_var.get(col)
+        if x_var is not None and y_var is not None:
+            new_chain_var[col] = np.column_stack([x_var, y_var])
+        elif x_var is not None:
+            new_chain_var[col] = x_var.copy()
+        elif y_var is not None:
+            new_chain_var[col] = y_var.copy()
+
+    return Mids(
+        data=x.data.copy(),
+        column_names=list(x.column_names),
+        imp=new_imp,
+        m=x.m + y.m,
+        where=x.where.copy(),
+        method=dict(x.method),
+        predictor_matrix=x.predictor_matrix.copy(),
+        visit_sequence=list(x.visit_sequence),
+        blocks=dict(x.blocks),
+        iteration=max(x.iteration, y.iteration),
+        seed=x.seed,
+        nmis=dict(x.nmis),
+        chain_mean=new_chain_mean,
+        chain_var=new_chain_var,
+        ignore=x.ignore.copy() if x.ignore is not None else None,
+        variable_specs=list(x.variable_specs),
+        block_predictor_matrix=x.block_predictor_matrix.copy() if x.block_predictor_matrix is not None else None,
+        post=dict(x.post) if x.post is not None else None,
+    )
+
+
+def filter_imputations(mids: Mids, indices: int | list[int] | range | NDArray[np.int_]) -> Mids:
+    """Subset the imputations of a Mids object by index (R subset/filter analogue)."""
+    if isinstance(indices, (int, np.integer)):
+        idx_list = [int(indices)]
+    else:
+        idx_list = [int(i) for i in indices]
+
+    for idx in idx_list:
+        if idx < 0 or idx >= mids.m:
+            raise IndexError(f"Imputation index {idx} out of range for m={mids.m}")
+
+    new_imp = {}
+    for col, val in mids.imp.items():
+        new_imp[col] = val[:, idx_list]
+
+    new_chain_mean = {}
+    new_chain_var = {}
+    for col in mids.column_names:
+        if col in mids.chain_mean:
+            new_chain_mean[col] = mids.chain_mean[col][:, idx_list]
+        if col in mids.chain_var:
+            new_chain_var[col] = mids.chain_var[col][:, idx_list]
+
+    return Mids(
+        data=mids.data.copy(),
+        column_names=list(mids.column_names),
+        imp=new_imp,
+        m=len(idx_list),
+        where=mids.where.copy(),
+        method=dict(mids.method),
+        predictor_matrix=mids.predictor_matrix.copy(),
+        visit_sequence=list(mids.visit_sequence),
+        blocks=dict(mids.blocks),
+        iteration=mids.iteration,
+        seed=mids.seed,
+        nmis=dict(mids.nmis),
+        chain_mean=new_chain_mean,
+        chain_var=new_chain_var,
+        ignore=mids.ignore.copy() if mids.ignore is not None else None,
+        variable_specs=list(mids.variable_specs),
+        block_predictor_matrix=mids.block_predictor_matrix.copy() if mids.block_predictor_matrix is not None else None,
+        post=dict(mids.post) if mids.post is not None else None,
+    )

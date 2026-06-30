@@ -15,6 +15,7 @@ from pymice.methods import pan_impute as _pan_impute  # noqa: F401
 from pymice.methods import pmm as _pmm  # noqa: F401
 from pymice.methods import polr as _polr  # noqa: F401
 from pymice.methods import polyreg as _polyreg  # noqa: F401
+from pymice.methods import rf as _rf  # noqa: F401
 from pymice.methods import sample as _sample  # noqa: F401
 from pymice.methods import twol_norm as _twol_norm  # noqa: F401
 from pymice.methods import twol_pan as _twol_pan  # noqa: F401

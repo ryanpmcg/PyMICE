@@ -6,6 +6,7 @@ import csv
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from pymice import mice, pool, pool_scalar, summary_pool, with_mids
 
@@ -75,3 +76,24 @@ def test_pool_requires_multiple_fits():
     )
     result = pool([fit])
     assert result.m == 1
+
+
+def test_anova_workflow_nhanes():
+    from pymice import anova
+    data, names = _load_nhanes()
+    imp = mice(data, column_names=names, method="mean", m=3, maxit=3, seed=123)
+
+    # Nested models
+    fit1 = with_mids(imp, formula="bmi ~ hyp")
+    fit2 = with_mids(imp, formula="bmi ~ hyp + chl")
+
+    res = anova(fit1, fit2)
+    assert "F" in res
+    assert res["df1"] == 1
+    assert "chl" in res["extra_terms"]
+    assert res["p_value"] >= 0.0
+
+    # Test error when not nested
+    fit3 = with_mids(imp, formula="bmi ~ age")
+    with pytest.raises(ValueError, match="strictly nested"):
+        anova(fit1, fit3)
