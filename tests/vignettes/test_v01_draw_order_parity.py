@@ -11,6 +11,7 @@ import pytest
 
 from pymice import data
 from pymice.rng import RSession
+from tests.r_support import r_backend_available, r_backend_skip_reason
 
 ROOT = Path(__file__).resolve().parents[2]
 DEVTOOLS = ROOT / "devtools"
@@ -55,9 +56,6 @@ def _r_v01_chain() -> dict[str, np.ndarray]:
             continue
         out[key] = [float(v) for v in vals]
     return {k: np.array(v, dtype=np.float64) for k, v in out.items()}
-
-
-from tests.r_support import r_backend_available, r_backend_skip_reason  # noqa: E402
 
 
 @pytest.mark.r_backend

@@ -18,7 +18,6 @@ from pymice.rng import (
     r_rng_available,
     resolve_rng_backend_name,
 )
-
 from tests.r_support import r_backend_available, r_backend_skip_reason, r_rng_skip_reason
 
 ROOT = Path(__file__).resolve().parents[2]

@@ -19,7 +19,6 @@ from lib.vignette_rng import (  # noqa: E402
 )
 
 from pymice.rng import RSession  # noqa: E402
-
 from tests.r_support import r_backend_available, r_backend_skip_reason  # noqa: E402
 
 pytestmark = [

@@ -11,7 +11,6 @@ from pymice.r_prerequisite import (
     needs_r_rng,
 )
 from pymice.rng import make_rng, resolve_rng_backend_name
-
 from tests.r_support import r_backend_available, r_backend_skip_reason
 
 
