@@ -47,10 +47,11 @@ Each `golden_outputs.json` gains/updates a `_provenance` block (R version, `mice
 GitHub Actions (`.github/workflows/ci.yml`) mirrors local `make check` on every PR:
 
 - **lint** — `ruff format --check`, `ruff check`, GPL policy on `src/pymice/`
-- **test** — `pytest` (excluding RNG parity) + structural alignment on Ubuntu, macOS, and Windows with Python 3.10–3.12
+- **test** — `pytest -m "not r_backend"` (no R required) + structural alignment on Ubuntu, macOS, and Windows with Python 3.10–3.12
+- **r-smoke** — Ubuntu job with CRAN `mice`/`pan`: R RNG stream + `mice(..., rng="r")` smoke tests
 - **build** / **install-smoke** — wheel build and install-from-wheel on all three OS families
 
-RNG chain parity and the full `maintain_parity.py` audit run nightly (`.github/workflows/parity-nightly.yml`; needs R). Refresh goldens locally before merging parity-sensitive changes.
+R-marked tests (`@pytest.mark.r_backend`) are skipped in the cross-platform matrix. Full R chain parity and `maintain_parity.py` run nightly (`.github/workflows/parity-nightly.yml`). Refresh goldens locally before merging parity-sensitive changes.
 
 ## Pull requests
 

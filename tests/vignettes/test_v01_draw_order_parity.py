@@ -57,10 +57,11 @@ def _r_v01_chain() -> dict[str, np.ndarray]:
     return {k: np.array(v, dtype=np.float64) for k, v in out.items()}
 
 
-@pytest.mark.skipif(
-    subprocess.run(["which", "Rscript"], capture_output=True).returncode != 0,
-    reason="Rscript not available",
-)
+from tests.r_support import r_backend_available, r_backend_skip_reason  # noqa: E402
+
+
+@pytest.mark.r_backend
+@pytest.mark.skipif(not r_backend_available(), reason=r_backend_skip_reason())
 def test_v01_draw_order_matches_r_subprocess():
     import sys
 

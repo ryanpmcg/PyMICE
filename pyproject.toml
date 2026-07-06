@@ -45,11 +45,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://ryanpmcg.github.io/pymice/"
-Documentation = "https://ryanpmcg.github.io/pymice/"
-Repository = "https://github.com/ryanpmcg/pymice"
-Issues = "https://github.com/ryanpmcg/pymice/issues"
-Changelog = "https://github.com/ryanpmcg/pymice/blob/main/CHANGELOG.md"
+Homepage = "https://ryanpmcg.github.io/PyMICE/"
+Documentation = "https://ryanpmcg.github.io/PyMICE/"
+Repository = "https://github.com/ryanpmcg/PyMICE"
+Issues = "https://github.com/ryanpmcg/PyMICE/issues"
+Changelog = "https://github.com/ryanpmcg/PyMICE/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pymice"]

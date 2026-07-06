@@ -19,10 +19,11 @@ from pymice import data  # noqa: E402
 from pymice.rng import RSession  # noqa: E402
 
 
-@pytest.mark.skipif(
-    __import__("subprocess").run(["which", "Rscript"], capture_output=True).returncode != 0,
-    reason="Rscript not available",
-)
+from tests.r_support import r_backend_available, r_backend_skip_reason  # noqa: E402
+
+
+@pytest.mark.r_backend
+@pytest.mark.skipif(not r_backend_available(), reason=r_backend_skip_reason())
 def test_format_mids_print_r_matches_r_golden() -> None:
     RSession.close()
     start_vignette_rng_session(123)

@@ -24,4 +24,4 @@ pip install -e ".[dev,docs]"
 mkdocs serve
 ```
 
-Published site: [ryanpmcg.github.io/pymice](https://ryanpmcg.github.io/pymice/) (MkDocs + vignette HTML under `/vignettes/`).
+Published site: [ryanpmcg.github.io/PyMICE](https://ryanpmcg.github.io/PyMICE/) (MkDocs + vignette HTML under `/vignettes/`).

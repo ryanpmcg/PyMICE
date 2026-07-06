@@ -18,7 +18,7 @@ sys.path.insert(0, str(DEVTOOLS_DIR))
 from lib.paths import VIGNETTES_PUBLISH_DIR  # noqa: E402
 
 OUTPUT = VIGNETTES_PUBLISH_DIR
-PAGES_VIGNETTES_URL = "https://ryanpmcg.github.io/pymice/vignettes/"
+PAGES_VIGNETTES_URL = "https://ryanpmcg.github.io/PyMICE/vignettes/"
 
 from lib.report import VignetteReport, write_reports  # noqa: E402
 from lib.vignette_rng import ensure_vignette_r_prerequisites  # noqa: E402

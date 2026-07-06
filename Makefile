@@ -14,7 +14,7 @@ lint:
 	ruff check .
 
 test:
-	$(PYTHON) -m pytest tests/ -q --ignore=tests/parity/test_rng_parity.py
+	$(PYTHON) -m pytest tests/ -q --ignore=tests/parity/test_rng_parity.py -m "not r_backend"
 
 parity-structural:
 	$(PYTHON) -m pytest tests/parity/test_structural_alignment.py -q

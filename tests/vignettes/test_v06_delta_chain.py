@@ -6,22 +6,29 @@ import sys
 import warnings
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 # devtools on path via tests/conftest.py
 
 from lib.data import load_leiden  # noqa: E402
 from lib.vignette_rng import (  # noqa: E402
-    ensure_vignette_r_prerequisites,
     run_v06_leiden_delta_chain,
     start_vignette_rng_session,
 )
 
 from pymice.rng import RSession  # noqa: E402
 
+from tests.r_support import r_backend_available, r_backend_skip_reason  # noqa: E402
+
+pytestmark = [
+    pytest.mark.r_backend,
+    pytest.mark.skipif(not r_backend_available(), reason=r_backend_skip_reason()),
+]
+
 
 def test_v06_leiden_delta_chain_seeds() -> None:
-    ensure_vignette_r_prerequisites()
     RSession.close()
     start_vignette_rng_session(123)
     data, names = load_leiden()

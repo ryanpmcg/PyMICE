@@ -1,5 +1,5 @@
-# CI/CD for public repo github.com/ryanpmcg/pymice
-# Docs site: https://ryanpmcg.github.io/pymice/
+# CI/CD for public repo github.com/ryanpmcg/PyMICE
+# Docs site: https://ryanpmcg.github.io/PyMICE/
 name: CI/CD
 
 on:
@@ -70,11 +70,44 @@ jobs:
           python -m pip install --upgrade pip wheel
           python -m pip install -e ".[dev,plot,pandas,ml,survival]"
 
-      - name: Unit & integration tests
-        run: python -m pytest tests/ -q --ignore=tests/parity/test_rng_parity.py
+      - name: Unit & integration tests (no R backend)
+        run: |
+          python -m pytest tests/ -q \
+            --ignore=tests/parity/test_rng_parity.py \
+            -m "not r_backend"
 
       - name: Structural parity (V01–V08)
         run: python -m pytest tests/parity/test_structural_alignment.py -q
+
+  r-smoke:
+    name: R backend smoke (Ubuntu)
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install CRAN mice + pan
+        run: |
+          Rscript -e 'install.packages(c("mice", "pan"), repos="https://cloud.r-project.org")'
+
+      - name: Install PyMICE (editable + extras)
+        run: |
+          python -m pip install --upgrade pip wheel
+          python -m pip install -e ".[dev,plot,pandas,ml,survival]"
+
+      - name: R RNG + mice(rng="r") smoke tests
+        run: |
+          python -m pytest \
+            tests/unit/test_rng.py::test_r_rng_matches_r_runif_rnorm \
+            tests/unit/test_rng.py::test_r_session_survives_sequential_mice_calls \
+            tests/unit/test_r_prerequisite.py::test_ensure_r_prerequisites_without_install \
+            -q
 
   build:
     name: Build wheel & sdist
@@ -130,28 +163,32 @@ jobs:
 
       - name: Verify import & core API
         run: |
-          python -c "import pymice; from pymice import mice, complete, load_nhanes"
-          data, names = __import__('pymice').load_nhanes()
-          imp = __import__('pymice').mice(data, column_names=names, m=1, maxit=1, seed=1)
-          __import__('pymice').complete(imp, 1)
-          print('install-smoke ok')
+          python <<'PY'
+          import pymice
+          from pymice import mice, complete, load_nhanes
+          data, names = load_nhanes()
+          imp = mice(data, column_names=names, m=1, maxit=1, seed=1)
+          complete(imp, 1)
+          print("install-smoke ok")
+          PY
 
   ci-success:
     name: CI gate
     if: always()
-    needs: [lint, test, build, install-smoke]
+    needs: [lint, test, r-smoke, build, install-smoke]
     runs-on: ubuntu-latest
     steps:
       - name: Require all verification jobs
         run: |
           test "${{ needs.lint.result }}" = "success"
           test "${{ needs.test.result }}" = "success"
+          test "${{ needs.r-smoke.result }}" = "success"
           test "${{ needs.build.result }}" = "success"
           test "${{ needs.install-smoke.result }}" = "success"
 
   pages:
     name: Deploy GitHub Pages
-    needs: [ci-success, test, build, install-smoke]
+    needs: [ci-success, test, r-smoke, build, install-smoke]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     permissions:

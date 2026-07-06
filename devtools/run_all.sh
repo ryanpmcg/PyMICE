@@ -19,6 +19,6 @@ if [ "$VIG_EXIT" -ne 0 ]; then
 else
   echo "All vignettes completed successfully."
 fi
-echo "Open docs/vignettes/index.html locally, or https://ryanpmcg.github.io/pymice/vignettes/ after Pages deploy."
+echo "Open docs/vignettes/index.html locally, or https://ryanpmcg.github.io/PyMICE/vignettes/ after Pages deploy."
 echo "For full publication gate, also run: pytest && python maintain_parity.py"
 exit $VIG_EXIT

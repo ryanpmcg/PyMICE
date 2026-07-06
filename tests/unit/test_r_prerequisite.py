@@ -12,6 +12,8 @@ from pymice.r_prerequisite import (
 )
 from pymice.rng import make_rng, resolve_rng_backend_name
 
+from tests.r_support import r_backend_available, r_backend_skip_reason
+
 
 def test_needs_r_rng():
     assert needs_r_rng("r") is True
@@ -34,7 +36,8 @@ def test_make_rng_numpy_unaffected():
     assert rng.random() >= 0.0
 
 
-@pytest.mark.skipif(find_rscript() is None, reason="Rscript not available")
+@pytest.mark.r_backend
+@pytest.mark.skipif(not r_backend_available(), reason=r_backend_skip_reason())
 def test_ensure_r_prerequisites_without_install():
     status = ensure_r_prerequisites(install=False, packages=("mice", "pan"))
     assert status.ok

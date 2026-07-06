@@ -19,6 +19,8 @@ from pymice.rng import (
     resolve_rng_backend_name,
 )
 
+from tests.r_support import r_backend_available, r_backend_skip_reason, r_rng_skip_reason
+
 ROOT = Path(__file__).resolve().parents[2]
 GOLDEN = ROOT / "tests" / "goldens" / "r"
 
@@ -38,7 +40,8 @@ def test_make_rng_custom_generator():
     assert backend == RngBackend.NUMPY.value
 
 
-@pytest.mark.skipif(not r_rng_available(), reason="Rscript not available")
+@pytest.mark.r_backend
+@pytest.mark.skipif(not r_rng_available(), reason=r_rng_skip_reason())
 def test_r_rng_matches_r_runif_rnorm():
     import subprocess
 
@@ -67,7 +70,8 @@ def test_r_rng_matches_r_runif_rnorm():
         rng.close()
 
 
-@pytest.mark.skipif(not r_rng_available(), reason="Rscript not available")
+@pytest.mark.r_backend
+@pytest.mark.skipif(not r_rng_available(), reason=r_rng_skip_reason())
 def test_norm_draw_and_matchindex_use_r_stream():
     y = np.array([1.0, 2.0, 3.0, 4.0, 5.0, np.nan, np.nan], dtype=np.float64)
     x = np.column_stack([np.ones(7), np.arange(7, dtype=np.float64)])
@@ -105,7 +109,8 @@ def test_nhanes_rng_backends_run(method: str):
     assert result.rng_backend == "numpy"
 
 
-@pytest.mark.skipif(not r_rng_available(), reason="Rscript not available")
+@pytest.mark.r_backend
+@pytest.mark.skipif(not r_backend_available(), reason=r_backend_skip_reason())
 def test_r_session_survives_sequential_mice_calls():
     data, names = _load_nhanes()
     RSession.start(123)
@@ -118,7 +123,8 @@ def test_r_session_survives_sequential_mice_calls():
         RSession.close()
 
 
-@pytest.mark.skipif(not r_rng_available(), reason="Rscript not available")
+@pytest.mark.r_backend
+@pytest.mark.skipif(not r_backend_available(), reason=r_backend_skip_reason())
 def test_r_session_continues_stream_across_make_rng():
     RSession.start(123)
     try:
@@ -134,7 +140,8 @@ def test_r_session_continues_stream_across_make_rng():
 
 
 @pytest.mark.parametrize("method,atol", [("pmm", 1e-6), ("norm", 1e-6), ("norm.nob", 1e-6)])
-@pytest.mark.skipif(not r_rng_available(), reason="Rscript not available")
+@pytest.mark.r_backend
+@pytest.mark.skipif(not r_backend_available(), reason=r_backend_skip_reason())
 @pytest.mark.skipif(
     not (GOLDEN / "nhanes_pmm_m2_maxit3_complete1.csv").exists(), reason="Missing R goldens"
 )

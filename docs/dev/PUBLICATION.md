@@ -26,8 +26,8 @@ Remaining parity gaps (P1–P2 in [`PARITY_STATUS.md`](PARITY_STATUS.md)) are **
 
 | URL | Content |
 |-----|---------|
-| https://ryanpmcg.github.io/pymice/ | MkDocs user guide |
-| https://ryanpmcg.github.io/pymice/vignettes/ | R-aligned walkthrough reports (V01–V08) |
+| https://ryanpmcg.github.io/PyMICE/ | MkDocs user guide |
+| https://ryanpmcg.github.io/PyMICE/vignettes/ | R-aligned walkthrough reports (V01–V08) |
 
 1. **One-time:** GitHub repo → Settings → Pages → Build and deployment → **GitHub Actions**.
 2. **Deploy:** push to `main` runs the `pages` job in `.github/workflows/ci.yml` (after `lint`, `test`, and `build` pass).
@@ -114,7 +114,7 @@ Full guidance: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
   author  = {McGehee, Ryan P.},
   title   = {PyMICE: Multivariate Imputation by Chained Equations for Python},
   year    = {2026},
-  url     = {https://github.com/ryanpmcg/pymice},
+  url     = {https://github.com/ryanpmcg/PyMICE},
   version = {0.1.0}
 }
 ```

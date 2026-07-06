@@ -19,7 +19,7 @@ pip install pymice[dev]       # pytest, ruff, coverage
 ## Editable install (development)
 
 ```bash
-git clone https://github.com/ryanpmcg/pymice.git
+git clone https://github.com/ryanpmcg/PyMICE.git
 cd pymice
 pip install -e ".[dev,plot,pandas,ml,survival,docs]"
 ```

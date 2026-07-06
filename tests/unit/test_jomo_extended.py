@@ -235,9 +235,13 @@ def test_2lonly_mean_class_mean_and_empty_class():
     assert np.isnan(out[1])
 
 
+@pytest.mark.r_backend
 def test_2l_pan_popncr2_r_parity_stats():
     """Direct 2l.pan on popNCR2: moments within tolerance of R mice (seed=123)."""
     from pymice.methods.r_pan_backend import r_pan_available
+
+    if not r_pan_available():
+        pytest.skip("R pan backend unavailable")
 
     data, names, _specs = _load_popncr2()
     y = data[:, names.index("popular")]

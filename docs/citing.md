@@ -14,7 +14,7 @@ When you use multiple imputation, cite the MICE/FCS methodology:
   author  = {McGehee, Ryan P.},
   title   = {PyMICE: Multivariate Imputation by Chained Equations for Python},
   year    = {2026},
-  url     = {https://github.com/ryanpmcg/pymice},
+  url     = {https://github.com/ryanpmcg/PyMICE},
   version = {0.1.0},
   doi     = {10.5281/zenodo.TBD}
 }

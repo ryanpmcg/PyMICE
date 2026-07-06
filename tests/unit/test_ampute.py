@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from pymice import ampute
 
@@ -50,11 +51,12 @@ def test_ampute_by_cases_false_prop_adjustment():
     assert result.prop == 0.6
 
 
+@pytest.mark.r_backend
 def test_ampute_r_backend_smoke():
     from pymice.methods.r_ampute_backend import r_ampute_available, run_ampute_chain_r
 
     if not r_ampute_available():
-        return
+        pytest.skip("R ampute backend unavailable")
     results = run_ampute_chain_r([{"prop": 0.5}], seed=2016)
     assert results[0].prop == 0.5
     assert np.isnan(results[0].amp).sum() > 0

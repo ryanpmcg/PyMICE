@@ -26,6 +26,7 @@ def test_sklearn_available_when_installed():
     assert use_sklearn_backend() is True
 
 
+@pytest.mark.r_backend
 @pytest.mark.skipif(not r_lme4_available(), reason="R+lme4+mice not available")
 def test_lme4_impute_r_smoke():
     from pymice.methods.r_lme4_backend import lme4_impute_r

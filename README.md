@@ -1,7 +1,7 @@
 # PyMICE
 
-[![CI/CD](https://github.com/ryanpmcg/pymice/actions/workflows/ci.yml/badge.svg)](https://github.com/ryanpmcg/pymice/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/docs-ryanpmcg.github.io%2Fpymice-blue)](https://ryanpmcg.github.io/pymice/)
+[![CI/CD](https://github.com/ryanpmcg/PyMICE/actions/workflows/ci.yml/badge.svg)](https://github.com/ryanpmcg/PyMICE/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-ryanpmcg.github.io%2FPyMICE-blue)](https://ryanpmcg.github.io/PyMICE/)
 [![PyPI](https://img.shields.io/pypi/v/pymice)](https://pypi.org/project/pymice/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -109,7 +109,7 @@ The R [`mice`](https://cran.r-project.org/package=mice) package (van Buuren & Gr
 
 | Document | Purpose |
 |----------|---------|
-| [ryanpmcg.github.io/pymice](https://ryanpmcg.github.io/pymice/) | Published docs + [vignette walkthroughs](https://ryanpmcg.github.io/pymice/vignettes/) |
+| [ryanpmcg.github.io/PyMICE](https://ryanpmcg.github.io/PyMICE/) | Published docs + [vignette walkthroughs](https://ryanpmcg.github.io/PyMICE/vignettes/) |
 | [`docs/index.md`](docs/index.md) | User documentation source (MkDocs) |
 | [`docs/dev/PUBLICATION.md`](docs/dev/PUBLICATION.md) | PyPI release checklist, citation, reporting guidance |
 | [`docs/dev/PARITY_STATUS.md`](docs/dev/PARITY_STATUS.md) | R vignette parity accomplishments and remaining gaps |
@@ -133,7 +133,7 @@ If you use PyMICE in research, please cite the MICE methodology (above) and this
   author  = {McGehee, Ryan P.},
   title   = {PyMICE: Multivariate Imputation by Chained Equations for Python},
   year    = {2026},
-  url     = {https://github.com/ryanpmcg/pymice},
+  url     = {https://github.com/ryanpmcg/PyMICE},
   version = {0.1.0}
 }
 ```
@@ -191,16 +191,17 @@ Every push and pull request runs [`.github/workflows/ci.yml`](.github/workflows/
 | Job | What it verifies |
 |-----|------------------|
 | `lint` | Ruff format/lint, GPL contamination policy |
-| `test` | Full pytest (minus RNG parity) + structural alignment on **Ubuntu, macOS, Windows** × Python 3.10–3.12 |
+| `test` | Python-only pytest (`-m "not r_backend"`) + structural alignment on **Ubuntu, macOS, Windows** × Python 3.10–3.12 |
+| `r-smoke` | Ubuntu + CRAN `mice`/`pan`: R RNG stream and `mice(..., rng="r")` smoke tests |
 | `build` | Wheel/sdist build and Linux smoke install |
 | `install-smoke` | Wheel-only install on Ubuntu, macOS, and Windows (no source tree) |
 | `pages` | MkDocs deploy to GitHub Pages on push to `main` |
 
-R chain parity (RNG + full `maintain_parity.py`) runs nightly via [`.github/workflows/parity-nightly.yml`](.github/workflows/parity-nightly.yml).
+Full R chain parity (RNG + `maintain_parity.py`) runs nightly via [`.github/workflows/parity-nightly.yml`](.github/workflows/parity-nightly.yml).
 
 ### GitHub Pages
 
-Push to `main` deploys [ryanpmcg.github.io/pymice](https://ryanpmcg.github.io/pymice/) (CI `pages` job). One-time: repo **Settings → Pages → Build and deployment → GitHub Actions**. Regenerate and commit `docs/vignettes/` after vignette changes (`make vignettes`).
+Push to `main` deploys [ryanpmcg.github.io/PyMICE](https://ryanpmcg.github.io/PyMICE/) (CI `pages` job). One-time: repo **Settings → Pages → Build and deployment → GitHub Actions**. Regenerate and commit `docs/vignettes/` after vignette changes (`make vignettes`).
 
 ## License
 

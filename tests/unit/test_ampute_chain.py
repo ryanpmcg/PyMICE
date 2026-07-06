@@ -49,6 +49,7 @@ def test_run_ampute_chain_prop_adjustment(testdata: np.ndarray) -> None:
     assert results[1].prop == pytest.approx(0.6)
 
 
+@pytest.mark.r_backend
 @pytest.mark.skipif(not r_ampute_available(), reason="R ampute backend unavailable")
 def test_run_ampute_chain_matches_r_backend(testdata: np.ndarray) -> None:
     chain = _v07_chain()
