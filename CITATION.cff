@@ -6,6 +6,7 @@ type: software
 authors:
   - family-names: McGehee
     given-names: Ryan P.
+    orcid: https://orcid.org/0000-0003-0464-9774
 license: MIT
 version: 0.1.0
 date-released: 2026-07-05

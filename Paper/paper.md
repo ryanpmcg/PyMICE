@@ -8,59 +8,73 @@ tags:
   - fully conditional specification
 authors:
   - name: Ryan P. McGehee
-    orcid: 0000-0000-0000-0000
+    orcid: 0000-0003-0464-9774
     affiliation: 1
 affiliations:
   - name: Independent Researcher
     index: 1
-date: 29 June 2026
+date: 6 July 2026
 bibliography: paper.bib
 ---
 
 # Summary
 
-Missing data is a pervasive challenge across scientific disciplines, including medicine, epidemiology, social sciences, and engineering. When data are not missing completely at random (MCAR), standard ad-hoc approaches like complete-case analysis (dropping rows with missing values) or single mean imputation introduce significant parameter bias, underestimate statistical uncertainty, and distort relationships between variables.
+Datasets in medicine, epidemiology, social science, and engineering often contain missing values. When data are missing at random (MAR) or missing not at random (MNAR), deleting incomplete records or filling gaps with a single imputed value can bias estimates and understate uncertainty. Multiple imputation (MI) under fully conditional specification (FCS)—the MICE algorithm—draws several completed datasets, fits an analysis model in each, and pools results with Rubin's rules [@rubin1987multiple; @vanbuuren2018flexible].
 
-Multiple Imputation (MI) under Fully Conditional Specification (FCS)---commonly referred to as Multivariate Imputation by Chained Equations (MICE)---is the gold-standard method for addressing missing data [@rubin1987multiple; @vanbuuren2018flexible]. `PyMICE` is a clean-room, standalone Python library that replicates the behavior, methods, and diagnostics of the reference R `mice` package [@vanbuuren2011mice] in a native Python ecosystem. It provides researchers with a robust, MIT-licensed tool to perform imputation, fit repeated-imputation models, and pool estimates according to Rubin's rules.
+`PyMICE` is a standalone Python library that implements the MICE workflow for statistical inference: chained-equation imputation, repeated-analysis pooling, convergence diagnostics, and missingness simulation. The package mirrors the method surface of the reference R `mice` package [@vanbuuren2011mice] while remaining native to NumPy, SciPy, and optional pandas, matplotlib, scikit-learn, and lifelines backends. Researchers who work primarily in Python can therefore run principled MI analyses without maintaining a separate R toolchain, while optional `rng="r"` mode supports cross-language validation against R when required.
 
-# Statement of Need
+# Statement of need
 
-Historically, the R package `mice` [@vanbuuren2011mice] has served as the de facto standard implementation of Fully Conditional Specification. While Python is now the dominant language for data science and machine learning, its ecosystem has lacked a fully compliant multiple imputation library. 
+The R package `mice` is the de facto reference implementation of FCS/MICE [@vanbuuren2011mice; @white2011multiple]. Python has become the dominant language for data science, yet its ecosystem has lacked a library that supports the full MI *inference* workflow: multiple stochastic imputations, model fitting across imputations, Rubin pooling with Barnard–Rubin degrees of freedom, and diagnostic tooling aligned with published MICE practice.
 
-Existing Python alternatives are limited:
-*   `scikit-learn`'s `IterativeImputer` [@pedregosa2011scikit] is designed primarily for predictive pipelines rather than statistical inference. It is limited to single imputations, lacks stochastic noise drawing, and does not support pooling (Rubin's rules) or convergence diagnostics.
-*   Other libraries either lack support for complex variable types (e.g., binary or categorical variables) or do not match the statistical behaviors of R's reference implementation.
+Existing Python tools address only part of this need. `scikit-learn`'s `IterativeImputer` [@pedregosa2011scikit] targets predictive pipelines: it produces a single imputation, omits Rubin pooling, and is not designed for survey-style inference under MAR/MNAR mechanisms. Other packages cover narrower method sets or do not document alignment with the R reference that many applied papers cite.
 
-`PyMICE` bridges this gap by delivering:
-1.  **Algorithmic Parity:** A Python engine implementing 35 imputation methods matching the R `methods(mice)` surface, including Predictive Mean Matching (`pmm`), Bayesian OLS (`norm`), logistic regression (`logreg`), multilevel models (`2l.norm`, `2l.pan`, `2l.lmer`), JOMO multivariate blocks (`jomoImpute`), and sensitivity methods (`mnar`, `ri`).
-2.  **Rubin's Rules Pooling:** Automatic compilation of Multiple Imputation Repeated Analysis (`mira`) and Pooling (`mipo`) to compute pooled coefficients, standard errors, fraction of missing information (FMI), and adjusted degrees of freedom [@rubin1987multiple].
-3.  **Advanced Diagnostic Visualizations:** Convergence monitoring (mean and variance trace plots) and density comparison plots utilizing Gaussian kernel density estimation (KDE) and rug indicators, matching R's lattice-based diagnostic plots.
-4.  **Data Amputation:** Native and optional R-backed implementations of the `ampute` algorithm for simulating multivariate missingness under MCAR, MAR, and MNAR mechanisms.
-5.  **Parallel Imputation:** `futuremice()` distributes imputations across worker processes with reproducible `parallelseed` metadata, matching the R `futuremice` workflow.
-6.  **Cross-Language Validation:** Eight R tutorial vignettes (V01–V08) drive structural and RNG parity tests; optional `rng="r"` enables bit-identical imputations where required.
+`PyMICE` is aimed at applied statisticians, epidemiologists, and quantitative scientists who need reproducible MI in Python—for example, integrating imputation into Jupyter or pandas workflows, CI-tested research software, or domain pipelines (such as environmental time-series workflows) where Python is already the integration layer. The software solves the problem of *method-complete, inference-oriented MICE* in Python with documented parity checks against R tutorials and optional bit-identical RNG paths.
 
-# Core Software Architecture
+# State of the field
 
-`PyMICE` is organized as a modular package with minimal dependencies, relying only on `NumPy` and `SciPy` for its core computation, and `Matplotlib` for optional visualization:
+| Software | Language | Multiple imputations | Rubin pooling | Full MICE method surface | R `mice` parity testing |
+|:---------|:--------:|:--------------------:|:-------------:|:------------------------:|:-----------------------:|
+| R `mice` [@vanbuuren2011mice] | R | Yes | Yes | Yes (reference) | — |
+| `Amelia` / `mi` (R) [@gelman2004multiple] | R | Yes | Yes | Partial / model-based | R ecosystem |
+| `scikit-learn` `IterativeImputer` | Python | No (single) | No | Partial | No |
+| **`PyMICE` (this work)** | Python | Yes | Yes | 35 methods | Yes (structural + RNG) |
 
-*   **`pymice.engine`**: Chained-equation Gibbs sampler with visit sequences, blocks, passive formulas, and post-processing hooks.
-*   **`pymice.imputation_setup`**: Predictor matrices, method defaults, `quickpred`, and block construction.
-*   **`pymice.methods`**: 35 registered univariate and multivariate imputation algorithms with optional R (`lme4`, `pan`) and scikit-learn backends.
-*   **`pymice.pool`**: Rubin's rules pooling for linear, GLM, and Cox model fits across $m$ imputations.
-*   **`pymice.parallel`**: `futuremice` / `parallel_mice` with `ProcessPoolExecutor` and `ibind` merge.
-*   **`pymice.ampute`**: MCAR/MAR/MNAR missingness simulation with optional R backend.
-*   **`pymice.diagnostics`**: `md.pattern`, `flux`, and matplotlib diagnostic plots.
-*   **`pymice.rng`**: Pluggable RNG backends (`numpy`, `legacy`, `r`) for independent or R-matched stochastic draws.
+A *build* decision is justified because no maintained Python package exposes the complete R `methods(mice)` surface together with `pool`/`with_mids`, `ampute`, multilevel and JOMO paths, parallel `futuremice`, and a documented cross-language validation harness. Contributing upstream to `scikit-learn` would not fit: `IterativeImputer` is architected for prediction rather than multiply imputed inference, and the sklearn API intentionally avoids the MICE visit-sequence / passive-imputation / pooling model. `PyMICE` therefore occupies a distinct scholarly niche: a Python MICE implementation validated against the van Buuren reference rather than a sklearn estimator wrapper.
 
-# Simulation Study
+# Software design
 
-To demonstrate the correctness and utility of `PyMICE`, we run a Monte Carlo simulation study comparing three imputation strategies on a simulated dataset ($N = 500$) with Missing at Random (MAR) values (30% missingness in predictors). The true model is:
+`PyMICE` separates *sampling* (drawing imputations) from *inference* (pooling repeated analyses), matching the conceptual split in the MICE literature [@vanbuuren2018flexible].
+
+The Gibbs engine (`pymice.engine`) iterates a visit sequence over incomplete variables, dispatching registered methods (`pymice.methods`) with predictor matrices built by `imputation_setup`. Passive imputation and post-processing hooks mirror R's `mice` customization points. Pooling (`pymice.pool`) implements Rubin's rules for linear, generalized linear, and Cox models fit via `with_mids`.
+
+Design trade-offs were chosen for research reproducibility:
+
+1. **Minimal core dependencies** (`NumPy`, `SciPy`) keep the wheel installable in HPC and CI environments; plotting, pandas, survival, and ML backends are optional extras.
+2. **Pluggable RNG** (`numpy`, `legacy`, `r`) decouples default Python draws from optional R-matched parity without forcing all users to install R.
+3. **Optional R subprocess backends** (`2l.pan`, `2l.lmer`, `ampute`) delegate only the methods where native parity is costly, instead of wrapping all of R `mice`.
+4. **Devtools outside the wheel** — vignette runners and parity audits live in `devtools/` and are excluded from PyPI artifacts so end users install only the library.
+
+This architecture supports both everyday Python MI workflows and maintainer-grade regression testing against exported R goldens.
+
+# Research impact statement
+
+Evidence of correctness and community readiness at version 0.1.0 includes:
+
+* **262 automated tests** across unit, integration, and vignette suites, run on every push in a 9-job matrix (Ubuntu, macOS, Windows × Python 3.10–3.12).
+* **Eight R tutorial vignettes (V01–V08)** reproduced as structural alignment tests with zero errors; published HTML walkthroughs at [ryanpmcg.github.io/PyMICE/vignettes/](https://ryanpmcg.github.io/PyMICE/vignettes/).
+* **RNG chain parity:** 27/27 stochastic steps on vignettes V01–V05 when `rng="r"` is enabled, verified by `devtools/maintain_parity.py` and a nightly GitHub Actions workflow.
+* **Monte Carlo simulation** (below) demonstrating that PMM recovers nominal 95% CI coverage under MAR, while naive alternatives fail—reproducible via `Paper/simulation_study.py`.
+
+Near-term research applications include Python-native sensitivity analyses (δ-adjustment, MNAR), multilevel imputation for clustered data, and integration adapters (e.g., `pymice.integrations.weppcliff`) for environmental time-series pipelines that already run in Python.
+
+## Monte Carlo validation
+
+We compare three imputation strategies on simulated data ($N = 500$) with MAR missingness in predictors. The generative model is:
 
 $$Y = 2.0 + 1.5 X_1 - 0.8 X_2 + \epsilon, \quad \epsilon \sim N(0, 1)$$
 
-We run 50 trials, imputing missing data with $m = 5$ imputations, and fit the linear model $Y \sim X_1 + X_2$. We evaluate parameter bias, average standard errors, and the coverage rate of the nominal 95% confidence intervals (CI) for the coefficient $\beta_1$ (true value = 1.5).
-
-Table 1 outlines the results:
+Across 50 trials we impute with $m = 5$, fit $Y \sim X_1 + X_2$ on each imputed set, and pool with Rubin's rules. \autoref{tab:simulation} summarizes recovery of $\beta_1 = 1.5$.
 
 | Imputation Method | Mean Est. | Bias | Avg. SE | 95% CI Coverage |
 |:------------------|:---------:|:----:|:-------:|:---------------:|
@@ -68,17 +82,24 @@ Table 1 outlines the results:
 | Regression (`norm.predict`) | 1.5998 | +0.0998 | 0.0395 | 44.0% |
 | **PMM (`pmm`)** | **1.4738** | **-0.0262** | **0.0635** | **92.0%** |
 
-*Table 1: Parameter recovery and nominal 95% CI coverage for $\beta_1$ across 50 simulation trials.*
+: Parameter recovery and nominal 95% CI coverage for $\beta_1$ across 50 simulation trials. {#tab:simulation}
 
-As expected theoretically [@vanbuuren2018flexible]:
-*   **Mean Imputation** severely biases the coefficient estimate toward zero (attenuation bias) and yields 0% coverage.
-*   **Regression Imputation** (`norm.predict`) recovers the coefficient but underestimates the variance, causing standard errors to be too narrow and resulting in a confidence interval coverage of only 44.0% (nominal is 95%).
-*   **Predictive Mean Matching (`pmm`)** successfully recovers the parameter with negligible bias and achieves a 92.0% coverage rate, verifying the correct propagation of imputation uncertainty by `PyMICE`.
+Mean imputation attenuates $\beta_1$ and yields 0% coverage. Regression imputation (`norm.predict`) recovers the point estimate but underestimates variance (44% coverage). PMM achieves negligible bias and 92% coverage, consistent with theory [@vanbuuren2018flexible].
 
-The simulation results can be reproduced by running the script `Demonstration/simulation_study.py`.
+![Distribution of pooled $\beta_1$ estimates across 50 MAR simulation trials. The dashed line marks the true parameter (1.5).](simulation_results.png){#fig:simulation width="85%"}
+
+Reproduce with:
+
+```bash
+python Paper/simulation_study.py
+```
+
+# AI usage disclosure
+
+Generative AI assistants (including Grok/Cursor agents) were used during initial scaffolding, documentation drafting, and parity-test development. All AI-generated code and prose were reviewed by the author, exercised through the automated test suite (262 tests), cross-checked against exported R vignette goldens, and corrected where CI or parity audits failed. The JOSS manuscript text was author-edited from AI-assisted drafts; statistical claims are grounded in the bundled simulation script and cited MICE literature. No generative AI writes imputations at runtime—the library uses deterministic numerical code and user-controlled RNG backends.
 
 # Acknowledgements
 
-We acknowledge Stef van Buuren and the upstream R `mice` developers, whose theoretical foundations and library design made this project possible.
+We thank Stef van Buuren and the R `mice` developers for the theoretical foundation and reference implementation that made cross-language validation possible.
 
 # References
