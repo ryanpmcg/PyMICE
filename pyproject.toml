@@ -103,4 +103,4 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["ANN"]
 "devtools/**/*.py" = ["ANN"]
-"Demonstration/**/*.py" = ["ANN"]
+"Paper/**/*.py" = ["ANN"]
