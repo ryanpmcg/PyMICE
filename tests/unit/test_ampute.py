@@ -43,15 +43,32 @@ def test_ampute_mnar_smoke():
     assert np.isnan(result.amp).sum() > 0
 
 
+def test_ampute_by_cases_false_prop_adjustment():
+    rng = np.random.default_rng(0)
+    data = rng.normal(size=(200, 3))
+    result = ampute(data, prop=0.2, bycases=False, seed=42)
+    assert result.prop == 0.6
+
+
+def test_ampute_r_backend_smoke():
+    from pymice.methods.r_ampute_backend import r_ampute_available, run_ampute_chain_r
+
+    if not r_ampute_available():
+        return
+    results = run_ampute_chain_r([{"prop": 0.5}], seed=2016)
+    assert results[0].prop == 0.5
+    assert np.isnan(results[0].amp).sum() > 0
+
+
 def test_ampute_discrete_odds_smoke():
     rng = np.random.default_rng(42)
     data = rng.normal(size=(500, 3))
-    
+
     # Run with cont=False (discrete odds ampute)
     result = ampute(data, mech="MAR", prop=0.3, cont=False, seed=42)
     assert result.cont is False
     assert np.isnan(result.amp).sum() > 0
-    
+
     # Test all different types
     for t in ["LEFT", "MID", "TAIL", "RIGHT"]:
         res_t = ampute(data, mech="MAR", prop=0.3, cont=False, type=t, seed=42)

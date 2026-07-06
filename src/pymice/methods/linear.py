@@ -32,25 +32,69 @@ def remove_lindep(
     x: NDArray[np.float64],
     y: NDArray[np.float64],
     ry: NDArray[np.bool_],
+    *,
+    eps: float = 1e-4,
+    maxcor: float = 0.99,
 ) -> NDArray[np.bool_]:
-    """Identify linearly independent predictor columns (R ``remove.lindep``)."""
-    x_obs = x[ry]
-    if x_obs.shape[0] == 0 or x_obs.shape[1] == 0:
-        return np.ones(x.shape[1], dtype=bool)
+    """Identify usable predictors (R ``mice:::remove.lindep`` eigen + correlation rules)."""
+    n_pred = x.shape[1]
+    if n_pred == 0:
+        return np.zeros(0, dtype=bool)
+    if eps == 0:
+        return np.ones(n_pred, dtype=bool)
+    if eps < 0:
+        raise ValueError("eps must be non-negative")
 
-    keep = np.ones(x.shape[1], dtype=bool)
-    cols = list(range(x.shape[1]))
-    while cols:
-        x_sub = x_obs[:, cols]
-        rank = np.linalg.matrix_rank(x_sub, tol=1e-8)
-        if rank == len(cols):
+    if not np.any(ry):
+        return np.ones(n_pred, dtype=bool)
+
+    x_obs = x[ry, :]
+    y_obs = y[ry].astype(np.float64, copy=False)
+    if x_obs.shape[0] == 0:
+        return np.ones(n_pred, dtype=bool)
+
+    y_var = float(np.var(y_obs))
+    if y_var < eps:
+        return np.zeros(n_pred, dtype=bool)
+
+    keep = np.ones(n_pred, dtype=bool)
+    for j in range(n_pred):
+        col = x_obs[:, j]
+        col_var = float(np.var(col))
+        if col_var < eps or not np.isfinite(col_var):
+            keep[j] = False
+            continue
+        with np.errstate(invalid="ignore", divide="ignore"):
+            corr = np.corrcoef(col, y_obs)[0, 1]
+        if not np.isfinite(corr) or abs(corr) >= maxcor:
+            keep[j] = False
+
+    k = int(np.sum(keep))
+    if k <= 1:
+        return keep
+
+    active = np.flatnonzero(keep)
+    cx = np.corrcoef(x_obs[:, keep], rowvar=False)
+    if cx.ndim == 0:
+        cx = np.array([[1.0]], dtype=np.float64)
+
+    while k > 1:
+        eigvals, eigvecs = np.linalg.eigh(cx)
+        if eigvals[-1] <= 0 or eigvals[-1] < eps:
             break
-        _, r = np.linalg.qr(x_sub, mode="reduced")
-        diag = np.abs(np.diag(r))
-        drop_local = int(np.argmin(diag))
-        drop = cols[drop_local]
-        keep[drop] = False
-        cols.pop(drop_local)
+        ratio = eigvals[0] / eigvals[-1]
+        if ratio >= eps:
+            break
+        vec = eigvecs[:, 0]
+        drop_local = int(np.argmax(np.abs(vec)))
+        keep[active[drop_local]] = False
+        k -= 1
+        if k <= 1:
+            break
+        active = np.flatnonzero(keep)
+        cx = np.corrcoef(x_obs[:, keep], rowvar=False)
+        if cx.ndim == 0:
+            break
 
     return keep
 

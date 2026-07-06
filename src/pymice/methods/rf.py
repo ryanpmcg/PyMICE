@@ -45,7 +45,7 @@ def _impute_regression(
         random_state=rng.integers(0, 2**31 - 1),
     )
     forest.fit(xobs, yobs)
-    
+
     # Extract prediction from a randomly chosen tree in the forest for each missing case
     # This acts as a Bayesian-like bootstrap draw from the forest posterior
     preds = np.column_stack([tree.predict(xmis) for tree in forest.estimators_])

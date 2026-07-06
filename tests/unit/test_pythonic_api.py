@@ -103,7 +103,7 @@ def test_continue_imputation_function():
 
 def test_parallel_mice_merge():
     data, names = load_nhanes()
-    result = parallel_mice(data, column_names=names, m=3, maxit=1, seed=8, n_jobs=1)
+    result = parallel_mice(data, column_names=names, m=3, maxit=1, parallelseed=8, n_jobs=1)
     assert result.m == 3
 
 
@@ -151,6 +151,7 @@ def test_parse_regression_formula_transform():
 
 def test_ibind_combines_imputations():
     from pymice import ibind
+
     data, names = load_nhanes()
     mids1 = mice(data, column_names=names, m=2, maxit=2, seed=1)
     mids2 = mice(data, column_names=names, m=3, maxit=2, seed=2)
@@ -169,6 +170,7 @@ def test_ibind_combines_imputations():
 
 def test_filter_imputations_subsets():
     from pymice import filter_imputations
+
     data, names = load_nhanes()
     result = mice(data, column_names=names, m=5, maxit=2, seed=4)
 
@@ -193,4 +195,3 @@ def test_mids_repr():
     assert "Class: Mids" in representation
     assert "Number of multiple imputations (m): 2" in representation
     assert "bmi:" in representation
-

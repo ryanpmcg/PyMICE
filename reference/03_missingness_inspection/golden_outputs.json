@@ -1,0 +1,116 @@
+{
+  "3.2": {
+    "step": "3",
+    "block_index": "2",
+    "r_code": "head(boys)",
+    "r_output": "##      age  hgt   wgt   bmi   hc  gen  phb tv   reg\n## 3  0.035 50.1 3.650 14.54 33.7 <NA> <NA> NA south\n## 4  0.038 53.5 3.370 11.77 35.0 <NA> <NA> NA south\n## 18 0.057 50.0 3.140 12.56 35.2 <NA> <NA> NA south\n## 23 0.060 54.5 4.270 14.37 36.7 <NA> <NA> NA south\n## 28 0.062 57.5 5.030 15.21 37.3 <NA> <NA> NA south\n## 36 0.068 55.5 4.655 15.11 37.0 <NA> <NA> NA south"
+  },
+  "3.3": {
+    "step": "3",
+    "block_index": "3",
+    "r_code": "nrow(boys)",
+    "r_output": "## [1] 748"
+  },
+  "3.4": {
+    "step": "3",
+    "block_index": "4",
+    "r_code": "summary(boys)",
+    "r_output": "##       age              hgt              wgt              bmi\n##  Min.   : 0.035   Min.   : 50.00   Min.   :  3.14   Min.   :11.77\n##  1st Qu.: 1.581   1st Qu.: 84.88   1st Qu.: 11.70   1st Qu.:15.90\n##  Median :10.505   Median :147.30   Median : 34.65   Median :17.45\n##  Mean   : 9.159   Mean   :132.15   Mean   : 37.15   Mean   :18.07\n##  3rd Qu.:15.267   3rd Qu.:175.22   3rd Qu.: 59.58   3rd Qu.:19.53\n##  Max.   :21.177   Max.   :198.00   Max.   :117.40   Max.   :31.74\n##                   NA's   :20       NA's   :4        NA's   :21\n##        hc          gen        phb            tv           reg\n##  Min.   :33.70   G1  : 56   P1  : 63   Min.   : 1.00   north: 81\n##  1st Qu.:48.12   G2  : 50   P2  : 40   1st Qu.: 4.00   east :161\n##  Median :53.00   G3  : 22   P3  : 19   Median :12.00   west :239\n##  Mean   :51.51   G4  : 42   P4  : 32   Mean   :11.89   south:191\n##  3rd Qu.:56.00   G5  : 75   P5  : 50   3rd Qu.:20.00   city : 73\n##  Max.   :65.00   NA's:503   P6  : 41   Max.   :25.00   NA's :  3\n##  NA's   :46                 NA's:503   NA's   :522"
+  },
+  "4.5": {
+    "step": "4",
+    "block_index": "5",
+    "r_code": "md.pattern(boys)",
+    "r_output": "##     age reg wgt hgt bmi hc gen phb  tv\n## 223   1   1   1   1   1  1   1   1   1    0\n## 19    1   1   1   1   1  1   1   1   0    1\n## 1     1   1   1   1   1  1   1   0   1    1\n## 1     1   1   1   1   1  1   0   1   0    2\n## 437   1   1   1   1   1  1   0   0   0    3\n## 43    1   1   1   1   1  0   0   0   0    4\n## 16    1   1   1   0   0  1   0   0   0    5\n## 1     1   1   1   0   0  0   0   0   0    6\n## 1     1   1   0   1   0  1   0   0   0    5\n## 1     1   1   0   0   0  1   1   1   1    3\n## 1     1   1   0   0   0  0   1   1   1    4\n## 1     1   1   0   0   0  0   0   0   0    7\n## 3     1   0   1   1   1  1   0   0   0    4\n##       0   3   4  20  21 46 503 503 522 1622"
+  },
+  "5.7": {
+    "step": "5",
+    "block_index": "7",
+    "r_code": "sum(mpat[, \"gen\"] == 0)",
+    "r_output": "## [1] 8"
+  },
+  "6.8": {
+    "step": "6",
+    "block_index": "8",
+    "r_code": "R <- is.na(boys$gen)\nR",
+    "r_output": "##   [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n##  [12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n##  [23]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n##  [34]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n##  [45]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n##  [56]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n##  [67]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n##  [78]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n##  [89]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [100]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [111]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [122]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [144]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [155]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [166]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [177]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [188]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [199]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [210]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [221]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [232]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [243]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [254]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [265]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [276]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [287]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [298]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [309]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n## [320]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE\n## [331] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [342] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n## [353] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE\n## [364] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n## [375]  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE\n## [386] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n## [397] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE\n## [408] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE\n## [419] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE\n## [430] FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE\n## [441] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE\n## [452]  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE\n## [463] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE\n## [474] FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE\n## [485] FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE\n## [496]  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE\n## [507] FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE\n## [518]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE\n## [529] FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE\n## [540]  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE\n## [551]  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE\n## [562]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE\n## [573] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE\n## [584]  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE\n## [595] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE\n## [606] FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE\n## [617] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n## [628]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE\n## [639] FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE\n## [650]  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE\n## [661]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE\n## [672]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE\n## [683]  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE\n## [694] FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE\n## [705]  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE\n## [716]  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE\n## [727] FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE\n## [738] FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE"
+  },
+  "8.13": {
+    "step": "8",
+    "block_index": "13",
+    "r_code": "summary(boys)",
+    "r_output": "##       age              hgt              wgt              bmi\n##  Min.   : 0.035   Min.   : 50.00   Min.   :  3.14   Min.   :11.77\n##  1st Qu.: 1.581   1st Qu.: 84.88   1st Qu.: 11.70   1st Qu.:15.90\n##  Median :10.505   Median :147.30   Median : 34.65   Median :17.45\n##  Mean   : 9.159   Mean   :132.15   Mean   : 37.15   Mean   :18.07\n##  3rd Qu.:15.267   3rd Qu.:175.22   3rd Qu.: 59.58   3rd Qu.:19.53\n##  Max.   :21.177   Max.   :198.00   Max.   :117.40   Max.   :31.74\n##                   NA's   :20       NA's   :4        NA's   :21\n##        hc          gen        phb            tv           reg\n##  Min.   :33.70   G1  : 56   P1  : 63   Min.   : 1.00   north: 81\n##  1st Qu.:48.12   G2  : 50   P2  : 40   1st Qu.: 4.00   east :161\n##  Median :53.00   G3  : 22   P3  : 19   Median :12.00   west :239\n##  Mean   :51.51   G4  : 42   P4  : 32   Mean   :11.89   south:191\n##  3rd Qu.:56.00   G5  : 75   P5  : 50   3rd Qu.:20.00   city : 73\n##  Max.   :65.00   NA's:503   P6  : 41   Max.   :25.00   NA's :  3\n##  NA's   :46                 NA's:503   NA's   :522"
+  },
+  "8.14": {
+    "step": "8",
+    "block_index": "14",
+    "r_code": "summary(complete(imp1))",
+    "r_output": "## age              hgt              wgt              bmi\n##  Min.   : 0.035   Min.   :  50.00   Min.   :   3.14   Min.   :11.77\n##  1st Qu.: 1.581   1st Qu.:  82.90   1st Qu.:  11.70   1st Qu.:15.89\n##  Median : 10.505   Median : 145.75   Median :  34.55   Median :17.40\n##  Mean   : 9.159   Mean   : 131.05   Mean   :  37.15   Mean   :18.04\n##  3rd Qu.: 15.267   3rd Qu.: 175.00   3rd Qu.:  59.58   3rd Qu.:19.45\n##  Max.   : 21.177   Max.   : 198.00   Max.   : 117.40   Max.   :31.74\n##        hc        gen      phb            tv            reg\n##  Min.   :33.70   G1:384   P1:408   Min.   :  1.000   north: 81\n##  1st Qu.:48.45   G2: 87   P2: 56   1st Qu.:  2.000   east :162\n##  Median :53.20   G3: 36   P3: 34   Median :  4.000   west :240\n##  Mean   :51.63   G4: 87   P4: 60   Mean   :   8.389   south:191\n##  3rd Qu.:56.00   G5:154   P5:106   3rd Qu.: 15.000   city : 74\n##  Max.   :65.00             P6: 84   Max.   : 25.000"
+  },
+  "8.15": {
+    "step": "8",
+    "block_index": "15",
+    "r_code": "summary(with(imp1, mean(tv)))",
+    "r_output": "## # A tibble: 5 x 1\n##       x\n##   <dbl>\n## 1  8.39\n## 2  8.50\n## 3  8.42\n## 4  8.48\n## 5  8.47"
+  },
+  "9.17": {
+    "step": "9",
+    "block_index": "17",
+    "r_code": "head(mammalsleep)",
+    "r_output": "##                     species       bw    brw sws  ps   ts  mls  gt pi sei\n## 1          African elephant 6654.000 5712.0  NA  NA  3.3 38.6 645  3   5\n## 2 African giant pouched rat    1.000    6.6 6.3 2.0  8.3  4.5  42  3   1\n## 3                Arctic Fox    3.385   44.5  NA  NA 12.5 14.0  60  1   1\n## 4    Arctic ground squirrel    0.920    5.7  NA  NA 16.5   NA  25  5   2\n## 5            Asian elephant 2547.000 4603.0 2.1 1.8  3.9 69.0 624  3   5\n## 6                    Baboon   10.550  179.5 9.1 0.7  9.8 27.0 180  4   4\n##   odi\n## 1   3\n## 2   3\n## 3   1\n## 4   3\n## 5   4\n## 6   4"
+  },
+  "9.18": {
+    "step": "9",
+    "block_index": "18",
+    "r_code": "summary(mammalsleep)",
+    "r_output": "##                       species         bw                brw\n##  African elephant         : 1   Min.   :   0.005   Min.   :   0.14\n##  African giant pouched rat: 1   1st Qu.:   0.600   1st Qu.:   4.25\n##  Arctic Fox               : 1   Median :   3.342   Median :  17.25\n##  Arctic ground squirrel   : 1   Mean   : 198.790   Mean   : 283.13\n##  Asian elephant           : 1   3rd Qu.:  48.203   3rd Qu.: 166.00\n##  Baboon                   : 1   Max.   :6654.000   Max.   :5712.00\n##  (Other)                  :56\n##       sws               ps              ts             mls\n##  Min.   : 2.100   Min.   :0.000   Min.   : 2.60   Min.   :  2.000\n##  1st Qu.: 6.250   1st Qu.:0.900   1st Qu.: 8.05   1st Qu.:  6.625\n##  Median : 8.350   Median :1.800   Median :10.45   Median : 15.100\n##  Mean   : 8.673   Mean   :1.972   Mean   :10.53   Mean   : 19.878\n##  3rd Qu.:11.000   3rd Qu.:2.550   3rd Qu.:13.20   3rd Qu.: 27.750\n##  Max.   :17.900   Max.   :6.600   Max.   :19.90   Max.   :100.000\n##  NA's   :14       NA's   :12      NA's   :4       NA's   :4\n##        gt               pi             sei             odi\n##  Min.   : 12.00   Min.   :1.000   Min.   :1.000   Min.   :1.000\n##  1st Qu.: 35.75   1st Qu.:2.000   1st Qu.:1.000   1st Qu.:1.000\n##  Median : 79.00   Median :3.000   Median :2.000   Median :2.000\n##  Mean   :142.35   Mean   :2.871   Mean   :2.419   Mean   :2.613\n##  3rd Qu.:207.50   3rd Qu.:4.000   3rd Qu.:4.000   3rd Qu.:4.000\n##  Max.   :645.00   Max.   :5.000   Max.   :5.000   Max.   :5.000\n##  NA's   :4"
+  },
+  "9.19": {
+    "step": "9",
+    "block_index": "19",
+    "r_code": "str(mammalsleep)",
+    "r_output": "## 'data.frame':    62 obs. of  11 variables:\n##  $ species: Factor w/ 62 levels \"African elephant\",..: 1 2 3 4 5 6 7 8 9 10 ...\n##  $ bw     : num  6654 1 3.38 0.92 2547 ...\n##  $ brw    : num  5712 6.6 44.5 5.7 4603 ...\n##  $ sws    : num  NA 6.3 NA NA 2.1 9.1 15.8 5.2 10.9 8.3 ...\n##  $ ps     : num  NA 2 NA NA 1.8 0.7 3.9 1 3.6 1.4 ...\n##  $ ts     : num  3.3 8.3 12.5 16.5 3.9 9.8 19.7 6.2 14.5 9.7 ...\n##  $ mls    : num  38.6 4.5 14 NA 69 27 19 30.4 28 50 ...\n##  $ gt     : num  645 42 60 25 624 180 35 392 63 230 ...\n##  $ pi     : int  3 3 1 5 3 4 1 4 1 1 ...\n##  $ sei    : int  5 1 1 2 5 4 1 5 2 1 ...\n##  $ odi    : int  3 3 1 3 4 4 1 4 1 1 ..."
+  },
+  "9.20": {
+    "step": "9",
+    "block_index": "20",
+    "r_code": "md.pattern(mammalsleep)",
+    "r_output": "##    species bw brw pi sei odi ts mls gt ps sws\n## 42       1  1   1  1   1   1  1   1  1  1   1  0\n## 9        1  1   1  1   1   1  1   1  1  0   0  2\n## 3        1  1   1  1   1   1  1   1  0  1   1  1\n## 2        1  1   1  1   1   1  1   0  1  1   1  1\n## 1        1  1   1  1   1   1  1   0  1  0   0  3\n## 1        1  1   1  1   1   1  1   0  0  1   1  2\n## 2        1  1   1  1   1   1  0   1  1  1   0  2\n## 2        1  1   1  1   1   1  0   1  1  0   0  3\n##          0  0   0  0   0   0  4   4  4 12  14 38"
+  },
+  "10.21": {
+    "step": "10",
+    "block_index": "21",
+    "r_code": "imp <- mice(mammalsleep, maxit = 10, print=F)",
+    "r_output": "## Warning: Number of logged events: 29"
+  },
+  "12.24": {
+    "step": "12",
+    "block_index": "24",
+    "r_code": "pool(fit1)",
+    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.3728381  0.60565082  0.03950197   0.6530532    59  49.49987\n## log10(bw)     -1.1493959  0.08549939  0.01114601   0.0988746    59  40.27585\n## odi           -0.8244479  0.07572358  0.00761169   0.0848576    59  44.39847\n##                   riv    lambda       fmi\n## (Intercept)    0.0782668   0.0725858   0.1079159\n## log10(bw)      0.1564364   0.1352745   0.1752380\n## odi            0.1206233   0.1076395   0.1452930"
+  },
+  "12.25": {
+    "step": "12",
+    "block_index": "25",
+    "r_code": "summary(pool(fit1))",
+    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.3728381 0.8081171  14.073256 49.499872 0.000000000e+00\n## log10(bw)    -1.1493959 0.3144433  -3.655336 40.275855 7.345096267e-04\n## odi          -0.8244479 0.2913033  -2.830204 44.398469 6.961767674e-03"
+  },
+  "13.26": {
+    "step": "13",
+    "block_index": "26",
+    "r_code": "impnew <- mice(mammalsleep[ , -1], maxit = 10, print = F)",
+    "r_output": "## Warning: Number of logged events: 19"
+  },
+  "14.27": {
+    "step": "14",
+    "block_index": "27",
+    "r_code": "fit2 <- with(impnew, lm(sws ~ log10(bw) + odi))\npool(fit2)",
+    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.3868706  0.61202922  0.04053099   0.6606664    59  49.35623\n## log10(bw)     -1.1268662  0.08639983  0.00589085   0.0934689    59  49.07481\n## odi           -0.8200122  0.07652107  0.00917601   0.0875323    59  41.68313\n##                   riv    lambda       fmi\n## (Intercept)    0.0794687   0.0736184   0.1090060\n## log10(bw)      0.0818176   0.0756297   0.1111314\n## odi            0.1438977   0.1257960   0.1649250"
+  },
+  "14.28": {
+    "step": "14",
+    "block_index": "28",
+    "r_code": "summary(pool(fit2))",
+    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.3868706 0.8128139  14.009198 49.356232 0.000000000e+00\n## log10(bw)    -1.1268662 0.3057268  -3.685861 49.074812 5.692317241e-04\n## odi          -0.8200122 0.2958585  -2.771636 41.683126 8.299348343e-03"
+  }
+}

@@ -1,0 +1,44 @@
+name: Parity (nightly)
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: parity-nightly
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  parity:
+    name: R chain parity + vignette alignment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install R mice
+        run: Rscript -e 'install.packages("mice", repos="https://cloud.r-project.org")'
+
+      - name: Install PyMICE
+        run: |
+          python -m pip install --upgrade pip wheel
+          python -m pip install -e ".[dev,plot,pandas,ml,survival]"
+
+      - name: Structural alignment
+        run: python -m pytest tests/parity/test_structural_alignment.py -q
+
+      - name: RNG chain parity (V01–V05)
+        run: python -m pytest tests/parity/test_rng_parity.py -q
+
+      - name: Full maintain_parity audit
+        run: python devtools/maintain_parity.py

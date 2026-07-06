@@ -50,3 +50,25 @@ def obtain_design(
 def predictor_indices(pred_row: NDArray[np.int_], target_idx: int) -> list[int]:
     """Column indices used as predictors for a target (excluding self)."""
     return [j for j, flag in enumerate(pred_row) if flag != 0 and j != target_idx]
+
+
+def predictor_labels(
+    predictor_idx: list[int],
+    specs: list[VariableSpec],
+    column_names: list[str],
+) -> list[str]:
+    """One label per expanded design column (matches ``expand_predictors`` order)."""
+    labels: list[str] = []
+    for j in predictor_idx:
+        spec = specs[j]
+        name = column_names[j]
+        if spec.kind in {VariableKind.NUMERIC, VariableKind.BINARY}:
+            labels.append(name)
+            continue
+        levels = spec.levels if spec.levels else ()
+        if not levels:
+            labels.append(name)
+            continue
+        for level in levels[1:]:
+            labels.append(f"{name}{level}")
+    return labels

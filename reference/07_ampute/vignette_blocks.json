@@ -1,0 +1,338 @@
+{
+  "vignette": "07",
+  "vignette_dir": "07_ampute",
+  "title": "Generate missing values with ampute",
+  "runner": "devtools/runners/v07_ampute.py",
+  "step_source": "runner_bootstrap",
+  "blocks": [
+    {
+      "index": 0,
+      "type": "setup",
+      "r_code": "library(\"mice\")\nhelp(ampute)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 1,
+      "type": "console",
+      "r_code": "set.seed(2016)\ntestdata <- as.data.frame(MASS::mvrnorm(n = 10000,\n                                        mu = c(10, 5, 0),\n                                        Sigma = matrix(data = c(1.0, 0.2, 0.2,\n                                                                0.2, 1.0, 0.2,\n                                                                0.2, 0.2, 1.0),\n                                                       nrow = 3,\n                                                       byrow = T)))\nsummary(testdata)",
+      "r_output": "V1               V2               V3\n Min.   : 6.346   Min.   :0.9789   Min.   :-3.799124\n 1st Qu.: 9.317   1st Qu.:4.3199   1st Qu.:-0.690542\n Median :10.003   Median :4.9963   Median :-0.009941\n Mean   : 9.998   Mean   :4.9973   Mean   : 0.000759\n 3rd Qu.:10.677   3rd Qu.:5.6759   3rd Qu.: 0.673069\n Max.   :13.770   Max.   :8.6579   Max.   : 3.810729",
+      "figure": null
+    },
+    {
+      "index": 2,
+      "type": "console",
+      "r_code": "result <- ampute(data = testdata)\nclass(result)",
+      "r_output": "[1] \"mads\"",
+      "figure": null
+    },
+    {
+      "index": 3,
+      "type": "console",
+      "r_code": "head(result$amp)",
+      "r_output": "V1       V2         V3\n1        NA 6.018999  0.3681981\n2  9.668991 4.391821 -1.1127595\n3 10.273415 4.662521  0.1796964\n4 10.124800 4.055544         NA\n5        NA 7.171578  1.7141378\n6 10.803311 5.038649         NA",
+      "figure": null
+    },
+    {
+      "index": 4,
+      "type": "console",
+      "r_code": "names(result)",
+      "r_output": "[1] \"call\"     \"prop\"     \"patterns\" \"freq\"     \"mech\"     \"weights\"\n [7] \"cont\"     \"std\"      \"type\"     \"odds\"     \"amp\"      \"cand\"\n[13] \"scores\"   \"data\"",
+      "figure": null
+    },
+    {
+      "index": 5,
+      "type": "plot",
+      "r_code": "md.pattern(result$amp)",
+      "r_output": "V3   V1   V2\n5014    1    1    1    0\n1670    1    1    0    1\n1670    1    0    1    1\n1646    0    1    1    1\n     1646 1670 1670 4986",
+      "figure": null
+    },
+    {
+      "index": 6,
+      "type": "console",
+      "r_code": "result$prop",
+      "r_output": "[1] 0.5",
+      "figure": null
+    },
+    {
+      "index": 7,
+      "type": "plot",
+      "r_code": "result <- ampute(testdata, prop = 0.2, bycases = FALSE)\nmd.pattern(result$amp)",
+      "r_output": "V3   V1   V2\n4046    1    1    1    0\n1998    1    1    0    1\n1987    1    0    1    1\n1969    0    1    1    1\n     1969 1987 1998 5954",
+      "figure": null
+    },
+    {
+      "index": 8,
+      "type": "console",
+      "r_code": "result$prop",
+      "r_output": "[1] 0.6",
+      "figure": null
+    },
+    {
+      "index": 9,
+      "type": "console",
+      "r_code": "mypatterns <- result$patterns\nmypatterns",
+      "r_output": "V1 V2 V3\n1  0  1  1\n2  1  0  1\n3  1  1  0",
+      "figure": null
+    },
+    {
+      "index": 10,
+      "type": "console",
+      "r_code": "mypatterns[2, 1] <- 0\nmypatterns <- rbind(mypatterns, c(0, 1, 0))\nmypatterns",
+      "r_output": "V1 V2 V3\n1  0  1  1\n2  0  0  1\n3  1  1  0\n4  0  1  0",
+      "figure": null
+    },
+    {
+      "index": 11,
+      "type": "plot",
+      "r_code": "result <- ampute(testdata, patterns = mypatterns)\nmd.pattern(result$amp)",
+      "r_output": "V2   V3   V1\n5079    1    1    1    0\n1216    1    1    0    1\n1248    1    0    1    1\n1200    1    0    0    2\n1257    0    1    0    2\n     1257 2448 3673 7378",
+      "figure": null
+    },
+    {
+      "index": 12,
+      "type": "console",
+      "r_code": "result$freq",
+      "r_output": "[1] 0.25 0.25 0.25 0.25",
+      "figure": null
+    },
+    {
+      "index": 13,
+      "type": "console",
+      "r_code": "myfreq <- c(0.7, 0.1, 0.1, 0.1)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 14,
+      "type": "plot",
+      "r_code": "result <- ampute(testdata, freq = myfreq, patterns = mypatterns)\nmd.pattern(result$amp)",
+      "r_output": "V2  V3   V1\n4982   1   1    1    0\n3555   1   1    0    1\n524    1   0    1    1\n473    1   0    0    2\n466    0   1    0    2\n     466 997 4494 5957",
+      "figure": null
+    },
+    {
+      "index": 15,
+      "type": "console",
+      "r_code": "result$mech",
+      "r_output": "[1] \"MAR\"",
+      "figure": null
+    },
+    {
+      "index": 16,
+      "type": "console",
+      "r_code": "result$weights",
+      "r_output": "V1 V2 V3\n1  0  1  1\n2  0  0  1\n3  1  1  0\n4  0  1  0",
+      "figure": null
+    },
+    {
+      "index": 17,
+      "type": "console",
+      "r_code": "myweights <- result$weights\nmyweights[1, ] <- c(0, 0.8, 0.4)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 18,
+      "type": "console",
+      "r_code": "myweights[3, ] <- c(3.0, 1.0, 0)\nmyweights",
+      "r_output": "V1  V2  V3\n1  0 0.8 0.4\n2  0 0.0 1.0\n3  3 1.0 0.0\n4  0 1.0 0.0",
+      "figure": null
+    },
+    {
+      "index": 19,
+      "type": "console",
+      "r_code": "result <- ampute(testdata, freq = myfreq,\n                 patterns = mypatterns, mech = \"MNAR\")\nresult$patterns",
+      "r_output": "V1 V2 V3\n1  0  1  1\n2  0  0  1\n3  1  1  0\n4  0  1  0",
+      "figure": null
+    },
+    {
+      "index": 20,
+      "type": "console",
+      "r_code": "result$weights",
+      "r_output": "V1 V2 V3\n1  1  0  0\n2  1  1  0\n3  0  0  1\n4  1  0  1",
+      "figure": null
+    },
+    {
+      "index": 21,
+      "type": "plot",
+      "r_code": "bwplot(result, which.pat = 1, descriptives = TRUE)",
+      "r_output": "$Descriptives\n, , Variable =  V1\n\n       Descriptives\nPattern Amp     Mean     Var    N\n      1   1  0.11770 0.96079 3552\n      1   0 -0.12512 0.99905 3495\n\n, , Variable =  V2\n\n       Descriptives\nPattern Amp     Mean     Var    N\n      1   1  0.36608 0.84028 3552\n      1   0 -0.39542 0.85435 3495\n\n, , Variable =  V3\n\n       Descriptives\nPattern Amp     Mean     Var    N\n      1   1  0.22595 0.96457 3552\n      1   0 -0.26021 0.90809 3495\n\n\n$`Boxplot pattern 1`",
+      "figure": "fig_010.png"
+    },
+    {
+      "index": 22,
+      "type": "console",
+      "r_code": "BSDA::tsum.test(mean.x = 0.39077, mean.y = -0.38992, s.x = sqrt(0.83774), s.y = sqrt(0.87721), n.x = 3473, n.y = 3493)",
+      "r_output": "Welch Modified Two-Sample t-Test\n\ndata:  Summarized x and y\nt = 35.184, df = 6961.9, p-value < 2.2e-16\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n 0.7371929 0.8241871\nsample estimates:\nmean of x mean of y\n  0.39077  -0.38992",
+      "figure": null
+    },
+    {
+      "index": 23,
+      "type": "plot",
+      "r_code": "result <- ampute(testdata, freq = myfreq, patterns = mypatterns,\n                 weights = myweights, cont = TRUE,\n                 type = c(\"RIGHT\", \"TAIL\", \"MID\", \"LEFT\"))\nbwplot(result, which.pat = 2, descriptives = FALSE)",
+      "r_output": "$`Boxplot pattern 2`",
+      "figure": null
+    },
+    {
+      "index": 24,
+      "type": "plot",
+      "r_code": "xyplot(result, which.pat = 4)",
+      "r_output": "$`Scatterplot Pattern 4`",
+      "figure": "fig_011.png"
+    },
+    {
+      "index": 25,
+      "type": "console",
+      "r_code": "emptyresult <- ampute(testdata, run = FALSE)\nemptyresult$amp",
+      "r_output": "data frame with 0 columns and 0 rows",
+      "figure": null
+    },
+    {
+      "index": 26,
+      "type": "console",
+      "r_code": "data <- MASS::Boston\ndim(data)",
+      "r_output": "[1] 506  14",
+      "figure": null
+    },
+    {
+      "index": 27,
+      "type": "console",
+      "r_code": "# for instance for i = 1\n# step 1 and 2\ndata_withoutvar1 <- data[, c(2:14)]\nstd_datawithoutvar1 <- scale(data_withoutvar1)\n# step 3\n# we generate only 1 pattern so the weights matrix has to contain 1 row\n# specify the weights as desired\n# here we use 1 for all variables,\n# indicating that we use all variables - i to create missingness in variable i\n# which is a MAR mechanism\nweights <- matrix(rep(1, 13), nrow = 1)\nmy_scores <- apply(std_datawithoutvar1, 1, function (x) weights %*% x)\n# step 4\n# P has to be set to 2 for all rows in the dataset\n# meaning that all rows are candidates for this pattern\n# specify the probability distribution with argument type\n# and the desired missingness proportion\nmask_var1 <- ampute.continuous(P = rep(2, nrow(data_withoutvar1)),\n                               scores = list(my_scores), prop = 0.3, type = \"RIGHT\")\n# in the mask, 0 indicates the row should become incomplete,\n# 1 means the row should stay complete\nmask_var1",
+      "r_output": "[[1]]\n  [1] 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1\n [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1\n [75] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1\n[112] 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 0 0 1 0 1 0 0 0 0 0 0 0 0 1 0 1 1 0\n[149] 1 1 0 1 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n[186] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 0 0 0 1 1 1 0 1 0 1 0 1\n[223] 0 1 0 1 1 1 1 1 1 1 1 1 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1\n[260] 1 1 1 0 1 1 1 1 1 1 0 1 1 1 0 1 1 0 0 1 1 1 1 0 0 0 1 1 1 0 1 1 1 1 1 1 1\n[297] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n[334] 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0\n[371] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n[408] 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 1 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0\n[445] 1 0 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0\n[482] 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 0 1 1 1 1 1",
+      "figure": null
+    },
+    {
+      "index": 28,
+      "type": "console",
+      "r_code": "my_pat <- matrix(c(rep(0, 5), rep(1, 9),\n                   rep(1, 5), rep(0, 5), rep(1, 4),\n                   rep(1, 10), rep(0, 4)), nrow = 3, byrow = TRUE)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 29,
+      "type": "plot",
+      "r_code": "solution2 <- ampute(data, prop = 0.3, patterns = my_pat)\nmd.pattern(solution2$amp, rotate.names = TRUE)",
+      "r_output": "crim zn indus chas nox ptratio black lstat medv rm age dis rad tax\n346    1  1     1    1   1       1     1     1    1  1   1   1   1   1   0\n60     1  1     1    1   1       1     1     1    1  0   0   0   0   0   5\n50     1  1     1    1   1       0     0     0    0  1   1   1   1   1   4\n50     0  0     0    0   0       1     1     1    1  1   1   1   1   1   5\n      50 50    50   50  50      50    50    50   50 60  60  60  60  60 750",
+      "figure": null
+    },
+    {
+      "index": 30,
+      "type": "console",
+      "r_code": "# ampute the complete data once for every mechanism\nampdata1 <- ampute(testdata, patterns = c(0, 1, 1), prop = 0.2, mech = \"MAR\")$amp\nampdata2 <- ampute(testdata, patterns = c(1, 1, 0), prop = 0.8, mech = \"MCAR\")$amp\n# create a random allocation vector\n# use the prob argument to specify how much of each mechanism should be created\n# here, 0.5 of the missingness should be MAR and 0.5 should be MCAR\nindices <- sample(x = c(1, 2), size = nrow(testdata),\n                  replace = TRUE, prob = c(0.5, 0.5))\n# create an empty data matrix\n# fill this matrix with values from either of the two amputed datasets\nampdata <- matrix(NA, nrow = nrow(testdata), ncol = ncol(testdata))\nampdata[indices == 1, ] <- as.matrix(ampdata1[indices == 1, ])\nampdata[indices == 2, ] <- as.matrix(ampdata2[indices == 2, ])",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 31,
+      "type": "console",
+      "r_code": "myodds <- result$odds\nmyodds",
+      "r_output": "[,1] [,2] [,3] [,4]\n[1,]    1    2    3    4\n[2,]    1    2    3    4\n[3,]    1    2    3    4\n[4,]    1    2    3    4",
+      "figure": null
+    },
+    {
+      "index": 32,
+      "type": "console",
+      "r_code": "myodds[3, ] <- c(1, 0, 0, 1)\nmyodds[4, ] <- c(1, 1, 2, 2)\nmyodds <- cbind(myodds, matrix(c(NA, NA, NA, 1, NA, NA, NA, 1), nrow = 4, byrow = F))\nmyodds",
+      "r_output": "[,1] [,2] [,3] [,4] [,5] [,6]\n[1,]    1    2    3    4   NA   NA\n[2,]    1    2    3    4   NA   NA\n[3,]    1    0    0    1   NA   NA\n[4,]    1    1    2    2    1    1",
+      "figure": null
+    },
+    {
+      "index": 33,
+      "type": "console",
+      "r_code": "result <- ampute(testdata, freq = myfreq, patterns = mypatterns,\n                 weights = myweights, cont = FALSE, odds = myodds, prop = 0.3)",
+      "r_output": "",
+      "figure": null
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "title": "Read ampute documentation",
+      "part": "",
+      "block_indices": [
+        0
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Generate complete data",
+      "part": "",
+      "block_indices": [
+        1
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Default amputation",
+      "part": "",
+      "block_indices": [
+        2,
+        3
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Inspect mads metadata",
+      "part": "",
+      "block_indices": [
+        4
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Missing data pattern",
+      "part": "",
+      "block_indices": [
+        5
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Pattern heatmap",
+      "part": "",
+      "block_indices": []
+    },
+    {
+      "number": 7,
+      "title": "Amputed boxplots",
+      "part": "",
+      "block_indices": [
+        21
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Amputed scatterplots",
+      "part": "",
+      "block_indices": [
+        24
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Proportion of incomplete cases",
+      "part": "",
+      "block_indices": [
+        6
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Proportion of missing cells",
+      "part": "",
+      "block_indices": [
+        7,
+        8
+      ]
+    },
+    {
+      "number": 11,
+      "title": "MAR and MNAR mechanisms",
+      "part": "",
+      "block_indices": [
+        15,
+        19
+      ]
+    }
+  ]
+}

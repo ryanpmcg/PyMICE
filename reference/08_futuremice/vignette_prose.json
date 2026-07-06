@@ -1,0 +1,54 @@
+{
+  "title": "Wrapper function `futuremice`",
+  "intro": "For big datasets or high number of imputations, performing multiple imputation with function `mice` from package `mice` (Van Buuren & Groothuis-Oudshoorn, 2011) might take a long time. As a solution, wrapper function `futuremice` was created to enable the imputation procedure to be run in parallel. This is done by dividing the imputations over multiple cores (or CPUs), thus potentially speeding up the process. The function `futuremice` is a sequel to `parlMICE` (Schouten & Vink, 2017), developed to improve user-friendliness.\n\nThis vignette demonstrates two applications of the `futuremice` function. The first application shows the tradeoff between time and increasing number of imputations (\\(m\\)) for a small dataset; the second application does the same, but for a relatively large dataset. We also discuss `futuremice`'s arguments.\n\nThe original tutorial includes wall-clock timing benchmarks (Figures 1–2). Those sections are **R-only** and omitted from the PyMICE walkthrough below, which mirrors the API sections from *Default settings* through *Argument parallelseed*.",
+  "steps": [
+    {
+      "part": "Default settings",
+      "number": "1",
+      "title": "Impute `nhanes` with `futuremice()` and verify the `mids` class.",
+      "narrative": "Easy imputation of an incomplete dataset (say, `nhanes`) can be performed with `futuremice` in the following way."
+    },
+    {
+      "part": "Default settings",
+      "number": "2",
+      "title": "Inspect the multiply imputed data set.",
+      "narrative": "The function returns a `mids` object as created by `mice`."
+    },
+    {
+      "part": "Argument `n.core`",
+      "number": "3",
+      "title": "Check the number of imputations `m`.",
+      "narrative": "With `n.core`, the number of imputations `m` is (about) equally distributed over the cores."
+    },
+    {
+      "part": "Using `mice` arguments",
+      "number": "4",
+      "title": "Change the imputation method to Bayesian linear regression (`method = 'norm'`).",
+      "narrative": "Function `futuremice` is able to deal with the conventional `mice` arguments."
+    },
+    {
+      "part": "Argument `parallelseed`",
+      "number": "5",
+      "title": "Reproduce pooled results with `set.seed(123)` outside `futuremice`.",
+      "narrative": "The seed value for `futuremice` can be defined outside the function to obtain identical pooled results."
+    },
+    {
+      "part": "Argument `parallelseed`",
+      "number": "6",
+      "title": "Reproduce pooled results with `parallelseed` inside `futuremice`.",
+      "narrative": "A user can also specify a seed within the `futuremice` call via `parallelseed`."
+    },
+    {
+      "part": "Argument `parallelseed`",
+      "number": "7",
+      "title": "Use a drawn `parallelseed` for reproducibility when no global seed is set.",
+      "narrative": "If no seed is specified, `imp$parallelseed` stores a drawn seed for reproducibility."
+    },
+    {
+      "part": "Ampute and parallel imputation",
+      "number": "8",
+      "title": "Combine `ampute` and parallel imputation on simulated data.",
+      "narrative": "Closing example: ampute simulated data and impute with the parallel MICE workflow."
+    }
+  ]
+}

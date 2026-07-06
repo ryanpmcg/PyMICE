@@ -49,11 +49,7 @@ def D2(fit1: Mira, fit2: Mira) -> dict[str, object]:
             ]
             d_i = float(np.mean([t**2 for t in t_stats]))
         else:
-            d_i = (
-                ((rss_s - rss_l) / q) / (rss_l / fit_l.df_residual)
-                if rss_l > 0
-                else 0.0
-            )
+            d_i = ((rss_s - rss_l) / q) / (rss_l / fit_l.df_residual) if rss_l > 0 else 0.0
         d.append(d_i)
 
     d_arr = np.array(d, dtype=np.float64)

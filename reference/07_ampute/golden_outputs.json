@@ -1,0 +1,170 @@
+{
+  "2.1": {
+    "step": "2",
+    "block_index": "1",
+    "r_code": "set.seed(2016)\ntestdata <- as.data.frame(MASS::mvrnorm(n = 10000,\n                                        mu = c(10, 5, 0),\n                                        Sigma = matrix(data = c(1.0, 0.2, 0.2,\n                                                                0.2, 1.0, 0.2,\n                                                                0.2, 0.2, 1.0),\n                                                       nrow = 3,\n                                                       byrow = T)))\nsummary(testdata)",
+    "r_output": "##        V1                V2                V3  \n##  Min.   :6.180   Min.   :1.411   Min.   :-3.9607102  \n##  1st Qu.:9.316   1st Qu.:4.332   1st Qu.:-0.6773767  \n##  Median :10.003   Median :4.997   Median :-0.0008242  \n##  Mean   :10.003   Mean   :5.000   Mean   :0.0012490  \n##  3rd Qu.:10.703   3rd Qu.:5.673   3rd Qu.:0.6760525  \n##  Max.   :13.721   Max.   :8.692   Max.   :4.1653921"
+  },
+  "3.2": {
+    "step": "3",
+    "block_index": "2",
+    "r_code": "result <- ampute(data = testdata)\nclass(result)",
+    "r_output": "[1] \"mads\""
+  },
+  "3.3": {
+    "step": "3",
+    "block_index": "3",
+    "r_code": "head(result$amp)",
+    "r_output": "## V1       V2         V3\n## 1  9.223307 4.771586 -0.8695553\n## 2        NA 5.892795  0.9322673\n## 3  9.989276 4.619429  0.2756616\n## 4 10.410801 4.480426         NA\n## 5  7.968079 3.366429 -2.0553200\n## 6  9.238970 4.845780  0.3358049"
+  },
+  "4.4": {
+    "step": "4",
+    "block_index": "4",
+    "r_code": "names(result)",
+    "r_output": "[1] \"call\"     \"prop\"     \"patterns\" \"freq\"     \"mech\"     \"weights\"\n [7] \"cont\"     \"std\"      \"type\"     \"odds\"     \"amp\"      \"cand\"\n[13] \"scores\"   \"data\""
+  },
+  "5.5": {
+    "step": "5",
+    "block_index": "5",
+    "r_code": "md.pattern(result$amp)",
+    "r_output": "##      V3  V1  V2     \n## 4964   1   1   1  0\n## 1722   1   1   0  1\n## 1665   1   0   1  1\n## 1649   0   1   1  1\n##       1649   1665   1722  5036"
+  },
+  "9.6": {
+    "step": "9",
+    "block_index": "6",
+    "r_code": "result$prop",
+    "r_output": "[1] 0.5"
+  },
+  "10.7": {
+    "step": "10",
+    "block_index": "7",
+    "r_code": "result <- ampute(testdata, prop = 0.2, bycases = FALSE)\nmd.pattern(result$amp)",
+    "r_output": "##      V3  V2  V1     \n## 3994   1   1   1  0\n## 2070   1   1   0  1\n## 1990   1   0   1  1\n## 1946   0   1   1  1\n##       1946   1990   2070  6006"
+  },
+  "10.8": {
+    "step": "10",
+    "block_index": "8",
+    "r_code": "result$prop",
+    "r_output": "[1] 0.6"
+  },
+  "0.9": {
+    "step": "0",
+    "block_index": "9",
+    "r_code": "mypatterns <- result$patterns\nmypatterns",
+    "r_output": "V1 V2 V3\n1  0  1  1\n2  1  0  1\n3  1  1  0"
+  },
+  "0.10": {
+    "step": "0",
+    "block_index": "10",
+    "r_code": "mypatterns[2, 1] <- 0\nmypatterns <- rbind(mypatterns, c(0, 1, 0))\nmypatterns",
+    "r_output": "V1 V2 V3\n1  0  1  1\n2  0  0  1\n3  1  1  0\n4  0  1  0"
+  },
+  "0.11": {
+    "step": "0",
+    "block_index": "11",
+    "r_code": "result <- ampute(testdata, patterns = mypatterns)\nmd.pattern(result$amp)",
+    "r_output": "V2   V3   V1\n5079    1    1    1    0\n1216    1    1    0    1\n1248    1    0    1    1\n1200    1    0    0    2\n1257    0    1    0    2\n     1257 2448 3673 7378"
+  },
+  "0.12": {
+    "step": "0",
+    "block_index": "12",
+    "r_code": "result$freq",
+    "r_output": "[1] 0.25 0.25 0.25 0.25"
+  },
+  "0.14": {
+    "step": "0",
+    "block_index": "14",
+    "r_code": "result <- ampute(testdata, freq = myfreq, patterns = mypatterns)\nmd.pattern(result$amp)",
+    "r_output": "V2  V3   V1\n4982   1   1    1    0\n3555   1   1    0    1\n524    1   0    1    1\n473    1   0    0    2\n466    0   1    0    2\n     466 997 4494 5957"
+  },
+  "11.15": {
+    "step": "11",
+    "block_index": "15",
+    "r_code": "result$mech",
+    "r_output": "[1] \"MAR\""
+  },
+  "0.16": {
+    "step": "0",
+    "block_index": "16",
+    "r_code": "result$weights",
+    "r_output": "V1 V2 V3\n1  0  1  1\n2  0  0  1\n3  1  1  0\n4  0  1  0"
+  },
+  "0.18": {
+    "step": "0",
+    "block_index": "18",
+    "r_code": "myweights[3, ] <- c(3.0, 1.0, 0)\nmyweights",
+    "r_output": "V1  V2  V3\n1  0 0.8 0.4\n2  0 0.0 1.0\n3  3 1.0 0.0\n4  0 1.0 0.0"
+  },
+  "11.19": {
+    "step": "11",
+    "block_index": "19",
+    "r_code": "result <- ampute(testdata, freq = myfreq,\n                 patterns = mypatterns, mech = \"MNAR\")\nresult$patterns",
+    "r_output": "##   V1 V2 V3\n## 1   0  1  1\n## 2   0  0  1\n## 3   1  1  0\n## 4   0  1  0"
+  },
+  "0.20": {
+    "step": "0",
+    "block_index": "20",
+    "r_code": "result$weights",
+    "r_output": "V1 V2 V3\n1  1  0  0\n2  1  1  0\n3  0  0  1\n4  1  0  1"
+  },
+  "7.21": {
+    "step": "7",
+    "block_index": "21",
+    "r_code": "bwplot(result, which.pat = 1, descriptives = TRUE)",
+    "r_output": "$Descriptives\n, , Variable =  V1\n\n       Descriptives\nPattern Amp     Mean     Var    N\n      1   1  0.11770 0.96079 3552\n      1   0 -0.12512 0.99905 3495\n\n, , Variable =  V2\n\n       Descriptives\nPattern Amp     Mean     Var    N\n      1   1  0.36608 0.84028 3552\n      1   0 -0.39542 0.85435 3495\n\n, , Variable =  V3\n\n       Descriptives\nPattern Amp     Mean     Var    N\n      1   1  0.22595 0.96457 3552\n      1   0 -0.26021 0.90809 3495\n\n\n$`Boxplot pattern 1`"
+  },
+  "0.22": {
+    "step": "0",
+    "block_index": "22",
+    "r_code": "BSDA::tsum.test(mean.x = 0.39077, mean.y = -0.38992, s.x = sqrt(0.83774), s.y = sqrt(0.87721), n.x = 3473, n.y = 3493)",
+    "r_output": "Welch Modified Two-Sample t-Test\n\ndata:  Summarized x and y\nt = 35.184, df = 6961.9, p-value < 2.2e-16\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n 0.7371929 0.8241871\nsample estimates:\nmean of x mean of y\n  0.39077  -0.38992"
+  },
+  "0.23": {
+    "step": "0",
+    "block_index": "23",
+    "r_code": "result <- ampute(testdata, freq = myfreq, patterns = mypatterns,\n                 weights = myweights, cont = TRUE,\n                 type = c(\"RIGHT\", \"TAIL\", \"MID\", \"LEFT\"))\nbwplot(result, which.pat = 2, descriptives = FALSE)",
+    "r_output": "$`Boxplot pattern 2`"
+  },
+  "8.24": {
+    "step": "8",
+    "block_index": "24",
+    "r_code": "xyplot(result, which.pat = 4)",
+    "r_output": "$`Scatterplot Pattern 4`"
+  },
+  "0.25": {
+    "step": "0",
+    "block_index": "25",
+    "r_code": "emptyresult <- ampute(testdata, run = FALSE)\nemptyresult$amp",
+    "r_output": "data frame with 0 columns and 0 rows"
+  },
+  "0.26": {
+    "step": "0",
+    "block_index": "26",
+    "r_code": "data <- MASS::Boston\ndim(data)",
+    "r_output": "[1] 506  14"
+  },
+  "0.27": {
+    "step": "0",
+    "block_index": "27",
+    "r_code": "# for instance for i = 1\n# step 1 and 2\ndata_withoutvar1 <- data[, c(2:14)]\nstd_datawithoutvar1 <- scale(data_withoutvar1)\n# step 3\n# we generate only 1 pattern so the weights matrix has to contain 1 row\n# specify the weights as desired\n# here we use 1 for all variables,\n# indicating that we use all variables - i to create missingness in variable i\n# which is a MAR mechanism\nweights <- matrix(rep(1, 13), nrow = 1)\nmy_scores <- apply(std_datawithoutvar1, 1, function (x) weights %*% x)\n# step 4\n# P has to be set to 2 for all rows in the dataset\n# meaning that all rows are candidates for this pattern\n# specify the probability distribution with argument type\n# and the desired missingness proportion\nmask_var1 <- ampute.continuous(P = rep(2, nrow(data_withoutvar1)),\n                               scores = list(my_scores), prop = 0.3, type = \"RIGHT\")\n# in the mask, 0 indicates the row should become incomplete,\n# 1 means the row should stay complete\nmask_var1",
+    "r_output": "[[1]]\n  [1] 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1\n [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1\n [75] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1\n[112] 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 0 0 1 0 1 0 0 0 0 0 0 0 0 1 0 1 1 0\n[149] 1 1 0 1 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n[186] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 0 0 0 1 1 1 0 1 0 1 0 1\n[223] 0 1 0 1 1 1 1 1 1 1 1 1 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1\n[260] 1 1 1 0 1 1 1 1 1 1 0 1 1 1 0 1 1 0 0 1 1 1 1 0 0 0 1 1 1 0 1 1 1 1 1 1 1\n[297] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n[334] 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0\n[371] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n[408] 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 1 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0\n[445] 1 0 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0\n[482] 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 0 1 1 1 1 1"
+  },
+  "0.29": {
+    "step": "0",
+    "block_index": "29",
+    "r_code": "solution2 <- ampute(data, prop = 0.3, patterns = my_pat)\nmd.pattern(solution2$amp, rotate.names = TRUE)",
+    "r_output": "crim zn indus chas nox ptratio black lstat medv rm age dis rad tax\n346    1  1     1    1   1       1     1     1    1  1   1   1   1   1   0\n60     1  1     1    1   1       1     1     1    1  0   0   0   0   0   5\n50     1  1     1    1   1       0     0     0    0  1   1   1   1   1   4\n50     0  0     0    0   0       1     1     1    1  1   1   1   1   1   5\n      50 50    50   50  50      50    50    50   50 60  60  60  60  60 750"
+  },
+  "0.31": {
+    "step": "0",
+    "block_index": "31",
+    "r_code": "myodds <- result$odds\nmyodds",
+    "r_output": "[,1] [,2] [,3] [,4]\n[1,]    1    2    3    4\n[2,]    1    2    3    4\n[3,]    1    2    3    4\n[4,]    1    2    3    4"
+  },
+  "0.32": {
+    "step": "0",
+    "block_index": "32",
+    "r_code": "myodds[3, ] <- c(1, 0, 0, 1)\nmyodds[4, ] <- c(1, 1, 2, 2)\nmyodds <- cbind(myodds, matrix(c(NA, NA, NA, 1, NA, NA, NA, 1), nrow = 4, byrow = F))\nmyodds",
+    "r_output": "[,1] [,2] [,3] [,4] [,5] [,6]\n[1,]    1    2    3    4   NA   NA\n[2,]    1    2    3    4   NA   NA\n[3,]    1    0    0    1   NA   NA\n[4,]    1    1    2    2    1    1"
+  }
+}

@@ -96,6 +96,43 @@ def execute_post(cmd: PostHook, ctx: PostContext) -> None:
         ctx.set_imp(ctx.imp_col + float(m.group(1).strip()))
         return
 
+    m = re.match(
+        r"imp\[\[j\]\]\[, ?i\] <- round\(imp\[\[j\]\]\[, ?i\]\)",
+        s,
+        flags=re.IGNORECASE,
+    )
+    if m:
+        ctx.set_imp(np.round(ctx.imp_col))
+        return
+
+    m = re.match(
+        r"imp\[\[j\]\]\[, ?i\] <- pmax\(imp\[\[j\]\]\[, ?i\], (.+)\)",
+        s,
+        flags=re.IGNORECASE,
+    )
+    if m:
+        ctx.set_imp(np.maximum(ctx.imp_col, float(m.group(1).strip())))
+        return
+
+    m = re.match(
+        r"imp\[\[j\]\]\[, ?i\] <- pmin\(imp\[\[j\]\]\[, ?i\], (.+)\)",
+        s,
+        flags=re.IGNORECASE,
+    )
+    if m:
+        ctx.set_imp(np.minimum(ctx.imp_col, float(m.group(1).strip())))
+        return
+
+    m = re.match(
+        r"imp\[\[j\]\]\[, ?i\] <- squeeze\(imp\[\[j\]\]\[, ?i\], c\(([^)]+)\)\)",
+        s,
+        flags=re.IGNORECASE,
+    )
+    if m:
+        parts = [float(x.strip()) for x in m.group(1).split(",")]
+        ctx.set_imp(squeeze(ctx.imp_col, (parts[0], parts[1])))
+        return
+
     raise ValueError(f"unsupported post command: {cmd!r}")
 
 

@@ -1,0 +1,164 @@
+{
+  "0.2": {
+    "step": "0",
+    "block_index": "2",
+    "r_code": "ls()",
+    "r_output": "[1] \"con\"                      \"icc\"\n[3] \"mice.impute.2lonly.mean2\" \"popMCAR\"\n[5] \"popMCAR2\"                 \"popNCR\"\n[7] \"popNCR2\"                  \"popNCR3\"\n[9] \"popular\""
+  },
+  "2.3": {
+    "step": "2",
+    "block_index": "3",
+    "r_code": "head(popNCR)",
+    "r_output": "pupil class extrav  sex texp popular popteach\n1     1     1      5    1   NA     6.3       NA\n2     2     1     NA    0   24     4.9       NA\n3     3     1      4    1   NA     5.3        6\n4     4     1      3 <NA>   NA     4.7        5\n5     5     1      5    1   24      NA        6\n6     6     1     NA    0   NA     4.7        5"
+  },
+  "2.4": {
+    "step": "2",
+    "block_index": "4",
+    "r_code": "dim(popNCR)",
+    "r_output": "[1] 2000    7"
+  },
+  "2.5": {
+    "step": "2",
+    "block_index": "5",
+    "r_code": "nrow(popNCR)",
+    "r_output": "[1] 2000"
+  },
+  "2.6": {
+    "step": "2",
+    "block_index": "6",
+    "r_code": "ncol(popNCR)",
+    "r_output": "[1] 7"
+  },
+  "2.7": {
+    "step": "2",
+    "block_index": "7",
+    "r_code": "summary(popNCR)",
+    "r_output": "pupil           class          extrav         sex           texp\n Min.   : 1.00   17     :  26   Min.   : 1.000   0   :661   Min.   : 2.0\n 1st Qu.: 6.00   63     :  25   1st Qu.: 4.000   1   :843   1st Qu.: 7.0\n Median :11.00   10     :  24   Median : 5.000   NA's:496   Median :12.0\n Mean   :10.65   15     :  24   Mean   : 5.313              Mean   :11.8\n 3rd Qu.:16.00   4      :  23   3rd Qu.: 6.000              3rd Qu.:16.0\n Max.   :26.00   21     :  23   Max.   :10.000              Max.   :25.0\n                 (Other):1855   NA's   :516                 NA's   :976\n    popular         popteach\n Min.   :0.000   Min.   : 1.000\n 1st Qu.:3.900   1st Qu.: 4.000\n Median :4.800   Median : 5.000\n Mean   :4.829   Mean   : 4.834\n 3rd Qu.:5.800   3rd Qu.: 6.000\n Max.   :9.100   Max.   :10.000\n NA's   :510     NA's   :528"
+  },
+  "3.8": {
+    "step": "3",
+    "block_index": "8",
+    "r_code": "md.pattern(popNCR)",
+    "r_output": "pupil class sex popular extrav popteach texp\n308     1     1   1       1      1        1    1    0\n279     1     1   1       1      1        1    0    1\n110     1     1   1       1      1        0    1    1\n115     1     1   1       1      1        0    0    2\n114     1     1   1       1      0        1    1    1\n98      1     1   1       1      0        1    0    2\n33      1     1   1       1      0        0    1    2\n24      1     1   1       1      0        0    0    3\n119     1     1   1       0      1        1    1    1\n113     1     1   1       0      1        1    0    2\n50      1     1   1       0      1        0    1    2\n75      1     1   1       0      1        0    0    3\n29      1     1   1       0      0        1    1    2\n21      1     1   1       0      0        1    0    3\n2       1     1   1       0      0        0    1    3\n14      1     1   1       0      0        0    0    4\n102     1     1   0       1      1        1    1    1\n89      1     1   0       1      1        1    0    2\n25      1     1   0       1      1        0    1    2\n29      1     1   0       1      1        0    0    3\n85      1     1   0       1      0        1    1    2\n56      1     1   0       1      0        1    0    3\n9       1     1   0       1      0        0    1    3\n14      1     1   0       1      0        0    0    4\n19      1     1   0       0      1        1    1    2\n27      1     1   0       0      1        1    0    3\n13      1     1   0       0      1        0    1    3\n11      1     1   0       0      1        0    0    4\n4       1     1   0       0      0        1    1    3\n9       1     1   0       0      0        1    0    4\n2       1     1   0       0      0        0    1    4\n2       1     1   0       0      0        0    0    5\n        0     0 496     510    516      528  976 3026"
+  },
+  "3.9": {
+    "step": "3",
+    "block_index": "9",
+    "r_code": "md.pattern(popNCR[ , -5])",
+    "r_output": "pupil class sex popular extrav popteach\n587     1     1   1       1      1        1    0\n225     1     1   1       1      1        0    1\n212     1     1   1       1      0        1    1\n57      1     1   1       1      0        0    2\n232     1     1   1       0      1        1    1\n125     1     1   1       0      1        0    2\n50      1     1   1       0      0        1    2\n16      1     1   1       0      0        0    3\n191     1     1   0       1      1        1    1\n54      1     1   0       1      1        0    2\n141     1     1   0       1      0        1    2\n23      1     1   0       1      0        0    3\n46      1     1   0       0      1        1    2\n24      1     1   0       0      1        0    3\n13      1     1   0       0      0        1    3\n4       1     1   0       0      0        0    4\n        0     0 496     510    516      528 2050"
+  },
+  "4.10": {
+    "step": "4",
+    "block_index": "10",
+    "r_code": "is.na(popNCR$popular)",
+    "r_output": "[1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE\n  [13] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE\n  [25] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n  [37]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n  [49] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n  [61] FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE\n  [73] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE\n  [85] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE\n  [97] FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n [109] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE\n [121] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [133]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n [145] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [157]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [169]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n [181] FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [193]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE\n [205] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE\n [217]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [229] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [241] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE\n [253]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE\n [265] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n [277]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n [289] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE\n [301]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE\n [313] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n [325] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE\n [337] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [349] FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE\n [361] FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE\n [373] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n [385] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n [397] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n [409] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [421] FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE\n [433] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE\n [445] FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE\n [457]  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE\n [469] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n [481] FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [493] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE\n [505] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE\n [517] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE\n [529] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [541] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE\n [553] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n [565]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE\n [577] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE\n [589]  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n [601] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE\n [613] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [625] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n [637] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE\n [649]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE\n [661]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE\n [673] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n [685]  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE\n [697]  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE\n [709]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n [721] FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE\n [733] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE\n [745] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n [757] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE\n [769] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE\n [781] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE\n [793]  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE\n [805] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n [817] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n [829] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [841]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n [853] FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE\n [865] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE\n [877] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n [889]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n [901]  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE\n [913] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n [925] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE\n [937] FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n [949] FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n [961] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n [973] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE\n [985] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE\n [997]  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE\n[1009] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1021] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1033] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE\n[1045]  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE\n[1057] FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n[1069] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1081]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1093] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE\n[1105] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1117] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n[1129] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1141] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE\n[1153] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n[1165] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE\n[1177] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n[1189] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1201]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE\n[1213] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n[1225] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE\n[1237] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1249] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1261] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE\n[1273]  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE\n[1285] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE\n[1297] FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE\n[1309] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE\n[1321] FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE\n[1333]  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE\n[1345] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n[1357] FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n[1369] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE\n[1381] FALSE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1393] FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE\n[1405]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE\n[1417] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE\n[1429]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1441]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n[1453]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n[1465] FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE\n[1477]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n[1489] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n[1501]  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE\n[1513] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE\n[1525] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n[1537]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1549]  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE\n[1561] FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE\n[1573] FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n[1585] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n[1597] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n[1609] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1621] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1633] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1645] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE\n[1657] FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE\n[1669]  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE\n[1681] FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE\n[1693] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE\n[1705] FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE\n[1717] FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE\n[1729] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1741] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n[1753] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE\n[1765] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n[1777] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE\n[1789]  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE\n[1801]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n[1813] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE\n[1825] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1837] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE\n[1849] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n[1861] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1873] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1885] FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE\n[1897] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE FALSE\n[1909] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE\n[1921]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[1933]  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE\n[1945] FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE\n[1957] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE\n[1969] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE\n[1981] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n[1993] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE"
+  },
+  "7.16": {
+    "step": "7",
+    "block_index": "16",
+    "r_code": "icc(aov(popular ~ as.factor(class), data = popNCR))",
+    "r_output": "[1] 0.328007"
+  },
+  "7.17": {
+    "step": "7",
+    "block_index": "17",
+    "r_code": "icc(aov(popteach ~ class, data = popNCR))",
+    "r_output": "[1] 0.3138658"
+  },
+  "7.18": {
+    "step": "7",
+    "block_index": "18",
+    "r_code": "icc(aov(texp ~ class, data = popNCR))",
+    "r_output": "[1] 1"
+  },
+  "8.19": {
+    "step": "8",
+    "block_index": "19",
+    "r_code": "ini <- mice(popNCR, maxit = 0)\nmeth <- ini$meth\nmeth",
+    "r_output": "pupil    class   extrav      sex     texp  popular popteach\n      \"\"       \"\"    \"pmm\" \"logreg\"    \"pmm\"    \"pmm\"    \"pmm\""
+  },
+  "8.20": {
+    "step": "8",
+    "block_index": "20",
+    "r_code": "meth[c(3, 5, 6, 7)] <- \"norm\"\nmeth",
+    "r_output": "pupil    class   extrav      sex     texp  popular popteach\n      \"\"       \"\"   \"norm\" \"logreg\"   \"norm\"   \"norm\"   \"norm\""
+  },
+  "8.21": {
+    "step": "8",
+    "block_index": "21",
+    "r_code": "pred <- ini$pred\npred",
+    "r_output": "pupil class extrav sex texp popular popteach\npupil        0     1      1   1    1       1        1\nclass        1     0      1   1    1       1        1\nextrav       1     1      0   1    1       1        1\nsex          1     1      1   0    1       1        1\ntexp         1     1      1   1    0       1        1\npopular      1     1      1   1    1       0        1\npopteach     1     1      1   1    1       1        0"
+  },
+  "8.22": {
+    "step": "8",
+    "block_index": "22",
+    "r_code": "pred[, \"class\"] <- 0\npred[, \"pupil\"] <- 0\npred",
+    "r_output": "pupil class extrav sex texp popular popteach\npupil        0     0      1   1    1       1        1\nclass        0     0      1   1    1       1        1\nextrav       0     0      0   1    1       1        1\nsex          0     0      1   0    1       1        1\ntexp         0     0      1   1    0       1        1\npopular      0     0      1   1    1       0        1\npopteach     0     0      1   1    1       1        0"
+  },
+  "9.24": {
+    "step": "9",
+    "block_index": "24",
+    "r_code": "summary(complete(imp1))",
+    "r_output": "     pupil           class          extrav        sex           texp       \n Min.   : 1.00   17     :  26   Min.   : 0.9849   0: 974   Min.   :-9.794  \n 1st Qu.: 6.00   63     :  25   1st Qu.: 4.0620   1:1026   1st Qu.: 8.000  \n Median :11.00   10     :  24   Median : 5.0000            Median :12.297  \n Mean   :10.65   15     :  24   Mean   : 5.2335            Mean   :12.533  \n 3rd Qu.:16.00   4      :  23   3rd Qu.: 6.0000            3rd Qu.:17.000  \n Max.   :26.00   21     :  23   Max.   :10.0000            Max.   :31.556  \n                 (Other):1855                                              \n    popular         popteach    \n Min.   :0.000   Min.   : 1.00  \n 1st Qu.:4.100   1st Qu.: 4.00  \n Median :5.000   Median : 5.00  \n Mean   :5.007   Mean   : 5.01  \n 3rd Qu.:5.979   3rd Qu.: 6.00  \n Max.   :9.100   Max.   :10.00  "
+  },
+  "9.25": {
+    "step": "9",
+    "block_index": "25",
+    "r_code": "summary(popNCR)",
+    "r_output": "pupil           class          extrav         sex           texp\n Min.   : 1.00   17     :  26   Min.   : 1.000   0   :661   Min.   : 2.0\n 1st Qu.: 6.00   63     :  25   1st Qu.: 4.000   1   :843   1st Qu.: 7.0\n Median :11.00   10     :  24   Median : 5.000   NA's:496   Median :12.0\n Mean   :10.65   15     :  24   Mean   : 5.313              Mean   :11.8\n 3rd Qu.:16.00   4      :  23   3rd Qu.: 6.000              3rd Qu.:16.0\n Max.   :26.00   21     :  23   Max.   :10.000              Max.   :25.0\n                 (Other):1855   NA's   :516                 NA's   :976\n    popular         popteach\n Min.   :0.000   Min.   : 1.000\n 1st Qu.:3.900   1st Qu.: 4.000\n Median :4.800   Median : 5.000\n Mean   :4.829   Mean   : 4.834\n 3rd Qu.:5.800   3rd Qu.: 6.000\n Max.   :9.100   Max.   :10.000\n NA's   :510     NA's   :528"
+  },
+  "10.26": {
+    "step": "10",
+    "block_index": "26",
+    "r_code": "data.frame(vars = names(popNCR[c(6, 7, 5)]),\n           observed = c(icc(aov(popular ~ class, popNCR)),\n                        icc(aov(popteach ~ class, popNCR)),\n                        icc(aov(texp ~ class, popNCR))),\n           norm     = c(icc(aov(popular ~ class, complete(imp1))),\n                        icc(aov(popteach ~ class, complete(imp1))),\n                        icc(aov(texp ~ class, complete(imp1)))))",
+    "r_output": "## vars    observed      norm\n## 1   popular 0.3280070 0.2793921\n## 2  popteach 0.3138658 0.2448333\n## 3      texp 1.0000000 0.4129791"
+  },
+  "11.27": {
+    "step": "11",
+    "block_index": "27",
+    "r_code": "pred <- ini$pred\npred[, \"pupil\"] <- 0\nimp2 <- mice(popNCR, meth = meth, pred = pred, print = FALSE)",
+    "r_output": "Warning: Number of logged events: 90"
+  },
+  "12.28": {
+    "step": "12",
+    "block_index": "28",
+    "r_code": "data.frame(vars = names(popNCR[c(6, 7, 5)]),\n           observed  = c(icc(aov(popular ~ class, popNCR)),\n                         icc(aov(popteach ~ class, popNCR)),\n                         icc(aov(texp ~ class, popNCR))),\n           norm      = c(icc(aov(popular ~ class, complete(imp1))),\n                         icc(aov(popteach ~ class, complete(imp1))),\n                         icc(aov(texp ~ class, complete(imp1)))),\n           normclass = c(icc(aov(popular ~ class, complete(imp2))),\n                         icc(aov(popteach ~ class, complete(imp2))),\n                         icc(aov(texp ~ class, complete(imp2)))))",
+    "r_output": "## vars    observed      norm normclass\n## 1   popular 0.3280070 0.2793921 0.3531436\n## 2  popteach 0.3138658 0.2448333 0.3394816\n## 3      texp 1.0000000 0.4129791 1.0000000"
+  },
+  "14.30": {
+    "step": "14",
+    "block_index": "30",
+    "r_code": "imp3 <- mice.mids(imp2, maxit = 10)",
+    "r_output": "iter imp variable\n  6   1  extrav  sex  texp  popular  popteach\n  6   2  extrav  sex  texp  popular  popteach\n  6   3  extrav  sex  texp  popular  popteach\n  6   4  extrav  sex  texp  popular  popteach\n  6   5  extrav  sex  texp  popular  popteach\n  7   1  extrav  sex  texp  popular  popteach\n  7   2  extrav  sex  texp  popular  popteach\n  7   3  extrav  sex  texp  popular  popteach\n  7   4  extrav  sex  texp  popular  popteach\n  7   5  extrav  sex  texp  popular  popteach\n  8   1  extrav  sex  texp  popular  popteach\n  8   2  extrav  sex  texp  popular  popteach\n  8   3  extrav  sex  texp  popular  popteach\n  8   4  extrav  sex  texp  popular  popteach\n  8   5  extrav  sex  texp  popular  popteach\n  9   1  extrav  sex  texp  popular  popteach\n  9   2  extrav  sex  texp  popular  popteach\n  9   3  extrav  sex  texp  popular  popteach\n  9   4  extrav  sex  texp  popular  popteach\n  9   5  extrav  sex  texp  popular  popteach\n  10   1  extrav  sex  texp  popular  popteach\n  10   2  extrav  sex  texp  popular  popteach\n  10   3  extrav  sex  texp  popular  popteach\n  10   4  extrav  sex  texp  popular  popteach\n  10   5  extrav  sex  texp  popular  popteach\n  11   1  extrav  sex  texp  popular  popteach\n  11   2  extrav  sex  texp  popular  popteach\n  11   3  extrav  sex  texp  popular  popteach\n  11   4  extrav  sex  texp  popular  popteach\n  11   5  extrav  sex  texp  popular  popteach\n  12   1  extrav  sex  texp  popular  popteach\n  12   2  extrav  sex  texp  popular  popteach\n  12   3  extrav  sex  texp  popular  popteach\n  12   4  extrav  sex  texp  popular  popteach\n  12   5  extrav  sex  texp  popular  popteach\n  13   1  extrav  sex  texp  popular  popteach\n  13   2  extrav  sex  texp  popular  popteach\n  13   3  extrav  sex  texp  popular  popteach\n  13   4  extrav  sex  texp  popular  popteach\n  13   5  extrav  sex  texp  popular  popteach\n  14   1  extrav  sex  texp  popular  popteach\n  14   2  extrav  sex  texp  popular  popteach\n  14   3  extrav  sex  texp  popular  popteach\n  14   4  extrav  sex  texp  popular  popteach\n  14   5  extrav  sex  texp  popular  popteach\n  15   1  extrav  sex  texp  popular  popteach\n  15   2  extrav  sex  texp  popular  popteach\n  15   3  extrav  sex  texp  popular  popteach\n  15   4  extrav  sex  texp  popular  popteach\n  15   5  extrav  sex  texp  popular  popteach"
+  },
+  "0.36": {
+    "step": "0",
+    "block_index": "36",
+    "r_code": "complete(imp2, 1)[1:15, ]",
+    "r_output": "   pupil class   extrav sex texp  popular popteach\n1      1     1 5.000000   1   24 6.300000 3.774616\n2      2     1 6.079132   0   24 4.900000 3.317083\n3      3     1 4.000000   1   24 5.300000 6.000000\n4      4     1 3.000000   0   24 4.700000 5.000000\n5      5     1 5.000000   1   24 6.725855 6.000000\n6      6     1 2.734801   0   24 4.700000 5.000000\n7      7     1 5.000000   0   24 5.900000 5.000000\n8      8     1 4.000000   0   24 3.657365 3.041566\n9      9     1 5.000000   0   24 5.813840 5.000000\n10    10     1 5.000000   0   24 3.900000 3.000000\n11    11     1 4.511262   1   24 5.700000 5.000000\n12    12     1 5.000000   0   24 4.800000 5.000000\n13    13     1 5.000000   0   24 5.000000 5.000000\n14    14     1 5.000000   1   24 6.314943 6.000000\n15    15     1 5.000000   1   24 6.000000 5.000000"
+  },
+  "16.37": {
+    "step": "16",
+    "block_index": "37",
+    "r_code": "head(complete(imp2, 1), n = 15)",
+    "r_output": "##    pupil class   extrav sex texp  popular popteach\n## 1            1     1 5.000000   1   24 6.300000 3.701142\n## 2            2     1 6.176860   0   24 4.900000 3.256136\n## 3            3     1 4.000000   1   24 5.300000 6.000000\n## 4            4     1 3.000000   1   24 4.700000 5.000000\n## 5            5     1 5.000000   1   24 6.587591 6.000000\n## 6            6     1 2.827225   0   24 4.700000 5.000000\n## 7            7     1 5.000000   0   24 5.900000 5.000000\n## 8            8     1 4.000000   0   24 3.459736 2.846141\n## 9            9     1 5.000000   0   24 5.692711 5.000000\n## 10         10     1 5.000000   0   24 3.900000 3.000000\n## 11         11     1 4.643219   1   24 5.700000 5.000000\n## 12         12     1 5.000000   1   24 4.800000 5.000000\n## 13         13     1 5.000000   0   24 5.000000 5.000000\n## 14         14     1 5.000000   1   24 6.174869 6.000000\n## 15         15     1 5.000000   1   24 6.000000 5.000000"
+  },
+  "17.38": {
+    "step": "17",
+    "block_index": "38",
+    "r_code": "imp4 <- mice(popNCR)",
+    "r_output": "iter imp variable\n  1   1  extrav  sex  texp  popular  popteach\n  1   2  extrav  sex  texp  popular  popteach\n  1   3  extrav  sex  texp  popular  popteach\n  1   4  extrav  sex  texp  popular  popteach\n  1   5  extrav  sex  texp  popular  popteach\n  2   1  extrav  sex  texp  popular  popteach\n  2   2  extrav  sex  texp  popular  popteach\n  2   3  extrav  sex  texp  popular  popteach\n  2   4  extrav  sex  texp  popular  popteach\n  2   5  extrav  sex  texp  popular  popteach\n  3   1  extrav  sex  texp  popular  popteach\n  3   2  extrav  sex  texp  popular  popteach\n  3   3  extrav  sex  texp  popular  popteach\n  3   4  extrav  sex  texp  popular  popteach\n  3   5  extrav  sex  texp  popular  popteach\n  4   1  extrav  sex  texp  popular  popteach\n  4   2  extrav  sex  texp  popular  popteach\n  4   3  extrav  sex  texp  popular  popteach\n  4   4  extrav  sex  texp  popular  popteach\n  4   5  extrav  sex  texp  popular  popteach\n  5   1  extrav  sex  texp  popular  popteach\n  5   2  extrav  sex  texp  popular  popteach\n  5   3  extrav  sex  texp  popular  popteach\n  5   4  extrav  sex  texp  popular  popteach\n  5   5  extrav  sex  texp  popular  popteach\nWarning: Number of logged events: 90"
+  },
+  "20.40": {
+    "step": "20",
+    "block_index": "40",
+    "r_code": "data.frame(vars      = names(popNCR[c(6, 7, 5)]),\n           observed  = c(icc(aov(popular ~ class, popNCR)),\n                         icc(aov(popteach ~ class, popNCR)),\n                         icc(aov(texp ~ class, popNCR))),\n           norm      = c(icc(aov(popular ~ class, complete(imp1))),\n                         icc(aov(popteach ~ class, complete(imp1))),\n                         icc(aov(texp ~ class, complete(imp1)))),\n           normclass = c(icc(aov(popular ~ class, complete(imp2))),\n                         icc(aov(popteach ~ class, complete(imp2))),\n                         icc(aov(texp ~ class, complete(imp2)))),\n           pmm       = c(icc(aov(popular ~ class, complete(imp4))),\n                         icc(aov(popteach ~ class, complete(imp4))),\n                         icc(aov(texp ~ class, complete(imp4)))),\n           orig      = c(icc(aov(popular ~ as.factor(class), popular)),\n                         icc(aov(popteach ~ as.factor(class), popular)),\n                         icc(aov(texp ~ as.factor(class), popular))))",
+    "r_output": "## vars    observed      norm normclass       pmm      orig\n## 1   popular 0.3280070 0.2793921 0.3531436 0.3641802 0.3629933\n## 2  popteach 0.3138658 0.2448333 0.3394816 0.3408832 0.3414766\n## 3      texp 1.0000000 0.4129791 1.0000000 1.0000000 1.0000000"
+  },
+  "26.57": {
+    "step": "26",
+    "block_index": "57",
+    "r_code": "pmmdata <- popNCR3\npmmdata$class <- as.factor(popNCR3$class)\nimp8 <- mice(pmmdata, m = 5, print = FALSE)",
+    "r_output": "Warning: Number of logged events: 90"
+  }
+}

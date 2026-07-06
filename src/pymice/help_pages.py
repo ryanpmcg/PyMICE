@@ -72,8 +72,42 @@ PAGES: dict[str, HelpPage] = {
             ("post", "Post-processing hooks applied after each draw."),
             ("n_burn, n_iter", "MCMC burn-in / iterations for multilevel methods."),
         ),
-        see_also=("complete", "pool", "quickpred", "md_pattern", "with_mids"),
+        see_also=(
+            "complete",
+            "pool",
+            "quickpred",
+            "md_pattern",
+            "with_mids",
+            "unimplemented",
+            "filter_mids",
+        ),
         source="van Buuren & Groothuis-Oudshoorn (2011), JSS 45(3).",
+    ),
+    "filter_mids": HelpPage(
+        title="filter_mids",
+        kind="function",
+        description=(
+            "Subset imputations from a mids object (R ``filter()`` on mids). "
+            "Uses **1-based** imputation indices like R."
+        ),
+        usage="from pymice import filter_mids\nsubset = filter_mids(imp, [1, 3, 5])",
+        see_also=("ibind", "filter_imputations", "complete"),
+    ),
+    "unimplemented": HelpPage(
+        title="unimplemented",
+        kind="function",
+        description=(
+            "Some R ``mice`` methods and mids utilities are intentionally absent. "
+            "Call ``unimplemented_imputation_methods()`` or ``unimplemented_features()`` "
+            "for the current list. Using a listed method in ``mice()`` raises "
+            "``NotImplementedError`` with guidance — never a silent fallback."
+        ),
+        usage=(
+            "from pymice import unimplemented_imputation_methods, unimplemented_features\n"
+            "print(unimplemented_imputation_methods())\n"
+            "print(unimplemented_features())"
+        ),
+        see_also=("mice", "2l.norm", "jomoImpute", "as_mids"),
     ),
     "complete": HelpPage(
         title="complete",
@@ -121,11 +155,15 @@ PAGES: dict[str, HelpPage] = {
     "parallel_mice": HelpPage(
         title="parallel_mice",
         kind="function",
-        description="Run independent imputation chains in parallel (R ``futuremice`` workflow).",
-        usage="from pymice import parallel_mice\nresult = parallel_mice(data, m=10, n_jobs=4, seed=1)",
+        description="Run imputation chains in parallel (R ``futuremice`` workflow).",
+        usage=(
+            "from pymice import parallel_mice\n"
+            "result = parallel_mice(data, m=10, n_jobs=4, parallelseed=123)"
+        ),
         parameters=(
-            ("m", "Number of imputations (each chain uses m=1 internally)."),
-            ("n_jobs", "Worker processes; 1 runs chains sequentially."),
+            ("m", "Number of imputations distributed across workers."),
+            ("n_jobs", "Worker processes (``n.core`` alias)."),
+            ("parallelseed", "Reproducibility seed stored on ``Mids.parallelseed``."),
         ),
         see_also=("merge_mids", "mice", "continue_imputation"),
     ),
@@ -154,7 +192,11 @@ PAGES: dict[str, HelpPage] = {
         title="md_pattern",
         kind="function",
         description="Tabulate missing-data patterns (R ``md.pattern()``).",
-        usage="from pymice import md_pattern\npat = md_pattern(data, column_names=names)",
+        usage=(
+            "from pymice import md_pattern\n"
+            "pat = md_pattern(data)\n"
+            "md_pattern(data, plot=True)  # R-style grid"
+        ),
         see_also=("mice", "nhanes", "boys"),
     ),
     "ampute": HelpPage(
@@ -308,6 +350,8 @@ _ALIASES: dict[str, str] = {
     "mdpattern": "md_pattern",
     "futuremice": "parallel_mice",
     "mids": "continue_imputation",
+    "filter": "filter_mids",
+    "gaps": "unimplemented",
 }
 
 

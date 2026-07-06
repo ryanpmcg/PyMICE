@@ -51,9 +51,12 @@ env/
 .DS_Store
 Thumbs.db
 
-# WEPPCLIFF Adapter integrations caches/local files
-Commands/.venv/
-Commands/output/
+# Devtools local artifacts (venv lives at ~/.venvs/brain-pymice — outside Drive)
+devtools/.venv/
+devtools/output/
+site/
+
+# docs/vignettes/ is TRACKED — commit after `make vignettes` for GitHub Pages
 
 # AI-generated agent and planning documents (Omit from GitHub contribution)
 agent.md
@@ -62,5 +65,5 @@ apply_edits.py
 mice_codebase_study.md
 vignette_alignment_plan.md
 
-# Unignore Commands/lib so it is tracked correctly
-!Commands/lib/
+# Unignore devtools/lib so it is tracked correctly
+!devtools/lib/

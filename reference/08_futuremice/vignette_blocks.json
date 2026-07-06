@@ -1,0 +1,181 @@
+{
+  "vignette": "08",
+  "vignette_dir": "08_futuremice",
+  "title": "Wrapper function `futuremice`",
+  "runner": "devtools/runners/v08_futuremice.py",
+  "step_source": "runner_bootstrap",
+  "blocks": [
+    {
+      "index": 0,
+      "type": "setup",
+      "r_code": "set.seed(123)\n\nsmall_covmat <- diag(4)\nsmall_covmat[small_covmat == 0] <- 0.5\nsmall_data <- MASS::mvrnorm(1000, \n                      mu = c(0, 0, 0, 0),\n                      Sigma = small_covmat)\n\nsmall_data_with_missings <- ampute(small_data, prop = 0.8, mech = \"MCAR\")$amp\nhead(small_data_with_missings)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 1,
+      "type": "console",
+      "r_code": "imp <- futuremice(nhanes)",
+      "r_output": "Number of cores not specified. Based on your machine a value of n.core = 3 is chosen; the imputations are distributed about equally over the cores.",
+      "figure": null
+    },
+    {
+      "index": 2,
+      "type": "console",
+      "r_code": "class(imp)",
+      "r_output": "[1] \"mids\"",
+      "figure": null
+    },
+    {
+      "index": 3,
+      "type": "console",
+      "r_code": "imp$call",
+      "r_output": "[[1]]\nmice(data = data, m = x, printFlag = F, seed = seed)\n\n[[2]]\nibind(x = imp, y = imps[[i]])\n\n[[3]]\nibind(x = imp, y = imps[[i]])",
+      "figure": null
+    },
+    {
+      "index": 4,
+      "type": "console",
+      "r_code": "imp$parallelseed",
+      "r_output": "[1] 198128673",
+      "figure": null
+    },
+    {
+      "index": 5,
+      "type": "console",
+      "r_code": "imp <- futuremice(nhanes, method = \"norm\")",
+      "r_output": "Number of cores not specified. Based on your machine a value of n.core = 3 is chosen; the imputations are distributed about equally over the cores.",
+      "figure": null
+    },
+    {
+      "index": 6,
+      "type": "console",
+      "r_code": "imp$method",
+      "r_output": "age    bmi    hyp    chl\n    \"\" \"norm\" \"norm\" \"norm\"",
+      "figure": null
+    },
+    {
+      "index": 7,
+      "type": "console",
+      "r_code": "parallelly::availableCores(logical = TRUE)",
+      "r_output": "system\n     4",
+      "figure": null
+    },
+    {
+      "index": 8,
+      "type": "console",
+      "r_code": "imp$m",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 9,
+      "type": "console",
+      "r_code": "library(magrittr)\nset.seed(123)\nimp1 <- futuremice(nhanes, n.core = 3)\nset.seed(123)\nimp2 <- futuremice(nhanes, n.core = 3)\nimp1 %$% lm(chl ~ bmi) %>% pool %$% pooled",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 10,
+      "type": "console",
+      "r_code": "imp2 %$% lm(chl ~ bmi) %>% pool %$% pooled",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 11,
+      "type": "console",
+      "r_code": "imp3 <- futuremice(nhanes, parallelseed = 123, n.core = 3)\nimp4 <- futuremice(nhanes, parallelseed = 123, n.core = 3)\nimp3 %$% lm(chl ~ bmi) %>% pool %$% pooled",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 12,
+      "type": "console",
+      "r_code": "imp4 %$% lm(chl ~ bmi) %>% pool %$% pooled",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 13,
+      "type": "console",
+      "r_code": "imp5 <- futuremice(nhanes, n.core = 3)\nparallelseed <- imp5$parallelseed\nimp6 <- futuremice(nhanes, parallelseed = parallelseed, n.core = 3)\nimp5 %$% lm(chl ~ bmi) %>% pool %$% pooled",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 14,
+      "type": "console",
+      "r_code": "imp6 %$% lm(chl ~ bmi) %>% pool %$% pooled",
+      "r_output": "",
+      "figure": null
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "title": "Default futuremice run",
+      "part": "",
+      "block_indices": [
+        1
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Inspect mids object",
+      "part": "",
+      "block_indices": [
+        2
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Number of imputations",
+      "part": "",
+      "block_indices": [
+        8
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Change imputation method",
+      "part": "",
+      "block_indices": [
+        6
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Global seed reproducibility",
+      "part": "",
+      "block_indices": [
+        9,
+        10
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Parallelseed reproducibility",
+      "part": "",
+      "block_indices": [
+        11,
+        12
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Drawn parallelseed",
+      "part": "",
+      "block_indices": [
+        13,
+        14
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Ampute then impute",
+      "part": "",
+      "block_indices": []
+    }
+  ]
+}

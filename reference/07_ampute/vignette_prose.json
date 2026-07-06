@@ -1,0 +1,84 @@
+{
+  "title": "Generate missing values with ampute",
+  "intro": "We present an R-function to generate missing values in complete datasets. Such an amputation procedure is useful to accurately evaluate the effect of missing data on analysis outcomes.\n\nR-function `ampute` is available in multiple imputation package **mice**. In this tutorial, we focus on amputation — *the generation of missing values in complete data* — as the opposite of imputation.\n\nFor a theoretical justification, see Schouten, Lugtig and Vink (2018). Missing-data methods are typically evaluated in four steps: simulate complete data, ampute, impute, and compare analysis outcomes. Before `ampute`, most simulation studies relied on simplistic MCAR missingness; `ampute` enables realistic MAR and MNAR mechanisms with controlled patterns and proportions.\n\nThe walkthrough below follows the original tutorial's argument order (data, default amputation, diagnostics, `prop`, and `mech`). Sections on `patterns`, `freq`, `weights`, `type`, and `odds` are reference-only in PyMICE.",
+  "steps": [
+    {
+      "part": "Function `ampute` and its arguments",
+      "number": "1",
+      "title": "Data",
+      "narrative": "The first argument `data` is an input argument for a complete dataset. In this tutorial, as in many simulation studies, we will randomly generate a dataset to be our complete dataset. Here, we will use function `mvrnorm` from R-package **MASS** to sample from a multivariate normal distribution."
+    },
+    {
+      "part": "Function `ampute` and its arguments",
+      "number": "2",
+      "title": "Prop",
+      "narrative": "The argument `prop` specifies the **proportion** of incomplete rows. As a default, the missingness proportion is 0.5:"
+    },
+    {
+      "part": "Function `ampute` and its arguments",
+      "number": "3",
+      "title": "Patterns",
+      "narrative": "The core idea of `ampute` is the generation of missing data **patterns**. Each pattern is a combination of missingness on specific variables while other variables remain complete. For example, someone could have forgotten to fill in the last page of a questionnaire, which results in missing values for a specific set of questions/variables. Or a participant misses one or more waves in a longitudinal study. Thus, each pattern is a specific combination of incomplete and complete variables.\n\nThe `patterns` argument uses a matrix to define these pattern. In this matrix, the patterns are placed on the rows and the variables on the columns. The value `0` is used for variables that should have missing values and `1` is used for complete variables."
+    },
+    {
+      "part": "Function `ampute` and its arguments",
+      "number": "4",
+      "title": "Freq",
+      "narrative": "As explained before, the amputation procedure divides the complete dataset into multiple subsets. The number of these subsets is determined by the number of patterns. The size of the subsets, and therefore the relative occurrence of the missing data patterns, can be determined with a **frequency** vector.\n\nArgument `freq` is a vector with values between 0 and 1. The number of values determines the number of subsets and must be equal to the number of patterns."
+    },
+    {
+      "part": "Function `ampute` and its arguments",
+      "number": "5",
+      "title": "Mech",
+      "narrative": "At this point in the procedure, we are able to generate missing data with a specified proportion, the missingness patterns of interest and in the desired relative occurence of those patterns.\n\nWe will now decide what kind of missingness **mechanism** we will implement. As said before, there are three mechanisms: MCAR, MAR and MNAR. In case of MCAR missingness, all data rows have the same probability of being amputed. With MAR misingness, the information about the missing data is in the observed data and with MNAR missingness, the information about the missing data is missing itself. We refer to Schouten and Vink (2021) for a more thorough discussion of missingness mechanisms.\n\nArgument `mech` in function `ampute` is a string with either `MCAR`, `MAR` or `MNAR`. As a default:"
+    },
+    {
+      "part": "Function `ampute` and its arguments",
+      "number": "6",
+      "title": "Weights",
+      "narrative": "For MAR and MNAR mechanisms, we calculate a **weighted sum score** for all data rows. This calculation depends on pre-specified `weights` which are manipulated by the user through a matrix. The weights differ per pattern, and therefore, similar to the patterns matrix, the weights matrix contains the patterns on the rows and the variables on the columns (\\(k\\) by \\(m\\)).\n\nA weighted sum score is simply the outcome of a linear regression equation where the coefficients are the values of the weights matrix. When data row \\(i\\) is a candidate for pattern \\(k\\), the weighted sum score is therefore:\n\n\\[\\begin{equation*}\nwss_i = w_{k,1} \\cdot y_{1,i} + w_{k,2} \\cdot y_{2,i} + ... + w_{k,m} \\cdot y_{m,i},\n\\end{equation*}\\]\n\nwhere \\(\\{y_{1,i}, y_{2,i}, ..., y_{m,i}\\}\\) is the set of variable values of case \\(i\\) and \\(\\{w_{k,1}, w_{k,2}, ..., w_{k,m}\\}\\) are the pre-specified weights on row \\(k\\) of the weights matrix. In our example, \\(m=3\\) and \\(k\\in\\{1, 2, 3, 4\\}\\) because there are three variables and four missing data patterns.\n\nIn general, larger weights will give higher sum scores than smaller weights. For instance, if variables V1 and V2 have weights 4 and 2 respectively, V1\u2019s influence on the sum scores is twice as large as that of V2. Note that the influence of the weights is relative; weight values of 0.4 and 0.2 will have the same effect.\n\nNote that the direction of the weights is important as well. A positive weight will increase the weighted sum score while a negative weight will decrease it.\n\nNote as well that each pattern receives its own weights and that the comparison of weights will happen within a pattern and not between patterns. For instance, variable V1 can have a weight of 4 in the first pattern, but a weight of -0.2 in the second pattern."
+    },
+    {
+      "part": "Function `ampute` and its arguments",
+      "number": "7",
+      "title": "Type",
+      "narrative": "Before we inspect the results of the weights matrix, we will quickly discuss the `type` argument in `ampute`. Here, we refer to the type of logistic probability distribution that is applied to the weighted sum scores, as shown in Figure 3. In `ampute`, these types can be called by setting `cont == TRUE` (this is by default the case) and then setting argument `type` to `LEFT`, `MID`, `RIGHT` or `TAIL`.\n\nWith `RIGHT` missingness, cases with high weighted sum scores will have a larger probability of becoming incomplete. With a left-tailed (LEFT), centered (MID) or both-tailed (TAIL) missingness type, larger probabilities are assigned to the candidates with low, average or extreme weighted sum scores respectively."
+    },
+    {
+      "part": "Additional features in `ampute`",
+      "number": "8",
+      "title": "Boxplots",
+      "narrative": "Function `bwplot` allows for a comparison between amputed and non-amputed data. Note that the function uses as input the `mads` object and not the incomplete dataset.\n\nWhen using the function, argument `which.pat` can be used to specify which patterns we want to inspect (default: all patterns). With argument `yvar`, we specify the variable names of the variables we are interested in (default: all variables).\n\nIn addition to the visualizations, the function returns the descriptives when `descriptives = TRUE` (default). In the output, the column `Amp` shows a `1` for the amputed data and `0` for the non-amputed data.\n\nWe will now inspect the results of the amputation procedure for pattern 1."
+    },
+    {
+      "part": "Additional features in `ampute`",
+      "number": "9",
+      "title": "Scatterplots",
+      "narrative": "Similar inspections can be done using the function `xyplot`. The scatterplots show the correlation between the variable values and the weighted sum scores. For the fourth pattern, the scatterplots are as follows."
+    },
+    {
+      "part": "Additional features in `ampute`",
+      "number": "10",
+      "title": "Argument `run`",
+      "narrative": "It may be desirable to quickly run `ampute` without actually executing the amputation procedure. An empty run will generate the default argument values, which can then be adapted as desired. This can be especially useful for large datasets. For an empty run, the argument `run` can be set to `FALSE`."
+    },
+    {
+      "part": "Special solutions for special cases",
+      "number": "11",
+      "title": "Missingness proportion per variable",
+      "narrative": "Sometimes, we wish to determine the missingness proportion per variable (and not for the number of incomplete rows, or the number of missing cells). At first sight, this is easy to accomplish by using the default patterns matrix as this will create patterns with missingness in 1 variable only and then specifying the proportion with the `prop` argument.\n\nHowever, for datasets with a small N:M ratio, this can give problems. For instance, the Boston dataset in the **MASS** package has 506 data rows and 14 variables. Let\u2019s say we wish to create 30% missing values in each of the columns."
+    },
+    {
+      "part": "Special solutions for special cases",
+      "number": "12",
+      "title": "MCAR and MAR combined",
+      "narrative": "In this tutorial, we have discussed how to generate a combination of MAR and MNAR missingness using the weights matrix. Unfortunately, the generation of both MCAR and MAR missingness (or any other form of weak MAR) is currently not directly possible with `ampute`. The following code shows how a combination of MCAR and MAR can still be created."
+    },
+    {
+      "part": "Special solutions for special cases",
+      "number": "13",
+      "title": "Argument `odds`",
+      "narrative": "Function `ampute` provides 4 logistic probability distributions that are used to translate a weighted sum score into a probability of being amputed. By default, in order to use these distributions, we set the argument `cont == TRUE`.\n\nHowever, when `cont == FALSE`, the user has the possibility to define the probability values manually by means of the `odds` argument. When using odds values:\n\nThe odds are specified by means of a matrix, and the default is as follows. The number of rows indicates the number of patterns, which is 4 in this tutorial. The number of columns determines the number of equally sized groups. Here, for each pattern, the weighted sum scores are divided over 4 groups."
+    }
+  ]
+}

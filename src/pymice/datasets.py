@@ -1,15 +1,27 @@
-"""Bundled tutorial datasets (``pymice.datasets.load_*``)."""
+"""Bundled tutorial datasets (``data()`` and ``load_*``)."""
 
 from __future__ import annotations
 
 import csv
 from functools import lru_cache
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
 
 from pymice.types import VariableKind, VariableSpec
+
+_DATASET_NAMES = (
+    "nhanes",
+    "nhanes2",
+    "boys",
+    "mammalsleep",
+    "leiden",
+    "popncr",
+    "popncr2",
+    "popncr3",
+)
 
 
 def _data_root() -> Path:
@@ -41,8 +53,13 @@ def _load_numeric(
 
 
 @lru_cache(maxsize=1)
-def load_nhanes() -> tuple[NDArray[np.float64], list[str]]:
+def _load_nhanes_cached() -> tuple[NDArray[np.float64], list[str]]:
     return _load_numeric(_data_root() / "nhanes.csv", ["age", "bmi", "hyp", "chl"])
+
+
+def load_nhanes() -> tuple[NDArray[np.float64], list[str]]:
+    matrix, names = _load_nhanes_cached()
+    return matrix.copy(), list(names)
 
 
 @lru_cache(maxsize=1)
@@ -133,3 +150,89 @@ def load_popncr2() -> tuple[NDArray[np.float64], list[str]]:
 def load_popncr3() -> tuple[NDArray[np.float64], list[str]]:
     names = ["pupil", "class", "extrav", "sex", "texp", "popular", "popteach"]
     return _load_numeric(_data_root() / "popNCR3.csv", names)
+
+
+def _as_dataframe(matrix: NDArray[np.float64], names: list[str]) -> Any:
+    try:
+        import pandas as pd
+    except ImportError as exc:
+        raise ImportError(
+            "pandas is required for data(); install with: pip install pandas"
+        ) from exc
+    return pd.DataFrame(matrix, columns=names)
+
+
+@lru_cache(maxsize=1)
+def load_nhanes_df() -> Any:
+    matrix, names = load_nhanes()
+    return _as_dataframe(matrix, names)
+
+
+@lru_cache(maxsize=1)
+def load_nhanes2_df() -> Any:
+    matrix, names, _specs = load_nhanes2()
+    return _as_dataframe(matrix, names)
+
+
+@lru_cache(maxsize=1)
+def load_boys_df() -> Any:
+    matrix, names = load_boys()
+    return _as_dataframe(matrix, names)
+
+
+@lru_cache(maxsize=1)
+def load_mammalsleep_df(*, include_species: bool = True) -> Any:
+    matrix, names = load_mammalsleep(include_species=include_species)
+    return _as_dataframe(matrix, names)
+
+
+@lru_cache(maxsize=1)
+def load_leiden_df() -> Any:
+    matrix, names = load_leiden()
+    return _as_dataframe(matrix, names)
+
+
+@lru_cache(maxsize=1)
+def load_popncr_df() -> Any:
+    matrix, names = load_popncr()
+    return _as_dataframe(matrix, names)
+
+
+@lru_cache(maxsize=1)
+def load_popncr2_df() -> Any:
+    matrix, names = load_popncr2()
+    return _as_dataframe(matrix, names)
+
+
+@lru_cache(maxsize=1)
+def load_popncr3_df() -> Any:
+    matrix, names = load_popncr3()
+    return _as_dataframe(matrix, names)
+
+
+def data(name: str, **kwargs: Any) -> Any:
+    """
+    Load a bundled dataset as a pandas DataFrame (R ``data()`` analogue).
+
+    Available names: nhanes, nhanes2, boys, mammalsleep, leiden, popncr, popncr2, popncr3.
+    """
+    key = name.strip().lower()
+    if key == "nhanes":
+        return load_nhanes_df()
+    if key == "nhanes2":
+        return load_nhanes2_df()
+    if key == "boys":
+        return load_boys_df()
+    if key == "mammalsleep":
+        include_species = kwargs.get("include_species", True)
+        return load_mammalsleep_df(include_species=include_species)
+    if key == "leiden":
+        return load_leiden_df()
+    if key == "popncr":
+        return load_popncr_df()
+    if key == "popncr2":
+        return load_popncr2_df()
+    if key == "popncr3":
+        return load_popncr3_df()
+    known = ", ".join(_DATASET_NAMES)
+    raise ValueError(f"unknown dataset {name!r}; known datasets: {known}")

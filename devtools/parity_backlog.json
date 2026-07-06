@@ -1,0 +1,112 @@
+[
+  {
+    "vignette": "V02",
+    "step": "7\u20138 imp3 mira/pool",
+    "category": "draw_order",
+    "partial_reason": "imp3 chain aligned; goldens refreshed 2026-07-05",
+    "recommendation": "Re-run maintain_parity.py after chain changes",
+    "priority": 1,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V02",
+    "step": "4 imp$meth",
+    "category": "stale_golden",
+    "partial_reason": "imp_conv_seed meth step matches golden",
+    "recommendation": "Re-run maintain_parity.py after chain changes",
+    "priority": 2,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V03",
+    "step": "8 summary(complete(imp1))",
+    "category": "stale_golden",
+    "partial_reason": "run_v03_boys_chain; golden refreshed 2026-07-05",
+    "recommendation": "Re-run maintain_parity.py after chain changes",
+    "priority": 1,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V03",
+    "step": "8 with(imp1, mean(tv))",
+    "category": "draw_order",
+    "partial_reason": "TV means follow PMM imp1 draw order",
+    "recommendation": "Re-run maintain_parity.py after chain changes",
+    "priority": 1,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V03",
+    "step": "11\u201314 mammalsleep pool",
+    "category": "draw_order",
+    "partial_reason": "run_v03_mammalsleep_chain; pool goldens refreshed",
+    "recommendation": "Re-run maintain_parity.py after chain changes",
+    "priority": 2,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V04",
+    "step": "2 pas.imp",
+    "category": "draw_order",
+    "partial_reason": "run_v04_chain: pas.imp seed=123, boys unseeded",
+    "recommendation": "Re-run maintain_parity.py after chain changes",
+    "priority": 1,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V04",
+    "step": "5 table(tv)",
+    "category": "draw_order",
+    "partial_reason": "boys chain-aligned TV frequency tables",
+    "recommendation": "Re-run maintain_parity.py after chain changes",
+    "priority": 1,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V01",
+    "step": "13 print(imp)",
+    "category": "cosmetic",
+    "partial_reason": "format_mids_print_r excludes non-imputed age from visitSequence",
+    "recommendation": "Resolved 2026-07-05",
+    "priority": 3,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V01",
+    "step": "8\u20139 norm.predict",
+    "category": "algorithm",
+    "partial_reason": "OLS norm.predict implementation tolerance",
+    "recommendation": "Keep partial with atol; optional R lm backend later",
+    "priority": 4,
+    "matches_now": true,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V06",
+    "step": "11\u201313 Cox/pool/qbar",
+    "category": "draw_order",
+    "partial_reason": "\u03b4-chain + lifelines Cox; goldens refreshed 2026-07-05",
+    "recommendation": "Re-run regenerate_v06_goldens.py after Cox chain changes",
+    "priority": 1,
+    "matches_now": null,
+    "chain_ready": true
+  },
+  {
+    "vignette": "V05",
+    "step": "21\u201326 multilevel diagnostics",
+    "category": "algorithm",
+    "partial_reason": "2l.norm/2l.pan sampler moments differ from R",
+    "recommendation": "Documented ~0.15 moment tolerance; setup matrices exact",
+    "priority": 2,
+    "matches_now": null,
+    "chain_ready": true
+  }
+]

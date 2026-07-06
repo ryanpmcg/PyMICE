@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: pymice
+title: PyMICE
 message: >-
   If you use this software, please cite it using the metadata from this file.
 type: software
@@ -8,26 +8,45 @@ authors:
     given-names: Ryan P.
 license: MIT
 version: 0.1.0
-date-released: 2026-06-25
+date-released: 2026-07-05
 repository-code: https://github.com/ryanpmcg/pymice
+url: https://ryanpmcg.github.io/pymice/
 keywords:
   - missing data
   - multiple imputation
   - MICE
   - FCS
+  - statistics
 preferred-citation:
   type: article
   authors:
-    - family-names: van Buuren
-      given-names: Stef
-    - family-names: Groothuis-Oudshoorn
-      given-names: Karin
+    - family-names: McGehee
+      given-names: Ryan P.
   title: >-
-    mice: Multivariate Imputation by Chained Equations in R
-  journal: Journal of Statistical Software
-  volume: 45
-  issue: 3
-  start: 1
-  end: 67
-  year: 2011
-  doi: 10.18637/jss.v045.i03
+    PyMICE: A Python Package for Multivariate Imputation by Chained Equations with R Alignment
+  year: 2026
+  journal: Journal of Open Source Software
+  doi: 10.21105/joss.TBD
+references:
+  - type: article
+    authors:
+      - family-names: van Buuren
+        given-names: Stef
+      - family-names: Groothuis-Oudshoorn
+        given-names: Karin
+    title: >-
+      mice: Multivariate Imputation by Chained Equations in R
+    journal: Journal of Statistical Software
+    volume: 45
+    issue: 3
+    start: 1
+    end: 67
+    year: 2011
+    doi: 10.18637/jss.v045.i03
+  - type: book
+    authors:
+      - family-names: Rubin
+        given-names: Donald B.
+    title: Multiple Imputation for Nonresponse in Surveys
+    year: 1987
+    publisher: Wiley

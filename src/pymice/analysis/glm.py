@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -11,26 +13,29 @@ from pymice.types import FitResult
 
 def glm(
     formula: str,
-    data: NDArray[np.float64],
-    column_names: list[str],
+    data: NDArray[np.float64] | Any,
+    column_names: list[str] | None = None,
     family: str = "binomial",
 ) -> FitResult:
-    """Fit Generalized Linear Models (e.g. logistic regression) on a numeric matrix."""
+    """Fit Generalized Linear Models (e.g. logistic regression) on a matrix or DataFrame."""
+    from pymice.data_input import prepare_tabular_input
+
+    matrix, names = prepare_tabular_input(data, column_names)
     if family == "gaussian":
         from pymice.analysis.ols import lm
 
-        return lm(formula, data, column_names)
+        return lm(formula, matrix, names)
 
     if family != "binomial":
         raise ValueError(
             f"Family '{family}' is not supported. Supported families: 'binomial', 'gaussian'"
         )
 
-    y_name, predictors = parse_regression_formula(formula, column_names)
-    y_idx = column_names.index(y_name)
+    y_name, predictors = parse_regression_formula(formula, names)
+    y_idx = names.index(y_name)
 
-    y = data[:, y_idx]
-    x = build_design_matrix(data, column_names, predictors)
+    y = matrix[:, y_idx]
+    x = build_design_matrix(matrix, names, predictors)
     mask = np.isfinite(y) & np.isfinite(x).all(axis=1)
     y = y[mask]
     x = x[mask]

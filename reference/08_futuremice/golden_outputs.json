@@ -1,0 +1,44 @@
+{
+  "1.1": {
+    "step": "1",
+    "block_index": "1",
+    "r_code": "imp <- futuremice(nhanes)",
+    "r_output": "Number of cores not specified. Based on your machine a value of n.core = 3 is chosen; the imputations are distributed about equally over the cores."
+  },
+  "2.2": {
+    "step": "2",
+    "block_index": "2",
+    "r_code": "class(imp)",
+    "r_output": "[1] \"mids\""
+  },
+  "0.3": {
+    "step": "0",
+    "block_index": "3",
+    "r_code": "imp$call",
+    "r_output": "[[1]]\nmice(data = data, m = x, printFlag = F, seed = seed)\n\n[[2]]\nibind(x = imp, y = imps[[i]])\n\n[[3]]\nibind(x = imp, y = imps[[i]])"
+  },
+  "0.4": {
+    "step": "0",
+    "block_index": "4",
+    "r_code": "imp$parallelseed",
+    "r_output": "[1] 198128673"
+  },
+  "0.5": {
+    "step": "0",
+    "block_index": "5",
+    "r_code": "imp <- futuremice(nhanes, method = \"norm\")",
+    "r_output": "Number of cores not specified. Based on your machine a value of n.core = 3 is chosen; the imputations are distributed about equally over the cores."
+  },
+  "4.6": {
+    "step": "4",
+    "block_index": "6",
+    "r_code": "imp$method",
+    "r_output": "age    bmi    hyp    chl\n    \"\" \"norm\" \"norm\" \"norm\""
+  },
+  "0.7": {
+    "step": "0",
+    "block_index": "7",
+    "r_code": "parallelly::availableCores(logical = TRUE)",
+    "r_output": "system\n     4"
+  }
+}

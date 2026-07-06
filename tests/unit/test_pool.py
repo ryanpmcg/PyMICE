@@ -80,6 +80,7 @@ def test_pool_requires_multiple_fits():
 
 def test_anova_workflow_nhanes():
     from pymice import anova
+
     data, names = _load_nhanes()
     imp = mice(data, column_names=names, method="mean", m=3, maxit=3, seed=123)
 

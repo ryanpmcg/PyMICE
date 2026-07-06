@@ -1,0 +1,275 @@
+{
+  "vignette": "02",
+  "vignette_dir": "02_convergence_and_pooling",
+  "title": "`mice`: Algorithmic convergence and inference pooling",
+  "runner": "devtools/runners/v02_convergence_pooling.py",
+  "step_source": "runner_bootstrap",
+  "blocks": [
+    {
+      "index": 0,
+      "type": "setup",
+      "r_code": "require(mice)\nrequire(lattice)\nset.seed(123)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 1,
+      "type": "console",
+      "r_code": "imp <- mice(nhanes, m = 3, print=F)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 2,
+      "type": "console",
+      "r_code": "imp$pred",
+      "r_output": "##     age bmi hyp chl\n## age   0   1   1   1\n## bmi   1   0   1   1\n## hyp   1   1   0   1\n## chl   1   1   1   0",
+      "figure": null
+    },
+    {
+      "index": 3,
+      "type": "console",
+      "r_code": "ini <- mice(nhanes, maxit=0, print=F)\npred <- ini$pred\npred",
+      "r_output": "##     age bmi hyp chl\n## age   0   1   1   1\n## bmi   1   0   1   1\n## hyp   1   1   0   1\n## chl   1   1   1   0",
+      "figure": null
+    },
+    {
+      "index": 4,
+      "type": "console",
+      "r_code": "pred[ ,\"hyp\"] <- 0\npred",
+      "r_output": "##     age bmi hyp chl\n## age   0   1   0   1\n## bmi   1   0   0   1\n## hyp   1   1   0   1\n## chl   1   1   0   0",
+      "figure": null
+    },
+    {
+      "index": 5,
+      "type": "console",
+      "r_code": "imp <- mice(nhanes, pred=pred, print=F)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 6,
+      "type": "console",
+      "r_code": "ini <- mice(nhanes, pred=quickpred(nhanes, mincor=.3), print=F)\nini$pred",
+      "r_output": "##     age bmi hyp chl\n## age   0   0   0   0\n## bmi   1   0   0   1\n## hyp   1   0   0   1\n## chl   1   1   1   0",
+      "figure": null
+    },
+    {
+      "index": 7,
+      "type": "plot",
+      "r_code": "imp <- mice(nhanes, print=F)\nplot(imp)",
+      "r_output": "",
+      "figure": "fig_001.png"
+    },
+    {
+      "index": 8,
+      "type": "console",
+      "r_code": "imp <- mice(nhanes, seed=123, print=F)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 9,
+      "type": "console",
+      "r_code": "imp$meth",
+      "r_output": "##   age   bmi   hyp   chl\n##    \"\" \"pmm\" \"pmm\" \"pmm\"",
+      "figure": null
+    },
+    {
+      "index": 10,
+      "type": "console",
+      "r_code": "summary(nhanes2)",
+      "r_output": "##     age          bmi          hyp          chl\n##  20-39:12   Min.   :20.40   no  :13   Min.   :113.0\n##  40-59: 7   1st Qu.:22.65   yes : 4   1st Qu.:185.0\n##  60-99: 6   Median :26.75   NA's: 8   Median :187.0\n##             Mean   :26.56             Mean   :191.4\n##             3rd Qu.:28.93             3rd Qu.:212.0\n##             Max.   :35.30             Max.   :284.0\n##             NA's   :9                 NA's   :10",
+      "figure": null
+    },
+    {
+      "index": 11,
+      "type": "console",
+      "r_code": "str(nhanes2)",
+      "r_output": "## 'data.frame':    25 obs. of  4 variables:\n##  $ age: Factor w/ 3 levels \"20-39\",\"40-59\",..: 1 2 1 3 1 3 1 1 2 2 ...\n##  $ bmi: num  NA 22.7 NA NA 20.4 NA 22.5 30.1 22 NA ...\n##  $ hyp: Factor w/ 2 levels \"no\",\"yes\": NA 1 1 NA 1 NA 1 1 1 NA ...\n##  $ chl: num  NA 187 187 NA 113 184 118 187 238 NA ...",
+      "figure": null
+    },
+    {
+      "index": 12,
+      "type": "console",
+      "r_code": "imp <- mice(nhanes2, print=F)\nimp$meth",
+      "r_output": "##      age      bmi      hyp      chl\n##       \"\"    \"pmm\" \"logreg\"    \"pmm\"",
+      "figure": null
+    },
+    {
+      "index": 13,
+      "type": "console",
+      "r_code": "methods(mice)",
+      "r_output": "##  [1] mice.impute.2l.bin       mice.impute.2l.lmer\n##  [3] mice.impute.2l.norm      mice.impute.2l.pan\n##  [5] mice.impute.2lonly.mean  mice.impute.2lonly.norm\n##  [7] mice.impute.2lonly.pmm   mice.impute.cart\n##  [9] mice.impute.jomoImpute   mice.impute.lda\n## [11] mice.impute.logreg       mice.impute.logreg.boot\n## [13] mice.impute.mean         mice.impute.midastouch\n## [15] mice.impute.norm         mice.impute.norm.boot\n## [17] mice.impute.norm.nob     mice.impute.norm.predict\n## [19] mice.impute.panImpute    mice.impute.passive\n## [21] mice.impute.pmm          mice.impute.polr\n## [23] mice.impute.polyreg      mice.impute.quadratic\n## [25] mice.impute.rf           mice.impute.ri\n## [27] mice.impute.sample       mice.mids\n## [29] mice.theme\n## see '?methods' for accessing help and source code",
+      "figure": null
+    },
+    {
+      "index": 14,
+      "type": "console",
+      "r_code": "ini <- mice(nhanes2, maxit = 0)\nmeth <- ini$meth\nmeth",
+      "r_output": "##      age      bmi      hyp      chl\n##       \"\"    \"pmm\" \"logreg\"    \"pmm\"",
+      "figure": null
+    },
+    {
+      "index": 15,
+      "type": "console",
+      "r_code": "meth[\"bmi\"] <- \"norm\"\nmeth",
+      "r_output": "##      age      bmi      hyp      chl\n##       \"\"   \"norm\" \"logreg\"    \"pmm\"",
+      "figure": null
+    },
+    {
+      "index": 16,
+      "type": "console",
+      "r_code": "imp <- mice(nhanes2, meth = meth, print=F)",
+      "r_output": "",
+      "figure": null
+    },
+    {
+      "index": 17,
+      "type": "plot",
+      "r_code": "plot(imp)",
+      "r_output": "",
+      "figure": "fig_002.png"
+    },
+    {
+      "index": 18,
+      "type": "plot",
+      "r_code": "imp40 <- mice.mids(imp, maxit=35, print=F)\nplot(imp40)",
+      "r_output": "",
+      "figure": "fig_003.png"
+    },
+    {
+      "index": 19,
+      "type": "plot",
+      "r_code": "stripplot(imp, chl~.imp, pch=20, cex=2)",
+      "r_output": "",
+      "figure": "fig_004.png"
+    },
+    {
+      "index": 20,
+      "type": "plot",
+      "r_code": "stripplot(imp)",
+      "r_output": "",
+      "figure": "fig_005.png"
+    },
+    {
+      "index": 21,
+      "type": "console",
+      "r_code": "fit <- with(imp, lm(bmi ~ chl))\nfit",
+      "r_output": "## call :\n## with.mids(data = imp, expr = lm(bmi ~ chl))\n##\n## call1 :\n## mice(data = nhanes2, method = meth, printFlag = F)\n##\n## nmis :\n## age bmi hyp chl\n##   0   9   8  10\n##\n## analyses :\n## [[1]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl\n##     22.9566       0.0228\n##\n##\n## [[2]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl\n##    22.92350      0.02162\n##\n##\n## [[3]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl\n##    17.80342      0.04999\n##\n##\n## [[4]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl\n##    24.11469      0.01458\n##\n##\n## [[5]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl\n##    19.60360      0.03567",
+      "figure": null
+    },
+    {
+      "index": 22,
+      "type": "console",
+      "r_code": "class(fit)",
+      "r_output": "## [1] \"mira\"   \"matrix\"",
+      "figure": null
+    },
+    {
+      "index": 23,
+      "type": "console",
+      "r_code": "ls(fit)",
+      "r_output": "## [1] \"analyses\" \"call\"     \"call1\"    \"nmis\"",
+      "figure": null
+    },
+    {
+      "index": 24,
+      "type": "console",
+      "r_code": "summary(fit$analyses[[2]])",
+      "r_output": "##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Residuals:\n##     Min      1Q  Median      3Q     Max\n## -6.0682 -2.9742  0.4558  2.4361  7.6641\n##\n## Coefficients:\n##             Estimate Std. Error t value Pr(>|t|)\n## (Intercept) 22.92350    3.56198   6.436 1.44e-06 ***\n## chl          0.02162    0.01800   1.201    0.242\n## ---\n## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n##\n## Residual standard error: 3.917 on 23 degrees of freedom\n## Multiple R-squared:  0.05898,    Adjusted R-squared:  0.01807\n## F-statistic: 1.442 on 1 and 23 DF,  p-value: 0.2421",
+      "figure": null
+    },
+    {
+      "index": 25,
+      "type": "console",
+      "r_code": "pool.fit <- pool(fit)\nsummary(pool.fit)",
+      "r_output": "##               estimate  std.error statistic       df     p.value\n## (Intercept) 21.4803588 5.35840067  4.008726 11.28773 0.001953701\n## chl          0.0289319 0.02742604  1.054906 10.73032 0.314641727",
+      "figure": null
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "title": "Vary number of imputations",
+      "part": "",
+      "block_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Edit predictor matrix",
+      "part": "",
+      "block_indices": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Convergence trace plot",
+      "part": "",
+      "block_indices": [
+        7,
+        8
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Change imputation method",
+      "part": "",
+      "block_indices": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Extended iteration trace",
+      "part": "",
+      "block_indices": [
+        18
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Stripplot diagnostics",
+      "part": "",
+      "block_indices": [
+        19,
+        20
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Pooled regression fit",
+      "part": "",
+      "block_indices": [
+        21,
+        22,
+        23,
+        24
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Pool multiply imputed model",
+      "part": "",
+      "block_indices": [
+        25
+      ]
+    }
+  ]
+}

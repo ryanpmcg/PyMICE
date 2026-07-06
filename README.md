@@ -1,79 +1,209 @@
 # PyMICE
 
-**Multivariate Imputation by Chained Equations (MICE)** — a clean-room Python implementation of Fully Conditional Specification (FCS), designed for PyPI publication and eventual integration with [WEPPCLIFF](https://github.com/ryanpmcg/WEPPCLIFF).
+[![CI/CD](https://github.com/ryanpmcg/pymice/actions/workflows/ci.yml/badge.svg)](https://github.com/ryanpmcg/pymice/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-ryanpmcg.github.io%2Fpymice-blue)](https://ryanpmcg.github.io/pymice/)
+[![PyPI](https://img.shields.io/pypi/v/pymice)](https://pypi.org/project/pymice/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Status:** Phase 0–7a complete. Core MICE engine, 20+ imputation methods (incl. full `jomoImpute`/`panImpute`, multilevel `2l.*`), WEPPCLIFF adapter (6a–6d), `post`/`squeeze`, `quickpred`, and `ampute` (MCAR/MAR/MNAR). See [`agent.md`](agent.md#implementation-inventory-2026-06) for the full implemented / not-implemented list and [`REPRODUCIBILITY.md`](Documentation/REPRODUCIBILITY.md) for RNG notes.
+**Multivariate Imputation by Chained Equations (MICE / FCS)** for Python — a clean-room implementation aligned with the R [`mice`](https://cran.r-project.org/package=mice) reference, designed for statistical inference and eventual integration with [WEPPCLIFF](https://github.com/ryanpmcg/WEPPCLIFF).
+
+## Status
+
+**Version 0.1.0 — publication-ready (July 2026)**
+
+| Verification | Result |
+|--------------|--------|
+| Unit & integration tests | 262 tests (`pytest`) |
+| Vignette structural alignment (V01–V08) | 0 errors / 0 warnings |
+| RNG chain parity (V01–V05) | 27/27 steps match |
+| R `methods(mice)` imputation surface | 35 methods registered; 0 gaps |
+| Vignette walkthrough reports | All eight vignettes run clean (`run_all.sh`) |
+
+Algorithmic equivalence with R `mice` is validated under independent RNG (`rng="numpy"`, default). Bit-for-bit imputation parity is optional via `rng="r"` and documented optional R backends. Remaining differences are cosmetic (matplotlib vs lattice) or documented tolerances — see [`docs/dev/PARITY_STATUS.md`](docs/dev/PARITY_STATUS.md).
+
+## Install
+
+```bash
+pip install pymice
+```
+
+Optional extras:
+
+```bash
+pip install pymice[pandas]    # DataFrame API, parallel chunking
+pip install pymice[plot]      # Diagnostic plots (matplotlib)
+pip install pymice[ml]        # lasso.* / lda (scikit-learn)
+pip install pymice[survival]  # Cox PH pooling (lifelines)
+pip install pymice[dev]       # pytest, ruff, coverage
+```
+
+**Runtime requirements:** Python ≥ 3.10, NumPy ≥ 1.26, SciPy ≥ 1.11.
+
+## Quick start
+
+```python
+import pymice
+from pymice import mice, complete, with_mids, pool, summary_pool
+
+# Bundled incomplete dataset (R nhanes benchmark)
+data, names = pymice.load_nhanes()
+
+# Default: PMM, m=5, maxit=5, NumPy PCG64 RNG
+imp = mice(data, column_names=names, seed=123)
+
+# Pooled linear model (Rubin 1987 + Barnard–Rubin df)
+fit = with_mids(imp, formula="bmi ~ age + hyp + chl")
+print(summary_pool(pool(fit)))
+```
+
+**R-aligned imputations** (requires `Rscript` + CRAN `mice`):
+
+```python
+imp_r = mice(data, column_names=names, seed=123, rng="r")
+```
+
+**Parallel imputation** (R `futuremice` workflow):
+
+```python
+from pymice import futuremice
+
+imp_par = futuremice(data, column_names=names, m=5, parallelseed=123, n_core=2, print=False)
+```
+
+See [`docs/dev/REPRODUCIBILITY.md`](docs/dev/REPRODUCIBILITY.md) for RNG backends and publication reporting guidance.
+
+## Features
+
+- **FCS / Gibbs sampler** — visit sequence, predictor matrix, blocks, passive `~ I(...)`, `post` hooks
+- **35 imputation methods** — full R `methods(mice)` surface including multilevel (`2l.*`), JOMO (`jomoImpute`), sensitivity (`mnar`, `ri`), and `ampute` simulation
+- **Pooling** — `mira` / `mipo`, Rubin rules, `anova()`, scalar pooling (`D1`–`D3`)
+- **Diagnostics** — `md.pattern()`, `flux()`, convergence and density plots
+- **Parallel chains** — `futuremice()`, `parallel_mice()`, `mice(n_jobs=N)`
+- **Survival** — `leiden_coxph()` + pooled Cox summaries (optional `lifelines`)
+- **Pluggable RNG** — `"numpy"` (default), `"legacy"`, `"r"`, or custom `numpy.random.Generator`
+- **Optional R backends** — `2l.pan`, `2l.lmer`/`2l.bin`, `ampute` (auto-detect when R packages available)
+
+### Imputation methods
+
+`pmm`, `norm`, `norm.nob`, `norm.boot`, `norm.predict`, `mean`, `sample`, `midastouch`, `logreg`, `logreg.boot`, `polyreg`, `polr`, `cart`, `rf`, `lda`, `quadratic`, `micemean`, `mnar`, `ri`, `2l.norm`, `2l.pan`, `2l.lmer`, `2l.bin`, `2lonly.mean`, `2lonly.norm`, `2lonly.pmm`, `jomoImpute`, `panImpute`, `jomo2con`, `jomo2ran`, `lasso.norm`, `lasso.logreg`, `lasso.select.norm`, `lasso.select.logreg`, `2logreg`
+
+Passive formulas (`"~ I(wgt / (hgt/100)^2)"`) and multivariate blocks (`jomoImpute`, `panImpute`) are supported.
+
+### Optional backends
+
+| Feature | Environment variable | When active |
+|---------|---------------------|-------------|
+| R RNG stream | `rng="r"` | Bit-identical PMM/norm on isolated calls |
+| `2l.pan` | `PYMICE_R_PAN` (auto) | R `pan::pan` Fortran sampler |
+| `2l.lmer` / `2l.bin` | `PYMICE_R_LMER` (auto) | R `mice` + `lme4` |
+| `lasso.*` / `lda` | `PYMICE_SKLEARN` (auto) | scikit-learn when `[ml]` installed |
+| `ampute` | `PYMICE_R_AMPUTE` (auto) | R `mice::ampute` chain |
+
+Set any flag to `0` to force the NumPy/Python fallback.
 
 ## Why this project exists
 
-The R [`mice`](https://cran.r-project.org/package=mice) package (van Buuren & Groothuis-Oudshoorn, 2011) is the reference implementation of MICE/FCS. WEPPCLIFF uses `mice` for gap-filling; the Python port uses **`pymice.integrations.weppcliff`** (FCS by default, optional `-jm t` multivariate JOMO block). This repository delivers a **standalone, MIT-licensed** Python library with minimal dependencies (NumPy + SciPy core).
+The R [`mice`](https://cran.r-project.org/package=mice) package (van Buuren & Groothuis-Oudshoorn, 2011) is the reference implementation of MICE/FCS. This repository delivers a **standalone, MIT-licensed** Python library with minimal dependencies (NumPy + SciPy core), suitable for statistical inference workflows that previously depended on R-only tooling.
 
-## Repository layout
+## Documentation
 
-| Path | Purpose |
-|------|---------|
-| [`Documentation/IMPLEMENTATION_PLAN.md`](Documentation/IMPLEMENTATION_PLAN.md) | Phased build plan |
-| [`agent.md`](agent.md) | Developer / AI agent guide |
-| [`Vignettes/`](Vignettes/) | R tutorial snapshots + extracted code for parity tests |
-| [`Reference/`](Reference/) | R `mice` source snapshots (GPL, not shipped) |
-| `src/pymice/` | Installable package |
-| `tests/` | Unit tests + R golden parity |
-| [`Documentation/REPRODUCIBILITY.md`](Documentation/REPRODUCIBILITY.md) | RNG / cross-language parity (for publication) |
+| Document | Purpose |
+|----------|---------|
+| [ryanpmcg.github.io/pymice](https://ryanpmcg.github.io/pymice/) | Published docs + [vignette walkthroughs](https://ryanpmcg.github.io/pymice/vignettes/) |
+| [`docs/index.md`](docs/index.md) | User documentation source (MkDocs) |
+| [`docs/dev/PUBLICATION.md`](docs/dev/PUBLICATION.md) | PyPI release checklist, citation, reporting guidance |
+| [`docs/dev/PARITY_STATUS.md`](docs/dev/PARITY_STATUS.md) | R vignette parity accomplishments and remaining gaps |
+| [`docs/dev/REPRODUCIBILITY.md`](docs/dev/REPRODUCIBILITY.md) | RNG backends and cross-language validation |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Contributor workflow and verification gates |
+| [`devtools/README.md`](devtools/README.md) | Vignette report generator (dev only) |
+| [`reference/README.md`](reference/README.md) | R tutorial snapshots for golden tests |
+| [`Paper/paper.md`](Paper/paper.md) | JOSS-style software paper draft |
 
 ## Theoretical foundation
 
 - van Buuren, S., & Groothuis-Oudshoorn, K. (2011). *mice: Multivariate Imputation by Chained Equations in R.* JSS 45(3). [doi:10.18637/jss.v045.i03](https://doi.org/10.18637/jss.v045.i03)
 - van Buuren, S. (2018). *Flexible Imputation of Missing Data* (2nd ed.). [doi:10.1201/9780429492259](https://doi.org/10.1201/9780429492259)
 
-Full bibliography: [`Documentation/BIBLIOGRAPHY.md`](Documentation/BIBLIOGRAPHY.md)
+## Citation
 
-## Vignettes (verification)
+If you use PyMICE in research, please cite the MICE methodology (above) and this software:
 
-Eight vignettes from [gerkovink.com/miceVignettes](https://www.gerkovink.com/miceVignettes/) are stored under `Vignettes/` with R code extracted to `vignette_extracted.R`. These drive golden tests against R `mice`.
+```bibtex
+@software{pymice2026,
+  author  = {McGehee, Ryan P.},
+  title   = {PyMICE: Multivariate Imputation by Chained Equations for Python},
+  year    = {2026},
+  url     = {https://github.com/ryanpmcg/pymice},
+  version = {0.1.0}
+}
+```
+
+## Repository layout
+
+| Path | Purpose |
+|------|---------|
+| `src/pymice/` | Installable package |
+| `tests/` | Unit tests + R golden parity |
+| `docs/` | User docs (`docs/dev/` for parity and publication) |
+| `reference/` | R tutorial snapshots (not shipped in wheel) |
+| `Reference/` | R `mice` source snapshots (GPL, dev only) |
+| `devtools/` | Vignette report generator (not shipped) |
+| `Paper/` | Software paper draft |
+
+## Development
+
+### macOS / Linux
+
+```bash
+cd PyMICE
+make check              # lint + unit tests + structural parity
+# or full gate (needs R):
+make check-full
+```
+
+Manual setup:
+
+```bash
+bash devtools/setup_venv.sh
+source ~/.venvs/brain-pymice/bin/activate   # outside Google Drive
+pytest
+python devtools/maintain_parity.py
+python devtools/run_vignettes.py --only 07
+open docs/vignettes/index.html
+make pages    # MkDocs site/ preview (includes vignettes/)
+```
+
+### Windows
+
+```powershell
+cd PyMICE
+python -m venv $env:USERPROFILE\.venvs\brain-pymice
+$env:USERPROFILE\.venvs\brain-pymice\Scripts\activate
+python -m pip install -e ".[dev,plot,pandas,ml,survival,docs]"
+pytest
+python devtools\run_vignettes.py
+```
+
+### CI/CD
+
+Every push and pull request runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+
+| Job | What it verifies |
+|-----|------------------|
+| `lint` | Ruff format/lint, GPL contamination policy |
+| `test` | Full pytest (minus RNG parity) + structural alignment on **Ubuntu, macOS, Windows** × Python 3.10–3.12 |
+| `build` | Wheel/sdist build and Linux smoke install |
+| `install-smoke` | Wheel-only install on Ubuntu, macOS, and Windows (no source tree) |
+| `pages` | MkDocs deploy to GitHub Pages on push to `main` |
+
+R chain parity (RNG + full `maintain_parity.py`) runs nightly via [`.github/workflows/parity-nightly.yml`](.github/workflows/parity-nightly.yml).
+
+### GitHub Pages
+
+Push to `main` deploys [ryanpmcg.github.io/pymice](https://ryanpmcg.github.io/pymice/) (CI `pages` job). One-time: repo **Settings → Pages → Build and deployment → GitHub Actions**. Regenerate and commit `docs/vignettes/` after vignette changes (`make vignettes`).
 
 ## License
 
-- **Python package (`src/pymice/`):** MIT — see `LICENSE`
-- **Reference R snapshots:** GPL-2|GPL-3 (upstream `mice`); development reference only, not distributed in the wheel
-- **Vignettes:** third-party tutorial material; see [Documentation/ATTRIBUTION.md](file:///Users/home/Software/Grok/PyMICE/Documentation/ATTRIBUTION.md)
-
-## Getting started (developers)
-
-### On UNIX (Linux / macOS):
-```bash
-# Clone and enter the repository
-cd PyMICE
-
-# Set up local virtual environment and install package in editable mode
-bash Commands/setup_venv.sh
-source Commands/.venv/bin/activate
-
-# Run tests
-pytest
-
-# Compile visual parity reports
-python Commands/run_vignettes.py
-open Commands/output/index.html
-```
-
-### On Windows (Command Prompt / PowerShell):
-```powershell
-# Clone and enter the repository
-cd PyMICE
-
-# Set up local virtual environment
-python -m venv Commands\.venv
-Commands\.venv\Scripts\activate
-
-# Install package with development dependencies
-python -m pip install -e .[dev,plot,pandas,ml]
-
-# Run tests
-pytest
-
-# Compile visual parity reports
-python Commands/run_vignettes.py
-# Open Commands\output\index.html in your browser
-```
-
-See [Commands/README.md](file:///Users/home/Software/Grok/PyMICE/Commands/README.md) for more details. This folder is excluded from the published package.
+- **Python package (`src/pymice/`):** MIT — see [`LICENSE`](LICENSE)
+- **Reference R snapshots (`Reference/`):** GPL-2|GPL-3 (upstream `mice`); development reference only, not distributed in the wheel
+- **R tutorial snapshots (`reference/`):** third-party tutorial material; see [`docs/dev/ATTRIBUTION.md`](docs/dev/ATTRIBUTION.md)

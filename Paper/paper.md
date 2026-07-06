@@ -32,20 +32,25 @@ Existing Python alternatives are limited:
 *   Other libraries either lack support for complex variable types (e.g., binary or categorical variables) or do not match the statistical behaviors of R's reference implementation.
 
 `PyMICE` bridges this gap by delivering:
-1.  **Algorithmic Parity:** A Python engine that implements over 20 univariate imputation methods matching R, including Predictive Mean Matching (`pmm`), Bayesian OLS (`norm`), logistic regression (`logreg`), and multi-level linear models (`2l.norm`).
+1.  **Algorithmic Parity:** A Python engine implementing 35 imputation methods matching the R `methods(mice)` surface, including Predictive Mean Matching (`pmm`), Bayesian OLS (`norm`), logistic regression (`logreg`), multilevel models (`2l.norm`, `2l.pan`, `2l.lmer`), JOMO multivariate blocks (`jomoImpute`), and sensitivity methods (`mnar`, `ri`).
 2.  **Rubin's Rules Pooling:** Automatic compilation of Multiple Imputation Repeated Analysis (`mira`) and Pooling (`mipo`) to compute pooled coefficients, standard errors, fraction of missing information (FMI), and adjusted degrees of freedom [@rubin1987multiple].
 3.  **Advanced Diagnostic Visualizations:** Convergence monitoring (mean and variance trace plots) and density comparison plots utilizing Gaussian kernel density estimation (KDE) and rug indicators, matching R's lattice-based diagnostic plots.
-4.  **Data Amputation:** A comprehensive implementation of the R `ampute` algorithm, allowing researchers to simulate multivariate missingness under MCAR, MAR, and MNAR mechanisms for validation and simulation studies.
+4.  **Data Amputation:** Native and optional R-backed implementations of the `ampute` algorithm for simulating multivariate missingness under MCAR, MAR, and MNAR mechanisms.
+5.  **Parallel Imputation:** `futuremice()` distributes imputations across worker processes with reproducible `parallelseed` metadata, matching the R `futuremice` workflow.
+6.  **Cross-Language Validation:** Eight R tutorial vignettes (V01–V08) drive structural and RNG parity tests; optional `rng="r"` enables bit-identical imputations where required.
 
 # Core Software Architecture
 
 `PyMICE` is organized as a modular package with minimal dependencies, relying only on `NumPy` and `SciPy` for its core computation, and `Matplotlib` for optional visualization:
 
-*   **`pymice.engine`**: Manages the chained equation Gibbs sampler, tracking iterations, seeds, visit sequences, and imputation methods.
-*   **`pymice.imputation_setup`**: Handles automated setup, block building, default method assignments, and predictor matrix initialization.
-*   **`pymice.methods`**: Implements univariate imputation algorithms (e.g., PMM, linear regression, cart, classification, multi-level linear models).
-*   **`pymice.pool`**: Applies Rubin's rules to pool linear and generalized linear model fits across the $m$ imputed datasets.
-*   **`pymice.diagnostics.plots`**: Generates high-parity convergence trace plots and density diagnostics.
+*   **`pymice.engine`**: Chained-equation Gibbs sampler with visit sequences, blocks, passive formulas, and post-processing hooks.
+*   **`pymice.imputation_setup`**: Predictor matrices, method defaults, `quickpred`, and block construction.
+*   **`pymice.methods`**: 35 registered univariate and multivariate imputation algorithms with optional R (`lme4`, `pan`) and scikit-learn backends.
+*   **`pymice.pool`**: Rubin's rules pooling for linear, GLM, and Cox model fits across $m$ imputations.
+*   **`pymice.parallel`**: `futuremice` / `parallel_mice` with `ProcessPoolExecutor` and `ibind` merge.
+*   **`pymice.ampute`**: MCAR/MAR/MNAR missingness simulation with optional R backend.
+*   **`pymice.diagnostics`**: `md.pattern`, `flux`, and matplotlib diagnostic plots.
+*   **`pymice.rng`**: Pluggable RNG backends (`numpy`, `legacy`, `r`) for independent or R-matched stochastic draws.
 
 # Simulation Study
 

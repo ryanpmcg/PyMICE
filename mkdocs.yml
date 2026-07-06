@@ -1,0 +1,25 @@
+site_name: PyMICE
+site_description: Multivariate Imputation by Chained Equations for Python
+site_url: https://ryanpmcg.github.io/pymice/
+repo_url: https://github.com/ryanpmcg/pymice
+repo_name: ryanpmcg/pymice
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+
+nav:
+  - Home: index.md
+  - Install: install.md
+  - Quick start: quickstart.md
+  - Vignette walkthroughs: vignettes/index.html
+  - Citing: citing.md
+  - Maintainer docs: dev/PARITY_STATUS.md
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true

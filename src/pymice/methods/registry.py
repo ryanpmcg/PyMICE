@@ -31,6 +31,9 @@ def is_multivariate_method(name: str) -> bool:
 
 
 def get_method(name: str) -> ImputeFn:
+    from pymice.r_gaps import ensure_imputation_method_available
+
+    ensure_imputation_method_available(name)
     if name not in _REGISTRY:
         raise ValueError(
             f"Unknown imputation method '{name}'. Registered methods: {sorted(_REGISTRY)}"
@@ -39,6 +42,9 @@ def get_method(name: str) -> ImputeFn:
 
 
 def get_multivariate_method(name: str) -> MultivariateImputeFn:
+    from pymice.r_gaps import ensure_imputation_method_available
+
+    ensure_imputation_method_available(name)
     if name not in _MULTIVARIATE_REGISTRY:
         raise ValueError(
             f"Unknown multivariate imputation method '{name}'. "

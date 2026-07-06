@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -11,15 +13,18 @@ from pymice.types import FitResult
 
 def lm(
     formula: str,
-    data: NDArray[np.float64],
-    column_names: list[str],
+    data: NDArray[np.float64] | Any,
+    column_names: list[str] | None = None,
 ) -> FitResult:
-    """Fit OLS model ``y ~ x1 + log10(x2) + ...`` on a numeric matrix."""
-    y_name, predictors = parse_regression_formula(formula, column_names)
-    y_idx = column_names.index(y_name)
+    """Fit OLS model ``y ~ x1 + log10(x2) + ...`` on a numeric matrix or DataFrame."""
+    from pymice.data_input import prepare_tabular_input
 
-    y = data[:, y_idx]
-    x = build_design_matrix(data, column_names, predictors)
+    matrix, names = prepare_tabular_input(data, column_names)
+    y_name, predictors = parse_regression_formula(formula, names)
+    y_idx = names.index(y_name)
+
+    y = matrix[:, y_idx]
+    x = build_design_matrix(matrix, names, predictors)
     mask = np.isfinite(y) & np.isfinite(x).all(axis=1)
     y = y[mask]
     x = x[mask]

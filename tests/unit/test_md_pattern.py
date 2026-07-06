@@ -61,3 +61,12 @@ def test_md_pattern_nhanes_matches_r():
         dtype=np.int_,
     )
     np.testing.assert_array_equal(result.matrix, expected)
+
+
+def test_md_pattern_plot_false_by_default():
+    data, names = _load_nhanes()
+    import matplotlib.pyplot as plt
+
+    plt.close("all")
+    md_pattern(data, names)
+    assert not plt.get_fignums()

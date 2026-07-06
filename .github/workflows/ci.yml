@@ -1,36 +1,56 @@
-name: CI/CD Pipeline
+# CI/CD for public repo github.com/ryanpmcg/pymice
+# Docs site: https://ryanpmcg.github.io/pymice/
+name: CI/CD
 
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PYTHONUNBUFFERED: "1"
 
 jobs:
   lint:
-    name: Lint & Format Check
+    name: Lint & policy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v5
+
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
-          
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install ruff
-          
-      - name: Run Ruff Format Check
+          python-version: "3.12"
+
+      - name: Install Ruff
+        run: python -m pip install --upgrade pip ruff
+
+      - name: Ruff format
         run: ruff format --check .
-        
-      - name: Run Ruff Linter
+
+      - name: Ruff lint
         run: ruff check .
 
+      - name: GPL contamination check
+        run: |
+          if grep -r "GPL" src/pymice/ 2>/dev/null; then
+            echo "Unexpected GPL references in src/pymice/"
+            exit 1
+          fi
+          echo "No GPL references in shipped package."
+
   test:
-    name: Run Tests (${{ matrix.os }} - Python ${{ matrix.python-version }})
+    name: Test (${{ matrix.os }} · Python ${{ matrix.python-version }})
     needs: lint
     runs-on: ${{ matrix.os }}
     strategy:
@@ -38,27 +58,127 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.10", "3.11", "3.12"]
-        
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          
-      - name: Install Package & Dependencies
+
+      - name: Install PyMICE (editable + extras)
         run: |
           python -m pip install --upgrade pip wheel
-          pip install -e .[dev,plot,pandas,ml]
-          
-      - name: Run Pytest
-        run: pytest
-        
-      - name: GPL Contamination Check (UNIX only)
-        if: runner.os != 'Windows'
+          python -m pip install -e ".[dev,plot,pandas,ml,survival]"
+
+      - name: Unit & integration tests
+        run: python -m pytest tests/ -q --ignore=tests/parity/test_rng_parity.py
+
+      - name: Structural parity (V01–V08)
+        run: python -m pytest tests/parity/test_structural_alignment.py -q
+
+  build:
+    name: Build wheel & sdist
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build distributions
         run: |
-          if grep -r "GPL" src/pymice/ 2>/dev/null; then
-            echo "Unexpected GPL references in src/"
-            exit 1
-          fi
+          python -m pip install --upgrade pip build
+          python -m build
+
+      - name: Smoke-install wheel (Linux)
+        run: python -m pip install dist/*.whl
+
+      - name: Import check
+        run: |
+          python -c "import pymice; from pymice import load_nhanes; load_nhanes()"
+          python -c "import importlib.metadata as m; print('pymice', m.version('pymice'))"
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: pymice-dist
+          path: dist/*
+          retention-days: 14
+
+  install-smoke:
+    name: Install wheel (${{ matrix.os }})
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pymice-dist
+          path: dist
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install from wheel (no source tree)
+        run: python -m pip install --upgrade pip && python -m pip install dist/*.whl
+
+      - name: Verify import & core API
+        run: |
+          python -c "import pymice; from pymice import mice, complete, load_nhanes"
+          data, names = __import__('pymice').load_nhanes()
+          imp = __import__('pymice').mice(data, column_names=names, m=1, maxit=1, seed=1)
+          __import__('pymice').complete(imp, 1)
+          print('install-smoke ok')
+
+  ci-success:
+    name: CI gate
+    if: always()
+    needs: [lint, test, build, install-smoke]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all verification jobs
+        run: |
+          test "${{ needs.lint.result }}" = "success"
+          test "${{ needs.test.result }}" = "success"
+          test "${{ needs.build.result }}" = "success"
+          test "${{ needs.install-smoke.result }}" = "success"
+
+  pages:
+    name: Deploy GitHub Pages
+    needs: [ci-success, test, build, install-smoke]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs
+        run: python -m pip install --upgrade pip mkdocs mkdocs-material
+
+      - name: Build docs site
+        run: mkdocs build -d site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

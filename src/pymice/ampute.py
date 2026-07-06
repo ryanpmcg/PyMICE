@@ -27,9 +27,9 @@ class AmputeResult:
 
 
 def _default_patterns(n_cols: int) -> NDArray[np.int_]:
-    pat = np.zeros((n_cols, n_cols), dtype=np.int_)
+    pat = np.ones((n_cols, n_cols), dtype=np.int_)
     for j in range(n_cols):
-        pat[j, j] = 1
+        pat[j, j] = 0
     return pat
 
 
@@ -241,6 +241,36 @@ def _weighted_sum_scores(
     return scores
 
 
+def _mvrnorm_warmup(rng: np.random.Generator, *, n: int = 10_000) -> None:
+    """Mirror R V07 ``mvrnorm`` draw that advances ``.Random.seed`` before ``ampute``."""
+    mu = np.array([10.0, 5.0, 0.0], dtype=np.float64)
+    sigma = np.array(
+        [[1.0, 0.2, 0.2], [0.2, 1.0, 0.2], [0.2, 0.2, 1.0]],
+        dtype=np.float64,
+    )
+    rng.multivariate_normal(mu, sigma, size=n)
+
+
+def run_ampute_chain(
+    data: NDArray[np.floating],
+    chain: list[dict[str, object]],
+    *,
+    seed: int = 2016,
+    warmup: bool = True,
+) -> list[AmputeResult]:
+    """
+    Sequential ``ampute`` calls on one RNG stream (R V07 ``set.seed`` + chain).
+
+    Each entry in ``chain`` is a keyword dict forwarded to :func:`ampute` (except
+    ``seed`` / ``rng``).
+    """
+    rng = np.random.default_rng(seed)
+    if warmup:
+        _mvrnorm_warmup(rng)
+    matrix = np.asarray(data, dtype=np.float64)
+    return [ampute(matrix, rng=rng, **dict(spec)) for spec in chain]
+
+
 def ampute(
     data: NDArray[np.floating],
     *,
@@ -255,8 +285,11 @@ def ampute(
     bycases: bool = True,
     run: bool = True,
     seed: int | None = None,
+    rng: np.random.Generator | None = None,
 ) -> AmputeResult:
     """Introduce missing values into complete data (R ``ampute``)."""
+    if rng is not None and seed is not None:
+        raise TypeError("pass seed or rng, not both")
     matrix = np.asarray(data, dtype=np.float64)
     if matrix.ndim != 2:
         raise ValueError("data must be a 2-D array")
@@ -316,8 +349,8 @@ def ampute(
     if not bycases:
         work_prop = _recalculate_prop_cellwise(work_prop, freq_arr, patterns_arr, n_rows, n_cols)
 
-    rng = np.random.default_rng(seed)
-    p = rng.choice(n_pat, size=n_rows, p=freq_arr) + 2
+    gen = rng if rng is not None else np.random.default_rng(seed)
+    p = gen.choice(n_pat, size=n_rows, p=freq_arr) + 2
 
     scores_list: list[NDArray[np.float64]] | None = None
     amp: NDArray[np.float64] | None = None
@@ -325,13 +358,13 @@ def ampute(
     if run:
         amp = matrix.copy()
         if mech_u == "MCAR":
-            r_list = _ampute_mcar(p, patterns_arr, work_prop, rng)
+            r_list = _ampute_mcar(p, patterns_arr, work_prop, gen)
         else:
             scores_list = _weighted_sum_scores(p, matrix, weights_arr, std=std)
             if cont:
-                r_list = _ampute_continuous(p, scores_list, round(work_prop, 3), types, rng)
+                r_list = _ampute_continuous(p, scores_list, round(work_prop, 3), types, gen)
             else:
-                r_list = _ampute_discrete(p, scores_list, round(work_prop, 3), types, rng)
+                r_list = _ampute_discrete(p, scores_list, round(work_prop, 3), types, gen)
 
         for i in range(n_pat):
             if not np.any(p == i + 2):
@@ -345,7 +378,7 @@ def ampute(
         patterns=patterns_arr,
         freq=freq_arr,
         mech=mech_u,
-        prop=float(prop),
+        prop=float(work_prop),
         bycases=bycases,
         weights=weights_arr,
         scores=scores_list,

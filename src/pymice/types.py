@@ -20,6 +20,7 @@ class FitResult:
     df_residual: float
     n_obs: int
     rss: float | None = None
+    meta: dict[str, Any] | None = None
 
 
 @dataclass
@@ -84,10 +85,14 @@ class Mids:
     nmis: dict[str, int]
     chain_mean: dict[str, NDArray[np.floating]] = field(default_factory=dict)
     chain_var: dict[str, NDArray[np.floating]] = field(default_factory=dict)
+    logged_events: list[dict[str, int | str]] = field(default_factory=list)
     ignore: NDArray[np.bool_] | None = None
     variable_specs: list[VariableSpec] = field(default_factory=list)
     block_predictor_matrix: dict[str, NDArray[np.int_]] | None = None
     post: dict[str, str] | None = None
+    rng_backend: str | None = None
+    parallelseed: int | None = None
+    parallel_n_core: int | None = None
 
     @property
     def n_obs(self) -> int:
@@ -96,6 +101,46 @@ class Mids:
     @property
     def n_vars(self) -> int:
         return int(self.data.shape[1])
+
+    @property
+    def meth(self) -> dict[str, str]:
+        """Imputation methods per variable (R ``mids$meth``)."""
+        return self.method
+
+    @property
+    def pred(self) -> NDArray[np.int_]:
+        """Predictor matrix (R ``mids$pred`` / ``predictorMatrix``)."""
+        return self.predictor_matrix
+
+    @property
+    def visitSequence(self) -> list[str]:
+        """Visit sequence (R ``mids$visitSequence``)."""
+        return self.visit_sequence
+
+    @property
+    def chainMean(self) -> dict[str, NDArray[np.floating]]:
+        """Chain means across iterations (R ``mids$chainMean``)."""
+        return self.chain_mean
+
+    @property
+    def chainVar(self) -> dict[str, NDArray[np.floating]]:
+        """Chain variances across iterations (R ``mids$chainVar``)."""
+        return self.chain_var
+
+    @property
+    def loggedEvents(self) -> list[dict[str, int | str]]:
+        """Sampler events such as collinearity removals (R ``mids$loggedEvents``)."""
+        return self.logged_events
+
+    def logged_events_dataframe(self):
+        """Return ``logged_events`` as a pandas DataFrame (R ``loggedEvents`` matrix)."""
+        try:
+            import pandas as pd
+        except ImportError as exc:
+            raise ImportError("pandas is required for logged_events_dataframe()") from exc
+        if not self.logged_events:
+            return pd.DataFrame(columns=["iteration", "imp", "method", "dep", "out"])
+        return pd.DataFrame(self.logged_events)
 
     def __repr__(self) -> str:
         lines = [
@@ -124,11 +169,28 @@ class Mids:
             "methods": dict(self.method),
         }
 
-    def continue_(self, *, max_iter: int = 5, verbose: bool = False, **kwargs: object) -> Mids:
+    def continue_(
+        self,
+        *,
+        maxit: int = 5,
+        max_iter: int | None = None,
+        print: bool = False,
+        print_flag: bool | None = None,
+        verbose: bool | None = None,
+        **kwargs: object,
+    ) -> Mids:
         """Run additional Gibbs iterations (R ``mice.mids`` analogue)."""
         from pymice.continue_mids import continue_imputation
 
-        return continue_imputation(self, max_iter=max_iter, verbose=verbose, **kwargs)
+        return continue_imputation(
+            self,
+            maxit=maxit,
+            max_iter=max_iter,
+            print=print,
+            print_flag=print_flag,
+            verbose=verbose,
+            **kwargs,
+        )
 
 
 def ibind(x: Mids, y: Mids) -> Mids:
@@ -189,8 +251,14 @@ def ibind(x: Mids, y: Mids) -> Mids:
         chain_var=new_chain_var,
         ignore=x.ignore.copy() if x.ignore is not None else None,
         variable_specs=list(x.variable_specs),
-        block_predictor_matrix=x.block_predictor_matrix.copy() if x.block_predictor_matrix is not None else None,
+        block_predictor_matrix=x.block_predictor_matrix.copy()
+        if x.block_predictor_matrix is not None
+        else None,
         post=dict(x.post) if x.post is not None else None,
+        logged_events=list(x.logged_events) + list(y.logged_events),
+        rng_backend=x.rng_backend,
+        parallelseed=x.parallelseed,
+        parallel_n_core=x.parallel_n_core,
     )
 
 
@@ -234,6 +302,9 @@ def filter_imputations(mids: Mids, indices: int | list[int] | range | NDArray[np
         chain_var=new_chain_var,
         ignore=mids.ignore.copy() if mids.ignore is not None else None,
         variable_specs=list(mids.variable_specs),
-        block_predictor_matrix=mids.block_predictor_matrix.copy() if mids.block_predictor_matrix is not None else None,
+        block_predictor_matrix=mids.block_predictor_matrix.copy()
+        if mids.block_predictor_matrix is not None
+        else None,
         post=dict(mids.post) if mids.post is not None else None,
+        logged_events=list(mids.logged_events),
     )
