@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT))
 from lib.r_style import format_mids_print_r  # noqa: E402
 from lib.vignette_rng import run_v01_mice_chain, start_vignette_rng_session  # noqa: E402
 from runners.v01_ad_hoc_mice import R_MIDS_PRINT  # noqa: E402
+
 from pymice import data  # noqa: E402
 from pymice.rng import RSession  # noqa: E402
 from tests.r_support import r_backend_available, r_backend_skip_reason  # noqa: E402
