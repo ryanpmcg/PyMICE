@@ -87,7 +87,8 @@ bash reference/export_vignette_datasets.sh
 
 ```
 devtools/
-├── setup_venv.sh           # create .venv + install pymice[dev,plot,...]
+├── setup.sh                # Brain-standard alias → setup_venv.sh
+├── setup_venv.sh           # create ~/.venvs/brain-pymice + install pymice[dev,plot,...]
 ├── run_all.sh              # setup + run_vignettes.py
 ├── run_vignettes.py        # orchestrator
 ├── maintain_parity.py      # structural + RNG audit wrapper

@@ -6,9 +6,11 @@ DEVTOOLS_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$DEVTOOLS_DIR/.." && pwd)"
 VENV_DIR="${PYMICE_VENV:-$HOME/.venvs/brain-pymice}"
 
-if [[ -d "$DEVTOOLS_DIR/.venv" ]]; then
-  echo "WARNING: Remove legacy devtools/.venv from Drive (sync hazard)."
-  echo "  Delete Brain/Research/Projects/PyMICE/devtools/.venv on drive.google.com if present."
+LEGACY_VENV="$DEVTOOLS_DIR/.venv"
+if [[ -d "$LEGACY_VENV" ]]; then
+  echo "Removing legacy devtools/.venv (Drive sync hazard; venv belongs at $VENV_DIR)."
+  rm -rf "$LEGACY_VENV"
+  echo "  If devtools/.venv still appears on drive.google.com, delete it there too."
 fi
 
 if [[ ! -d "$VENV_DIR" ]]; then
