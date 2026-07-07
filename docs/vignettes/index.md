@@ -1,6 +1,6 @@
 # PyMICE vignette report
 
-Generated: 2026-07-07T22:33:40.167558+00:00
+Generated: 2026-07-07T22:57:55.021960+00:00
 
 ## Vignettes
 
@@ -8,7 +8,7 @@ Generated: 2026-07-07T22:33:40.167558+00:00
 |---|-------|--------|--------|
 | V1 | Ad Hoc MICE | Partially compliant — 24 match, 1 info, 2 partial, 0 skipped (R-only) | [v01_ad_hoc_mice.md](v01_ad_hoc_mice.md) / [HTML](v01_ad_hoc_mice.html) |
 | V2 | Convergence Pooling | Partially compliant — 16 match, 5 info, 5 partial, 0 skipped (R-only) | [v02_convergence_pooling.md](v02_convergence_pooling.md) / [HTML](v02_convergence_pooling.html) |
-| V3 | Missingness Models | Non-compliant — 7 mismatches, 13 match, 0 skip, 7 partial | [v03_missingness.md](v03_missingness.md) / [HTML](v03_missingness.html) |
+| V3 | Missingness Models | Non-compliant — 7 mismatches, 13 match, 0 skip, 5 partial | [v03_missingness.md](v03_missingness.md) / [HTML](v03_missingness.html) |
 | V4 | Passive Imputation | Partially compliant — 8 match, 5 info, 10 partial, 0 skipped (R-only) | [v04_passive.md](v04_passive.md) / [HTML](v04_passive.html) |
 | V5 | Multilevel Data | Partially compliant — 23 match, 5 info, 27 partial, 1 skipped (R-only) | [v05_multilevel.md](v05_multilevel.md) / [HTML](v05_multilevel.html) |
 | V6 | Sensitivity Analysis | Partially compliant — 9 match, 2 info, 11 partial, 0 skipped (R-only) | [v06_sensitivity.md](v06_sensitivity.md) / [HTML](v06_sensitivity.html) |

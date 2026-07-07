@@ -3,7 +3,7 @@
 *Compare to **The imputation and nonresponse models** by Gerko Vink and Stef van Buuren*
 
 **Reference:** https://www.gerkovink.com/miceVignettes/Missingness_inspection/Missingness_inspection.html
-**Parity status:** Non-compliant — 7 mismatches, 13 match, 0 skip, 7 partial
+**Parity status:** Non-compliant — 7 mismatches, 13 match, 0 skip, 5 partial
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -77,7 +77,7 @@ We choose seed value `123`. This is an arbitrary value; any value would be an eq
 
 ## 2. Inspect boys dataset
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 To learn more about the contents of the data, use one of the two following help commands:
 
@@ -833,7 +833,7 @@ print(format_tv_means_tibble_r(means))
 
 ## 9. Inspect mammalsleep data
 
-**Step parity:** ❌ MISMATCH (3 exact, 0 info, 1 visual, 0 skipped, 1 mismatch of 5 blocks)
+**Step parity:** ❌ MISMATCH (3 exact, 1 info, 0 visual, 0 skipped, 1 mismatch of 5 blocks)
 
 The `mammalsleep` dataset is part of `mice`. It contains the Allison and Cicchetti (1976) data for mammalian species. To learn more about this data, type
 

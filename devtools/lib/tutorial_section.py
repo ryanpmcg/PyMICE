@@ -31,7 +31,20 @@ class TutorialPart:
 
 def _informational_partial(part: TutorialPart, *, match: bool) -> bool:
     """``partial=True`` steps with nothing to compare (or already matching)."""
-    if not part.partial or not match:
+    if not part.partial:
+        return False
+    if part.partial_reason and any(
+        phrase in part.partial_reason
+        for phrase in (
+            "Truncated R help",
+            "no R snapshot",
+            "R snapshot has no",
+            "PyMICE reproducibility",
+            "PyMICE closing demo",
+        )
+    ):
+        return True
+    if not match:
         return False
     if part.partial_reason and any(
         phrase in part.partial_reason
