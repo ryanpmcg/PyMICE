@@ -1235,10 +1235,9 @@ def write_reports(
         md_path.write_text(vignette_markdown(report), encoding="utf-8")
         html_path.write_text(vignette_html(report, all_slugs=nav), encoding="utf-8")
 
-    (output_dir / "index.md").write_text(
-        index_markdown(reports, pytest_text, generated_at),
-        encoding="utf-8",
-    )
+    index_md = output_dir / "index.md"
+    if index_md.exists():
+        index_md.unlink()
     (output_dir / "index.html").write_text(
         index_html(reports, pytest_text, generated_at, pytest_exit_code=pytest_exit_code),
         encoding="utf-8",
