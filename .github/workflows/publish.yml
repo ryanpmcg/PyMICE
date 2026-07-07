@@ -37,3 +37,6 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist/
+          # Optional fallback: add PYPI_API_TOKEN repo secret (pypi.org → Account → API tokens).
+          # Preferred: configure a trusted publisher (see docs/dev/PUBLICATION.md).
+          password: ${{ secrets.PYPI_API_TOKEN }}

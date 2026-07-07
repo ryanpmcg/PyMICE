@@ -65,20 +65,38 @@ python -m build
 
 Inspect `dist/pymice-0.1.0-py3-none-any.whl` — confirm `devtools/` is excluded and R helper scripts are bundled under `pymice/methods/`.
 
-### 3. Test upload
+### 3. Configure PyPI authentication (one-time)
+
+**Preferred — GitHub trusted publishing** (no stored tokens):
+
+1. Sign in at [pypi.org](https://pypi.org/) → **Account settings** → **Publishing** → **Add a new pending publisher**
+2. Set:
+   - **PyPI project name:** `pymice-fcs`
+   - **Owner:** `ryanpmcg`
+   - **Repository name:** `PyMICE`
+   - **Workflow name:** `publish.yml`
+   - **Environment name:** *(leave blank)*
+3. Save. The project is created on first successful upload.
+
+**Alternative — API token:** create a PyPI token scoped to `pymice-fcs` and add it as the GitHub repository secret `PYPI_API_TOKEN`.
+
+### 4. Publish via GitHub Actions
 
 ```bash
-twine upload --repository testpypi dist/*
-pip install --index-url https://test.pypi.org/simple/ pymice-fcs
+# Tag is already v0.1.0; re-run after trusted publisher is configured:
+# GitHub → Actions → Publish to PyPI → Run workflow
 ```
 
-### 4. Production upload
+Or publish a GitHub Release (`v0.1.0`) — the workflow also runs on `release: published`.
+
+### 5. Local upload (optional)
 
 ```bash
 twine upload dist/*
+# Username: __token__   Password: <PyPI API token>
 ```
 
-### 5. Post-release
+### 6. Post-release
 
 - Tag `v0.1.0` on GitHub
 - Update `Paper/paper.md` date if submitting to JOSS
