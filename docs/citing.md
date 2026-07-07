@@ -16,10 +16,11 @@ When you use multiple imputation, cite the MICE/FCS methodology:
   year    = {2026},
   url     = {https://github.com/ryanpmcg/PyMICE},
   version = {0.1.0},
-  doi     = {10.5281/zenodo.TBD}
+  doi     = {10.5281/zenodo.TBD},
+  note    = {PyPI package pymice-fcs; import as pymice}
 }
 ```
 
 Replace `zenodo.TBD` with the Zenodo DOI after the first archived release.
 
-A machine-readable citation file is at [`CITATION.cff`](../CITATION.cff) in the repository root.
+Install from PyPI: [`pymice-fcs`](https://pypi.org/project/pymice-fcs/). A machine-readable citation file is at [`CITATION.cff`](../CITATION.cff) in the repository root.

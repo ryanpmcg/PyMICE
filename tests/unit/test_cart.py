@@ -107,11 +107,11 @@ def test_cart_import_error_without_sklearn(monkeypatch):
 
     def _boom():
         raise ImportError(
-            "The cart method requires scikit-learn. Install with: pip install pymice[ml]"
+            "The cart method requires scikit-learn. Install with: pip install pymice-fcs[ml]"
         )
 
     monkeypatch.setattr(cart_mod, "_sklearn_trees", _boom)
-    with pytest.raises(ImportError, match="pymice\\[ml\\]"):
+    with pytest.raises(ImportError, match="pymice-fcs\\[ml\\]"):
         impute_cart(
             y=np.array([1.0, np.nan]),
             ry=np.array([True, False]),

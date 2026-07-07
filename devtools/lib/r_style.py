@@ -8,7 +8,17 @@ import numpy as np
 from scipy import stats
 
 from lib.help_format import format_help_r  # noqa: F401
-from lib.summary_format import format_summary_popncr_r as _format_summary_popncr_r
+from lib.summary_format import (  # noqa: F401
+    format_boys_head_r,
+    format_mammalsleep_head_r,
+    format_popncr_head_r,
+    format_summary_boys_r,
+    format_summary_mammalsleep_r,
+    format_summary_nhanes2_r,
+)
+from lib.summary_format import (
+    format_summary_popncr_r as _format_summary_popncr_r,
+)
 from pymice.diagnostics.flux import FluxResult
 from pymice.diagnostics.md_pattern import MdPatternResult
 from pymice.formulas import build_design_matrix, parse_regression_formula, term_labels

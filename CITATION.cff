@@ -12,6 +12,9 @@ version: 0.1.0
 date-released: 2026-07-05
 repository-code: https://github.com/ryanpmcg/PyMICE
 url: https://ryanpmcg.github.io/PyMICE/
+identifiers:
+  - type: pypi
+    value: pymice-fcs
 keywords:
   - missing data
   - multiple imputation
@@ -28,6 +31,9 @@ preferred-citation:
   year: 2026
   journal: Journal of Open Source Software
   doi: 10.21105/joss.TBD
+  identifiers:
+    - type: pypi
+      value: pymice-fcs
 references:
   - type: article
     authors:

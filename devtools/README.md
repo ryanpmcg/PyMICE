@@ -27,7 +27,7 @@ Vignettes use `rng="r"` for R-matching imputations. On first run, `run_vignettes
 
 ## What it does
 
-1. **`setup_venv.sh`** — creates `~/.venvs/brain-pymice` and installs `pymice[dev,plot,pandas,ml,survival,docs]`.
+1. **`setup_venv.sh`** — creates `~/.venvs/brain-pymice` and installs `pymice-fcs[dev,plot,pandas,ml,survival,docs]`.
 2. **`run_vignettes.py`** — runs eight vignette demos (aligned with `reference/01`–`08`), captures tables/plots.
 3. **`maintain_parity.py`** — runs `audit_vignette_alignment.py` + `audit_rng_parity.py`; refreshes `parity_backlog.json`.
 4. **Publish** — writes `docs/vignettes/` (HTML/MD + `assets/`); deployed at [ryanpmcg.github.io/PyMICE/vignettes/](https://ryanpmcg.github.io/PyMICE/vignettes/) via GitHub Pages.
@@ -88,7 +88,7 @@ bash reference/export_vignette_datasets.sh
 ```
 devtools/
 ├── setup.sh                # Brain-standard alias → setup_venv.sh
-├── setup_venv.sh           # create ~/.venvs/brain-pymice + install pymice[dev,plot,...]
+├── setup_venv.sh           # create ~/.venvs/brain-pymice + install pymice-fcs[dev,plot,...]
 ├── run_all.sh              # setup + run_vignettes.py
 ├── run_vignettes.py        # orchestrator
 ├── maintain_parity.py      # structural + RNG audit wrapper

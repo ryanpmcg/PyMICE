@@ -69,7 +69,7 @@ Inspect `dist/pymice-0.1.0-py3-none-any.whl` — confirm `devtools/` is excluded
 
 ```bash
 twine upload --repository testpypi dist/*
-pip install --index-url https://test.pypi.org/simple/ pymice
+pip install --index-url https://test.pypi.org/simple/ pymice-fcs
 ```
 
 ### 4. Production upload

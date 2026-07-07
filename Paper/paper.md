@@ -21,7 +21,7 @@ bibliography: paper.bib
 
 Datasets in medicine, epidemiology, social science, and engineering often contain missing values. When data are missing at random (MAR) or missing not at random (MNAR), deleting incomplete records or filling gaps with a single imputed value can bias estimates and understate uncertainty. Multiple imputation (MI) under fully conditional specification (FCS)—the MICE algorithm—draws several completed datasets, fits an analysis model in each, and pools results with Rubin's rules [@rubin1987multiple; @vanbuuren2018flexible].
 
-`PyMICE` is a standalone Python library that implements the MICE workflow for statistical inference: chained-equation imputation, repeated-analysis pooling, convergence diagnostics, and missingness simulation. The package mirrors the method surface of the reference R `mice` package [@vanbuuren2011mice] while remaining native to NumPy, SciPy, and optional pandas, matplotlib, scikit-learn, and lifelines backends. Researchers who work primarily in Python can therefore run principled MI analyses without maintaining a separate R toolchain, while optional `rng="r"` mode supports cross-language validation against R when required.
+`PyMICE` is a standalone Python library that implements the MICE workflow for statistical inference: chained-equation imputation, repeated-analysis pooling, convergence diagnostics, and missingness simulation. The package mirrors the method surface of the reference R `mice` package [@vanbuuren2011mice] while remaining native to NumPy, SciPy, and optional pandas, matplotlib, scikit-learn, and lifelines backends. Researchers who work primarily in Python can therefore run principled MI analyses without maintaining a separate R toolchain, while optional `rng="r"` mode supports cross-language validation against R when required. Source code and documentation are at [github.com/ryanpmcg/PyMICE](https://github.com/ryanpmcg/PyMICE); the PyPI distribution is **`pymice-fcs`** (`pip install pymice-fcs`, `import pymice`), chosen to disambiguate from unrelated PyPI packages also named `pymice` or `mice`.
 
 # Statement of need
 
@@ -65,6 +65,7 @@ Evidence of correctness and community readiness at version 0.1.0 includes:
 * **Eight R tutorial vignettes (V01–V08)** reproduced as structural alignment tests with zero errors; published HTML walkthroughs at [ryanpmcg.github.io/PyMICE/vignettes/](https://ryanpmcg.github.io/PyMICE/vignettes/).
 * **RNG chain parity:** 27/27 stochastic steps on vignettes V01–V05 when `rng="r"` is enabled, verified by `devtools/maintain_parity.py` and a nightly GitHub Actions workflow.
 * **Monte Carlo simulation** (below) demonstrating that PMM recovers nominal 95% CI coverage under MAR, while naive alternatives fail—reproducible via `Paper/simulation_study.py`.
+* **Open distribution:** MIT-licensed release on GitHub and PyPI (`pymice-fcs`); user guide at [ryanpmcg.github.io/PyMICE/](https://ryanpmcg.github.io/PyMICE/).
 
 Near-term research applications include Python-native sensitivity analyses (δ-adjustment, MNAR), multilevel imputation for clustered data, and integration adapters (e.g., `pymice.integrations.weppcliff`) for environmental time-series pipelines that already run in Python.
 

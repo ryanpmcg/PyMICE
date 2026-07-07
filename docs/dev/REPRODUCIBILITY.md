@@ -45,7 +45,7 @@ These backends call R or scikit-learn for specific imputation methods. They auto
 | `PYMICE_R_PAN` | `2l.pan` | R + `pan` |
 | `PYMICE_R_LMER` | `2l.lmer`, `2l.bin` | R + `mice` + `lme4` + `MASS` |
 | `PYMICE_R_AMPUTE` | `ampute()` chain | R + `mice` + `jsonlite` |
-| `PYMICE_SKLEARN` | `lasso.*`, `lda` | `pip install pymice[ml]` |
+| `PYMICE_SKLEARN` | `lasso.*`, `lda` | `pip install pymice-fcs[ml]` |
 
 Set any variable to `0` to force the NumPy/Python fallback.
 

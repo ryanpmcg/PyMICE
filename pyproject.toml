@@ -3,9 +3,9 @@ requires = ["hatchling>=1.21"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pymice"
+name = "pymice-fcs"
 version = "0.1.0"
-description = "Multivariate Imputation by Chained Equations (MICE / FCS) for Python"
+description = "PyMICE — Multivariate Imputation by Chained Equations (MICE / FCS) for Python, aligned with R mice"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
@@ -50,6 +50,7 @@ Documentation = "https://ryanpmcg.github.io/PyMICE/"
 Repository = "https://github.com/ryanpmcg/PyMICE"
 Issues = "https://github.com/ryanpmcg/PyMICE/issues"
 Changelog = "https://github.com/ryanpmcg/PyMICE/blob/main/CHANGELOG.md"
+"PyPI" = "https://pypi.org/project/pymice-fcs/"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pymice"]

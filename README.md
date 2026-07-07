@@ -2,7 +2,7 @@
 
 [![CI/CD](https://github.com/ryanpmcg/PyMICE/actions/workflows/ci.yml/badge.svg)](https://github.com/ryanpmcg/PyMICE/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-ryanpmcg.github.io%2FPyMICE-blue)](https://ryanpmcg.github.io/PyMICE/)
-[![PyPI](https://img.shields.io/pypi/v/pymice)](https://pypi.org/project/pymice/)
+[![PyPI](https://img.shields.io/pypi/v/pymice-fcs)](https://pypi.org/project/pymice-fcs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Multivariate Imputation by Chained Equations (MICE / FCS)** for Python — a clean-room implementation aligned with the R [`mice`](https://cran.r-project.org/package=mice) reference, designed for statistical inference and eventual integration with [WEPPCLIFF](https://github.com/ryanpmcg/WEPPCLIFF).
@@ -24,18 +24,20 @@ Algorithmic equivalence with R `mice` is validated under independent RNG (`rng="
 ## Install
 
 ```bash
-pip install pymice
+pip install pymice-fcs
 ```
 
 Optional extras:
 
 ```bash
-pip install pymice[pandas]    # DataFrame API, parallel chunking
-pip install pymice[plot]      # Diagnostic plots (matplotlib)
-pip install pymice[ml]        # lasso.* / lda (scikit-learn)
-pip install pymice[survival]  # Cox PH pooling (lifelines)
-pip install pymice[dev]       # pytest, ruff, coverage
+pip install pymice-fcs[pandas]     # DataFrame API, parallel chunking
+pip install pymice-fcs[plot]       # Diagnostic plots (matplotlib)
+pip install pymice-fcs[ml]         # lasso.* / lda (scikit-learn)
+pip install pymice-fcs[survival]   # Cox PH pooling (lifelines)
+pip install pymice-fcs[dev]        # pytest, ruff, coverage
 ```
+
+The PyPI distribution is **`pymice-fcs`** (import as `pymice`). This avoids name collisions with unrelated packages [`pymice`](https://pypi.org/project/pymice/) (lab-mice behavioral data) and [`mice`](https://pypi.org/project/mice/) (stochastic optimization).
 
 **Runtime requirements:** Python ≥ 3.10, NumPy ≥ 1.26, SciPy ≥ 1.11.
 
@@ -134,7 +136,8 @@ If you use PyMICE in research, please cite the MICE methodology (above) and this
   title   = {PyMICE: Multivariate Imputation by Chained Equations for Python},
   year    = {2026},
   url     = {https://github.com/ryanpmcg/PyMICE},
-  version = {0.1.0}
+  version = {0.1.0},
+  note    = {PyPI package pymice-fcs; import as pymice}
 }
 ```
 

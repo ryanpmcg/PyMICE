@@ -97,11 +97,11 @@ def test_rf_import_error_without_sklearn(monkeypatch):
 
     def _boom():
         raise ImportError(
-            "The rf method requires scikit-learn. Install with: pip install pymice[ml]"
+            "The rf method requires scikit-learn. Install with: pip install pymice-fcs[ml]"
         )
 
     monkeypatch.setattr(rf_mod, "_sklearn_ensemble", _boom)
-    with pytest.raises(ImportError, match="pymice\\[ml\\]"):
+    with pytest.raises(ImportError, match="pymice-fcs\\[ml\\]"):
         impute_rf(
             y=np.array([1.0, np.nan]),
             ry=np.array([True, False]),

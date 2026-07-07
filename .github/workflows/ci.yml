@@ -131,7 +131,7 @@ jobs:
       - name: Import check
         run: |
           python -c "import pymice; from pymice import load_nhanes; load_nhanes()"
-          python -c "import importlib.metadata as m; print('pymice', m.version('pymice'))"
+          python -c "import importlib.metadata as m; print('pymice-fcs', m.version('pymice-fcs'))"
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4

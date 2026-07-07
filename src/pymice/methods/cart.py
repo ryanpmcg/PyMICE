@@ -13,7 +13,7 @@ def _sklearn_trees():
         from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
     except ImportError as exc:  # pragma: no cover - exercised via importorskip in tests
         raise ImportError(
-            "The cart method requires scikit-learn. Install with: pip install pymice[ml]"
+            "The cart method requires scikit-learn. Install with: pip install pymice-fcs[ml]"
         ) from exc
     return DecisionTreeClassifier, DecisionTreeRegressor
 

@@ -22,7 +22,7 @@ def _require_matplotlib():
         import matplotlib.pyplot as plt
     except ImportError as exc:
         raise ImportError(
-            "matplotlib is required for plotting. Install with: pip install pymice[plot]"
+            "matplotlib is required for plotting. Install with: pip install pymice-fcs[plot]"
         ) from exc
     return plt
 

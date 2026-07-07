@@ -13,7 +13,7 @@ def _sklearn_ensemble():
         from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
     except ImportError as exc:  # pragma: no cover
         raise ImportError(
-            "The rf method requires scikit-learn. Install with: pip install pymice[ml]"
+            "The rf method requires scikit-learn. Install with: pip install pymice-fcs[ml]"
         ) from exc
     return RandomForestClassifier, RandomForestRegressor
 

@@ -3,17 +3,19 @@
 ## PyPI
 
 ```bash
-pip install pymice
+pip install pymice-fcs
 ```
+
+The PyPI distribution is **`pymice-fcs`**; import as `pymice`. This avoids unrelated packages [`pymice`](https://pypi.org/project/pymice/) (lab-mice behavioral data) and [`mice`](https://pypi.org/project/mice/) (stochastic optimization).
 
 ## Optional extras
 
 ```bash
-pip install pymice[pandas]    # DataFrame API
-pip install pymice[plot]      # matplotlib diagnostics
-pip install pymice[ml]        # scikit-learn backends (lasso, lda)
-pip install pymice[survival]  # Cox pooling (lifelines)
-pip install pymice[dev]       # pytest, ruff, coverage
+pip install pymice-fcs[pandas]     # DataFrame API
+pip install pymice-fcs[plot]       # matplotlib diagnostics
+pip install pymice-fcs[ml]         # scikit-learn backends (lasso, lda)
+pip install pymice-fcs[survival]   # Cox pooling (lifelines)
+pip install pymice-fcs[dev]        # pytest, ruff, coverage
 ```
 
 ## Editable install (development)
