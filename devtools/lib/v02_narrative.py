@@ -10,7 +10,7 @@ from lib.vignette_catalog import step_title
 _PROSE = REFERENCE_DIR / "02_convergence_and_pooling" / "vignette_prose.json"
 
 AUTHORS = "Gerko Vink and Stef van Buuren"
-SERIES_LABEL = "Vignette 2 of 6"
+SERIES_LABEL = "Vignette 2 of 8"
 TITLE = "Algorithmic convergence and inference pooling"
 
 STEP_TITLES: dict[int, str] = {

@@ -79,6 +79,16 @@ jobs:
       - name: Structural parity (V01–V08)
         run: python -m pytest tests/parity/test_structural_alignment.py -q
 
+      - name: Vignette code-display audit
+        run: python devtools/audit_code_display.py
+
+      - name: Release checklist (structural + parity manifest + vignettes)
+        run: |
+          python -m pytest tests/parity/test_structural_alignment.py -q
+          test -f reference/parity_manifest.json
+          PYTHONPATH=devtools python -c "from lib.parity_manifest import build_manifest, load_manifest; assert load_manifest()==build_manifest()"
+          test -f docs/vignettes/index.html
+
   r-smoke:
     name: R backend smoke (Ubuntu)
     needs: lint

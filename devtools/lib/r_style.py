@@ -404,9 +404,11 @@ def format_step_md(
     status: str,
     note: str = "",
 ) -> str:
-    icon = {"match": "✅", "mismatch": "❌", "skip": "⏭️", "partial": "⚠️"}.get(status, "•")
+    icon = {"match": "✅", "mismatch": "❌", "skip": "⏭️", "partial": "⚠️", "info": "ℹ️"}.get(
+        status, "•"
+    )
     parts = [
-        f"**Compliance:** {icon} {status.upper()}",
+        f"**Parity:** {icon} {status.upper()}",
         f"**R code:** `{r_code}`",
     ]
     if note:
@@ -437,11 +439,19 @@ def format_tutorial_step_md(
     status: str = "match",
     note: str = "",
     output_lang: str = "text",
+    show_status: bool = False,
+    collapse_output_over: int = 40,
 ) -> str:
     """R vignette layout: R code, Python code, then console output."""
-    icon = {"match": "✅", "mismatch": "❌", "skip": "⏭️", "partial": "⚠️"}.get(status, "•")
-    parts = [f"**Parity:** {icon} {status.upper()}"]
-    if note:
+    parts: list[str] = []
+    if show_status:
+        icon = {"match": "✅", "mismatch": "❌", "skip": "⏭️", "partial": "⚠️", "info": "ℹ️"}.get(
+            status, "•"
+        )
+        parts.append(f"**Parity:** {icon} {status.upper()}")
+        if note:
+            parts.append(f"**Note:** {note}")
+    elif note and status in ("partial", "info", "skip"):
         parts.append(f"**Note:** {note}")
     parts.extend(
         [
@@ -469,14 +479,59 @@ def format_tutorial_step_md(
             "```python",
             python_code.strip(),
             "```",
-            "",
-            "### Output",
-            f"```{output_lang}",
-            _clean_output(output),
-            "```",
         ]
     )
+    cleaned = _clean_output(output)
+    if collapse_output_over and cleaned.count("\n") + 1 > collapse_output_over:
+        parts.extend(
+            [
+                "",
+                '<details class="long-output"><summary>Console output (click to expand)</summary>',
+                "",
+                f"```{output_lang}",
+                cleaned,
+                "```",
+                "",
+                "</details>",
+            ]
+        )
+    else:
+        parts.extend(
+            [
+                "",
+                "### Output",
+                f"```{output_lang}",
+                cleaned,
+                "```",
+            ]
+        )
     return "\n".join(parts)
+
+
+def format_section_status_md(stats: object) -> str:
+    """Aggregate parity summary for one numbered vignette step."""
+    from lib.tutorial_section import SectionStats
+
+    if not isinstance(stats, SectionStats):
+        raise TypeError("stats must be SectionStats")
+    total = stats.n_match + stats.n_mismatch + stats.n_skip + stats.n_partial + stats.n_info
+    if stats.n_mismatch:
+        label = "MISMATCH"
+        icon = "❌"
+    elif stats.n_partial:
+        label = "PARTIAL"
+        icon = "⚠️"
+    elif stats.n_skip and not stats.n_match:
+        label = "SKIP"
+        icon = "⏭️"
+    else:
+        label = "MATCH"
+        icon = "✅"
+    detail = (
+        f"{stats.n_match} exact, {stats.n_info} info, {stats.n_partial} visual, "
+        f"{stats.n_skip} skipped, {stats.n_mismatch} mismatch"
+    )
+    return f"**Step parity:** {icon} {label} ({detail} of {total} blocks)"
 
 
 def _cell_r(name: str, value: float) -> str:

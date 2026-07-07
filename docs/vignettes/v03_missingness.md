@@ -2,10 +2,10 @@
 
 *Compare to **The imputation and nonresponse models** by Gerko Vink and Stef van Buuren*
 
-**Reference:** https://www.gerkovink.com/micereference/Missingness_inspection/Missingness_inspection.html
-**Parity status:** Partially compliant — 24 match, 5 partial, 0 skipped (R-only)
+**Reference:** https://www.gerkovink.com/miceVignettes/Missingness_inspection/Missingness_inspection.html
+**Parity status:** Non-compliant — 7 mismatches, 13 match, 0 skip, 7 partial
 
-This page walks through PyMICE equivalents of the numbered exercises in the reference vignette below. Console outputs are checked for parity where deterministic; RNG differences, diagnostic plots, and R-only features are labelled in the parity notes.
+This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
 ## Parity overview
 
@@ -39,7 +39,9 @@ In this vignette we will focus on analyzing the relation between the data and th
 
 ## 1. Load packages and seed
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** Package load step; no R console output to compare.
 
 ### R code
 ```r
@@ -75,9 +77,11 @@ We choose seed value `123`. This is an arbitrary value; any value would be an eq
 
 ## 2. Inspect boys dataset
 
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 To learn more about the contents of the data, use one of the two following help commands:
 
-**Parity:** ✅ MATCH
+**Note:** Truncated R help excerpt (full pager is very long).
 
 ### R code
 ```r
@@ -194,7 +198,7 @@ _E_x_a_m_p_l_e_s:
 
 ### Python code
 ```python
-print(format_help_r('boys'))
+print(format_help_r('boys', max_lines=32))
 ```
 
 ### Output
@@ -231,82 +235,14 @@ _F_o_r_m_a_t:
 
 _D_e_t_a_i_l_s:
 
-     Random sample of 10\ Dutch growth references 1997. Variables ‘gen’
-     and ‘phb’ are ordered factors. ‘reg’ is a factor.
 
-_S_o_u_r_c_e:
-
-     Fredriks, A.M,, van Buuren, S., Burgmeijer, R.J., Meulmeester JF,
-     Beuker, R.J., Brugman, E., Roede, M.J., Verloove-Vanhorick, S.P.,
-     Wit, J.M. (2000) Continuing positive secular growth change in The
-     Netherlands 1955-1997.  _Pediatric Research_, *47*, 316-323.
-
-     Fredriks, A.M., van Buuren, S., Wit, J.M., Verloove-Vanhorick,
-     S.P. (2000). Body index measurements in 1996-7 compared with 1980.
-     _Archives of Disease in Childhood_, *82*, 107-112.
-
-_E_x_a_m_p_l_e_s:
-
-     # create two imputed data sets
-     imp <- mice(boys, m = 1, maxit = 2)
-     z <- complete(imp, 1)
-     
-     # create imputations for age <8yrs
-     plot(z$age, z$gen,
-       col = mdc(1:2)[1 + is.na(boys$gen)],
-       xlab = "Age (years)", ylab = "Tanner Stage Genital"
-     )
-     
-     # figure to show that the default imputation method does not impute BMI
-     # consistently
-     plot(z$bmi, z$wgt / (z$hgt / 100)^2,
-       col = mdc(1:2)[1 + is.na(boys$bmi)],
-       xlab = "Imputed BMI", ylab = "Calculated BMI"
-     )
-     
-     # also, BMI distributions are somewhat different
-     oldpar <- par(mfrow = c(1, 2))
-     MASS::truehist(z$bmi[!is.na(boys$bmi)],
-       h = 1, xlim = c(10, 30), ymax = 0.25,
-       col = mdc(1), xlab = "BMI observed"
-     )
-     MASS::truehist(z$bmi[is.na(boys$bmi)],
-       h = 1, xlim = c(10, 30), ymax = 0.25,
-       col = mdc(2), xlab = "BMI imputed"
-     )
-     par(oldpar)
-     
-     # repair the inconsistency problem by passive imputation
-     meth <- imp$meth
-     meth["bmi"] <- "~I(wgt/(hgt/100)^2)"
-     pred <- imp$predictorMatrix
-     pred["hgt", "bmi"] <- 0
-     pred["wgt", "bmi"] <- 0
-     imp2 <- mice(boys, m = 1, maxit = 2, meth = meth, pred = pred)
-     z2 <- complete(imp2, 1)
-     
-     # show that new imputations are consistent
-     plot(z2$bmi, z2$wgt / (z2$hgt / 100)^2,
-       col = mdc(1:2)[1 + is.na(boys$bmi)],
-       ylab = "Calculated BMI"
-     )
-     
-     # and compare distributions
-     oldpar <- par(mfrow = c(1, 2))
-     MASS::truehist(z2$bmi[!is.na(boys$bmi)],
-       h = 1, xlim = c(10, 30), ymax = 0.25, col = mdc(1),
-       xlab = "BMI observed"
-     )
-     MASS::truehist(z2$bmi[is.na(boys$bmi)],
-       h = 1, xlim = c(10, 30), ymax = 0.25, col = mdc(2),
-       xlab = "BMI imputed"
-     )
-     par(oldpar)
+... (72 more lines — full R help page omitted)
 ```
 
 ## 3. Dataset size and missingness
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (3 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 
 ### R code
 ```r
@@ -340,7 +276,6 @@ print(format_boys_head_r())
 36 0.068 55.5 4.655 15.11 37.0 <NA> <NA> NA south
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -362,7 +297,6 @@ print(f'[1] {boys.shape[0]}')
 [1] 748
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -416,7 +350,8 @@ print(format_summary_boys_r(boys, boy_names))
 
 ## 4. Missing data patterns
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -470,7 +405,8 @@ There are 13 patterns in total, with the pattern where `gen`, `phb` and `tv` are
 
 ## 5. Patterns with missing gen
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 **Note:** R draws default `md.pattern` graphic when assigning `mpat`.
 
 ### R code
@@ -488,7 +424,6 @@ mpat = md_pattern(boys, boy_names)
 (plot below)
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -515,9 +450,10 @@ Answer: 8 patterns (503 cases)
 
 ## 6. Histogram by missing gen
 
+**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 To create said histogram in `R`, a missingness indicator for `gen` has to be created. A missingness indicator is a dummy variable with value `1` for observed values (in this case genital status) and `0` for missing values. Create a missingness indicator for `gen` by typing
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -602,7 +538,8 @@ R
 print(format_bool_vector_r(np.isnan(boys[:, gen_col])))
 ```
 
-### Output
+<details class="long-output"><summary>Console output (click to expand)</summary>
+
 ```text
 [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
   [12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
@@ -674,11 +611,12 @@ print(format_bool_vector_r(np.isnan(boys[:, gen_col])))
   [738] FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 ```
 
+</details>
+
 As we can see, the missingness indicator tells us for each value in `gen` whether it is missing (`TRUE`) or observed (`FALSE`).
 
 A histogram can be made with the function `histogram()`.
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -702,7 +640,6 @@ or, equivalently, one could use
 
 Writing the latter line of code for plots is more efficient than selecting every part of the `boys` data with the `boys$...` command, especially if plots become more advanced. The code for a conditional histogram of `age` given `R` is
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -728,7 +665,9 @@ The histogram shows that the missingness in `gen` is not equally distributed acr
 
 ## 7. Default MICE imputation
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** Creates `imp1` object; R vignette prints no console output here.
 
 ### R code
 ```r
@@ -747,7 +686,8 @@ imp1 = mice(boys, column_names=boy_names, m=5, maxit=5, print_flag=False)
 
 ## 8. Compare imputed means
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (3 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 
 ### R code
 ```r
@@ -799,7 +739,6 @@ print(format_summary_boys_r(boys, boy_names))
  NA's   :46                 NA's:503   NA's   :522
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -852,7 +791,6 @@ Most means are roughly equal, except the mean of `tv`, which is much lower in th
 
 Investigating univariate properties by using functions such as `summary()`, may not be ideal in the case of hundreds of variables. To extract just the information you need, for all imputed datasets, we can make use of the `with()` function. To obtain summaries for each imputed `tv` only, type
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -895,9 +833,11 @@ print(format_tv_means_tibble_r(means))
 
 ## 9. Inspect mammalsleep data
 
+**Step parity:** ❌ MISMATCH (3 exact, 0 info, 1 visual, 0 skipped, 1 mismatch of 5 blocks)
+
 The `mammalsleep` dataset is part of `mice`. It contains the Allison and Cicchetti (1976) data for mammalian species. To learn more about this data, type
 
-**Parity:** ✅ MATCH
+**Note:** Truncated R help excerpt (full pager is very long).
 
 ### R code
 ```r
@@ -970,7 +910,7 @@ _E_x_a_m_p_l_e_s:
 
 ### Python code
 ```python
-print(format_help_r('mammalsleep'))
+print(format_help_r('mammalsleep', max_lines=28))
 ```
 
 ### Output
@@ -1004,40 +944,9 @@ _F_o_r_m_a_t:
 
      mls Maximum life span (years)
 
-     gt Gestation time (days)
-
-     pi Predation index (1-5), 1 = least likely to be preyed upon
-
-     sei Sleep exposure index (1-5), 1 = least exposed (e.g. animal
-          sleeps in a well-protected den), 5 = most exposed
-
-     odi Overall danger index (1-5) based on the above two indices and
-          other information, 1 = least danger (from other animals), 5 =
-          most danger (from other animals)
-
-_D_e_t_a_i_l_s:
-
-     Allison and Cicchetti (1976) investigated the interrelationship
-     between sleep, ecological, and constitutional variables.  They
-     assessed these variables for 39 mammalian species. The authors
-     concluded that slow-wave sleep is negatively associated with a
-     factor related to body size. This suggests that large amounts of
-     this sleep phase are disadvantageous in large species.  Also,
-     paradoxical sleep (REM sleep) was associated with a factor related
-     to predatory danger, suggesting that large amounts of this sleep
-     phase are disadvantageous in prey species.
-
-_S_o_u_r_c_e:
-
-     Allison, T., Cicchetti, D.V. (1976). Sleep in Mammals: Ecological
-     and Constitutional Correlates. Science, 194(4266), 732-734.
-
-_E_x_a_m_p_l_e_s:
-
-     sleep <- data(mammalsleep)
+... (33 more lines — full R help page omitted)
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1085,7 +994,6 @@ print(format_mammalsleep_head_r())
 6   4
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1153,7 +1061,6 @@ print(format_summary_mammalsleep_r(ms_full, ms_names))
  NA's   : 4
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1197,7 +1104,6 @@ str(mammalsleep)
  $ odi    : int  3 3 1 3 4 4 1 4 1 1 ...
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1225,15 +1131,42 @@ print(format_md_pattern_r(md_pattern(ms_full, ms_names)))
 
 ### Output
 ```text
-    species  bw brw  pi sei odi  ts mls  gt  ps sws     
+    species  bw brw  pi sei odi  gt  ts mls  ps sws     
  42   1   1   1   1   1   1   1   1   1   1   1  0
   9   1   1   1   1   1   1   1   1   1   0   0  2
-  3   1   1   1   1   1   1   1   1   0   1   1  1
-  2   1   1   1   1   1   1   1   0   1   1   1  1
-  1   1   1   1   1   1   1   1   0   1   0   0  3
-  1   1   1   1   1   1   1   1   0   0   1   1  2
-  2   1   1   1   1   1   1   0   1   1   1   0  2
-  2   1   1   1   1   1   1   0   1   1   0   0  3
+  2   1   1   1   1   1   1   1   1   0   1   1  1
+  1   1   1   1   1   1   1   1   1   0   0   0  3
+  2   1   1   1   1   1   1   1   0   1   1   0  2
+  2   1   1   1   1   1   1   1   0   1   0   0  3
+  3   1   1   1   1   1   1   0   1   1   1   1  1
+  1   1   1   1   1   1   1   0   1   0   1   1  2
+      0   0   0   0   0   0   4   4   4   12   14  38
+```
+
+**Diff hint:**
+```text
+Expected:
+   species bw brw pi sei odi ts mls gt ps sws
+42       1  1   1  1   1   1  1   1  1  1   1  0
+9        1  1   1  1   1   1  1   1  1  0   0  2
+3        1  1   1  1   1   1  1   1  0  1   1  1
+2        1  1   1  1   1   1  1   0  1  1   1  1
+1        1  1   1  1   1   1  1   0  1  0   0  3
+1        1  1   1  1   1   1  1   0  0  1   1  2
+2        1  1   1  1   1   1  0   1  1  1   0  2
+2        1  1   1  1   1   1  0   1  1  0   0  3
+         0  0   0  0   0   0  4   4  4 12  14 38
+
+Actual:
+    species  bw brw  pi sei odi  gt  ts mls  ps sws     
+ 42   1   1   1   1   1   1   1   1   1   1   1  0
+  9   1   1   1   1   1   1   1   1   1   0   0  2
+  2   1   1   1   1   1   1   1   1   0   1   1  1
+  1   1   1   1   1   1   1   1   1   0   0   0  3
+  2   1   1   1   1   1   1   1   0   1   1   0  2
+  2   1   1   1   1   1   1   1   0   1   0   0  3
+  3   1   1   1   1   1   1   0   1   1   1   1  1
+  1   1   1   1   1   1   1   0   1   0   1   1  2
       0   0   0   0   0   0   4   4   4   12   14  38
 ```
 
@@ -1241,7 +1174,8 @@ Answer: 8 patterns in total, with the pattern where everything is observed occur
 
 ## 10. Impute mammalsleep with PMM
 
-**Parity:** ✅ MATCH
+**Step parity:** ❌ MISMATCH (0 exact, 0 info, 1 visual, 0 skipped, 1 mismatch of 2 blocks)
+
 
 ### R code
 ```r
@@ -1260,12 +1194,20 @@ imp_ms = mice(ms_full, column_names=ms_names, m=5, maxit=10, print_flag=False)
 
 ### Output
 ```text
+Warning: Number of logged events: 27
+```
+
+**Diff hint:**
+```text
+Expected:
 Warning: Number of logged events: 29
+
+Actual:
+Warning: Number of logged events: 27
 ```
 
 Inspect the trace lines
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -1287,7 +1229,8 @@ plot_mids(imp_ms, variables=['sws', 'ps', 'ts'])
 
 ## 11. Regression on mammalsleep
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -1306,7 +1249,8 @@ fit1 = with_mids(imp_ms, formula='sws ~ log10(bw) + odi')
 
 ## 12. Pool mammalsleep model
 
-**Parity:** ✅ MATCH
+**Step parity:** ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 2 mismatch of 2 blocks)
+
 
 ### R code
 ```r
@@ -1335,6 +1279,20 @@ print(format_pool_mipo_r(pool(fit1)))
 ```text
 Class: mipo    m = 5 
               estimate       ubar          b         t dfcom        df
+(Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108
+log10(bw)     -1.1540768  0.08460947  0.00778340   0.0939495    59  45.62378
+odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
+                  riv    lambda       fmi
+(Intercept)    0.0689621   0.0645132   0.0994187
+log10(bw)      0.1103904   0.0994159   0.1364588
+odi            0.1321015   0.1166870   0.1550547
+```
+
+**Diff hint:**
+```text
+Expected:
+Class: mipo    m = 5 
+              estimate       ubar          b         t dfcom        df
 (Intercept)   11.3728381  0.60565082  0.03950197   0.6530532    59  49.49987
 log10(bw)     -1.1493959  0.08549939  0.01114601   0.0988746    59  40.27585
 odi           -0.8244479  0.07572358  0.00761169   0.0848576    59  44.39847
@@ -1342,9 +1300,19 @@ odi           -0.8244479  0.07572358  0.00761169   0.0848576    59  44.39847
 (Intercept)    0.0782668   0.0725858   0.1079159
 log10(bw)      0.1564364   0.1352745   0.1752380
 odi            0.1206233   0.1076395   0.1452930
+
+Actual:
+Class: mipo    m = 5 
+              estimate       ubar          b         t dfcom        df
+(Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108
+log10(bw)     -1.1540768  0.08460947  0.00778340   0.0939495    59  45.62378
+odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
+                  riv    lambda       fmi
+(Intercept)    0.0689621   0.0645132   0.0994187
+log10(bw)      0.1103904   0.0994159   0.1364588
+odi            0.1321015   0.1166870   0.1550547
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1367,16 +1335,32 @@ print(format_pool_v03_summary_r(summary_pool(pool(fit1))))
 ### Output
 ```text
               estimate std.error statistic        df      p.value
+(Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
+log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
+odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03
+```
+
+**Diff hint:**
+```text
+Expected:
+              estimate std.error statistic        df      p.value
 (Intercept)  11.3728381 0.8081171  14.073256 49.499872 0.000000000e+00
 log10(bw)    -1.1493959 0.3144433  -3.655336 40.275855 7.345096267e-04
 odi          -0.8244479 0.2913033  -2.830204 44.398469 6.961767674e-03
+
+Actual:
+              estimate std.error statistic        df      p.value
+(Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
+log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
+odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03
 ```
 
 The `fmi` and `lambda` are much too high. This is due to `species` being included in the imputation model. Because there are 62 species and mice automatically converts factors (categorical variables) to dummy variables, each species is modeled by its own imputation model.
 
 ## 13. Drop species column
 
-**Parity:** ✅ MATCH
+**Step parity:** ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 1 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -1395,12 +1379,22 @@ impnew = mice(ms_no_sp, column_names=ms_no_names, m=5, maxit=10, print_flag=Fals
 
 ### Output
 ```text
+Warning: Number of logged events: 15
+```
+
+**Diff hint:**
+```text
+Expected:
 Warning: Number of logged events: 19
+
+Actual:
+Warning: Number of logged events: 15
 ```
 
 ## 14. Re-impute without species
 
-**Parity:** ✅ MATCH
+**Step parity:** ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 2 mismatch of 2 blocks)
+
 
 ### R code
 ```r
@@ -1431,6 +1425,20 @@ print(format_pool_mipo_r(pool(fit2)))
 ```text
 Class: mipo    m = 5 
               estimate       ubar          b         t dfcom        df
+(Intercept)   11.3500427  0.61817617  0.04037797   0.6666297    59  49.48618
+log10(bw)     -1.1079037  0.08726759  0.00546546   0.0938261    59  49.87051
+odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
+                  riv    lambda       fmi
+(Intercept)    0.0783815   0.0726844   0.1080200
+log10(bw)      0.0751545   0.0699011   0.1050852
+odi            0.1258433   0.1117769   0.1497517
+```
+
+**Diff hint:**
+```text
+Expected:
+Class: mipo    m = 5 
+              estimate       ubar          b         t dfcom        df
 (Intercept)   11.3868706  0.61202922  0.04053099   0.6606664    59  49.35623
 log10(bw)     -1.1268662  0.08639983  0.00589085   0.0934689    59  49.07481
 odi           -0.8200122  0.07652107  0.00917601   0.0875323    59  41.68313
@@ -1438,9 +1446,19 @@ odi           -0.8200122  0.07652107  0.00917601   0.0875323    59  41.68313
 (Intercept)    0.0794687   0.0736184   0.1090060
 log10(bw)      0.0818176   0.0756297   0.1111314
 odi            0.1438977   0.1257960   0.1649250
+
+Actual:
+Class: mipo    m = 5 
+              estimate       ubar          b         t dfcom        df
+(Intercept)   11.3500427  0.61817617  0.04037797   0.6666297    59  49.48618
+log10(bw)     -1.1079037  0.08726759  0.00546546   0.0938261    59  49.87051
+odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
+                  riv    lambda       fmi
+(Intercept)    0.0783815   0.0726844   0.1080200
+log10(bw)      0.0751545   0.0699011   0.1050852
+odi            0.1258433   0.1117769   0.1497517
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1463,16 +1481,32 @@ print(format_pool_v03_summary_r(summary_pool(pool(fit2))))
 ### Output
 ```text
               estimate std.error statistic        df      p.value
+(Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
+log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
+odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03
+```
+
+**Diff hint:**
+```text
+Expected:
+              estimate std.error statistic        df      p.value
 (Intercept)  11.3868706 0.8128139  14.009198 49.356232 0.000000000e+00
 log10(bw)    -1.1268662 0.3057268  -3.685861 49.074812 5.692317241e-04
 odi          -0.8200122 0.2958585  -2.771636 41.683126 8.299348343e-03
+
+Actual:
+              estimate std.error statistic        df      p.value
+(Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
+log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
+odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03
 ```
 
 Note that the `fmi` and `lambda` have dramatically decreased. The imputation model has been greatly improved.
 
 ## 15. Trace plot for impnew
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code

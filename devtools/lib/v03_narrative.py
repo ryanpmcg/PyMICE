@@ -10,7 +10,7 @@ from lib.vignette_catalog import step_title
 _PROSE = REFERENCE_DIR / "03_missingness_inspection" / "vignette_prose.json"
 
 AUTHORS = "Gerko Vink and Stef van Buuren"
-SERIES_LABEL = "Vignette 3 of 6"
+SERIES_LABEL = "Vignette 3 of 8"
 TITLE = "`mice`: The imputation and nonresponse models"
 
 STEP_TITLES: dict[int, str] = {

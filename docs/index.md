@@ -6,7 +6,22 @@ PyMICE implements **Multivariate Imputation by Chained Equations (MICE / FCS)** 
 
 - [Install](install.md)
 - [Quick start](quickstart.md)
-- [Vignette walkthroughs](vignettes/index.html) — R-aligned tutorial reports (V01–V08)
+- [Vignette walkthroughs](vignettes/index.html) — Python walkthroughs of the official R `mice` tutorials (V01–V08); start with **V1: Ad Hoc MICE**
+
+### Vignette quick links
+
+| # | Topic | Start here |
+|---|--------|------------|
+| V1 | [Ad Hoc MICE](vignettes/v01_ad_hoc_mice.html) | Recommended first tutorial |
+| V2 | [Convergence & pooling](vignettes/v02_convergence_pooling.html) | Traces and `pool()` |
+| V3 | [Missingness models](vignettes/v03_missingness.html) | Patterns and inspection |
+| V4 | [Passive imputation](vignettes/v04_passive.html) | Passive & post-processing |
+| V5 | [Multilevel data](vignettes/v05_multilevel.html) | Clustered imputation |
+| V6 | [Sensitivity analysis](vignettes/v06_sensitivity.html) | δ adjustment & survival |
+| V7 | [Ampute (appendix)](vignettes/v07_ampute.html) | Simulate missingness |
+| V8 | [Parallel MICE (appendix)](vignettes/v08_futuremice.html) | `futuremice` workflow |
+
+Full parity table, learning path, and pytest status: [vignettes/index.html](vignettes/index.html).
 - [Citing PyMICE](citing.md)
 
 ## Maintainer / parity

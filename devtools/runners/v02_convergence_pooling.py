@@ -215,7 +215,7 @@ def run() -> VignetteReport:
             TutorialPart(
                 r_code='pred[ ,"hyp"] <- 0\npred',
                 python_code=(
-                    "pred[:, names.index('age')] = 0\nprint(format_predictor_matrix(names, pred))"
+                    "pred[:, names.index('hyp')] = 0\nprint(format_predictor_matrix(names, pred))"
                 ),
                 run=lambda: format_predictor_matrix(names, pred_mod),
                 r_expected=g("02", 2, 4),

@@ -375,8 +375,17 @@ def run() -> VignetteReport:
                 narrative_before=(
                     "The R tutorial discusses custom missingness patterns, frequency vectors, "
                     "MAR weights, variable `type`, the `run` flag, and MNAR `odds` in depth. "
-                    "PyMICE implements these via `ampute()` and `run_ampute_chain()`; see "
-                    "`docs/dev/PARITY_STATUS.md` and `pymice.ampute` for API parity notes."
+                    "PyMICE exposes the same concepts on `ampute()`:\n\n"
+                    "```python\n"
+                    "from pymice import ampute\n"
+                    "import numpy as np\n"
+                    "x = np.random.default_rng(1).normal(size=(200, 3))\n"
+                    "res = ampute(x, prop=0.3, mech='MAR', patterns=[[1, 0, 1]], freq=[1])\n"
+                    "res.patterns  # which columns are amputed per pattern\n"
+                    "res.freq      # pattern weights\n"
+                    "res.weights   # MAR odds / weights matrix\n"
+                    "```\n\n"
+                    "See `docs/dev/PARITY_STATUS.md` and `help('ampute')` for full API notes."
                 ),
                 r_code="# See reference/07_ampute/vignette_extracted.R sections on patterns/odds/run",
                 python_code="# Reference-only — not a separate console block in the R snapshot",

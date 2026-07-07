@@ -10,7 +10,7 @@ from lib.vignette_catalog import step_title
 _PROSE = REFERENCE_DIR / "08_futuremice" / "vignette_prose.json"
 
 AUTHORS = "Thom Benjamin Volker and Gerko Vink"
-SERIES_LABEL = "Futuremice tutorial"
+SERIES_LABEL = "Vignette 8 of 8"
 TITLE = "Wrapper function `futuremice`"
 
 STEP_TITLES: dict[int, str] = {

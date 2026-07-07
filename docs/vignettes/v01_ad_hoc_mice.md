@@ -2,10 +2,10 @@
 
 *Compare to **Ad hoc methods and mice** by Gerko Vink and Stef van Buuren*
 
-**Reference:** https://www.gerkovink.com/micereference/Ad_hoc_and_mice/Ad_hoc_methods.html
-**Parity status:** Partially compliant — 25 match, 2 partial, 0 skipped (R-only)
+**Reference:** https://www.gerkovink.com/miceVignettes/Ad_hoc_and_mice/Ad_hoc_methods.html
+**Parity status:** Partially compliant — 24 match, 1 info, 2 partial, 0 skipped (R-only)
 
-This page walks through PyMICE equivalents of the numbered exercises in the reference vignette below. Console outputs are checked for parity where deterministic; RNG differences, diagnostic plots, and R-only features are labelled in the parity notes.
+This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
 ## Parity overview
 
@@ -26,11 +26,9 @@ These numbered steps are deterministic and are checked against `reference/01_ad_
 ### Expected to differ (not bit-identical to R snapshot)
 
 - **Step 1** — package load; no R console output to compare.
+- **Step 2** — `help('nhanes')` static R pager snapshot (informational; text matches reference).
 - **Step 4** — `md.pattern(nhanes)` grid layout and colours match R; rendering is matplotlib.
 - **Step 7** — `densityplot(nhanes$bmi)` uses R ``bw.nrd0`` bandwidth and ``mdc`` palette; shape should closely match lattice.
-
-- **Step 2** — `help('nhanes')` R pager snapshot (static reference text).
-
 - **Steps 8–9** — `norm.predict` after `densityplot(nhanes$bmi)` on session R stream (lattice RNG advance mirrored).
 
 ## Introduction
@@ -47,7 +45,9 @@ No previous experience with `R` is required.
 
 ## 1. Load packages
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** Package load step; no R console output to compare.
 
 ### R code
 ```r
@@ -93,9 +93,10 @@ If `mice` is not yet installed, run `install.packages("mice")` in R. PyMICE is i
 
 ## 2. Inspect incomplete data
 
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 The `mice` package contains several datasets. Once the package is loaded, these datasets can be used. Have a look at the `nhanes` dataset (Schafer, 1997, Table 6.14) by typing:
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -171,7 +172,6 @@ The `nhanes` dataset is a small data set with non-monotone missing values. It co
 
 To learn more about the data, use one of the two following help commands:
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -230,7 +230,8 @@ _E_x_a_m_p_l_e_s:
 print(format_help_r('nhanes'))
 ```
 
-### Output
+<details class="long-output"><summary>Console output (click to expand)</summary>
+
 ```text
 nhanes                  package:mice                   R Documentation
 
@@ -276,11 +277,14 @@ _E_x_a_m_p_l_e_s:
      complete(imp)
 ```
 
+</details>
+
 ## 3. Summarize variables
+
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 Get an overview of the data by the `summary()` command:
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -318,9 +322,10 @@ print(format_summary_horizontal_r(arr, names))
 
 ## 4. Missing data pattern
 
+**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 Check the missingness pattern for the `nhanes` dataset
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -356,7 +361,6 @@ print(format_md_pattern_r(md_pattern(nhanes)))
 
 The missingness pattern shows that there are 27 missing values in total: 10 for `chl`, 9 for `bmi` and 8 for `hyp`. Moreover, there are thirteen completely observed rows, four rows with 1 missing, one row with 2 missings and seven rows with 3 missings. Looking at the missing data pattern is always useful (but may be difficult for datasets with many variables). It can give you an indication on how much information is missing and how the missingness is distributed.
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R ``md.pattern`` grid (blue=observed, red=missing).
 
 ### R code
@@ -382,7 +386,8 @@ md_pattern(nhanes, plot=True)
 
 ## 5. Regression on incomplete data
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -441,7 +446,8 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561
 
 ## 6. Mean imputation
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -470,7 +476,8 @@ The imputations are now done. As you can see, the algorithm ran for 1 iteration 
 
 ## 7. Explore mean-imputed data
 
-**Parity:** ✅ MATCH
+**Step parity:** ⚠️ PARTIAL (3 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 4 blocks)
+
 
 ### R code
 ```r
@@ -544,7 +551,6 @@ print(format_complete_r(complete(imp_mean, 1), names))
 
 We see the repetitive numbers `26.5625` for `bmi`, `1.2352594` for `hyp`, and `191.4` for `chl`. These can be confirmed as the means of the respective variables (columns):
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -572,7 +578,6 @@ We saw during the inspection of the missing data pattern that variable `age` has
 
 To inspect the regression model with the imputed data, run:
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -606,7 +611,6 @@ print(format_pool_tibble_r(summary(pool(fit))))
 
 It is clear that nothing changed, but then again this is not surprising as variable `bmi` is somewhat normally distributed and we are just adding weight to the mean.
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Lattice-style density of observed BMI (R ``bw.nrd0`` bandwidth, ``mdc`` colours).
 
 ### R code
@@ -629,7 +633,8 @@ save_figure(fig, assets_dir, 'v01_bmi_density.png')
 
 ## 8. Regression imputation
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -660,7 +665,8 @@ The imputations are now done. This code imputes the missing values in the data s
 
 ## 9. Inspect regression imputation
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 
 ### R code
 ```r
@@ -736,7 +742,6 @@ The repetitive numbering is gone. We have now obtained a more natural looking se
 
 To inspect the regression model with the imputed data, run:
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -772,7 +777,8 @@ It is clear that something has changed. In fact, we extrapolated (part of) the r
 
 ## 10. Stochastic regression imputation
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -801,7 +807,8 @@ The imputations are now done. This code imputes the missing values in the data s
 
 ## 11. Inspect stochastic imputation
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 
 ### R code
 ```r
@@ -877,7 +884,6 @@ We have once more obtained a more natural looking set of imputations, where inst
 
 To inspect the regression model with the imputed data, run:
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -911,6 +917,8 @@ print(format_pool_tibble_r(summary(pool(fit))))
 
 ## 12. Reproducible stochastic imputation
 
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 The R vignette shows the following pooled regression after re-running with `seed = 123`:
 
 ```text
@@ -923,7 +931,6 @@ The R vignette shows the following pooled regression after re-running with `seed
 
 The imputation procedure uses random sampling, and therefore, the results will be (perhaps slightly) different if we repeat the imputations. In order to get exactly the same result, you can use the seed argument
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -967,7 +974,8 @@ where 123 is some arbitrary number that you can choose yourself. Re-running this
 
 ## 13. Default MICE imputation
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (5 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 5 blocks)
+
 
 ### R code
 ```r
@@ -1041,7 +1049,6 @@ imp_pmm = mice(nhanes, m=5, maxit=5, print=False)
 
 The imputations are now done. As you can see, the algorithm ran for 5 iterations (the default) and presented us with 5 imputations for each missing datum. For the rest of this document we will omit printing of the iteration cycle when we run `mice`. We do so by adding `print=F` to the `mice` call.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1105,7 +1112,6 @@ The object `imp` contains a multiply imputed data set (of class `mids`). It enca
 
 To obtain an overview of the information stored in the object `imp`, use the `attributes()` function:
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1147,7 +1153,6 @@ $class
 
 For example, the original data are stored as
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1221,7 +1226,6 @@ print(format_nhanes_r(imp_pmm.data, names))
 
 and the imputations are stored as
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1319,9 +1323,10 @@ $chl
 
 ## 14. Extract completed data
 
+**Step parity:** ✅ MATCH (3 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 By default, `mice()` calculates five (*m* = 5) imputed data sets. In order to get the third imputed data set, use the `complete()` function
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1351,7 +1356,6 @@ print(format_md_pattern_filled_r(md_pattern(filled3, column_names=names)))
 
 The collection of the *m* imputed data sets can be exported by function `complete()` in long, broad and repeated formats. For example,
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1494,7 +1498,8 @@ c.long
 print(format_complete_long_r(imp_pmm, names))
 ```
 
-### Output
+<details class="long-output"><summary>Console output (click to expand)</summary>
+
 ```text
     .imp .id age bmi hyp chl
  1      1   1    1 24.9   1 187
@@ -1624,9 +1629,10 @@ print(format_complete_long_r(imp_pmm, names))
 125      5  25    2 27.4   1 186
 ```
 
+</details>
+
 and
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1695,7 +1701,8 @@ c.broad
 print(format_complete_broad_r(imp_pmm, names))
 ```
 
-### Output
+<details class="long-output"><summary>Console output (click to expand)</summary>
+
 ```text
    age.1 bmi.1 hyp.1 chl.1 age.2 bmi.2 hyp.2 chl.2 age.3 bmi.3 hyp.3 chl.3
  1         1  24.9     1   187     1  25.5     1   238     1  27.4     1   187
@@ -1750,3 +1757,5 @@ print(format_complete_broad_r(imp_pmm, names))
 24         3  24.9     1   204     3  24.9     1   206
 25         2  27.4     1   186     2  27.4     1   186
 ```
+
+</details>

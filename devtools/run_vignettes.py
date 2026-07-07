@@ -43,7 +43,8 @@ RUNNERS = [
 ]
 
 
-def run_pytest() -> tuple[int, str]:
+def run_pytest_ci_subset() -> tuple[int, str]:
+    """Run the same pytest subset as GitHub Actions (no R-backend tests)."""
     import io
 
     import pytest
@@ -54,11 +55,21 @@ def run_pytest() -> tuple[int, str]:
     sys.stdout = buffer
     sys.stderr = buffer
     try:
-        exit_code = pytest.main(["tests/", "-v", "--tb=short", "-q"])
+        exit_code = pytest.main(
+            [
+                "tests/",
+                "-q",
+                "--tb=line",
+                "--ignore=tests/parity/test_rng_parity.py",
+                "-m",
+                "not r_backend",
+            ]
+        )
     finally:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
-    return int(exit_code), buffer.getvalue().strip()
+    text = buffer.getvalue().strip() or "(pytest produced no output)"
+    return int(exit_code), text
 
 
 def main() -> int:
@@ -101,11 +112,9 @@ def main() -> int:
         status = "ERROR" if report.error else "ok"
         print(f"Vignette {report.number}: {report.title} — {status}", flush=True)
 
-    exit_code, pytest_text = (
-        0,
-        "pytest skipped inside run_vignettes.py (please run pytest manually in terminal)",
-    )
-    write_reports(OUTPUT, reports, pytest_text)
+    print("Running pytest (CI-equivalent subset)...", flush=True)
+    exit_code, pytest_text = run_pytest_ci_subset()
+    write_reports(OUTPUT, reports, pytest_text, pytest_exit_code=exit_code)
 
     index_html = OUTPUT / "index.html"
     print(f"\nReports written to: {OUTPUT}")

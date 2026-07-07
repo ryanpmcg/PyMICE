@@ -431,7 +431,10 @@ def run() -> VignetteReport:
                     "plot_xy_imputed(imp_pmm, 'bmi', _calc_bmi(complete(imp_pmm, 1), boy_names))"
                 ),
                 is_plot=True,
-                plot_note="Uses default `pmm` imputation (`imp.pmm`) — step 4 `imp` not available.",
+                plot_note=(
+                    "R `xyplot` uses norm+post `imp` from step 4; PyMICE plots default PMM "
+                    "(`imp_pmm`) to show BMI inconsistency before passive imputation in step 7."
+                ),
                 narrative_after=N6_AFTER,
             ),
         ],

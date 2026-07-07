@@ -220,10 +220,19 @@ _HELP_PAGES = {
 }
 
 
-def format_help_r(topic: str) -> str:
+def format_help_r(topic: str, *, max_lines: int | None = None) -> str:
     """Return R ``help(topic)`` pager text for vignette datasets."""
     key = topic.strip().lower().lstrip("?")
     try:
-        return _HELP_PAGES[key]
+        text = _HELP_PAGES[key]
     except KeyError as exc:
         raise KeyError(topic) from exc
+    if max_lines is None:
+        return text
+    lines = text.splitlines()
+    if len(lines) <= max_lines:
+        return text
+    omitted = len(lines) - max_lines
+    return (
+        "\n".join(lines[:max_lines]) + f"\n\n... ({omitted} more lines — full R help page omitted)"
+    )

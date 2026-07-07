@@ -2,10 +2,10 @@
 
 *Compare to **An approach to sensitivity analysis** by Gerko Vink and Stef van Buuren*
 
-**Reference:** https://www.gerkovink.com/micereference/Sensitivity_analysis/Sensitivity_analysis.html
-**Parity status:** Partially compliant — 11 match, 11 partial, 0 skipped (R-only)
+**Reference:** https://www.gerkovink.com/miceVignettes/Sensitivity_analysis/Sensitivity_analysis.html
+**Parity status:** Partially compliant — 9 match, 2 info, 11 partial, 0 skipped (R-only)
 
-This page walks through PyMICE equivalents of the numbered exercises in the reference vignette below. Console outputs are checked for parity where deterministic; RNG differences, diagnostic plots, and R-only features are labelled in the parity notes.
+This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
 ## Parity overview
 
@@ -45,7 +45,9 @@ The main question is how blood pressure affects mortality risk in the oldest old
 
 ## 1. Load packages
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** Package load step; no console output.
 
 ### R code
 ```r
@@ -80,7 +82,8 @@ We choose seed value `123` for reproducibility in the PyMICE walkthrough below.
 
 ## 2. Inspect leiden data
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 4 blocks)
+
 **Note:** Numeric summaries match; R includes factor-style labels for some columns.
 
 ### R code
@@ -141,7 +144,6 @@ print(format_summary_r(data, names))
   Min.   :   90.00
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -183,7 +185,6 @@ print(g('06', 2, 2))
  $ woon   : num  4 3 0 1 0 3 3 0 4 4 ...
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Values match; R console spacing and float width differ slightly.
 
 ### R code
@@ -217,7 +218,6 @@ print(format_dataframe_r(data[:6], names))
    6        0    91.39    120.0       80        0        5       NA       NA       NA        3
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** R `tail()` preserves original row names (1229+); CSV uses 1..956.
 
 ### R code
@@ -253,7 +253,8 @@ print(format_dataframe_r(data[-6:], names))
 
 ## 3. Dry run missing counts
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -287,7 +288,8 @@ There are 121 missings (`NA`'s) for `rrsyst`, 126 missings for `rrdiast`, 229 mi
 
 ## 4. Pattern and flux plots
 
-**Parity:** ✅ MATCH
+**Step parity:** ⚠️ PARTIAL (2 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 
 ### R code
 ```r
@@ -321,7 +323,7 @@ print(format_md_pattern_r(mp))
 
 ### Output
 ```text
-    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol     
+    sexe lftanam survda dwa woon mmse rrsyst rrdiast alb chol     
 621   1   1   1   1   1   1   1   1   1   1  0
   2   1   1   1   1   1   1   1   1   1   0  1
   1   1   1   1   1   1   1   1   1   0   1  1
@@ -339,7 +341,6 @@ print(format_md_pattern_r(mp))
       0   0   0   0   0   85   121   126   229   232  793
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -362,7 +363,6 @@ Variables with higher outflux are (potentially) the more powerful predictors. Va
 
 The variables in the upper left corner have the more complete information, so the number of missing data problems for this group is relatively small. The variables in the middle have an outflux between 0.5 and 0.8, which is small. Missing data problems are thus more severe, but potentially this group could also contain important variables. The lower (bottom) variables have an outflux with 0.5 or lower, so their predictive power is limited. Also, this group has a higher influx, and, thus, depend more highly on the imputation model.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -410,7 +410,8 @@ In the next steps we are going to impute `rrsyst` and `rrdiast` under two scenar
 
 ## 5. Kaplan–Meier by missingness
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 **Note:** Matplotlib Kaplan–Meier curves by `rrsyst` missingness.
 
 ### R code
@@ -445,7 +446,8 @@ In the next steps we are going to impute `rrsyst` and `rrdiast` under two scenar
 
 ## 6. Delta adjustment vector
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -467,7 +469,9 @@ The recipe for creating MNAR imputations for δ ≠ 0 uses the post-processing f
 
 ## 7. Delta-adjusted imputation
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** δ chain via `run_v06_leiden_delta_chain()` (`rng='r'`, `seed=i`); no R console output.
 
 ### R code
 ```r
@@ -496,7 +500,8 @@ created 5 delta scenarios
 
 ## 8. Boxplot blood pressure
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -514,7 +519,6 @@ plot_bwplot_grid(imp_all[0])
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** δ=-20 scenario (`imp.all[[5]]` in R).
 
 ### R code
@@ -540,7 +544,8 @@ We can clearly see that the adjustment has an effect on the imputations for `rrs
 
 ## 9. Density blood pressure
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -558,7 +563,6 @@ plot_density(imp_all[0], 'rrsyst')
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -584,7 +588,8 @@ We can once more clearly see that the adjustment has an effect on the imputation
 
 ## 10. Scatter blood pressure
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -602,7 +607,6 @@ plot_xy_by_imp(imp_all[0], 'rrsyst', 'rrdiast')
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -636,7 +640,8 @@ See Van Buuren (2012, pp.186) for more information.
 
 ## 11. Survival models per scenario
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -781,7 +786,8 @@ cox_fits = [with_mids(imp, expr=leiden_coxph) for imp in imp_all]
 print(format_mira_cox_v06_r(fit3, nmis=imp_all[2].nmis))
 ```
 
-### Output
+<details class="long-output"><summary>Console output (click to expand)</summary>
+
 ```text
 call :
 with.mids(data = imp.all[[3]], expr = cda)
@@ -908,9 +914,12 @@ Likelihood ratio test=38.51  on 5 df, p=2.99e-7
 n= 956, number of events= 723
 ```
 
+</details>
+
 ## 12. Pool survival models
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 
 ### R code
 ```r
@@ -959,7 +968,6 @@ C(sbpgp, contr.treatment(6, base = 3))5     212.37837 0.65259454
 C(sbpgp, contr.treatment(6, base = 3))6     341.52419 0.71819834
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -998,9 +1006,10 @@ All in all, it seems that even big changes to the imputations (e.g. deducting 20
 
 ## 13. Mammalsleep sensitivity
 
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 `lm(sws ~ log10(bw) + odi)`
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r

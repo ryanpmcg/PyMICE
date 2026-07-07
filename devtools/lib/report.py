@@ -37,6 +37,11 @@ class VignetteReport:
     short_title: str = ""
     reference_title: str = ""
     reference_author: str = ""
+    n_match: int = 0
+    n_mismatch: int = 0
+    n_skip: int = 0
+    n_partial: int = 0
+    n_info: int = 0
 
 
 # Blocks for intermediate parser
@@ -126,6 +131,17 @@ def parse_blocks(md: str) -> list[Block]:
         if not stripped:
             i += 1
             continue
+        if stripped.startswith("<details"):
+            html_lines = [lines[i]]
+            i += 1
+            while i < n and "</details>" not in lines[i]:
+                html_lines.append(lines[i])
+                i += 1
+            if i < n:
+                html_lines.append(lines[i])
+                i += 1
+            blocks.append(ParaBlock("\n".join(html_lines)))
+            continue
         if stripped.startswith("```"):
             lang = stripped[3:].strip() or "text"
             i += 1
@@ -182,6 +198,21 @@ def parse_blocks(md: str) -> list[Block]:
     return blocks
 
 
+def _wrap_collapsible_output(out_code: str, out_lang: str, *, threshold: int = 40) -> str:
+    lines = out_code.splitlines()
+    if len(lines) <= threshold:
+        return (
+            f'<div class="output-header">Console Output</div>'
+            f'<pre class="language-{_esc(out_lang)}"><code class="language-{_esc(out_lang)}">'
+            f"{_esc(out_code)}</code></pre>"
+        )
+    return (
+        '<details class="long-output"><summary>Console output (click to expand)</summary>'
+        f'<pre class="language-{_esc(out_lang)}"><code class="language-{_esc(out_lang)}">'
+        f"{_esc(out_code)}</code></pre></details>"
+    )
+
+
 def render_dual_code_tabs(
     r_code: str, py_code: str, out_code: str, out_lang: str, r_out: str = ""
 ) -> str:
@@ -191,42 +222,29 @@ def render_dual_code_tabs(
 
     r_output_html = ""
     if r_out.strip():
-        r_output_html = f"""
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">{_esc(r_out)}</code></pre>
-"""
+        r_output_html = (
+            '<div class="output-header">R Console Output</div>'
+            f'<pre class="language-text"><code class="language-text">{_esc(r_out)}</code></pre>'
+        )
+
+    py_output_html = _wrap_collapsible_output(out_code, out_lang)
 
     return f"""
-<div class="code-tabs" id="tabs-{idx}">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-{idx}">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="{_esc(py_code)}">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">{_esc(py_code)}</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-{_esc(out_lang)}"><code class="language-{_esc(out_lang)}">{_esc(out_code)}</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">{_esc(r_code)}</code></pre>
-    {r_output_html}
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">{_esc(py_code)}</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-{_esc(out_lang)}"><code class="language-{_esc(out_lang)}">{_esc(out_code)}</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">{_esc(r_code)}</code></pre>
-        {r_output_html}
-      </div>
+  <pre class="language-python"><code class="language-python">{_esc(py_code)}</code></pre>
+  {py_output_html}
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">{_esc(r_code)}</code></pre>
+      {r_output_html}
     </div>
-  </div>
+  </details>
 </div>
 """
 
@@ -429,7 +447,13 @@ def blocks_to_html(blocks: list[Block]) -> str:
                 f'<pre class="language-{_esc(block.lang)}"><code class="language-{_esc(block.lang)}">{_esc(block.code)}</code></pre>'
             )
         elif isinstance(block, ParaBlock):
-            parts.append(f"<p>{_inline_md(block.text)}</p>")
+            text = block.text.strip()
+            if text.startswith("<details"):
+                parts.append(block.text)
+            elif text.startswith("**Step parity:**"):
+                parts.append(f'<div class="step-parity-badge">{_inline_md(text)}</div>')
+            else:
+                parts.append(f"<p>{_inline_md(text)}</p>")
         elif isinstance(block, ListBlock):
             lis = "".join(f"<li>{_inline_md(item)}</li>" for item in block.items)
             parts.append(f"<ul>{lis}</ul>")
@@ -475,16 +499,54 @@ def vignette_markdown(report: VignetteReport) -> str:
     return "\n".join(lines).strip() + "\n"
 
 
+def _series_nav_html(report: VignetteReport, all_slugs: list[tuple[str, str, str, str]]) -> str:
+    ordered = sorted(all_slugs, key=lambda x: int(x[0]))
+    idx = next(i for i, s in enumerate(ordered) if s[0] == report.number)
+    parts: list[str] = ['<nav class="series-nav" aria-label="Vignette series">']
+    if idx > 0:
+        prev = ordered[idx - 1]
+        parts.append(
+            f'<a class="series-nav-link" href="{_esc(prev[1])}.html">← V{int(prev[0])}: {_esc(prev[2])}</a>'
+        )
+    parts.append('<a class="series-nav-link series-nav-index" href="index.html">Index</a>')
+    if idx + 1 < len(ordered):
+        nxt = ordered[idx + 1]
+        parts.append(
+            f'<a class="series-nav-link" href="{_esc(nxt[1])}.html">V{int(nxt[0])}: {_esc(nxt[2])} →</a>'
+        )
+    parts.append("</nav>")
+    return "".join(parts)
+
+
+def _status_chip_html(report: VignetteReport) -> str:
+    total = report.n_match + report.n_mismatch + report.n_skip + report.n_partial + report.n_info
+    if total == 0:
+        return f'<div class="status-chip">{_esc(report.status)}</div>'
+    pct = round(100 * report.n_match / total) if total else 0
+    return (
+        f'<div class="status-chip">'
+        f"<strong>{pct}% exact</strong> · "
+        f"{report.n_match} match · {report.n_info} info · "
+        f"{report.n_partial} visual · {report.n_skip} skipped"
+        f"</div>"
+    )
+
+
 def vignette_html(report: VignetteReport, *, all_slugs: list[tuple[str, str, str, str]]) -> str:
-    # Sidebar Table of Contents
+    from lib.reader_guide import PYMICE_DIFFERENCES, READER_DISCLAIMER
+
+    # Sidebar Table of Contents (step status icons from aggregate parity badge)
+    _step_icon = re.compile(r"\*\*Step parity:\*\*\s*([^\s]+)")
     toc_links = []
     for section in report.sections:
         if section.section_kind == "part":
             toc_links.append(f'<div class="sidebar-part-title">{_esc(section.title)}</div>')
         else:
             slug = re.sub(r"[^a-zA-Z0-9_-]", "", section.title.replace(" ", "-")).lower()
+            icon_m = _step_icon.search(section.body_md)
+            icon = f"{icon_m.group(1)} " if icon_m else ""
             toc_links.append(
-                f'<a href="#{slug}" class="sidebar-toc-link">{_esc(section.title)}</a>'
+                f'<a href="#{slug}" class="sidebar-toc-link">{icon}{_esc(section.title)}</a>'
             )
 
     other_vignettes_links = []
@@ -500,19 +562,23 @@ def vignette_html(report: VignetteReport, *, all_slugs: list[tuple[str, str, str
     ref_title = report.reference_title or display_title
     ref_author = report.reference_author or (report.authors or "the mice authors")
 
-    parity_block_parts: list[str] = [
-        f"<p><strong>Parity status:</strong> {_esc(report.status)}</p>",
-    ]
-    if report.disclaimer_md.strip():
-        parity_block_parts.append(_md_to_html_paragraphs(report.disclaimer_md))
+    parity_details = ""
     if report.parity_overview_md.strip():
-        parity_block_parts.append(_md_to_html_paragraphs(report.parity_overview_md))
+        parity_details = (
+            '<details class="parity-details"><summary>Parity details (maintainers)</summary>'
+            f"{_md_to_html_paragraphs(report.parity_overview_md)}</details>"
+        )
 
     body_parts = [
+        _series_nav_html(report, all_slugs),
         f"<h1>V{vnum}: {_esc(display_title)}</h1>",
-        f'<p class="subtitle">Compare to <em>{_esc(ref_title)}</em> by {_esc(ref_author)}</p>',
+        f'<p class="subtitle">{_esc(report.series_label or f"Vignette {vnum}")} · '
+        f"Compare to <em>{_esc(ref_title)}</em> by {_esc(ref_author)}</p>",
         f'<p class="subtitle"><a href="{_esc(report.source_url)}">Open reference vignette</a></p>',
-        f'<div class="parity-status-block" id="parity-status">{"".join(parity_block_parts)}</div>',
+        _status_chip_html(report),
+        f'<div class="reader-guide"><p>{_esc(READER_DISCLAIMER)}</p>'
+        f"{_md_to_html_paragraphs(PYMICE_DIFFERENCES)}</div>",
+        parity_details,
     ]
     if report.intro_md.strip():
         body_parts.append('<h2 id="introduction">Introduction</h2>')
@@ -671,15 +737,89 @@ def vignette_html(report: VignetteReport, *, all_slugs: list[tuple[str, str, str
     }}
     .subtitle a {{ color: var(--primary); text-decoration: none; font-weight: 500; }}
     .subtitle a:hover {{ text-decoration: underline; }}
-    .parity-status-block {{
-      background: var(--alert-bg);
-      border: 1px solid var(--alert-border);
-      border-radius: 8px;
-      padding: 1.25rem;
-      margin: 1.25rem 0 2rem;
-      font-size: 0.9rem;
+    .status-chip {{
+      display: inline-block;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #312e81;
+      border-radius: 9999px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.85rem;
+      margin: 0.5rem 0 1rem;
     }}
-    .parity-status-block p:first-child {{ margin-top: 0; }}
+    .reader-guide {{
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.92rem;
+    }}
+    .parity-details, .compare-r, .long-output {{
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      background: #fff;
+    }}
+    .parity-details summary, .compare-r summary, .long-output summary {{
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--primary);
+    }}
+    .step-parity-badge {{
+      display: inline-block;
+      background: #f1f5f9;
+      border-left: 3px solid var(--primary);
+      padding: 0.35rem 0.75rem;
+      margin: 0.5rem 0 1rem;
+      font-size: 0.85rem;
+      border-radius: 0 6px 6px 0;
+    }}
+    .series-nav {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.85rem;
+    }}
+    .series-nav-link {{
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }}
+    .series-nav-link:hover {{ text-decoration: underline; }}
+    .series-nav-index {{ margin: 0 auto; }}
+    .code-card {{
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 1.25rem 0;
+      padding: 0.75rem 1rem 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }}
+    .code-toolbar {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }}
+    .code-toolbar-label {{
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }}
+    .copy-btn {{
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      cursor: pointer;
+    }}
+    .copy-btn:hover {{ background: #e2e8f0; }}
     
     /* Code and tabs styling */
     .code-tabs {{
@@ -841,13 +981,21 @@ def vignette_html(report: VignetteReport, *, all_slugs: list[tuple[str, str, str
   <script>
     function switchTab(btn, mode) {{
       const container = btn.closest('.code-tabs');
-      // Update buttons
       container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      // Update content
       container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       container.querySelector('.tab-content.' + mode).classList.add('active');
     }}
+    document.querySelectorAll('.copy-btn').forEach(btn => {{
+      btn.addEventListener('click', () => {{
+        const text = btn.getAttribute('data-copy') || '';
+        navigator.clipboard.writeText(text).then(() => {{
+          const prev = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => {{ btn.textContent = prev; }}, 1200);
+        }});
+      }});
+    }});
   </script>
 </body>
 </html>
@@ -884,7 +1032,11 @@ def index_html(
     reports: list[VignetteReport],
     pytest_text: str,
     generated_at: datetime,
+    *,
+    pytest_exit_code: int = 0,
 ) -> str:
+    from lib.reader_guide import LEARNING_PATH, STATUS_LEGEND
+
     rows = ""
     for r in reports:
         cls = (
@@ -898,11 +1050,29 @@ def index_html(
             cls = "fail"
         vnum = int(r.number)
         label = r.short_title or r.title
+        total = r.n_match + r.n_mismatch + r.n_skip + r.n_partial + r.n_info
+        pct = f"{round(100 * r.n_match / total):.0f}%" if total else "—"
         rows += (
             f"<tr><td>V{vnum}</td><td>{_esc(label)}</td>"
+            f"<td>{pct}</td>"
             f'<td><span class="badge {cls}">{_esc(r.status)}</span></td>'
-            f'<td><a href="{_esc(r.slug)}.html" class="action-link">View Report (HTML)</a> · <a href="{_esc(r.slug)}.md" class="action-link">MD</a></td></tr>'
+            f'<td><a href="{_esc(r.slug)}.html" class="action-link">HTML</a> · '
+            f'<a href="{_esc(r.slug)}.md" class="action-link">MD</a></td></tr>'
         )
+
+    learning_rows = ""
+    for num, title, hint in LEARNING_PATH:
+        slug = next((r.slug for r in reports if r.number == num), f"v{num}")
+        learning_rows += (
+            f'<tr><td>V{int(num)}</td><td><a href="{_esc(slug)}.html">{_esc(title)}</a></td>'
+            f"<td>{_esc(hint)}</td></tr>"
+        )
+
+    legend_items = "".join(
+        f"<li><strong>{_esc(k.title())}</strong> — {_esc(v)}</li>" for k, v in STATUS_LEGEND.items()
+    )
+
+    pytest_status = "passed" if pytest_exit_code == 0 else f"failed (exit {pytest_exit_code})"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1014,16 +1184,25 @@ def index_html(
 </head>
 <body>
   <h1>PyMICE Vignette Reports</h1>
-  <p class="meta-time">Generated: {_esc(generated_at.isoformat())}</p>
-  <p>This dashboard contains the parity reports for PyMICE (Python FCS MICE implementation) validated against the original R <code>mice</code> vignettes outputs.</p>
-  
-  <h2>Verification Catalog</h2>
+  <p class="meta-time">Generated: {_esc(generated_at.isoformat())} · pytest: {_esc(pytest_status)}</p>
+  <p>Python walkthroughs of the official R <code>mice</code> tutorials (V01–V08), with deterministic console checks and labelled visual/RNG differences.</p>
+
+  <h2>Recommended learning path</h2>
   <table>
-    <thead><tr><th>#</th><th>Title</th><th>Parity Status</th><th>Links</th></tr></thead>
+    <thead><tr><th>#</th><th>Title</th><th>Notes</th></tr></thead>
+    <tbody>{learning_rows}</tbody>
+  </table>
+
+  <h2>Status legend</h2>
+  <ul>{legend_items}</ul>
+  
+  <h2>Verification catalog</h2>
+  <table>
+    <thead><tr><th>#</th><th>Title</th><th>Exact %</th><th>Parity status</th><th>Links</th></tr></thead>
     <tbody>{rows}</tbody>
   </table>
   
-  <h2>Test Suite Output (pytest)</h2>
+  <h2>Test suite (pytest)</h2>
   <pre><code>{_esc(pytest_text.strip())}</code></pre>
 </body>
 </html>
@@ -1034,6 +1213,8 @@ def write_reports(
     output_dir: Path,
     reports: list[VignetteReport],
     pytest_text: str,
+    *,
+    pytest_exit_code: int = 0,
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     assets = output_dir / "assets"
@@ -1059,6 +1240,6 @@ def write_reports(
         encoding="utf-8",
     )
     (output_dir / "index.html").write_text(
-        index_html(reports, pytest_text, generated_at),
+        index_html(reports, pytest_text, generated_at, pytest_exit_code=pytest_exit_code),
         encoding="utf-8",
     )

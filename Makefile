@@ -5,7 +5,7 @@ VENV_PYTHON := $(VENV_DIR)/bin/python
 PYTHON ?= $(shell test -x $(VENV_PYTHON) && echo $(VENV_PYTHON) || echo python3)
 PIP ?= pip
 
-check: lint test parity-structural
+check: lint test parity-structural audit-code-display
 
 check-full: check parity-rng vignettes
 
@@ -18,6 +18,9 @@ test:
 
 parity-structural:
 	$(PYTHON) -m pytest tests/parity/test_structural_alignment.py -q
+
+audit-code-display:
+	$(PYTHON) devtools/audit_code_display.py
 
 parity-rng:
 	$(PYTHON) -m pytest tests/parity/test_rng_parity.py -q

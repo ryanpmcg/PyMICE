@@ -2,10 +2,10 @@
 
 *Compare to **Imputing multi-level data** by Gerko Vink and Stef van Buuren*
 
-**Reference:** https://www.gerkovink.com/micereference/Multi_level/Multi_level_data.html
-**Parity status:** Partially compliant — 28 match, 27 partial, 1 skipped (R-only)
+**Reference:** https://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html
+**Parity status:** Partially compliant — 23 match, 5 info, 27 partial, 1 skipped (R-only)
 
-This page walks through PyMICE equivalents of the numbered exercises in the reference vignette below. Console outputs are checked for parity where deterministic; RNG differences, diagnostic plots, and R-only features are labelled in the parity notes.
+This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
 ## Parity overview
 
@@ -37,7 +37,7 @@ Checked against `reference/05_multilevel_data/golden_outputs.json` (refreshed fr
 
 ## Introduction
 
-This is the fifth vignette in a series of six.
+This is the fifth vignette in an eight-part series (see the index for the full path).
 
 In this vignette we will focus on multi-level imputation. You need to have package `pan` installed. You can install it by running: `install.packages("pan")`.
 
@@ -47,17 +47,15 @@ In this vignette we will focus on multi-level imputation. You need to have packa
 load(con)`
 This workspace contains several datasets and functions that, when loaded, are available to you in R. If you’d like to see what is inside: run the following code
 
-`ls()`
-`## [1] "con"                      "icc"                     
-## [3] "mice.impute.2lonly.mean2" "popMCAR"                 
-## [5] "popMCAR2"                 "popNCR"                  
-## [7] "popNCR2"                  "popNCR3"                 
-## [9] "popular"`
+If you'd like to see what is inside the R workspace, run `ls()`. PyMICE loads the same datasets directly (`popNCR`, `popNCR2`, `popNCR3`, `popular`, …) via `lib.data` — no workspace dump is shown here.
+
 The dataset `popNCR` is a variation on the Hox (2010) data, where the missingness in the variables is either missing at random (MAR) or missing not at random (MNAR).
 
 ## 1. Load packages and seed
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** Package load step; workspace `ls()` not reproduced.
 
 ### R code
 ```r
@@ -99,7 +97,8 @@ We are going to work with the popularity data from Joop Hox (2010). The variable
 
 ## 2. Inspect popNCR data
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (5 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 5 blocks)
+
 
 ### R code
 ```r
@@ -132,7 +131,6 @@ print(format_dataframe_r(data[:6], names))
    6        6        1       NA        0       NA      4.7        5
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -154,7 +152,6 @@ print(f"[1] {data.shape[0]}    {data.shape[1]}")
 [1] 2000    7
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -176,7 +173,6 @@ print(f'[1] {data.shape[0]}')
 [1] 2000
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -198,7 +194,6 @@ print(f'[1] {data.shape[1]}')
 [1] 7
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -254,7 +249,8 @@ The data set has 2000 rows and 7 columns (variables). The variables `extrav`, `s
 
 ## 3. Missing data patterns
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 
 ### R code
 ```r
@@ -342,7 +338,6 @@ print(format_md_pattern_r(mp))
       0   0   496   510   516   528   976  3026
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -410,6 +405,8 @@ Without texp, there are only 16 patterns.
 
 ## 4. popular missingness vs popteach
 
+**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 In R the missingness indicator
 
 `is.na(popNCR$popular)`
@@ -418,7 +415,6 @@ can be used to create a dummy variable for the missingness in `popular`. Alterna
 
 Does the missing data of `popular` depend on `popteach`? One could for example check this by making a histogram of `popteach` separately for the pupils with known popularity and missing popularity.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -601,7 +597,8 @@ is.na(popNCR$popular)
 print(format_bool_vector_r(pop_miss, max_lines=None, width=12))
 ```
 
-### Output
+<details class="long-output"><summary>Console output (click to expand)</summary>
+
 ```text
 [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
   [13] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
@@ -772,7 +769,8 @@ print(format_bool_vector_r(pop_miss, max_lines=None, width=12))
   [1993] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE
 ```
 
-**Parity:** ⚠️ PARTIAL
+</details>
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -796,7 +794,8 @@ The histogram shows that the missingness in `popular` is not equally distributed
 
 ## 5. Other missingness vs popteach
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -814,7 +813,6 @@ plot_histogram(data, names, 'popteach', condition=np.isnan(data[:, names.index('
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -832,7 +830,6 @@ plot_histogram(data, names, 'popteach', condition=np.isnan(data[:, names.index('
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -864,7 +861,8 @@ There seems to be no observable relation between `popteach` and the missingness 
 
 ## 6. popteach missingness vs popular
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -888,7 +886,8 @@ Yes: there is a dependency. The relation seems to be right-tailed.
 
 ## 7. ICC for incomplete variables
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (3 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 
 ### R code
 ```r
@@ -910,7 +909,6 @@ print(f'[1] {obs_icc[0]:.7f}')
 [1] 0.3280070
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -932,7 +930,6 @@ print(f'[1] {obs_icc[1]:.7f}')
 [1] 0.3138658
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -962,7 +959,8 @@ YES! There is a strong cluster structure going on. If we ignore the clustering i
 
 ## 8. norm imputation imp1 (no class)
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (4 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 5 blocks)
+
 
 ### R code
 ```r
@@ -989,7 +987,6 @@ print(format_meth_r(names, ini.method, style='popncr'))
 ""      ""      "pmm"      "logreg"      "pmm"      "pmm"      "pmm"
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1017,7 +1014,6 @@ print(format_meth_r(names, meth, style='popncr'))
 ""      ""      "norm"      "logreg"      "norm"      "norm"      "norm"
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1054,7 +1050,6 @@ popular      1     1      1   1    1       0        1
 popteach     1     1      1   1    1       1        0
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1093,7 +1088,7 @@ popular      0     0      1   1    1       0        1
 popteach     0     0      1   1    1       1        0
 ```
 
-**Parity:** ✅ MATCH
+**Note:** Creates `imp1` mids object.
 
 ### R code
 ```r
@@ -1112,7 +1107,8 @@ imp1 = mice(data, column_names=names, method=meth, predictor_matrix=pred_no_clas
 
 ## 9. Compare imputed vs incomplete means
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 **Note:** Imputed norm summaries within atol=0.2 (session chain; sex counts may differ by 1).
 
 ### R code
@@ -1163,7 +1159,6 @@ print(format_summary_popncr_r(complete(imp1, 1), names, imputed=True))
  Max.   :9.100    Max.   :10.00
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -1221,7 +1216,8 @@ Yes, we can see this in the imputed data: teacher experience increases slightly 
 
 ## 10. ICC comparison imp1
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -1257,7 +1253,8 @@ vars    observed      norm
 
 ## 11. norm imputation imp2 (with class)
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -1286,7 +1283,8 @@ Warning: Number of logged events: 90
 
 ## 12. ICC comparison imp2 (normclass)
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -1331,7 +1329,8 @@ By simply forcing the algorithm to use the class variable during estimation we a
 
 ## 13. Convergence trace imp2
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -1353,7 +1352,8 @@ plot_mids(imp2, variables=['popular', 'texp', 'popteach'])
 
 ## 14. Extended trace imp3
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 **Note:** Warm-started via `continue_imputation` (R `mice.mids`).
 
 ### R code
@@ -1373,7 +1373,6 @@ plot_mids(imp3, variables=['popular', 'texp', 'popteach'])
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Second `continue_imputation` extension (35 iterations total).
 
 ### R code
@@ -1405,6 +1404,8 @@ Several plotting methods based on the package `lattice` for Trellis graphics are
 
 ## 15. Density plots imp2
 
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 To obtain all densities of the different imputed datasets use
 
 `densityplot(imp2)`
@@ -1415,7 +1416,6 @@ To obtain just the densities for popular one can use
 
 or
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -1433,7 +1433,6 @@ plot_density_grid(imp2)
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -1451,7 +1450,6 @@ plot_density(imp2, 'popular')
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -1479,7 +1477,8 @@ The latter case results in a conditional plot (conditional on the different impu
 
 ## 16. First 15 imputed rows
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -1535,7 +1534,8 @@ What do you think of the imputed values?
 
 ## 17. PMM imputation imp4
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -1616,7 +1616,8 @@ Warning: Number of logged events: 90
 
 ## 18. Density plots imp4
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -1640,9 +1641,10 @@ Yes, `pmm` samples from the observed values and this clearly shows: imputations 
 
 ## 19. ICC imp4 (deferred)
 
+**Step parity:** ⏭️ SKIP (0 exact, 0 info, 0 visual, 1 skipped, 0 mismatch of 1 blocks)
+
 See **Exercise 20** for the solution.
 
-**Parity:** ⏭️ SKIP
 **Note:** R vignette refers to exercise 20 for the full ICC table.
 
 ### R code
@@ -1662,7 +1664,8 @@ See **Exercise 20** for the solution.
 
 ## 20. Full ICC comparison incl. orig
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -1722,7 +1725,9 @@ The latter two methods aggregate level-1 variables at level 2, but in combinatio
 
 ## 21. 2l.norm on popNCR2
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** `pred`/`meth` setup exact; `2l.norm` imputed values differ (sampler moment tolerance ~0.15).
 
 ### R code
 ```r
@@ -1759,7 +1764,8 @@ In the predictor matrix, `-2` denotes the class variable, a value `1` indicates 
 
 ## 22. Inspect imp5 convergence
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 5 visual, 0 skipped, 0 mismatch of 5 blocks)
+
 **Note:** Matplotlib density panel; `2l.norm` curve within moment tolerance ~0.15 vs R.
 
 ### R code
@@ -1777,7 +1783,6 @@ plot_density(imp5, 'popular', xlim=(-1.5, 10.0), ylim=(0.0, 0.35))
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** PMM reference density (session chain).
 
 ### R code
@@ -1795,7 +1800,6 @@ plot_density(imp4, 'popular', xlim=(-1.5, 10.0), ylim=(0.0, 0.35))
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Truth density from `popular.csv`; `2l.norm` overlay within moment tolerance ~0.15.
 
 ### R code
@@ -1820,7 +1824,6 @@ plot_density_kde_lines(
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Convergence trace; shape matches R, not pixel-identical.
 
 ### R code
@@ -1838,7 +1841,6 @@ plot_mids(imp5, variables=['popular'])
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Extended trace via `continue_imputation(imp5, maxit=10)`.
 
 ### R code
@@ -1872,7 +1874,9 @@ The imputations generated with `2l.norm` are very similar to the ones obtained b
 
 ## 23. 2l.pan on popNCR2
 
-**Parity:** ✅ MATCH
+**Step parity:** ⚠️ PARTIAL (0 exact, 1 info, 5 visual, 0 skipped, 0 mismatch of 6 blocks)
+
+**Note:** `pred`/`meth` setup exact; `2l.pan` imputed values differ (sampler moment tolerance ~0.15).
 
 ### R code
 ```r
@@ -1903,7 +1907,6 @@ popular      0     -2      2   2    1       0        2
 popteach     1     1      1   1    1       1        0
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib density panel; `2l.pan` curve within moment tolerance ~0.15 vs R.
 
 ### R code
@@ -1921,7 +1924,6 @@ plot_density(imp6, 'popular', xlim=(-1.5, 10.0), ylim=(0.0, 0.35))
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** PMM reference density (session chain).
 
 ### R code
@@ -1939,7 +1941,6 @@ plot_density(imp4, 'popular', xlim=(-1.5, 10.0), ylim=(0.0, 0.35))
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Truth density; `2l.pan` overlay within moment tolerance ~0.15.
 
 ### R code
@@ -1965,7 +1966,6 @@ plot_density_kde_lines(
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Convergence trace; shape matches R, not pixel-identical.
 
 ### R code
@@ -1983,7 +1983,6 @@ plot_mids(imp6, variables=['popular'])
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** R vignette extends imp5 by mistake; PyMICE correctly extends imp6.
 
 ### R code
@@ -2017,7 +2016,9 @@ Let us create the densityplot for `imp6` and compare it to the one for `imp4`. I
 
 ## 24. Mixed 2l setup on popNCR3
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** `meth`/`pred` setup exact; multilevel imputations differ (sampler moment tolerance ~0.15).
 
 ### R code
 ```r
@@ -2055,7 +2056,8 @@ popteach     0     -2      2   2    1       2        0
 
 ## 25. Evaluate imp7
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 **Note:** Multilevel density grid; imputed marginals within moment tolerance ~0.15.
 
 ### R code
@@ -2073,7 +2075,6 @@ plot_density_grid(imp7)
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Convergence traces for mixed `2l.norm`/`2l.pan`/`logreg`/`2lonly.mean` setup.
 
 ### R code
@@ -2104,7 +2105,8 @@ Convergence has not yet been reached. More iterations are advisable.
 
 ## 26. PMM on popNCR3
 
-**Parity:** ✅ MATCH
+**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)
+
 
 ### R code
 ```r
@@ -2133,7 +2135,6 @@ With `pmm`, the imputations are very similar and conform to the shape of the obs
 
 When looking at the convergence of `pmm`, more iterations are advisable:
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Default PMM on `popNCR3`; imputed marginals differ (draw-order on session chain).
 
 ### R code
@@ -2151,7 +2152,6 @@ plot_density_grid(imp8)
 (plot below)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** PMM convergence traces; matplotlib equivalent of R `plot(imp8)`.
 
 ### R code

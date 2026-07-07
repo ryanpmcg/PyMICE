@@ -109,16 +109,128 @@
 </head>
 <body>
   <h1>PyMICE Vignette Reports</h1>
-  <p class="meta-time">Generated: 2026-07-05T23:49:21.729187+00:00</p>
-  <p>This dashboard contains the parity reports for PyMICE (Python FCS MICE implementation) validated against the original R <code>mice</code> vignettes outputs.</p>
-  
-  <h2>Verification Catalog</h2>
+  <p class="meta-time">Generated: 2026-07-07T22:33:40.167558+00:00 · pytest: passed</p>
+  <p>Python walkthroughs of the official R <code>mice</code> tutorials (V01–V08), with deterministic console checks and labelled visual/RNG differences.</p>
+
+  <h2>Recommended learning path</h2>
   <table>
-    <thead><tr><th>#</th><th>Title</th><th>Parity Status</th><th>Links</th></tr></thead>
-    <tbody><tr><td>V1</td><td>Ad Hoc MICE</td><td><span class="badge ok">Partially compliant — 25 match, 2 partial, 0 skipped (R-only)</span></td><td><a href="v01_ad_hoc_mice.html" class="action-link">View Report (HTML)</a> · <a href="v01_ad_hoc_mice.md" class="action-link">MD</a></td></tr><tr><td>V2</td><td>Convergence Pooling</td><td><span class="badge ok">Partially compliant — 21 match, 5 partial, 0 skipped (R-only)</span></td><td><a href="v02_convergence_pooling.html" class="action-link">View Report (HTML)</a> · <a href="v02_convergence_pooling.md" class="action-link">MD</a></td></tr><tr><td>V3</td><td>Missingness Models</td><td><span class="badge ok">Partially compliant — 24 match, 5 partial, 0 skipped (R-only)</span></td><td><a href="v03_missingness.html" class="action-link">View Report (HTML)</a> · <a href="v03_missingness.md" class="action-link">MD</a></td></tr><tr><td>V4</td><td>Passive Imputation</td><td><span class="badge ok">Partially compliant — 13 match, 10 partial, 0 skipped (R-only)</span></td><td><a href="v04_passive.html" class="action-link">View Report (HTML)</a> · <a href="v04_passive.md" class="action-link">MD</a></td></tr><tr><td>V5</td><td>Multilevel Data</td><td><span class="badge ok">Partially compliant — 28 match, 27 partial, 1 skipped (R-only)</span></td><td><a href="v05_multilevel.html" class="action-link">View Report (HTML)</a> · <a href="v05_multilevel.md" class="action-link">MD</a></td></tr><tr><td>V6</td><td>Sensitivity Analysis</td><td><span class="badge ok">Partially compliant — 11 match, 11 partial, 0 skipped (R-only)</span></td><td><a href="v06_sensitivity.html" class="action-link">View Report (HTML)</a> · <a href="v06_sensitivity.md" class="action-link">MD</a></td></tr><tr><td>V7</td><td>Ampute Simulation</td><td><span class="badge ok">Partially compliant — 11 match, 2 partial, 2 skipped (R-only)</span></td><td><a href="v07_ampute.html" class="action-link">View Report (HTML)</a> · <a href="v07_ampute.md" class="action-link">MD</a></td></tr><tr><td>V8</td><td>Parallel MICE</td><td><span class="badge ok">Partially compliant — 8 match, 2 partial, 2 skipped (R-only)</span></td><td><a href="v08_futuremice.html" class="action-link">View Report (HTML)</a> · <a href="v08_futuremice.md" class="action-link">MD</a></td></tr></tbody>
+    <thead><tr><th>#</th><th>Title</th><th>Notes</th></tr></thead>
+    <tbody><tr><td>V1</td><td><a href="v01_ad_hoc_mice.html">Ad Hoc MICE</a></td><td>Start here — first imputation workflow</td></tr><tr><td>V2</td><td><a href="v02_convergence_pooling.html">Convergence Pooling</a></td><td>Convergence traces and pooling</td></tr><tr><td>V3</td><td><a href="v03_missingness.html">Missingness Models</a></td><td>Missingness patterns and models</td></tr><tr><td>V4</td><td><a href="v04_passive.html">Passive Imputation</a></td><td>Passive imputation and post-processing</td></tr><tr><td>V5</td><td><a href="v05_multilevel.html">Multilevel Data</a></td><td>Multilevel / clustered imputation</td></tr><tr><td>V6</td><td><a href="v06_sensitivity.html">Sensitivity Analysis</a></td><td>δ sensitivity and survival</td></tr><tr><td>V7</td><td><a href="v07_ampute.html">Ampute Simulation</a></td><td>Simulate missingness (appendix)</td></tr><tr><td>V8</td><td><a href="v08_futuremice.html">Parallel MICE</a></td><td>Parallel imputation (appendix)</td></tr></tbody>
+  </table>
+
+  <h2>Status legend</h2>
+  <ul><li><strong>Match</strong> — Console output matches the R reference.</li><li><strong>Info</strong> — Informational or PyMICE-only (no R snapshot to compare).</li><li><strong>Partial</strong> — Algorithm or plot differs in documented ways (often RNG or matplotlib).</li><li><strong>Skip</strong> — R-only section (e.g. wall-clock benchmarks).</li><li><strong>Mismatch</strong> — Output differs from the R reference — needs investigation.</li></ul>
+  
+  <h2>Verification catalog</h2>
+  <table>
+    <thead><tr><th>#</th><th>Title</th><th>Exact %</th><th>Parity status</th><th>Links</th></tr></thead>
+    <tbody><tr><td>V1</td><td>Ad Hoc MICE</td><td>89%</td><td><span class="badge ok">Partially compliant — 24 match, 1 info, 2 partial, 0 skipped (R-only)</span></td><td><a href="v01_ad_hoc_mice.html" class="action-link">HTML</a> · <a href="v01_ad_hoc_mice.md" class="action-link">MD</a></td></tr><tr><td>V2</td><td>Convergence Pooling</td><td>62%</td><td><span class="badge ok">Partially compliant — 16 match, 5 info, 5 partial, 0 skipped (R-only)</span></td><td><a href="v02_convergence_pooling.html" class="action-link">HTML</a> · <a href="v02_convergence_pooling.md" class="action-link">MD</a></td></tr><tr><td>V3</td><td>Missingness Models</td><td>45%</td><td><span class="badge fail">Non-compliant — 7 mismatches, 13 match, 0 skip, 7 partial</span></td><td><a href="v03_missingness.html" class="action-link">HTML</a> · <a href="v03_missingness.md" class="action-link">MD</a></td></tr><tr><td>V4</td><td>Passive Imputation</td><td>35%</td><td><span class="badge ok">Partially compliant — 8 match, 5 info, 10 partial, 0 skipped (R-only)</span></td><td><a href="v04_passive.html" class="action-link">HTML</a> · <a href="v04_passive.md" class="action-link">MD</a></td></tr><tr><td>V5</td><td>Multilevel Data</td><td>41%</td><td><span class="badge ok">Partially compliant — 23 match, 5 info, 27 partial, 1 skipped (R-only)</span></td><td><a href="v05_multilevel.html" class="action-link">HTML</a> · <a href="v05_multilevel.md" class="action-link">MD</a></td></tr><tr><td>V6</td><td>Sensitivity Analysis</td><td>41%</td><td><span class="badge ok">Partially compliant — 9 match, 2 info, 11 partial, 0 skipped (R-only)</span></td><td><a href="v06_sensitivity.html" class="action-link">HTML</a> · <a href="v06_sensitivity.md" class="action-link">MD</a></td></tr><tr><td>V7</td><td>Ampute Simulation</td><td>67%</td><td><span class="badge ok">Partially compliant — 10 match, 1 info, 2 partial, 2 skipped (R-only)</span></td><td><a href="v07_ampute.html" class="action-link">HTML</a> · <a href="v07_ampute.md" class="action-link">MD</a></td></tr><tr><td>V8</td><td>Parallel MICE</td><td>42%</td><td><span class="badge ok">Partially compliant — 5 match, 5 info, 1 partial, 1 skipped (R-only)</span></td><td><a href="v08_futuremice.html" class="action-link">HTML</a> · <a href="v08_futuremice.md" class="action-link">MD</a></td></tr></tbody>
   </table>
   
-  <h2>Test Suite Output (pytest)</h2>
-  <pre><code>pytest skipped inside run_vignettes.py (please run pytest manually in terminal)</code></pre>
+  <h2>Test suite (pytest)</h2>
+  <pre><code>........................................................................ [ 28%]
+........................................................................ [ 56%]
+........................................................................ [ 84%]
+........................................                                 [100%]
+============================== warnings summary ===============================
+tests/unit/test_convergence.py::test_convergence_returns_rows_per_variable_iteration
+tests/unit/test_quickpred.py::test_quickpred_nhanes_mincor_03
+  C:\Python-3-13\Lib\site-packages\numpy\lib\_function_base_impl.py:3065: RuntimeWarning: invalid value encountered in divide
+    c /= stddev[:, None]
+
+tests/unit/test_jomo_extended.py::test_2lonly_mean_class_mean_and_empty_class
+  C:\Users\Ryan McGehee\PyMICE\src\pymice\methods\twolonly_mean.py:75: RuntimeWarning: Mean of empty slice
+    [np.nanmean(agg_y[agg_classes == c]) for c in agg_classes],
+
+tests/unit/test_jomo_extended.py::test_imp8_class_factor_pmm_smoke
+  C:\Users\Ryan McGehee\PyMICE\src\pymice\methods\logreg.py:79: RuntimeWarning: overflow encountered in exp
+    prob = 1.0 / (1.0 + np.exp(-eta))
+
+tests/unit/test_jomo_extended.py::test_imp8_class_factor_pmm_smoke
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_jomo_extended.py:287: RuntimeWarning: Number of logged events: 12
+    result = mice(
+
+tests/unit/test_logreg_polyreg.py::test_mice_with_explicit_factor_specs
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_logreg_polyreg.py:54: RuntimeWarning: Number of logged events: 12
+    result = mice(
+
+tests/unit/test_postprocess.py::test_post_squeeze_in_mice
+  C:\Users\Ryan McGehee\PyMICE\src\pymice\engine.py:521: RuntimeWarning: Mean of empty slice
+    chain_mean[name][k2, :] = np.nanmean(imp[name], axis=0)
+
+tests/unit/test_postprocess.py::test_post_squeeze_in_mice
+  C:\Users\Ryan McGehee\PyMICE\src\pymice\engine.py:522: RuntimeWarning: Degrees of freedom &lt;= 0 for slice.
+    chain_var[name][k2, :] = np.nanvar(imp[name], axis=0)
+
+tests/unit/test_postprocess.py::test_post_squeeze_in_mice
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_postprocess.py:19: RuntimeWarning: Number of logged events: 2
+    result = mice(
+
+tests/unit/test_pythonic_api.py::test_verbose_and_max_iter_aliases
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_pythonic_api.py:31: DeprecationWarning: max_iter is deprecated; use maxit=
+    result = mice(data, column_names=names, m=1, max_iter=1, verbose=False, seed=1)
+
+tests/unit/test_pythonic_api.py::test_verbose_and_max_iter_aliases
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_pythonic_api.py:31: DeprecationWarning: verbose is deprecated; use print=False
+    result = mice(data, column_names=names, m=1, max_iter=1, verbose=False, seed=1)
+
+tests/unit/test_pythonic_api.py::test_mids_summary_and_continue
+  C:\Users\Ryan McGehee\PyMICE\src\pymice\types.py:185: DeprecationWarning: max_iter is deprecated; use maxit=
+    return continue_imputation(
+
+tests/unit/test_pythonic_api.py::test_mids_summary_and_continue
+  C:\Users\Ryan McGehee\PyMICE\src\pymice\types.py:185: DeprecationWarning: verbose is deprecated; use print=False
+    return continue_imputation(
+
+tests/unit/test_pythonic_api.py::test_continue_imputation_function
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_pythonic_api.py:100: DeprecationWarning: max_iter is deprecated; use maxit=
+    more = continue_imputation(base, max_iter=2)
+
+tests/unit/test_pythonic_api.py::test_mice_df
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_pythonic_api.py:129: DeprecationWarning: mice_df() is deprecated; use mice(df, ...) instead
+    result = mice_df(df, m=1, maxit=1, seed=9)
+
+tests/unit/test_quickpred.py::test_quickpred_nhanes_mincor_03
+  C:\Python-3-13\Lib\site-packages\numpy\lib\_function_base_impl.py:3066: RuntimeWarning: invalid value encountered in divide
+    c /= stddev[None, :]
+
+tests/unit/test_r_gaps_implemented.py::test_cbind_and_rbind_mids
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_r_gaps_implemented.py:58: RuntimeWarning: Number of logged events: 2
+    imp1 = mice(
+
+tests/unit/test_r_gaps_implemented.py::test_cbind_and_rbind_mids
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_r_gaps_implemented.py:64: RuntimeWarning: Number of logged events: 4
+    imp2 = mice(
+
+tests/unit/test_rf.py::test_mice_runs_with_rf_method
+  C:\Users\Ryan McGehee\PyMICE\tests\unit\test_rf.py:82: RuntimeWarning: Number of logged events: 4
+    result = mice(
+
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))1]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))2]
+  C:\Python-3-13\Lib\site-packages\lifelines\fitters\__init__.py:1284: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+    for stratum, df_ in df.groupby(strata):
+
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))1]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))1]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))1]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))1]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))2]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))2]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))2]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))2]
+  C:\Python-3-13\Lib\site-packages\lifelines\fitters\coxph_fitter.py:1868: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+    for stratum, stratified_X in X.groupby(self.strata):
+
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))1]
+tests/unit/test_survival.py::test_leiden_coxph_matches_r_complete_data[C(sbpgp, contr.treatment(6, base = 3))2]
+  C:\Python-3-13\Lib\site-packages\lifelines\fitters\coxph_fitter.py:2538: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+    for name, stratum_predicted_partial_hazards_ in predicted_partial_hazards_.groupby(self.strata):
+
+tests/vignettes/test_02_tier_a_methods.py::test_where_mask_limits_imputation
+  C:\Users\Ryan McGehee\PyMICE\tests\vignettes\test_02_tier_a_methods.py:109: RuntimeWarning: Number of logged events: 2
+    result = mice(data, column_names=[&quot;a&quot;, &quot;b&quot;], method=&quot;mean&quot;, m=1, maxit=1, where=where, seed=1)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html</code></pre>
 </body>
 </html>

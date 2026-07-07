@@ -7,7 +7,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from lib.figure_map import reference_images_for_step
-from lib.r_style import compare_output, format_step_md, format_tutorial_step_md
+from lib.r_style import (
+    compare_output,
+    format_section_status_md,
+    format_step_md,
+    format_tutorial_step_md,
+)
 from lib.report import Section, VignetteReport
 from lib.tutorial_section import SectionStats, TutorialPart, render_tutorial_section
 from lib.vignette_catalog import VignetteMeta, get_meta
@@ -28,6 +33,7 @@ class VignetteBuilder:
     n_mismatch: int = 0
     n_skip: int = 0
     n_partial: int = 0
+    n_info: int = 0
     disclaimer_md: str = ""
     parity_overview_md: str = ""
     intro_md: str = ""
@@ -125,7 +131,7 @@ class VignetteBuilder:
         self.n_partial += 1
         body = "\n".join(
             [
-                "**Compliance:** ⚠️ PARTIAL (plot)",
+                "**Parity:** ⚠️ PARTIAL (plot)",
                 f"**R code:** `{r_code}`",
                 f"**Note:** {note}",
                 "",
@@ -205,6 +211,7 @@ class VignetteBuilder:
         self.n_mismatch += stats.n_mismatch
         self.n_skip += stats.n_skip
         self.n_partial += stats.n_partial
+        self.n_info += stats.n_info
 
     def part(self, title: str) -> None:
         """R vignette part heading (e.g. Working with mice)."""
@@ -223,6 +230,7 @@ class VignetteBuilder:
         stats = SectionStats()
         body = render_tutorial_section(parts, stats)
         self._merge_stats(stats)
+        body = format_section_status_md(stats) + "\n\n" + body
         ref_paths = reference_images
         if ref_paths is None and images:
             ref_paths = reference_images_for_step(self.number, num)
@@ -257,13 +265,13 @@ class VignetteBuilder:
         self.sections.append(Section(exercise, body, image_paths=images))
 
     def build(self) -> VignetteReport:
-        total = self.n_match + self.n_mismatch + self.n_skip + self.n_partial
+        total = self.n_match + self.n_mismatch + self.n_skip + self.n_partial + self.n_info
         if self.n_mismatch == 0 and self.n_skip == 0 and self.n_partial == 0:
-            status = f"Compliant ({self.n_match}/{total} steps match R)"
+            status = f"Compliant ({self.n_match}/{total} blocks match R)"
         elif self.n_mismatch == 0:
             status = (
                 f"Partially compliant — {self.n_match} match, "
-                f"{self.n_partial} partial, {self.n_skip} skipped (R-only)"
+                f"{self.n_info} info, {self.n_partial} partial, {self.n_skip} skipped (R-only)"
             )
         else:
             status = (
@@ -286,4 +294,9 @@ class VignetteBuilder:
             intro_md=self.intro_md,
             authors=self.authors,
             series_label=self.series_label,
+            n_match=self.n_match,
+            n_mismatch=self.n_mismatch,
+            n_skip=self.n_skip,
+            n_partial=self.n_partial,
+            n_info=self.n_info,
         )

@@ -109,6 +109,13 @@
       "r_code": "imp6 %$% lm(chl ~ bmi) %>% pool %$% pooled",
       "r_output": "",
       "figure": null
+    },
+    {
+      "index": 15,
+      "type": "console",
+      "r_code": "imp_amp <- futuremice(ampute(nhanes, prop = 0.8, mech = 'MCAR')$amp)",
+      "r_output": "",
+      "figure": null
     }
   ],
   "steps": [
@@ -175,7 +182,7 @@
       "number": 8,
       "title": "Ampute then impute",
       "part": "",
-      "block_indices": []
+      "block_indices": [15]
     }
   ]
 }

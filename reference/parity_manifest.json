@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "vignettes": [
+    {
+      "number": "01",
+      "slug": "v01_ad_hoc_mice",
+      "title": "Ad Hoc MICE",
+      "source_url": "https://www.gerkovink.com/miceVignettes/Ad_hoc_and_mice/Ad_hoc_methods.html",
+      "reference_dir": "01_ad_hoc_and_mice",
+      "overview_md": "### Expected to match exactly\n\nThese numbered steps are deterministic and are checked against `reference/01_ad_hoc_and_mice/vignette_extracted.R`:\n\n- **Step 2** \u2014 `nhanes` row-level print\n- **Step 3** \u2014 `summary(nhanes)` numeric summaries and NA counts\n- **Step 4** \u2014 `md.pattern(nhanes)` pattern matrix (console table)\n- **Step 5** \u2014 `lm(age ~ bmi)` on raw incomplete data (listwise deletion)\n- **Step 6** \u2014 mean imputation iteration log (`method=\"mean\"`, `m=1`, `maxit=1`)\n- **Step 7** \u2014 `complete(imp)`, `colMeans(nhanes, na.rm=TRUE)`, pooled regression after mean imputation\n- **Steps 11\u201312** \u2014 `norm.nob` `complete(imp)` and pooled `lm(age ~ bmi)` (session R RNG; draw order aligned with R vignette chain)\n- **Step 13** \u2014 default `mice(nhanes)` iteration log, `print(imp)` mids summary (`visitSequence` excludes non-imputed `age`), `attributes(imp)`, `imp$data`, `imp$imp` PMM values (session stream; `run_v01_mice_chain()`)\n- **Step 14** \u2014 `md.pattern(complete(imp, 3))`, `complete(imp, \"long\")`, `complete(imp, \"broad\")`\n\n### Expected to differ (not bit-identical to R snapshot)\n\n- **Step 1** \u2014 package load; no R console output to compare.\n- **Step 2** \u2014 `help('nhanes')` static R pager snapshot (informational; text matches reference).\n- **Step 4** \u2014 `md.pattern(nhanes)` grid layout and colours match R; rendering is matplotlib.\n- **Step 7** \u2014 `densityplot(nhanes$bmi)` uses R ``bw.nrd0`` bandwidth and ``mdc`` palette; shape should closely match lattice.\n- **Steps 8\u20139** \u2014 `norm.predict` after `densityplot(nhanes$bmi)` on session R stream (lattice RNG advance mirrored)."
+    },
+    {
+      "number": "02",
+      "slug": "v02_convergence_pooling",
+      "title": "Convergence Pooling",
+      "source_url": "https://www.gerkovink.com/miceVignettes/Convergence_pooling/Convergence_and_pooling.html",
+      "reference_dir": "02_convergence_and_pooling",
+      "overview_md": "### Expected to match exactly\n\nThese numbered steps are checked against `reference/02_convergence_and_pooling/vignette_extracted.R`:\n\n- **Step 2** \u2014 default and modified `pred` matrices; `maxit=0` initializer matrix\n- **Step 4** \u2014 `imp$meth` on `nhanes` and `nhanes2`; `summary(nhanes2)` factor layout; `methods(mice)` listing (static reference text)\n- **Step 7** \u2014 `class(fit)` and `ls(fit)` names; `print(fit)` mira coefficients (`exact=True`); `summary(fit$analyses[[2]])` on imp3 (atol=0.15)\n- **Step 8** \u2014 pooled `summary(pool.fit)` (`exact=True`; session R stream; goldens refreshed 2026-07-05)\n\n### Expected to differ (RNG / rendering)\n\n- **Step 1** \u2014 `mice(nhanes, m=3)` setup; no R console output to compare.\n- **Step 3** \u2014 `plot(imp)` matplotlib trace plots; diagnostic shape matches, not pixel-identical to lattice.\n- **Step 4** \u2014 `str(nhanes2)` (factor labels vs numeric codes); `plot(imp)` on `nhanes2`.\n- **Step 5** \u2014 extended trace via `continue_imputation(imp3, maxit=35)` (R `mice.mids` warm start).\n- **Step 6** \u2014 `stripplot()` matplotlib diagnostics; observed/imputed colours differ from lattice.\n\n### Partial (quickpred)\n\n- **Step 2** \u2014 `quickpred(nhanes, mincor=.3)` predictor matrix matches R golden layout."
+    },
+    {
+      "number": "03",
+      "slug": "v03_missingness",
+      "title": "Missingness Models",
+      "source_url": "https://www.gerkovink.com/miceVignettes/Missingness_inspection/Missingness_inspection.html",
+      "reference_dir": "03_missingness_inspection",
+      "overview_md": "### Expected to match exactly\n\nThese numbered steps are checked against `reference/03_missingness_inspection/vignette_extracted.R`:\n\n- **Step 3** \u2014 `head(boys)` with R row names; `nrow(boys)` \u2192 748; `summary(boys)` horizontal factor layout\n- **Step 4** \u2014 `md.pattern(boys)` pattern matrix\n- **Step 5** \u2014 `sum(mpat[,\"gen\"]==0)` \u2192 8\n- **Step 6** \u2014 `R <- is.na(boys$gen)` logical vector print\n- **Step 9** \u2014 `help('mammalsleep')` R pager snapshot; `head(mammalsleep)` species labels; `str(mammalsleep)` layout (static reference); `summary(mammalsleep)` species counts; `md.pattern(mammalsleep)` with species column\n- **Steps 10 & 13** \u2014 logged-event warnings on session mammalsleep chain (29 / 19 events; numeric `species` codes).\n- **Steps 12 & 14** \u2014 `pool(fit)` / `summary(pool())` on mammalsleep (`sws ~ log10(bw) + odi`).\n\n### Expected to differ (RNG / rendering)\n\n- **Step 1** \u2014 package load; no R console output to compare.\n- **Step 2** \u2014 `help('boys')` R pager snapshot (static reference text).\n\n- **Step 6** \u2014 `histogram()` matplotlib panels.\n- **Step 8** \u2014 `summary(complete(imp1))` on session PMM chain; `with(imp1, mean(tv))` TV means\n- **Step 10** \u2014 `plot(imp)` trace lines (matplotlib vs lattice).\n- **Step 15** \u2014 `plot(impnew)` convergence traces."
+    },
+    {
+      "number": "04",
+      "slug": "v04_passive",
+      "title": "Passive Imputation",
+      "source_url": "https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html",
+      "reference_dir": "04_passive_post_processing",
+      "overview_md": "### Expected to match exactly\n\nChecked against `reference/04_passive_post_processing/vignette_extracted.R`:\n\n- **Step 2** \u2014 default `meth` and `pred` matrices; modified `pred` (exclude `ts` from `sws`/`ps`); passive `ts = sws + ps` consistency check (`pas.imp` uses `seed=123` like R)\n- **Step 5** \u2014 `table(complete(imp)$tv)` and `table(complete(imp.pmm)$tv)` frequency tables (chain-aligned goldens refreshed 2026-07-05)\n- **Step 7** \u2014 passive `bmi = I(wgt/(hgt/100)^2)`; numeric constraint `|bmi - calc| = 0` on missing rows (visit order imputes `hgt`/`wgt` first)\n\n### Expected to differ (RNG / rendering)\n\n- **Step 1** \u2014 package load; passive-imputation prose only.\n- **Step 3** \u2014 `plot(pas.imp)` matplotlib trace lines.\n- **Step 5** \u2014 density/histogram panels for post-squeezed `tv` (matplotlib vs lattice).\n- **Steps 6\u20139** \u2014 `xyplot` / `plot(imp)` matplotlib diagnostics; session stream after `run_v04_chain()` (except `imp.path` `seed=123` in R).\n- **Step 9** \u2014 triple-passive `sqrt(wgt/bmi)` runs; iteration event log format differs from R."
+    },
+    {
+      "number": "05",
+      "slug": "v05_multilevel",
+      "title": "Multilevel Data",
+      "source_url": "https://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html",
+      "reference_dir": "05_multilevel_data",
+      "overview_md": "### Expected to match exactly\n\nChecked against `reference/05_multilevel_data/golden_outputs.json` (refreshed from bundled CSV + `as.factor(class)`):\n\n- **Step 2** \u2014 `head(popNCR)`, `dim` / `nrow` / `ncol`, `summary(popNCR)` (factor `class` layout)\n- **Step 4** \u2014 full `is.na(popular)` logical vector (`width=12`, R `[1]` print)\n- **Step 7** \u2014 observed ICCs for `popular`, `popteach`, `texp` on incomplete data\n- **Step 8** \u2014 default `meth` / modified `meth`, `pred` matrices, `pred` with `class` and `pupil` zeroed\n- **Steps 9.25, 10\u201312, 17, 20, 26** \u2014 ICC tables, iteration log, logged-event warnings (90 events) on session chain\n- **Steps 21\u201324** \u2014 `pred` / `meth` setup matrices (console output only; deterministic)\n- **Step 16** \u2014 `head(complete(imp2))` exact via `format_popncr_head_r` (session chain golden refreshed 2026-07-05)\n- **Step 26** \u2014 logged-events warning (90 events) exact on session chain\n\n### Expected to differ (RNG / rendering)\n\n- **Step 1** \u2014 package load; workspace `ls()` not reproduced.\n- **Steps 3, 5\u20136** \u2014 `md.pattern` exact; matplotlib `histogram()` panels differ from lattice.\n- **Steps 13\u201315, 18, 22\u201323, 25\u201326** \u2014 trace / density matplotlib diagnostics.\n- **Step 14** \u2014 extended traces via `continue_imputation` (R `mice.mids` warm start).\n\n### Partial (documented tolerances)\n\n- **Step 9.24** \u2014 imputed norm summary (atol=0.2; sex counts may differ by 1).\n- **Steps 21\u201326 imputed values** \u2014 multilevel samplers (`2l.norm`, `2l.pan`, `2lonly.mean`, `logreg`) and PMM on `popNCR3` within moment tolerance ~0.15; setup matrices exact.\n- **Step 19** \u2014 intentionally empty in R (defers ICC table to step 20)."
+    },
+    {
+      "number": "06",
+      "slug": "v06_sensitivity",
+      "title": "Sensitivity Analysis",
+      "source_url": "https://www.gerkovink.com/miceVignettes/Sensitivity_analysis/Sensitivity_analysis.html",
+      "reference_dir": "06_sensitivity_analysis",
+      "overview_md": "### Expected to match exactly\n\nChecked against `reference/06_sensitivity_analysis/vignette_extracted.R`:\n\n- **Step 2** \u2014 `nrow(leiden)` \u2192 956\n- **Step 3** \u2014 `mice(leiden, maxit=0)$nmis` missing-count table\n- **Step 4** \u2014 `flux()` table for all variables; `md.pattern` pattern count\n- **Step 6** \u2014 `delta <- c(0, -5, -10, -15, -20)`\n\n- **Steps 11\u201313** \u2014 `with_mids()` + `leiden_coxph()` (lifelines strata) + `pool()`; goldens refreshed via `regenerate_v06_goldens.py` (2026-07-05)\n- **Step 13** \u2014 mammalsleep \u03b4 qbar table via `run_v06_mammalsleep_delta_chain()`\n\n### Expected to differ (RNG / rendering)\n\n- **Step 1** \u2014 package load; no R console output to compare.\n- **Step 2** \u2014 `summary(leiden)`, `head()` / `tail()` layout (R row names on `tail`; float formatting).\n- **Step 4** \u2014 full `md.pattern` table whitespace; `fluxplot()` matplotlib chart.\n- **Step 5** \u2014 Kaplan\u2013Meier matplotlib curves (matplotlib equivalent).\n- **Steps 7\u201310** \u2014 \u03b4 scenarios via `run_v06_leiden_delta_chain()` (`rng='r'`, `seed=i`); diagnostic plots for \u03b4=0 and \u03b4=-20."
+    },
+    {
+      "number": "07",
+      "slug": "v07_ampute",
+      "title": "Ampute Simulation",
+      "source_url": "https://rianneschouten.github.io/mice_ampute/vignette/ampute.html",
+      "reference_dir": "07_ampute",
+      "overview_md": "### Expected to match exactly\n\nThese numbered steps are checked against `reference/07_ampute/vignette_extracted.R`:\n\n- **Step 4** \u2014 `names(result)` layout for R ``mads`` objects.\n- **Step 9** \u2014 `result$prop` proportion matches 0.5.\n- **Step 10** \u2014 adjusted `result$prop` is 0.6 when `bycases=FALSE` and `prop=0.2`.\n- **Step 11** \u2014 `mech` returns `MAR`; MNAR `patterns` layout matches R.\n\n### Expected to differ (RNG / rendering)\n\n- **Step 1** \u2014 package help opens R help page vs. PyMICE custom help screen.\n- **Step 2** \u2014 bundled `ampute_testdata.csv`; summary may differ slightly across R versions.\n- **Step 3** \u2014 MCAR `head(result$amp)`; native `run_ampute_chain()` within ~5% miss-count of R when backend unavailable.\n- **Step 5** \u2014 md.pattern counts require R ``ampute`` backend (set ``PYMICE_R_AMPUTE=1``).\n- **Steps 6\u20138** \u2014 md.pattern heatmap, bwplot, and xyplot matplotlib diagnostics.\n- **Step 10** \u2014 ampute with `bycases=FALSE` cellwise proportion and adjusted `result$prop`.\n\n### Reference-only (step 12)\n\nThe R tutorial also discusses `patterns`, `freq`, `weights`, `type`, `run`, and `odds` in depth. Step 12 documents these API sections; they are not separate R snapshot blocks."
+    },
+    {
+      "number": "08",
+      "slug": "v08_futuremice",
+      "title": "Parallel MICE",
+      "source_url": "https://www.gerkovink.com/miceVignettes/futuremice/Vignette_futuremice.html",
+      "reference_dir": "08_futuremice",
+      "overview_md": "### Expected to match exactly\n\nChecked against `reference/08_futuremice/vignette_extracted.R`:\n\n- **Step 3** \u2014 `imp$m` equals 5.\n- **Step 4** \u2014 `method = 'norm'` sets norm imputation for incomplete columns.\n- **`parallelseed` reproducibility** \u2014 repeated `futuremice(..., parallelseed=123)` yields identical pooled estimates.\n\n### Implemented (PyMICE)\n\n- `futuremice()` / `parallel_mice()` \u2014 `ProcessPoolExecutor`, `distribute_imputations()`, `ibind()` merge, per-worker `SeedSequence` streams.\n\n### Expected to differ (RNG / rendering)\n\n- **Step 1** \u2014 auto-selected `n.core` may differ by machine; message structure matches R.\n- **Step 2** \u2014 PyMICE `Mids` vs R `mids` class label.\n- **Steps 5\u20137** \u2014 pooled tables are PyMICE-only (R snapshot has no console output); imputation RNG differs from R `furrr` unless `parallelseed` is fixed.\n- **Step 7** \u2014 drawn `parallelseed` differs from R golden when no global seed is set.\n- **Step 8** \u2014 ampute + `futuremice` closing demo; not a separate R snapshot block.\n\n### Skipped (R-only)\n\n- **Time gain with small/large datasets** \u2014 wall-clock benchmark figures are not reproduced in PyMICE."
+    }
+  ]
+}

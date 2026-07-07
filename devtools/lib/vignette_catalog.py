@@ -6,8 +6,9 @@ from dataclasses import dataclass
 
 COMPARISON_DISCLAIMER = (
     "This page walks through PyMICE equivalents of the numbered exercises in the "
-    "reference vignette below. Console outputs are checked for parity where deterministic; "
-    "RNG differences, diagnostic plots, and R-only features are labelled in the parity notes."
+    "official R mice tutorial linked below. Deterministic console output is checked against "
+    "the R reference; stochastic imputations, diagnostic plots, and R-only sections are "
+    "labelled in the step notes."
 )
 
 
@@ -29,7 +30,7 @@ METAS: dict[str, VignetteMeta] = {
         "Ad Hoc MICE",
         "Ad hoc methods and mice",
         "Gerko Vink and Stef van Buuren",
-        "https://www.gerkovink.com/micereference/Ad_hoc_and_mice/Ad_hoc_methods.html",
+        "https://www.gerkovink.com/miceVignettes/Ad_hoc_and_mice/Ad_hoc_methods.html",
         "01_ad_hoc_and_mice",
     ),
     "02": VignetteMeta(
@@ -38,7 +39,7 @@ METAS: dict[str, VignetteMeta] = {
         "Convergence Pooling",
         "Algorithmic convergence and inference pooling",
         "Gerko Vink and Stef van Buuren",
-        "https://www.gerkovink.com/micereference/Convergence_pooling/Convergence_and_pooling.html",
+        "https://www.gerkovink.com/miceVignettes/Convergence_pooling/Convergence_and_pooling.html",
         "02_convergence_and_pooling",
     ),
     "03": VignetteMeta(
@@ -47,7 +48,7 @@ METAS: dict[str, VignetteMeta] = {
         "Missingness Models",
         "The imputation and nonresponse models",
         "Gerko Vink and Stef van Buuren",
-        "https://www.gerkovink.com/micereference/Missingness_inspection/Missingness_inspection.html",
+        "https://www.gerkovink.com/miceVignettes/Missingness_inspection/Missingness_inspection.html",
         "03_missingness_inspection",
     ),
     "04": VignetteMeta(
@@ -56,7 +57,7 @@ METAS: dict[str, VignetteMeta] = {
         "Passive Imputation",
         "Passive imputation and Post-processing",
         "Gerko Vink and Stef van Buuren",
-        "https://www.gerkovink.com/micereference/Passive_Post_processing/Passive_imputation_post_processing.html",
+        "https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html",
         "04_passive_post_processing",
     ),
     "05": VignetteMeta(
@@ -65,7 +66,7 @@ METAS: dict[str, VignetteMeta] = {
         "Multilevel Data",
         "Imputing multi-level data",
         "Gerko Vink and Stef van Buuren",
-        "https://www.gerkovink.com/micereference/Multi_level/Multi_level_data.html",
+        "https://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html",
         "05_multilevel_data",
     ),
     "06": VignetteMeta(
@@ -74,7 +75,7 @@ METAS: dict[str, VignetteMeta] = {
         "Sensitivity Analysis",
         "An approach to sensitivity analysis",
         "Gerko Vink and Stef van Buuren",
-        "https://www.gerkovink.com/micereference/Sensitivity_analysis/Sensitivity_analysis.html",
+        "https://www.gerkovink.com/miceVignettes/Sensitivity_analysis/Sensitivity_analysis.html",
         "06_sensitivity_analysis",
     ),
     "07": VignetteMeta(
@@ -92,7 +93,7 @@ METAS: dict[str, VignetteMeta] = {
         "Parallel MICE",
         "Wrapper function futuremice",
         "Thom Benjamin Volker and Gerko Vink",
-        "https://www.gerkovink.com/micereference/futuremice/Vignette_futuremice.html",
+        "https://www.gerkovink.com/miceVignettes/futuremice/Vignette_futuremice.html",
         "08_futuremice",
     ),
 }

@@ -103,7 +103,7 @@ def run() -> VignetteReport:
                 run=lambda: core_selection_message(n_core),
                 r_expected=g("08", 1, 1),
                 partial=True,
-                partial_reason="Core count may differ by machine; message structure matches R.",
+                partial_reason="n.core message is informational; core count may differ by machine.",
                 narrative_after=N1_AFTER,
             )
         ],
@@ -120,7 +120,7 @@ def run() -> VignetteReport:
                 r_expected=g("08", 2, 2),
                 run=lambda: '[1] "Mids"',
                 partial=True,
-                partial_reason="PyMICE returns Mids object (same role as mids).",
+                partial_reason="PyMICE returns Mids object (same role as R mids).",
             )
         ],
     )
@@ -183,7 +183,7 @@ def run() -> VignetteReport:
                 run=lambda: _pool_chl_bmi(imp1),
                 r_expected="",
                 partial=True,
-                partial_reason="R snapshot has no pooled table; PyMICE uses explicit parallelseed=123.",
+                partial_reason="PyMICE reproducibility demo; R snapshot has no pooled table.",
             ),
             TutorialPart(
                 r_code="imp2 %$% lm(chl ~ bmi) %>% pool %$% pooled",
@@ -215,7 +215,7 @@ def run() -> VignetteReport:
                 run=lambda: _pool_chl_bmi(imp3),
                 r_expected="",
                 partial=True,
-                partial_reason="R snapshot has no pooled output.",
+                partial_reason="PyMICE reproducibility demo; R snapshot has no pooled output.",
             ),
             TutorialPart(
                 r_code="imp4 %$% lm(chl ~ bmi) %>% pool %$% pooled",
@@ -243,7 +243,7 @@ def run() -> VignetteReport:
                 run=lambda: _pool_chl_bmi(imp5),
                 r_expected="",
                 partial=True,
-                partial_reason="Drawn parallelseed differs from R golden (RNG version).",
+                partial_reason="PyMICE reproducibility demo; drawn parallelseed differs from R golden.",
             ),
             TutorialPart(
                 r_code="imp6 %$% lm(chl ~ bmi) %>% pool %$% pooled",
@@ -273,13 +273,16 @@ def run() -> VignetteReport:
             TutorialPart(
                 r_code="imp_amp <- futuremice(ampute(nhanes, prop = 0.8, mech = 'MCAR')$amp)",
                 python_code=(
-                    "amputed_res = ampute(data, prop=0.8, mech='MCAR', seed=123)\n"
-                    "futuremice(amputed_res.amp, column_names=names, m=5, maxit=5, print=False)"
+                    "amputed_res = ampute(small_data, prop=0.8, mech='MCAR', seed=123)\n"
+                    "imp_amp = futuremice(amputed_res.amp, column_names=names, m=5, maxit=5, print=False)\n"
+                    "print(f'[1] {imp_amp.m}')"
                 ),
-                run=lambda: "(ampute + futuremice — no R snapshot block)",
-                skip=True,
+                run=lambda: (
+                    f"[1] {futuremice(amputed_res.amp, column_names=names, m=5, maxit=5, print=False).m}"
+                ),
+                r_expected="",
                 partial=True,
-                partial_reason="PyMICE-only closing demo; not a separate block in R snapshot.",
+                partial_reason="PyMICE closing demo (ampute + parallel impute); no R snapshot output.",
             ),
         ],
     )

@@ -134,15 +134,89 @@
     }
     .subtitle a { color: var(--primary); text-decoration: none; font-weight: 500; }
     .subtitle a:hover { text-decoration: underline; }
-    .parity-status-block {
-      background: var(--alert-bg);
-      border: 1px solid var(--alert-border);
-      border-radius: 8px;
-      padding: 1.25rem;
-      margin: 1.25rem 0 2rem;
-      font-size: 0.9rem;
+    .status-chip {
+      display: inline-block;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #312e81;
+      border-radius: 9999px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.85rem;
+      margin: 0.5rem 0 1rem;
     }
-    .parity-status-block p:first-child { margin-top: 0; }
+    .reader-guide {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.92rem;
+    }
+    .parity-details, .compare-r, .long-output {
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      background: #fff;
+    }
+    .parity-details summary, .compare-r summary, .long-output summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .step-parity-badge {
+      display: inline-block;
+      background: #f1f5f9;
+      border-left: 3px solid var(--primary);
+      padding: 0.35rem 0.75rem;
+      margin: 0.5rem 0 1rem;
+      font-size: 0.85rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .series-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.85rem;
+    }
+    .series-nav-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .series-nav-link:hover { text-decoration: underline; }
+    .series-nav-index { margin: 0 auto; }
+    .code-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 1.25rem 0;
+      padding: 0.75rem 1rem 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+    .code-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .code-toolbar-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .copy-btn {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: #e2e8f0; }
     
     /* Code and tabs styling */
     .code-tabs {
@@ -291,30 +365,41 @@
       <a href="v01_ad_hoc_mice.html" class="sidebar-nav-link">V1: Ad Hoc MICE</a><a href="v02_convergence_pooling.html" class="sidebar-nav-link">V2: Convergence Pooling</a><a href="v03_missingness.html" class="sidebar-nav-link">V3: Missingness Models</a><a href="v04_passive.html" class="sidebar-nav-link">V4: Passive Imputation</a><a href="v05_multilevel.html" class="sidebar-nav-link">V5: Multilevel Data</a><a href="v06_sensitivity.html" class="sidebar-nav-link active">V6: Sensitivity Analysis</a><a href="v07_ampute.html" class="sidebar-nav-link">V7: Ampute Simulation</a><a href="v08_futuremice.html" class="sidebar-nav-link">V8: Parallel MICE</a>
       
       <div class="sidebar-section-title">Table of Contents</div>
-      <a href="#1-load-packages" class="sidebar-toc-link">1. Load packages</a><a href="#2-inspect-leiden-data" class="sidebar-toc-link">2. Inspect leiden data</a><a href="#3-dry-run-missing-counts" class="sidebar-toc-link">3. Dry run missing counts</a><a href="#4-pattern-and-flux-plots" class="sidebar-toc-link">4. Pattern and flux plots</a><a href="#5-kaplanmeier-by-missingness" class="sidebar-toc-link">5. Kaplan–Meier by missingness</a><a href="#6-delta-adjustment-vector" class="sidebar-toc-link">6. Delta adjustment vector</a><a href="#7-delta-adjusted-imputation" class="sidebar-toc-link">7. Delta-adjusted imputation</a><a href="#8-boxplot-blood-pressure" class="sidebar-toc-link">8. Boxplot blood pressure</a><a href="#9-density-blood-pressure" class="sidebar-toc-link">9. Density blood pressure</a><a href="#10-scatter-blood-pressure" class="sidebar-toc-link">10. Scatter blood pressure</a><a href="#11-survival-models-per-scenario" class="sidebar-toc-link">11. Survival models per scenario</a><a href="#12-pool-survival-models" class="sidebar-toc-link">12. Pool survival models</a><a href="#13-mammalsleep-sensitivity" class="sidebar-toc-link">13. Mammalsleep sensitivity</a>
+      <a href="#1-load-packages" class="sidebar-toc-link">✅ 1. Load packages</a><a href="#2-inspect-leiden-data" class="sidebar-toc-link">⚠️ 2. Inspect leiden data</a><a href="#3-dry-run-missing-counts" class="sidebar-toc-link">✅ 3. Dry run missing counts</a><a href="#4-pattern-and-flux-plots" class="sidebar-toc-link">⚠️ 4. Pattern and flux plots</a><a href="#5-kaplanmeier-by-missingness" class="sidebar-toc-link">⚠️ 5. Kaplan–Meier by missingness</a><a href="#6-delta-adjustment-vector" class="sidebar-toc-link">✅ 6. Delta adjustment vector</a><a href="#7-delta-adjusted-imputation" class="sidebar-toc-link">✅ 7. Delta-adjusted imputation</a><a href="#8-boxplot-blood-pressure" class="sidebar-toc-link">⚠️ 8. Boxplot blood pressure</a><a href="#9-density-blood-pressure" class="sidebar-toc-link">⚠️ 9. Density blood pressure</a><a href="#10-scatter-blood-pressure" class="sidebar-toc-link">⚠️ 10. Scatter blood pressure</a><a href="#11-survival-models-per-scenario" class="sidebar-toc-link">✅ 11. Survival models per scenario</a><a href="#12-pool-survival-models" class="sidebar-toc-link">✅ 12. Pool survival models</a><a href="#13-mammalsleep-sensitivity" class="sidebar-toc-link">✅ 13. Mammalsleep sensitivity</a>
     </div>
     
     <div class="main-container">
-      <h1>V6: Sensitivity Analysis</h1><p class="subtitle">Compare to <em>An approach to sensitivity analysis</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Sensitivity_analysis/Sensitivity_analysis.html">Open reference vignette</a></p><div class="parity-status-block" id="parity-status"><p><strong>Parity status:</strong> Partially compliant — 11 match, 11 partial, 0 skipped (R-only)</p><p>This page walks through PyMICE equivalents of the numbered exercises in the reference vignette below. Console outputs are checked for parity where deterministic; RNG differences, diagnostic plots, and R-only features are labelled in the parity notes.</p><h5>Expected to match exactly</h5>
-<p>Checked against <code>Vignettes/06_sensitivity_analysis/vignette_extracted.R</code>:</p>
+      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link" href="v05_multilevel.html">← V5: Multilevel Data</a><a class="series-nav-link series-nav-index" href="index.html">Index</a><a class="series-nav-link" href="v07_ampute.html">V7: Ampute Simulation →</a></nav><h1>V6: Sensitivity Analysis</h1><p class="subtitle">Vignette 6 of 8 · Compare to <em>An approach to sensitivity analysis</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Sensitivity_analysis/Sensitivity_analysis.html">Open reference vignette</a></p><div class="status-chip"><strong>41% exact</strong> · 9 match · 2 info · 11 visual · 0 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
+<ul><li>Default randomness uses NumPy (<code>rng=&quot;numpy&quot;</code>), so imputed values may differ from R unless you set <code>rng=&quot;r&quot;</code>.</li><li>Categorical factors are often shown as numeric codes in console output.</li><li>Diagnostic figures use matplotlib instead of lattice (same intent, different styling).</li><li>See <a href="https://github.com/ryanpmcg/PyMICE/blob/main/docs/dev/REPRODUCIBILITY.md">REPRODUCIBILITY.md</a> for exact replication options.</li></ul></div><details class="parity-details"><summary>Parity details (maintainers)</summary><h5>Expected to match exactly</h5>
+<p>Checked against <code>reference/06_sensitivity_analysis/vignette_extracted.R</code>:</p>
 <ul><li><strong>Step 2</strong> — <code>nrow(leiden)</code> → 956</li><li><strong>Step 3</strong> — <code>mice(leiden, maxit=0)$nmis</code> missing-count table</li><li><strong>Step 4</strong> — <code>flux()</code> table for all variables; <code>md.pattern</code> pattern count</li><li><strong>Step 6</strong> — <code>delta &lt;- c(0, -5, -10, -15, -20)</code></li></ul>
 <ul><li><strong>Steps 11–13</strong> — <code>with_mids()</code> + <code>leiden_coxph()</code> (lifelines strata) + <code>pool()</code>; goldens refreshed via <code>regenerate_v06_goldens.py</code> (2026-07-05)</li><li><strong>Step 13</strong> — mammalsleep δ qbar table via <code>run_v06_mammalsleep_delta_chain()</code></li></ul>
 <h5>Expected to differ (RNG / rendering)</h5>
-<ul><li><strong>Step 1</strong> — package load; no R console output to compare.</li><li><strong>Step 2</strong> — <code>summary(leiden)</code>, <code>head()</code> / <code>tail()</code> layout (R row names on <code>tail</code>; float formatting).</li><li><strong>Step 4</strong> — full <code>md.pattern</code> table whitespace; <code>fluxplot()</code> matplotlib chart.</li><li><strong>Step 5</strong> — Kaplan–Meier matplotlib curves (matplotlib equivalent).</li><li><strong>Steps 7–10</strong> — δ scenarios via <code>run_v06_leiden_delta_chain()</code> (<code>rng=&#x27;r&#x27;</code>, <code>seed=i</code>); diagnostic plots for δ=0 and δ=-20.</li></ul></div><h2 id="introduction">Introduction</h2><div class="intro"><p>This is the last vignette in the series.</p>
+<ul><li><strong>Step 1</strong> — package load; no R console output to compare.</li><li><strong>Step 2</strong> — <code>summary(leiden)</code>, <code>head()</code> / <code>tail()</code> layout (R row names on <code>tail</code>; float formatting).</li><li><strong>Step 4</strong> — full <code>md.pattern</code> table whitespace; <code>fluxplot()</code> matplotlib chart.</li><li><strong>Step 5</strong> — Kaplan–Meier matplotlib curves (matplotlib equivalent).</li><li><strong>Steps 7–10</strong> — δ scenarios via <code>run_v06_leiden_delta_chain()</code> (<code>rng=&#x27;r&#x27;</code>, <code>seed=i</code>); diagnostic plots for δ=0 and δ=-20.</li></ul></details><h2 id="introduction">Introduction</h2><div class="intro"><p>This is the last vignette in the series.</p>
 <p>The focus of this document is on sensitivity analysis in the context of missing data. The goal of sensitivity analysis is to study the influence that violations of the missingness assumptions have on the obtained inference.</p>
 <p><strong>The Leiden data set</strong></p>
 <p>The Leiden data set is a subset of 956 members of a very old (85+) cohort in Leiden. Multiple imputation of this data set has been described in Boshuizen et al (1998), Van Buuren et al (1999) and Van Buuren (2012), chapter 7.</p>
 <p>The main question is how blood pressure affects mortality risk in the oldest old. We have reasons to mistrust the MAR assumption in this case. In particular, we worried whether the imputations of blood pressure under MAR would be low enough. The sensitivity analysis explores the effect of artificially lowering the imputed blood pressure by deducting an amount of δ from the values imputed under MAR. In order to preserve the relations between the variables, this needs to be done during the iterations.</p>
-<p><strong>Unfortunately we cannot share the Leiden data set with you. But we detail the approach below. </strong></p></div><h2 id="1-load-packages">1. Load packages</h2><p><strong>Parity:</strong> ✅ MATCH</p>
+<p><strong>Unfortunately we cannot share the Leiden data set with you. But we detail the approach below. </strong></p></div><h2 id="1-load-packages">1. Load packages</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<p><strong>Note:</strong> Package load step; no console output.</p>
 
-<div class="code-tabs" id="tabs-188">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-182">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="import numpy as np
+from pymice import mice, md_pattern
+from pymice.diagnostics.flux import flux
+from pymice.diagnostics.plots import plot_flux, plot_bwplot_grid, plot_density, plot_xy_by_imp
+from lib.data import load_leiden
+from lib.viz import save_figure
+from lib.r_style import (
+    format_summary_r,
+    format_dataframe_r,
+    format_md_pattern_r,
+    format_flux_r
+)">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">import numpy as np
+  <pre class="language-python"><code class="language-python">import numpy as np
 from pymice import mice, md_pattern
 from pymice.diagnostics.flux import flux
 from pymice.diagnostics.plots import plot_flux, plot_bwplot_grid, plot_density, plot_xy_by_imp
@@ -326,59 +411,30 @@ from lib.r_style import (
     format_md_pattern_r,
     format_flux_r
 )</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(setup — no console output)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">set.seed(123)
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(setup — no console output)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">set.seed(123)
 library(&quot;mice&quot;)
 library(&quot;lattice&quot;)
 library(&quot;survival&quot;)</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">import numpy as np
-from pymice import mice, md_pattern
-from pymice.diagnostics.flux import flux
-from pymice.diagnostics.plots import plot_flux, plot_bwplot_grid, plot_density, plot_xy_by_imp
-from lib.data import load_leiden
-from lib.viz import save_figure
-from lib.r_style import (
-    format_summary_r,
-    format_dataframe_r,
-    format_md_pattern_r,
-    format_flux_r
-)</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(setup — no console output)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">set.seed(123)
-library(&quot;mice&quot;)
-library(&quot;lattice&quot;)
-library(&quot;survival&quot;)</code></pre>
-        
-      </div>
+      
     </div>
-  </div>
+  </details>
 </div>
 
-<p>We choose seed value <code>123</code> for reproducibility in the PyMICE walkthrough below.</p><h2 id="2-inspect-leiden-data">2. Inspect leiden data</h2><p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Numeric summaries match; R includes factor-style labels for some columns.</p>
+<p>We choose seed value <code>123</code> for reproducibility in the PyMICE walkthrough below.</p><h2 id="2-inspect-leiden-data">2. Inspect leiden data</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (1 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 4 blocks)</div>
+<p><strong>Note:</strong> Numeric summaries match; R includes factor-style labels for some columns.</p>
 
-<div class="code-tabs" id="tabs-189">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-183">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_summary_r(data, names))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">print(format_summary_r(data, names))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">      sexe        
+  <pre class="language-python"><code class="language-python">print(format_summary_r(data, names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">      sexe        
   Min.   :    0.00
   1st Qu.:     0.00
   Median :     0.00
@@ -394,12 +450,12 @@ library(&quot;survival&quot;)</code></pre>
   Max.   :   103.54
       rrsyst      
   Min.   :   90.00</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">summary(leiden)</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">      sexe           lftanam           rrsyst         rrdiast
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">summary(leiden)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">      sexe           lftanam           rrsyst         rrdiast
  Min.   :0.0000   Min.   : 85.48   Min.   : 90.0   Min.   : 50.00
  1st Qu.:0.0000   1st Qu.: 87.50   1st Qu.:135.0   1st Qu.: 75.00
  Median :0.0000   Median : 89.07   Median :150.0   Median : 80.00
@@ -423,78 +479,18 @@ library(&quot;survival&quot;)</code></pre>
  3rd Qu.:29.00   3rd Qu.:3.000
  Max.   :30.00   Max.   :4.000
  NA&#x27;s   :85</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">print(format_summary_r(data, names))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">      sexe        
-  Min.   :    0.00
-  1st Qu.:     0.00
-  Median :     0.00
-  Mean   :     0.27
-  3rd Qu.:     1.00
-  Max.   :     1.00
-      lftanam     
-  Min.   :   85.48
-  1st Qu.:    87.50
-  Median :    89.07
-  Mean   :    89.78
-  3rd Qu.:    91.52
-  Max.   :   103.54
-      rrsyst      
-  Min.   :   90.00</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">summary(leiden)</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">      sexe           lftanam           rrsyst         rrdiast
- Min.   :0.0000   Min.   : 85.48   Min.   : 90.0   Min.   : 50.00
- 1st Qu.:0.0000   1st Qu.: 87.50   1st Qu.:135.0   1st Qu.: 75.00
- Median :0.0000   Median : 89.07   Median :150.0   Median : 80.00
- Mean   :0.2709   Mean   : 89.78   Mean   :152.9   Mean   : 82.78
- 3rd Qu.:1.0000   3rd Qu.: 91.52   3rd Qu.:170.0   3rd Qu.: 90.00
- Max.   :1.0000   Max.   :103.54   Max.   :260.0   Max.   :140.00
-                                   NA&#x27;s   :121     NA&#x27;s   :126
-      dwa             survda            alb             chol
- Min.   :0.0000   Min.   :   2.0   Min.   :21.00   Min.   : 2.700
- 1st Qu.:0.0000   1st Qu.: 534.8   1st Qu.:39.00   1st Qu.: 4.800
- Median :0.0000   Median :1196.5   Median :41.00   Median : 5.700
- Mean   :0.2437   Mean   :1195.4   Mean   :40.77   Mean   : 5.704
- 3rd Qu.:0.0000   3rd Qu.:1889.0   3rd Qu.:43.00   3rd Qu.: 6.400
- Max.   :1.0000   Max.   :2610.0   Max.   :52.00   Max.   :10.900
-                                   NA&#x27;s   :229     NA&#x27;s   :232
-      mmse            woon
- Min.   : 1.00   Min.   :0.000
- 1st Qu.:21.00   1st Qu.:0.000
- Median :26.00   Median :3.000
- Mean   :23.67   Mean   :1.775
- 3rd Qu.:29.00   3rd Qu.:3.000
- Max.   :30.00   Max.   :4.000
- NA&#x27;s   :85</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
-<p><strong>Parity:</strong> ✅ MATCH</p>
 
-<div class="code-tabs" id="tabs-190">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-184">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(g(&#x27;06&#x27;, 2, 2))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">print(g(&#x27;06&#x27;, 2, 2))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    956 obs. of  10 variables:
+  <pre class="language-python"><code class="language-python">print(g(&#x27;06&#x27;, 2, 2))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    956 obs. of  10 variables:
  $ sexe   : num  0 0 0 0 0 0 0 1 1 0 ...
  $ lftanam: num  87.8 87.8 89.1 90.3 87.8 ...
  $ rrsyst : num  160 140 155 155 110 120 180 135 130 160 ...
@@ -505,12 +501,12 @@ library(&quot;survival&quot;)</code></pre>
  $ chol   : num  4.4 NA 4.6 3.9 5.3 NA 7.2 NA 5.1 6.5 ...
  $ mmse   : num  12 9 25 27 14 NA 28 26 30 14 ...
  $ woon   : num  4 3 0 1 0 3 3 0 4 4 ...</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">str(leiden)</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    956 obs. of  10 variables:
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">str(leiden)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    956 obs. of  10 variables:
  $ sexe   : num  0 0 0 0 0 0 0 1 1 0 ...
  $ lftanam: num  87.8 87.8 89.1 90.3 87.8 ...
  $ rrsyst : num  160 140 155 155 110 120 180 135 130 160 ...
@@ -521,239 +517,106 @@ library(&quot;survival&quot;)</code></pre>
  $ chol   : num  4.4 NA 4.6 3.9 5.3 NA 7.2 NA 5.1 6.5 ...
  $ mmse   : num  12 9 25 27 14 NA 28 26 30 14 ...
  $ woon   : num  4 3 0 1 0 3 3 0 4 4 ...</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">print(g(&#x27;06&#x27;, 2, 2))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    956 obs. of  10 variables:
- $ sexe   : num  0 0 0 0 0 0 0 1 1 0 ...
- $ lftanam: num  87.8 87.8 89.1 90.3 87.8 ...
- $ rrsyst : num  160 140 155 155 110 120 180 135 130 160 ...
- $ rrdiast: num  100 70 85 90 60 80 75 80 60 90 ...
- $ dwa    : num  0 0 0 0 0 0 0 0 0 0 ...
- $ survda : num  1082 27 1604 528 1100 ...
- $ alb    : num  41 NA 41 44 37 NA 42 NA 45 46 ...
- $ chol   : num  4.4 NA 4.6 3.9 5.3 NA 7.2 NA 5.1 6.5 ...
- $ mmse   : num  12 9 25 27 14 NA 28 26 30 14 ...
- $ woon   : num  4 3 0 1 0 3 3 0 4 4 ...</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">str(leiden)</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    956 obs. of  10 variables:
- $ sexe   : num  0 0 0 0 0 0 0 1 1 0 ...
- $ lftanam: num  87.8 87.8 89.1 90.3 87.8 ...
- $ rrsyst : num  160 140 155 155 110 120 180 135 130 160 ...
- $ rrdiast: num  100 70 85 90 60 80 75 80 60 90 ...
- $ dwa    : num  0 0 0 0 0 0 0 0 0 0 ...
- $ survda : num  1082 27 1604 528 1100 ...
- $ alb    : num  41 NA 41 44 37 NA 42 NA 45 46 ...
- $ chol   : num  4.4 NA 4.6 3.9 5.3 NA 7.2 NA 5.1 6.5 ...
- $ mmse   : num  12 9 25 27 14 NA 28 26 30 14 ...
- $ woon   : num  4 3 0 1 0 3 3 0 4 4 ...</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
-<p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Values match; R console spacing and float width differ slightly.</p>
+<p><strong>Note:</strong> Values match; R console spacing and float width differ slightly.</p>
 
-<div class="code-tabs" id="tabs-191">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-185">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_dataframe_r(data[:6], names))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">print(format_dataframe_r(data[:6], names))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">   1        0     87.8    160.0    100.0        0   1082.0       41      4.4       12        4
+  <pre class="language-python"><code class="language-python">print(format_dataframe_r(data[:6], names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">   1        0     87.8    160.0    100.0        0   1082.0       41      4.4       12        4
    2        0    87.75    140.0       70        0       27       NA       NA        9        3
    3        0    89.08    155.0       85        0   1604.0       41      4.6       25        0
    4        0    90.29    155.0       90        0    528.0       44      3.9       27        1
    5        0    87.76    110.0       60        0   1100.0       37      5.3       14        0
    6        0    91.39    120.0       80        0        5       NA       NA       NA        3</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">head(leiden)</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">  sexe lftanam rrsyst rrdiast dwa survda alb chol mmse woon
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">head(leiden)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">  sexe lftanam rrsyst rrdiast dwa survda alb chol mmse woon
 1    0   87.80    160     100   0   1082  41  4.4   12    4
 2    0   87.75    140      70   0     27  NA   NA    9    3
 3    0   89.08    155      85   0   1604  41  4.6   25    0
 4    0   90.29    155      90   0    528  44  3.9   27    1
 5    0   87.76    110      60   0   1100  37  5.3   14    0
 6    0   91.39    120      80   0      5  NA   NA   NA    3</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">print(format_dataframe_r(data[:6], names))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">   1        0     87.8    160.0    100.0        0   1082.0       41      4.4       12        4
-   2        0    87.75    140.0       70        0       27       NA       NA        9        3
-   3        0    89.08    155.0       85        0   1604.0       41      4.6       25        0
-   4        0    90.29    155.0       90        0    528.0       44      3.9       27        1
-   5        0    87.76    110.0       60        0   1100.0       37      5.3       14        0
-   6        0    91.39    120.0       80        0        5       NA       NA       NA        3</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">head(leiden)</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">  sexe lftanam rrsyst rrdiast dwa survda alb chol mmse woon
-1    0   87.80    160     100   0   1082  41  4.4   12    4
-2    0   87.75    140      70   0     27  NA   NA    9    3
-3    0   89.08    155      85   0   1604  41  4.6   25    0
-4    0   90.29    155      90   0    528  44  3.9   27    1
-5    0   87.76    110      60   0   1100  37  5.3   14    0
-6    0   91.39    120      80   0      5  NA   NA   NA    3</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
-<p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> R <code>tail()</code> preserves original row names (1229+); CSV uses 1..956.</p>
+<p><strong>Note:</strong> R <code>tail()</code> preserves original row names (1229+); CSV uses 1..956.</p>
 
-<div class="code-tabs" id="tabs-192">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-186">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_dataframe_r(data[-6:], names))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">print(format_dataframe_r(data[-6:], names))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">   1        1    93.85    130.0       70        0    523.0       40      5.3       28        0
+  <pre class="language-python"><code class="language-python">print(format_dataframe_r(data[-6:], names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">   1        1    93.85    130.0       70        0    523.0       40      5.3       28        0
    2        0     92.2    190.0       90        0   1182.0       44      5.8       26        3
    3        0    95.02    150.0       80        0    861.0       35        5       28        0
    4        0     88.3    120.0       60        0    129.0       42      8.6       21        0
    5        1    89.02    140.0       80        0    374.0       40      5.2       23        0
    6        0     85.7    130.0       65        0   1744.0       36      7.2       27        3</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">tail(leiden)</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">     sexe lftanam rrsyst rrdiast dwa survda alb chol mmse woon
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">tail(leiden)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     sexe lftanam rrsyst rrdiast dwa survda alb chol mmse woon
 1229    1   93.85    130      70   0    523  40  5.3   28    0
 1230    0   92.20    190      90   0   1182  44  5.8   26    3
 1232    0   95.02    150      80   0    861  35  5.0   28    0
 1233    0   88.30    120      60   0    129  42  8.6   21    0
 1235    1   89.02    140      80   0    374  40  5.2   23    0
 1236    0   85.70    130      65   0   1744  36  7.2   27    3</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">print(format_dataframe_r(data[-6:], names))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">   1        1    93.85    130.0       70        0    523.0       40      5.3       28        0
-   2        0     92.2    190.0       90        0   1182.0       44      5.8       26        3
-   3        0    95.02    150.0       80        0    861.0       35        5       28        0
-   4        0     88.3    120.0       60        0    129.0       42      8.6       21        0
-   5        1    89.02    140.0       80        0    374.0       40      5.2       23        0
-   6        0     85.7    130.0       65        0   1744.0       36      7.2       27        3</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">tail(leiden)</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">     sexe lftanam rrsyst rrdiast dwa survda alb chol mmse woon
-1229    1   93.85    130      70   0    523  40  5.3   28    0
-1230    0   92.20    190      90   0   1182  44  5.8   26    3
-1232    0   95.02    150      80   0    861  35  5.0   28    0
-1233    0   88.30    120      60   0    129  42  8.6   21    0
-1235    1   89.02    140      80   0    374  40  5.2   23    0
-1236    0   85.70    130      65   0   1744  36  7.2   27    3</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
-<h2 id="3-dry-run-missing-counts">3. Dry run missing counts</h2><p><strong>Parity:</strong> ✅ MATCH</p>
+<h2 id="3-dry-run-missing-counts">3. Dry run missing counts</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 
-<div class="code-tabs" id="tabs-193">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-187">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="imp0 = mice(data, column_names=names, maxit=0, m=1, seed=123)
+print(format_nmis_r(names, imp0.nmis, split_name=&#x27;mmse&#x27;))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">imp0 = mice(data, column_names=names, maxit=0, m=1, seed=123)
+  <pre class="language-python"><code class="language-python">imp0 = mice(data, column_names=names, maxit=0, m=1, seed=123)
 print(format_nmis_r(names, imp0.nmis, split_name=&#x27;mmse&#x27;))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">   sexe   lftanam    rrsyst   rrdiast       dwa    survda       alb      chol      mmse
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">   sexe   lftanam    rrsyst   rrdiast       dwa    survda       alb      chol      mmse
       0         0       121       126         0         0       229       232        85
    woon
       0</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">ini &lt;- mice(leiden, maxit = 0)
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">ini &lt;- mice(leiden, maxit = 0)
 ini$nmis</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">   sexe lftanam  rrsyst rrdiast     dwa  survda     alb    chol    mmse
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">   sexe lftanam  rrsyst rrdiast     dwa  survda     alb    chol    mmse
       0       0     121     126       0       0     229     232      85
    woon
       0</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">imp0 = mice(data, column_names=names, maxit=0, m=1, seed=123)
-print(format_nmis_r(names, imp0.nmis, split_name=&#x27;mmse&#x27;))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">   sexe   lftanam    rrsyst   rrdiast       dwa    survda       alb      chol      mmse
-      0         0       121       126         0         0       229       232        85
-   woon
-      0</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">ini &lt;- mice(leiden, maxit = 0)
-ini$nmis</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">   sexe lftanam  rrsyst rrdiast     dwa  survda     alb    chol    mmse
-      0       0     121     126       0       0     229     232      85
-   woon
-      0</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
-<p>There are 121 missings (<code>NA</code>&#x27;s) for <code>rrsyst</code>, 126 missings for <code>rrdiast</code>, 229 missings for <code>alb</code>, 232 missings for <code>chol</code> and 85 missing values for <code>mmse</code>.</p><h2 id="4-pattern-and-flux-plots">4. Pattern and flux plots</h2><p><strong>Parity:</strong> ✅ MATCH</p>
+<p>There are 121 missings (<code>NA</code>&#x27;s) for <code>rrsyst</code>, 126 missings for <code>rrdiast</code>, 229 missings for <code>alb</code>, 232 missings for <code>chol</code> and 85 missing values for <code>mmse</code>.</p><h2 id="4-pattern-and-flux-plots">4. Pattern and flux plots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (2 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 
-<div class="code-tabs" id="tabs-194">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-188">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_md_pattern_r(mp))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">print(format_md_pattern_r(mp))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol     
+  <pre class="language-python"><code class="language-python">print(format_md_pattern_r(mp))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    sexe lftanam survda dwa woon mmse rrsyst rrdiast alb chol     
 621   1   1   1   1   1   1   1   1   1   1  0
   2   1   1   1   1   1   1   1   1   1   0  1
   1   1   1   1   1   1   1   1   1   0   1  1
@@ -769,12 +632,12 @@ ini$nmis</code></pre>
   7   1   1   1   1   1   0   0   0   1   1  3
  20   1   1   1   1   1   0   0   0   0   0  5
       0   0   0   0   0   85   121   126   229   232  793</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">md.pattern(leiden)</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">md.pattern(leiden)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol
 621    1       1   1      1    1    1      1       1   1    1   0
 2      1       1   1      1    1    1      1       1   1    0   1
 1      1       1   1      1    1    1      1       1   0    1   1
@@ -790,108 +653,41 @@ ini$nmis</code></pre>
 7      1       1   1      1    1    0      0       0   1    1   3
 20     1       1   1      1    1    0      0       0   0    0   5
        0       0   0      0    0   85    121     126 229  232 793</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">print(format_md_pattern_r(mp))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol     
-621   1   1   1   1   1   1   1   1   1   1  0
-  2   1   1   1   1   1   1   1   1   1   0  1
-  1   1   1   1   1   1   1   1   1   0   1  1
-149   1   1   1   1   1   1   1   1   0   0  2
-  2   1   1   1   1   1   1   1   0   1   1  1
-  2   1   1   1   1   1   1   1   0   0   0  3
- 72   1   1   1   1   1   1   0   0   1   1  2
-  2   1   1   1   1   1   1   0   0   1   0  3
- 20   1   1   1   1   1   1   0   0   0   0  4
- 21   1   1   1   1   1   0   1   1   1   1  1
- 36   1   1   1   1   1   0   1   1   0   0  3
-  1   1   1   1   1   1   0   1   0   0   0  4
-  7   1   1   1   1   1   0   0   0   1   1  3
- 20   1   1   1   1   1   0   0   0   0   0  5
-      0   0   0   0   0   85   121   126   229   232  793</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">md.pattern(leiden)</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol
-621    1       1   1      1    1    1      1       1   1    1   0
-2      1       1   1      1    1    1      1       1   1    0   1
-1      1       1   1      1    1    1      1       1   0    1   1
-149    1       1   1      1    1    1      1       1   0    0   2
-2      1       1   1      1    1    1      1       0   1    1   1
-2      1       1   1      1    1    1      1       0   0    0   3
-72     1       1   1      1    1    1      0       0   1    1   2
-2      1       1   1      1    1    1      0       0   1    0   3
-20     1       1   1      1    1    1      0       0   0    0   4
-21     1       1   1      1    1    0      1       1   1    1   1
-36     1       1   1      1    1    0      1       1   0    0   3
-1      1       1   1      1    1    0      1       0   0    0   4
-7      1       1   1      1    1    0      0       0   1    1   3
-20     1       1   1      1    1    0      0       0   0    0   5
-       0       0   0      0    0   85    121     126 229  232 793</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
-<p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
+<p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-tabs" id="tabs-195">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-189">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="fx = flux(data, names)
+plot_flux(fx)">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">fx = flux(data, names)
+  <pre class="language-python"><code class="language-python">fx = flux(data, names)
 plot_flux(fx)</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">fx &lt;- fluxplot(leiden)</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">fx = flux(data, names)
-plot_flux(fx)</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">fx &lt;- fluxplot(leiden)</code></pre>
-        
-      </div>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">fx &lt;- fluxplot(leiden)</code></pre>
+      
     </div>
-  </div>
+  </details>
 </div>
 
 <p>Variables with higher outflux are (potentially) the more powerful predictors. Variables with higher influx depend stronger on the imputation model. When points are relatively close to the diagonal, it indicates that influx and outflux are balanced.</p>
 <p>The variables in the upper left corner have the more complete information, so the number of missing data problems for this group is relatively small. The variables in the middle have an outflux between 0.5 and 0.8, which is small. Missing data problems are thus more severe, but potentially this group could also contain important variables. The lower (bottom) variables have an outflux with 0.5 or lower, so their predictive power is limited. Also, this group has a higher influx, and, thus, depend more highly on the imputation model.</p>
-<p><strong>Parity:</strong> ✅ MATCH</p>
 
-<div class="code-tabs" id="tabs-196">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-190">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_flux_r(fx))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">print(format_flux_r(fx))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">             pobs     influx   outflux      ainb       aout      fico
+  <pre class="language-python"><code class="language-python">print(format_flux_r(fx))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">             pobs     influx   outflux      ainb       aout      fico
 sexe     1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
 lftanam  1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
 rrsyst   0.8734310 0.09798107 0.5573770 0.7887971 0.05881570 0.2562874
@@ -902,12 +698,12 @@ alb      0.7604603 0.19311053 0.2471627 0.8214459 0.02995568 0.1458047
 chol     0.7573222 0.19573400 0.2383354 0.8218391 0.02900552 0.1422652
 mmse     0.9110879 0.06798221 0.6796974 0.7790850 0.06875877 0.2870264
 woon     1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">fx</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">             pobs     influx   outflux      ainb       aout      fico
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">fx</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">             pobs     influx   outflux      ainb       aout      fico
 sexe    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
 lftanam 1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
 rrsyst  0.8734310 0.09798107 0.5573770 0.7887971 0.05881570 0.2562874
@@ -918,50 +714,12 @@ alb     0.7604603 0.19311053 0.2471627 0.8214459 0.02995568 0.1458047
 chol    0.7573222 0.19573400 0.2383354 0.8218391 0.02900552 0.1422652
 mmse    0.9110879 0.06798221 0.6796974 0.7790850 0.06875877 0.2870264
 woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">print(format_flux_r(fx))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">             pobs     influx   outflux      ainb       aout      fico
-sexe     1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
-lftanam  1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
-rrsyst   0.8734310 0.09798107 0.5573770 0.7887971 0.05881570 0.2562874
-rrdiast  0.8682008 0.10231550 0.5422446 0.7910053 0.05756359 0.2518072
-dwa      1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
-survda   1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
-alb      0.7604603 0.19311053 0.2471627 0.8214459 0.02995568 0.1458047
-chol     0.7573222 0.19573400 0.2383354 0.8218391 0.02900552 0.1422652
-mmse     0.9110879 0.06798221 0.6796974 0.7790850 0.06875877 0.2870264
-woon     1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">fx</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">             pobs     influx   outflux      ainb       aout      fico
-sexe    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
-lftanam 1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
-rrsyst  0.8734310 0.09798107 0.5573770 0.7887971 0.05881570 0.2562874
-rrdiast 0.8682008 0.10231550 0.5422446 0.7910053 0.05756359 0.2518072
-dwa     1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
-survda  1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
-alb     0.7604603 0.19311053 0.2471627 0.8214459 0.02995568 0.1458047
-chol    0.7573222 0.19573400 0.2383354 0.8218391 0.02900552 0.1422652
-mmse    0.9110879 0.06798221 0.6796974 0.7790850 0.06875877 0.2870264
-woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
 <p>In the next steps we are going to impute <code>rrsyst</code> and <code>rrdiast</code> under two scenarios: MAR and MNAR. We will use the delta adjustment technique described in paragraph 7.2.3 in Van Buuren (2012)</p>
-<div class="code-tabs plot-tabs" id="plots-197">
+<div class="code-tabs plot-tabs" id="plots-191">
   <div class="tab-headers">
     <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
@@ -989,23 +747,25 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
     </div>
   </div>
 </div>
-<h2 id="5-kaplanmeier-by-missingness">5. Kaplan–Meier by missingness</h2><p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Matplotlib Kaplan–Meier curves by <code>rrsyst</code> missingness.</p>
+<h2 id="5-kaplanmeier-by-missingness">5. Kaplan–Meier by missingness</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<p><strong>Note:</strong> Matplotlib Kaplan–Meier curves by <code>rrsyst</code> missingness.</p>
 
-<div class="code-tabs" id="tabs-198">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-192">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="time = data[:, surv_i] / 365.0
+event = 1.0 - data[:, dwa_i]
+plot_km_missing(time, event, np.isnan(data[:, rrs_i]))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">time = data[:, surv_i] / 365.0
+  <pre class="language-python"><code class="language-python">time = data[:, surv_i] / 365.0
 event = 1.0 - data[:, dwa_i]
 plot_km_missing(time, event, np.isnan(data[:, rrs_i]))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">km &lt;- survfit(Surv(survda/365, 1-dwa) ~ is.na(rrsyst), data = leiden)
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">km &lt;- survfit(Surv(survda/365, 1-dwa) ~ is.na(rrsyst), data = leiden)
 plot(km,
      lty  = 1,
      lwd  = 1.5,
@@ -1015,38 +775,13 @@ plot(km,
      mark.time = FALSE)
 text(4, 0.7, &quot;BP measured&quot;)
 text(2, 0.3, &quot;BP missing&quot;)</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">time = data[:, surv_i] / 365.0
-event = 1.0 - data[:, dwa_i]
-plot_km_missing(time, event, np.isnan(data[:, rrs_i]))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">km &lt;- survfit(Surv(survda/365, 1-dwa) ~ is.na(rrsyst), data = leiden)
-plot(km,
-     lty  = 1,
-     lwd  = 1.5,
-     xlab = &quot;Years since intake&quot;,
-     ylab = &quot;K-M Survival probability&quot;, las=1,
-     col  = c(mdc(4), mdc(5)),
-     mark.time = FALSE)
-text(4, 0.7, &quot;BP measured&quot;)
-text(2, 0.3, &quot;BP missing&quot;)</code></pre>
-        
-      </div>
+      
     </div>
-  </div>
+  </details>
 </div>
 
 <p>In the next steps we are going to impute <code>rrsyst</code> and <code>rrdiast</code> under two scenarios: MAR and MNAR. We will use the delta adjustment technique described in paragraph 7.2.3 in Van Buuren (2012)</p>
-<div class="code-tabs plot-tabs" id="plots-199">
+<div class="code-tabs plot-tabs" id="plots-193">
   <div class="tab-headers">
     <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
@@ -1074,59 +809,46 @@ text(2, 0.3, &quot;BP missing&quot;)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="6-delta-adjustment-vector">6. Delta adjustment vector</h2><p><strong>Parity:</strong> ✅ MATCH</p>
+<h2 id="6-delta-adjustment-vector">6. Delta adjustment vector</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 
-<div class="code-tabs" id="tabs-200">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-194">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="delta = [0, -5, -10, -15, -20]
+print(&#x27; &#x27;.join(str(d) for d in delta))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">delta = [0, -5, -10, -15, -20]
+  <pre class="language-python"><code class="language-python">delta = [0, -5, -10, -15, -20]
 print(&#x27; &#x27;.join(str(d) for d in delta))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">0 -5 -10 -15 -20</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">delta &lt;- c(0, -5, -10, -15, -20)</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">delta = [0, -5, -10, -15, -20]
-print(&#x27; &#x27;.join(str(d) for d in delta))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">0 -5 -10 -15 -20</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">delta &lt;- c(0, -5, -10, -15, -20)</code></pre>
-        
-      </div>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">0 -5 -10 -15 -20</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">delta &lt;- c(0, -5, -10, -15, -20)</code></pre>
+      
     </div>
-  </div>
+  </details>
 </div>
 
-<p>The recipe for creating MNAR imputations for δ ≠ 0 uses the post-processing facility of <code>mice</code>. This allows to change the imputations on the fly by deducting a value of δ from the values just imputed.</p><h2 id="7-delta-adjusted-imputation">7. Delta-adjusted imputation</h2><p><strong>Parity:</strong> ✅ MATCH</p>
+<p>The recipe for creating MNAR imputations for δ ≠ 0 uses the post-processing facility of <code>mice</code>. This allows to change the imputations on the fly by deducting a value of δ from the values just imputed.</p><h2 id="7-delta-adjusted-imputation">7. Delta-adjusted imputation</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<p><strong>Note:</strong> δ chain via <code>run_v06_leiden_delta_chain()</code> (<code>rng=&#x27;r&#x27;</code>, <code>seed=i</code>); no R console output.</p>
 
-<div class="code-tabs" id="tabs-201">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-195">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="imp_all = []
+for i, d in enumerate(delta):
+    imp_all.append(mice(data, column_names=names, post={&#x27;rrsyst&#x27;: post_add(d)}, m=5, maxit=5, seed=i+1))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">imp_all = []
+  <pre class="language-python"><code class="language-python">imp_all = []
 for i, d in enumerate(delta):
     imp_all.append(mice(data, column_names=names, post={&#x27;rrsyst&#x27;: post_add(d)}, m=5, maxit=5, seed=i+1))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">created 5 delta scenarios</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">imp.all &lt;- vector(&quot;list&quot;, length(delta))
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">created 5 delta scenarios</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">imp.all &lt;- vector(&quot;list&quot;, length(delta))
 post &lt;- ini$post
 for (i in 1:length(delta)){
   d &lt;- delta[i]
@@ -1135,104 +857,51 @@ for (i in 1:length(delta)){
   imp &lt;- mice(leiden, post = post, maxit = 5, seed = i, print = FALSE)
   imp.all[[i]] &lt;- imp
 }</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">imp_all = []
-for i, d in enumerate(delta):
-    imp_all.append(mice(data, column_names=names, post={&#x27;rrsyst&#x27;: post_add(d)}, m=5, maxit=5, seed=i+1))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">created 5 delta scenarios</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">imp.all &lt;- vector(&quot;list&quot;, length(delta))
-post &lt;- ini$post
-for (i in 1:length(delta)){
-  d &lt;- delta[i]
-  cmd &lt;- paste(&quot;imp[[j]][,i] &lt;- imp[[j]][,i] +&quot;, d)
-  post[&quot;rrsyst&quot;] &lt;- cmd
-  imp &lt;- mice(leiden, post = post, maxit = 5, seed = i, print = FALSE)
-  imp.all[[i]] &lt;- imp
-}</code></pre>
-        
-      </div>
+      
     </div>
-  </div>
+  </details>
 </div>
-<h2 id="8-boxplot-blood-pressure">8. Boxplot blood pressure</h2><p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
+<h2 id="8-boxplot-blood-pressure">8. Boxplot blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-tabs" id="tabs-202">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-196">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="plot_bwplot_grid(imp_all[0])">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">plot_bwplot_grid(imp_all[0])</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">bwplot(imp.all[[1]])</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">plot_bwplot_grid(imp_all[0])</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">bwplot(imp.all[[1]])</code></pre>
-        
-      </div>
+  <pre class="language-python"><code class="language-python">plot_bwplot_grid(imp_all[0])</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">bwplot(imp.all[[1]])</code></pre>
+      
     </div>
-  </div>
+  </details>
 </div>
 
-<p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> δ=-20 scenario (<code>imp.all[[5]]</code> in R).</p>
+<p><strong>Note:</strong> δ=-20 scenario (<code>imp.all[[5]]</code> in R).</p>
 
-<div class="code-tabs" id="tabs-203">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-197">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="plot_bwplot_grid(imp_all[4])">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">plot_bwplot_grid(imp_all[4])</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">bwplot(imp.all[[5]])</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">plot_bwplot_grid(imp_all[4])</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">bwplot(imp.all[[5]])</code></pre>
-        
-      </div>
+  <pre class="language-python"><code class="language-python">plot_bwplot_grid(imp_all[4])</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">bwplot(imp.all[[5]])</code></pre>
+      
     </div>
-  </div>
+  </details>
 </div>
 
 <p>We can clearly see that the adjustment has an effect on the imputations for <code>rrsyst</code> and, thus, on those for <code>rrdiast</code>.</p>
-<div class="code-tabs plot-tabs" id="plots-204">
+<div class="code-tabs plot-tabs" id="plots-198">
   <div class="tab-headers">
     <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
@@ -1275,76 +944,47 @@ for (i in 1:length(delta)){
     </div>
   </div>
 </div>
-<h2 id="9-density-blood-pressure">9. Density blood pressure</h2><p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
+<h2 id="9-density-blood-pressure">9. Density blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-tabs" id="tabs-205">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-199">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="plot_density(imp_all[0], &#x27;rrsyst&#x27;)">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">plot_density(imp_all[0], &#x27;rrsyst&#x27;)</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">densityplot(imp.all[[1]], lwd = 3)</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">plot_density(imp_all[0], &#x27;rrsyst&#x27;)</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">densityplot(imp.all[[1]], lwd = 3)</code></pre>
-        
-      </div>
+  <pre class="language-python"><code class="language-python">plot_density(imp_all[0], &#x27;rrsyst&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">densityplot(imp.all[[1]], lwd = 3)</code></pre>
+      
     </div>
-  </div>
+  </details>
 </div>
 
-<p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
+<p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-tabs" id="tabs-206">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-200">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="plot_density(imp_all[4], &#x27;rrsyst&#x27;)">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">plot_density(imp_all[4], &#x27;rrsyst&#x27;)</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">densityplot(imp.all[[5]], lwd = 3)</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">plot_density(imp_all[4], &#x27;rrsyst&#x27;)</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">densityplot(imp.all[[5]], lwd = 3)</code></pre>
-        
-      </div>
+  <pre class="language-python"><code class="language-python">plot_density(imp_all[4], &#x27;rrsyst&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">densityplot(imp.all[[5]], lwd = 3)</code></pre>
+      
     </div>
-  </div>
+  </details>
 </div>
 
 <p>We can once more clearly see that the adjustment has an effect on the imputations for <code>rrsyst</code> and, thus, on those for <code>rrdiast</code>.</p>
-<div class="code-tabs plot-tabs" id="plots-207">
+<div class="code-tabs plot-tabs" id="plots-201">
   <div class="tab-headers">
     <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
@@ -1387,72 +1027,43 @@ for (i in 1:length(delta)){
     </div>
   </div>
 </div>
-<h2 id="10-scatter-blood-pressure">10. Scatter blood pressure</h2><p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
+<h2 id="10-scatter-blood-pressure">10. Scatter blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-tabs" id="tabs-208">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-202">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="plot_xy_by_imp(imp_all[0], &#x27;rrsyst&#x27;, &#x27;rrdiast&#x27;)">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">plot_xy_by_imp(imp_all[0], &#x27;rrsyst&#x27;, &#x27;rrdiast&#x27;)</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">xyplot(imp.all[[1]], rrsyst ~ rrdiast | .imp)</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">plot_xy_by_imp(imp_all[0], &#x27;rrsyst&#x27;, &#x27;rrdiast&#x27;)</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">xyplot(imp.all[[1]], rrsyst ~ rrdiast | .imp)</code></pre>
-        
-      </div>
+  <pre class="language-python"><code class="language-python">plot_xy_by_imp(imp_all[0], &#x27;rrsyst&#x27;, &#x27;rrdiast&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">xyplot(imp.all[[1]], rrsyst ~ rrdiast | .imp)</code></pre>
+      
     </div>
-  </div>
+  </details>
 </div>
 
-<p><strong>Parity:</strong> ⚠️ PARTIAL <strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
+<p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-tabs" id="tabs-209">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-203">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="plot_xy_by_imp(imp_all[4], &#x27;rrsyst&#x27;, &#x27;rrdiast&#x27;)">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">plot_xy_by_imp(imp_all[4], &#x27;rrsyst&#x27;, &#x27;rrdiast&#x27;)</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">xyplot(imp.all[[5]], rrsyst ~ rrdiast | .imp)</code></pre>
-    
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">plot_xy_by_imp(imp_all[4], &#x27;rrsyst&#x27;, &#x27;rrdiast&#x27;)</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">(plot below)</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">xyplot(imp.all[[5]], rrsyst ~ rrdiast | .imp)</code></pre>
-        
-      </div>
+  <pre class="language-python"><code class="language-python">plot_xy_by_imp(imp_all[4], &#x27;rrsyst&#x27;, &#x27;rrdiast&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">xyplot(imp.all[[5]], rrsyst ~ rrdiast | .imp)</code></pre>
+      
     </div>
-  </div>
+  </details>
 </div>
 
 <p>The scatter plot comparison between <code>rrsyst</code> and <code>rrdiast</code> shows us that the adjustment has an effect on the imputations and that the imputations are lower for the situation where δ = -20.</p>
@@ -1460,7 +1071,7 @@ for (i in 1:length(delta)){
 <p>In order to automate this step we should create an expression object that performs these steps for us. The following object does so:</p>
 <p><code>cda &lt;- expression(sbpgp &lt;- cut(rrsyst, ...), coxph(...))</code></p>
 <p>See Van Buuren (2012, pp.186) for more information.</p>
-<div class="code-tabs plot-tabs" id="plots-210">
+<div class="code-tabs plot-tabs" id="plots-204">
   <div class="tab-headers">
     <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
@@ -1503,152 +1114,16 @@ for (i in 1:length(delta)){
     </div>
   </div>
 </div>
-<h2 id="11-survival-models-per-scenario">11. Survival models per scenario</h2><p><strong>Parity:</strong> ✅ MATCH</p>
-
-<div class="code-tabs" id="tabs-211">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
-  </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">cox_fits = [with_mids(imp, expr=leiden_coxph) for imp in imp_all]
-print(format_mira_cox_v06_r(fit3, nmis=imp_all[2].nmis))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">call :
-with.mids(data = imp.all[[3]], expr = cda)
-
-call1 :
-mice(data = leiden, post = post, maxit = 5, printFlag = FALSE,
-    seed = i)
-
-nmis :
-   sexe lftanam  rrsyst rrdiast     dwa  survda     alb    chol    mmse
-      0       0     121     126       0       0     229     232      85
-   woon
-      0 
-
-analyses :
-[[1]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.53565   1.70856  0.11709  4.575
-C(sbpgp, contr.treatment(6, base = 3))2   0.39979   1.49151  0.10260  3.896
-C(sbpgp, contr.treatment(6, base = 3))4   0.11222   1.11876  0.11727  0.957
-C(sbpgp, contr.treatment(6, base = 3))5   0.11495   1.12182  0.14628  0.786
-C(sbpgp, contr.treatment(6, base = 3))6   -0.13956   0.86974  0.28763 -0.485
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   4.77e-6
-C(sbpgp, contr.treatment(6, base = 3))2   9.76e-5
-C(sbpgp, contr.treatment(6, base = 3))4   0.338581
-C(sbpgp, contr.treatment(6, base = 3))5   0.431953
-C(sbpgp, contr.treatment(6, base = 3))6   0.627525
-
-Likelihood ratio test=30.25  on 5 df, p=1.32e-5
-n= 956, number of events= 723 
-
-[[2]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.47629   1.61008  0.11871  4.012
-C(sbpgp, contr.treatment(6, base = 3))2   0.35318   1.42358  0.10127  3.487
-C(sbpgp, contr.treatment(6, base = 3))4   0.07637   1.07936  0.11755  0.650
-C(sbpgp, contr.treatment(6, base = 3))5   0.07489   1.07777  0.14472  0.518
-C(sbpgp, contr.treatment(6, base = 3))6   -0.13686   0.87209  0.27758 -0.493
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   6.02e-5
-C(sbpgp, contr.treatment(6, base = 3))2   0.000488
-C(sbpgp, contr.treatment(6, base = 3))4   0.515888
-C(sbpgp, contr.treatment(6, base = 3))5   0.604800
-C(sbpgp, contr.treatment(6, base = 3))6   0.621975
-
-Likelihood ratio test=24.59  on 5 df, p=0.000167
-n= 956, number of events= 723 
-
-[[3]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.61947   1.85794  0.11692  5.298
-C(sbpgp, contr.treatment(6, base = 3))2   0.35571   1.42720  0.10325  3.445
-C(sbpgp, contr.treatment(6, base = 3))4   0.06040   1.06226  0.11834  0.510
-C(sbpgp, contr.treatment(6, base = 3))5   0.11028   1.11659  0.14501  0.761
-C(sbpgp, contr.treatment(6, base = 3))6   -0.15074   0.86007  0.28772 -0.524
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   1.17e-7
-C(sbpgp, contr.treatment(6, base = 3))2   0.000571
-C(sbpgp, contr.treatment(6, base = 3))4   0.609778
-C(sbpgp, contr.treatment(6, base = 3))5   0.446954
-C(sbpgp, contr.treatment(6, base = 3))6   0.600334
-
-Likelihood ratio test=35.87  on 5 df, p=1.01e-6
-n= 956, number of events= 723 
-
-[[4]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.52000   1.68202  0.11625  4.473
-C(sbpgp, contr.treatment(6, base = 3))2   0.33831   1.40258  0.10369  3.263
-C(sbpgp, contr.treatment(6, base = 3))4   0.04763   1.04879  0.11704  0.407
-C(sbpgp, contr.treatment(6, base = 3))5   0.10874   1.11487  0.14579  0.746
-C(sbpgp, contr.treatment(6, base = 3))6   -0.16630   0.84679  0.28780 -0.578
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   7.72e-6
-C(sbpgp, contr.treatment(6, base = 3))2   0.001103
-C(sbpgp, contr.treatment(6, base = 3))4   0.684023
-C(sbpgp, contr.treatment(6, base = 3))5   0.455752
-C(sbpgp, contr.treatment(6, base = 3))6   0.563377
-
-Likelihood ratio test=28.19  on 5 df, p=3.34e-5
-n= 956, number of events= 723 
-
-[[5]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.62074   1.86031  0.11484  5.405
-C(sbpgp, contr.treatment(6, base = 3))2   0.38188   1.46504  0.10358  3.687
-C(sbpgp, contr.treatment(6, base = 3))4   0.03305   1.03360  0.11994  0.276
-C(sbpgp, contr.treatment(6, base = 3))5   0.13979   1.15003  0.14650  0.954
-C(sbpgp, contr.treatment(6, base = 3))6   -0.04512   0.95588  0.26928 -0.168
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   6.47e-8
-C(sbpgp, contr.treatment(6, base = 3))2   0.000227
-C(sbpgp, contr.treatment(6, base = 3))4   0.782896
-C(sbpgp, contr.treatment(6, base = 3))5   0.339991
-C(sbpgp, contr.treatment(6, base = 3))6   0.866917
-
-Likelihood ratio test=38.51  on 5 df, p=2.99e-7
-n= 956, number of events= 723</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">fit1 &lt;- with(imp.all[[1]], cda)
+<h2 id="11-survival-models-per-scenario">11. Survival models per scenario</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<h5>R code</h5>
+<pre class="language-r"><code class="language-r">fit1 &lt;- with(imp.all[[1]], cda)
 fit2 &lt;- with(imp.all[[2]], cda)
 fit3 &lt;- with(imp.all[[3]], cda)
 fit4 &lt;- with(imp.all[[4]], cda)
 fit5 &lt;- with(imp.all[[5]], cda)
 fit3</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">call :
+<h5>R output</h5>
+<pre class="language-text"><code class="language-text">call :
 with.mids(data = imp.all[[3]], expr = cda)
 
 call1 :
@@ -1771,16 +1246,13 @@ C(sbpgp, contr.treatment(6, base = 3))6   0.866917
 
 Likelihood ratio test=38.51  on 5 df, p=2.99e-7
 n= 956, number of events= 723</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">cox_fits = [with_mids(imp, expr=leiden_coxph) for imp in imp_all]
+<h5>Python code</h5>
+<pre class="language-python"><code class="language-python">cox_fits = [with_mids(imp, expr=leiden_coxph) for imp in imp_all]
 print(format_mira_cox_v06_r(fit3, nmis=imp_all[2].nmis))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">call :
+<details class="long-output"><summary>Console output (click to expand)</summary>
+
+```text
+call :
 with.mids(data = imp.all[[3]], expr = cda)
 
 call1 :
@@ -1902,158 +1374,18 @@ C(sbpgp, contr.treatment(6, base = 3))5   0.339991
 C(sbpgp, contr.treatment(6, base = 3))6   0.866917
 
 Likelihood ratio test=38.51  on 5 df, p=2.99e-7
-n= 956, number of events= 723</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">fit1 &lt;- with(imp.all[[1]], cda)
-fit2 &lt;- with(imp.all[[2]], cda)
-fit3 &lt;- with(imp.all[[3]], cda)
-fit4 &lt;- with(imp.all[[4]], cda)
-fit5 &lt;- with(imp.all[[5]], cda)
-fit3</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">call :
-with.mids(data = imp.all[[3]], expr = cda)
+n= 956, number of events= 723
+```
 
-call1 :
-mice(data = leiden, post = post, maxit = 5, printFlag = FALSE,
-    seed = i)
+</details><h2 id="12-pool-survival-models">12. Pool survival models</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 
-nmis :
-   sexe lftanam  rrsyst rrdiast     dwa  survda     alb    chol    mmse
-      0       0     121     126       0       0     229     232      85
-   woon
-      0 
-
-analyses :
-[[1]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.53565   1.70856  0.11709  4.575
-C(sbpgp, contr.treatment(6, base = 3))2   0.39979   1.49151  0.10260  3.896
-C(sbpgp, contr.treatment(6, base = 3))4   0.11222   1.11876  0.11727  0.957
-C(sbpgp, contr.treatment(6, base = 3))5   0.11495   1.12182  0.14628  0.786
-C(sbpgp, contr.treatment(6, base = 3))6   -0.13956   0.86974  0.28763 -0.485
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   4.77e-6
-C(sbpgp, contr.treatment(6, base = 3))2   9.76e-5
-C(sbpgp, contr.treatment(6, base = 3))4   0.338581
-C(sbpgp, contr.treatment(6, base = 3))5   0.431953
-C(sbpgp, contr.treatment(6, base = 3))6   0.627525
-
-Likelihood ratio test=30.25  on 5 df, p=1.32e-5
-n= 956, number of events= 723 
-
-[[2]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.47629   1.61008  0.11871  4.012
-C(sbpgp, contr.treatment(6, base = 3))2   0.35318   1.42358  0.10127  3.487
-C(sbpgp, contr.treatment(6, base = 3))4   0.07637   1.07936  0.11755  0.650
-C(sbpgp, contr.treatment(6, base = 3))5   0.07489   1.07777  0.14472  0.518
-C(sbpgp, contr.treatment(6, base = 3))6   -0.13686   0.87209  0.27758 -0.493
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   6.02e-5
-C(sbpgp, contr.treatment(6, base = 3))2   0.000488
-C(sbpgp, contr.treatment(6, base = 3))4   0.515888
-C(sbpgp, contr.treatment(6, base = 3))5   0.604800
-C(sbpgp, contr.treatment(6, base = 3))6   0.621975
-
-Likelihood ratio test=24.59  on 5 df, p=0.000167
-n= 956, number of events= 723 
-
-[[3]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.61947   1.85794  0.11692  5.298
-C(sbpgp, contr.treatment(6, base = 3))2   0.35571   1.42720  0.10325  3.445
-C(sbpgp, contr.treatment(6, base = 3))4   0.06040   1.06226  0.11834  0.510
-C(sbpgp, contr.treatment(6, base = 3))5   0.11028   1.11659  0.14501  0.761
-C(sbpgp, contr.treatment(6, base = 3))6   -0.15074   0.86007  0.28772 -0.524
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   1.17e-7
-C(sbpgp, contr.treatment(6, base = 3))2   0.000571
-C(sbpgp, contr.treatment(6, base = 3))4   0.609778
-C(sbpgp, contr.treatment(6, base = 3))5   0.446954
-C(sbpgp, contr.treatment(6, base = 3))6   0.600334
-
-Likelihood ratio test=35.87  on 5 df, p=1.01e-6
-n= 956, number of events= 723 
-
-[[4]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.52000   1.68202  0.11625  4.473
-C(sbpgp, contr.treatment(6, base = 3))2   0.33831   1.40258  0.10369  3.263
-C(sbpgp, contr.treatment(6, base = 3))4   0.04763   1.04879  0.11704  0.407
-C(sbpgp, contr.treatment(6, base = 3))5   0.10874   1.11487  0.14579  0.746
-C(sbpgp, contr.treatment(6, base = 3))6   -0.16630   0.84679  0.28780 -0.578
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   7.72e-6
-C(sbpgp, contr.treatment(6, base = 3))2   0.001103
-C(sbpgp, contr.treatment(6, base = 3))4   0.684023
-C(sbpgp, contr.treatment(6, base = 3))5   0.455752
-C(sbpgp, contr.treatment(6, base = 3))6   0.563377
-
-Likelihood ratio test=28.19  on 5 df, p=3.34e-5
-n= 956, number of events= 723 
-
-[[5]]
-
-Call:
-coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
-    base = 3)) + strata(sexe, agegp))
-
-                                            coef exp(coef) se(coef)      z
-C(sbpgp, contr.treatment(6, base = 3))1   0.62074   1.86031  0.11484  5.405
-C(sbpgp, contr.treatment(6, base = 3))2   0.38188   1.46504  0.10358  3.687
-C(sbpgp, contr.treatment(6, base = 3))4   0.03305   1.03360  0.11994  0.276
-C(sbpgp, contr.treatment(6, base = 3))5   0.13979   1.15003  0.14650  0.954
-C(sbpgp, contr.treatment(6, base = 3))6   -0.04512   0.95588  0.26928 -0.168
-                                               p
-C(sbpgp, contr.treatment(6, base = 3))1   6.47e-8
-C(sbpgp, contr.treatment(6, base = 3))2   0.000227
-C(sbpgp, contr.treatment(6, base = 3))4   0.782896
-C(sbpgp, contr.treatment(6, base = 3))5   0.339991
-C(sbpgp, contr.treatment(6, base = 3))6   0.866917
-
-Likelihood ratio test=38.51  on 5 df, p=2.99e-7
-n= 956, number of events= 723</code></pre>
-
-      </div>
-    </div>
+<div class="code-card" id="code-205">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_pool_cox_summary_r(summary_pool(pool(cox_fits[0]))))">Copy Python</button>
   </div>
-</div>
-<h2 id="12-pool-survival-models">12. Pool survival models</h2><p><strong>Parity:</strong> ✅ MATCH</p>
-
-<div class="code-tabs" id="tabs-212">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
-  </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">print(format_pool_cox_summary_r(summary_pool(pool(cox_fits[0]))))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">                                           estimate std.error  statistic
+  <pre class="language-python"><code class="language-python">print(format_pool_cox_summary_r(summary_pool(pool(cox_fits[0]))))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">                                           estimate std.error  statistic
 C(sbpgp, contr.treatment(6, base = 3))1    0.51895033 0.1270346   4.0851094
 C(sbpgp, contr.treatment(6, base = 3))2    0.33980541 0.1076749   3.1558451
 C(sbpgp, contr.treatment(6, base = 3))4    0.07075035 0.1242191   0.5695609
@@ -2065,17 +1397,17 @@ C(sbpgp, contr.treatment(6, base = 3))2     240.02343 0.00180493
 C(sbpgp, contr.treatment(6, base = 3))4     177.08320 0.56969737
 C(sbpgp, contr.treatment(6, base = 3))5     212.37837 0.65259454
 C(sbpgp, contr.treatment(6, base = 3))6     341.52419 0.71819834</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">r1 &lt;- as.vector(t(exp(summary(pool(fit1))[, c(1)])))
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">r1 &lt;- as.vector(t(exp(summary(pool(fit1))[, c(1)])))
 r2 &lt;- as.vector(t(exp(summary(pool(fit2))[, c(1)])))
 r3 &lt;- as.vector(t(exp(summary(pool(fit3))[, c(1)])))
 r4 &lt;- as.vector(t(exp(summary(pool(fit4))[, c(1)])))
 r5 &lt;- as.vector(t(exp(summary(pool(fit5))[, c(1)])))
 summary(pool(fit1))</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">                                           estimate std.error  statistic
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">                                           estimate std.error  statistic
 C(sbpgp, contr.treatment(6, base = 3))1    0.51895033 0.1270346   4.0851094
 C(sbpgp, contr.treatment(6, base = 3))2    0.33980541 0.1076749   3.1558451
 C(sbpgp, contr.treatment(6, base = 3))4    0.07075035 0.1242191   0.5695609
@@ -2087,138 +1419,59 @@ C(sbpgp, contr.treatment(6, base = 3))2     240.02343 0.00180493
 C(sbpgp, contr.treatment(6, base = 3))4     177.08320 0.56969737
 C(sbpgp, contr.treatment(6, base = 3))5     212.37837 0.65259454
 C(sbpgp, contr.treatment(6, base = 3))6     341.52419 0.71819834</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">print(format_pool_cox_summary_r(summary_pool(pool(cox_fits[0]))))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">                                           estimate std.error  statistic
-C(sbpgp, contr.treatment(6, base = 3))1    0.51895033 0.1270346   4.0851094
-C(sbpgp, contr.treatment(6, base = 3))2    0.33980541 0.1076749   3.1558451
-C(sbpgp, contr.treatment(6, base = 3))4    0.07075035 0.1242191   0.5695609
-C(sbpgp, contr.treatment(6, base = 3))5    0.06781265 0.1504278   0.4507987
-C(sbpgp, contr.treatment(6, base = 3))6   -0.10244977 0.2836636  -0.3611664
-                                                df      p.value
-C(sbpgp, contr.treatment(6, base = 3))1     389.91034 5.349635853e-05
-C(sbpgp, contr.treatment(6, base = 3))2     240.02343 0.00180493
-C(sbpgp, contr.treatment(6, base = 3))4     177.08320 0.56969737
-C(sbpgp, contr.treatment(6, base = 3))5     212.37837 0.65259454
-C(sbpgp, contr.treatment(6, base = 3))6     341.52419 0.71819834</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">r1 &lt;- as.vector(t(exp(summary(pool(fit1))[, c(1)])))
-r2 &lt;- as.vector(t(exp(summary(pool(fit2))[, c(1)])))
-r3 &lt;- as.vector(t(exp(summary(pool(fit3))[, c(1)])))
-r4 &lt;- as.vector(t(exp(summary(pool(fit4))[, c(1)])))
-r5 &lt;- as.vector(t(exp(summary(pool(fit5))[, c(1)])))
-summary(pool(fit1))</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">                                           estimate std.error  statistic
-C(sbpgp, contr.treatment(6, base = 3))1    0.51895033 0.1270346   4.0851094
-C(sbpgp, contr.treatment(6, base = 3))2    0.33980541 0.1076749   3.1558451
-C(sbpgp, contr.treatment(6, base = 3))4    0.07075035 0.1242191   0.5695609
-C(sbpgp, contr.treatment(6, base = 3))5    0.06781265 0.1504278   0.4507987
-C(sbpgp, contr.treatment(6, base = 3))6   -0.10244977 0.2836636  -0.3611664
-                                                df      p.value
-C(sbpgp, contr.treatment(6, base = 3))1     389.91034 5.349635853e-05
-C(sbpgp, contr.treatment(6, base = 3))2     240.02343 0.00180493
-C(sbpgp, contr.treatment(6, base = 3))4     177.08320 0.56969737
-C(sbpgp, contr.treatment(6, base = 3))5     212.37837 0.65259454
-C(sbpgp, contr.treatment(6, base = 3))6     341.52419 0.71819834</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
-<p><strong>Parity:</strong> ✅ MATCH</p>
 
-<div class="code-tabs" id="tabs-213">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-206">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_cox_pars_table_r(DELTA, cox_pars_rows))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">print(format_cox_pars_table_r(DELTA, cox_pars_rows))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">     &lt;125 125-140 &gt;200
+  <pre class="language-python"><code class="language-python">print(format_cox_pars_table_r(DELTA, cox_pars_rows))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     &lt;125 125-140 &gt;200
    0   1.68     1.40  0.90
   -5   1.70     1.44  0.88
  -10   1.74     1.44  0.88
  -15   1.69     1.44  0.85
  -20   1.76     1.45  0.88</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">pars &lt;- round(t(matrix(c(r1,r2,r3,r4,r5), nrow = 5)),2)
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">pars &lt;- round(t(matrix(c(r1,r2,r3,r4,r5), nrow = 5)),2)
 pars &lt;- pars[, c(1, 2, 5)]
 dimnames(pars) &lt;- list(delta, c(&quot;&lt;125&quot;, &quot;125-140&quot;, &quot;&gt;200&quot;))
 pars</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">     &lt;125 125-140 &gt;200
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     &lt;125 125-140 &gt;200
    0   1.68     1.40  0.90
   -5   1.70     1.44  0.88
  -10   1.74     1.44  0.88
  -15   1.69     1.44  0.85
  -20   1.76     1.45  0.88</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">print(format_cox_pars_table_r(DELTA, cox_pars_rows))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">     &lt;125 125-140 &gt;200
-   0   1.68     1.40  0.90
-  -5   1.70     1.44  0.88
- -10   1.74     1.44  0.88
- -15   1.69     1.44  0.85
- -20   1.76     1.45  0.88</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">pars &lt;- round(t(matrix(c(r1,r2,r3,r4,r5), nrow = 5)),2)
-pars &lt;- pars[, c(1, 2, 5)]
-dimnames(pars) &lt;- list(delta, c(&quot;&lt;125&quot;, &quot;125-140&quot;, &quot;&gt;200&quot;))
-pars</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">     &lt;125 125-140 &gt;200
-   0   1.68     1.40  0.90
-  -5   1.70     1.44  0.88
- -10   1.74     1.44  0.88
- -15   1.69     1.44  0.85
- -20   1.76     1.45  0.88</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
-<p>All in all, it seems that even big changes to the imputations (e.g. deducting 20 mmHg) has little influence on the results. This suggests that the results are stable relatively to this type of MNAR-mechanism.</p><h2 id="13-mammalsleep-sensitivity">13. Mammalsleep sensitivity</h2><p><code>lm(sws ~ log10(bw) + odi)</code></p>
-<p><strong>Parity:</strong> ✅ MATCH</p>
+<p>All in all, it seems that even big changes to the imputations (e.g. deducting 20 mmHg) has little influence on the results. This suggests that the results are stable relatively to this type of MNAR-mechanism.</p><h2 id="13-mammalsleep-sensitivity">13. Mammalsleep sensitivity</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<p><code>lm(sws ~ log10(bw) + odi)</code></p>
 
-<div class="code-tabs" id="tabs-214">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+<div class="code-card" id="code-207">
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="for i, d in enumerate(DELTA_MS):
+    imp_ms = mice(ms_data, method=meth_ms, predictor_matrix=pred_ms,
+                  post={&#x27;sws&#x27;: post_add(d)}, maxit=10, seed=i*22)
+    qbar = pool(with_mids(imp_ms, formula=&#x27;sws ~ log10(bw) + odi&#x27;)).rows
+print(format_delta_qbar_table(DELTA_MS, ms_delta_qbars))">Copy Python</button>
   </div>
-  <div class="tab-content python active">
-    <pre class="language-python"><code class="language-python">for i, d in enumerate(DELTA_MS):
+  <pre class="language-python"><code class="language-python">for i, d in enumerate(DELTA_MS):
     imp_ms = mice(ms_data, method=meth_ms, predictor_matrix=pred_ms,
                   post={&#x27;sws&#x27;: post_add(d)}, maxit=10, seed=i*22)
     qbar = pool(with_mids(imp_ms, formula=&#x27;sws ~ log10(bw) + odi&#x27;)).rows
 print(format_delta_qbar_table(DELTA_MS, ms_delta_qbars))</code></pre>
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">  delta V       1 V       2 V       3
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">  delta V       1 V       2 V       3
      8  13.3850  -0.1350  -1.1123
      6  12.9697  -0.2547  -1.1250
      4  12.4761  -0.6280  -0.9882
@@ -2228,17 +1481,17 @@ print(format_delta_qbar_table(DELTA_MS, ms_delta_qbars))</code></pre>
     -4  10.7824  -1.6826  -0.8408
     -6  10.5540  -1.8748  -0.8283
     -8  10.1064  -2.1090  -0.8664</code></pre>
-  </div>
-  <div class="tab-content r">
-    <pre class="language-r"><code class="language-r">delta &lt;- c(8, 6, 4, 2, 0, -2, -4, -6, -8)
+  <details class="compare-r">
+    <summary>Compare to R reference</summary>
+    <div class="compare-r-body">
+      <div class="compare-title">R code</div>
+      <pre class="language-r"><code class="language-r">delta &lt;- c(8, 6, 4, 2, 0, -2, -4, -6, -8)
 ini &lt;- mice(mammalsleep[, -1], maxit=0, print=F)
 meth[&quot;ts&quot;] &lt;- &quot;~ I(sws + ps)&quot;
 for (i in 1:length(delta)) { ... mice(..., post = post, ...) }
 output &lt;- sapply(imp.all.undamped, function(x) pool(with(x, lm(sws ~ log10(bw) + odi)))$qbar)
 cbind(delta, as.data.frame(t(output)))</code></pre>
-    
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">  delta V       1 V       2 V       3
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">  delta V       1 V       2 V       3
      8  13.3850  -0.1350  -1.1123
      6  12.9697  -0.2547  -1.1250
      4  12.4761  -0.6280  -0.9882
@@ -2248,53 +1501,8 @@ cbind(delta, as.data.frame(t(output)))</code></pre>
     -4  10.7824  -1.6826  -0.8408
     -6  10.5540  -1.8748  -0.8283
     -8  10.1064  -2.1090  -0.8664</code></pre>
-
-  </div>
-  <div class="tab-content compare">
-    <div class="compare-grid">
-      <div>
-        <div class="compare-title">Python (PyMICE)</div>
-        <pre class="language-python"><code class="language-python">for i, d in enumerate(DELTA_MS):
-    imp_ms = mice(ms_data, method=meth_ms, predictor_matrix=pred_ms,
-                  post={&#x27;sws&#x27;: post_add(d)}, maxit=10, seed=i*22)
-    qbar = pool(with_mids(imp_ms, formula=&#x27;sws ~ log10(bw) + odi&#x27;)).rows
-print(format_delta_qbar_table(DELTA_MS, ms_delta_qbars))</code></pre>
-        <div class="output-header">Console Output</div>
-        <pre class="language-text"><code class="language-text">  delta V       1 V       2 V       3
-     8  13.3850  -0.1350  -1.1123
-     6  12.9697  -0.2547  -1.1250
-     4  12.4761  -0.6280  -0.9882
-     2  12.1851  -0.8777  -1.0337
-     0  11.7901  -0.9135  -0.9815
-    -2  11.1624  -1.4025  -0.8426
-    -4  10.7824  -1.6826  -0.8408
-    -6  10.5540  -1.8748  -0.8283
-    -8  10.1064  -2.1090  -0.8664</code></pre>
-      </div>
-      <div>
-        <div class="compare-title">R (Reference)</div>
-        <pre class="language-r"><code class="language-r">delta &lt;- c(8, 6, 4, 2, 0, -2, -4, -6, -8)
-ini &lt;- mice(mammalsleep[, -1], maxit=0, print=F)
-meth[&quot;ts&quot;] &lt;- &quot;~ I(sws + ps)&quot;
-for (i in 1:length(delta)) { ... mice(..., post = post, ...) }
-output &lt;- sapply(imp.all.undamped, function(x) pool(with(x, lm(sws ~ log10(bw) + odi)))$qbar)
-cbind(delta, as.data.frame(t(output)))</code></pre>
-        
-    <div class="output-header">Console Output</div>
-    <pre class="language-text"><code class="language-text">  delta V       1 V       2 V       3
-     8  13.3850  -0.1350  -1.1123
-     6  12.9697  -0.2547  -1.1250
-     4  12.4761  -0.6280  -0.9882
-     2  12.1851  -0.8777  -1.0337
-     0  11.7901  -0.9135  -0.9815
-    -2  11.1624  -1.4025  -0.8426
-    -4  10.7824  -1.6826  -0.8408
-    -6  10.5540  -1.8748  -0.8283
-    -8  10.1064  -2.1090  -0.8664</code></pre>
-
-      </div>
     </div>
-  </div>
+  </details>
 </div>
 
 <p>Sensitivity analysis is an important tool for investigating the plausibility of the MAR assumption. We again use the δ-adjustment technique described in Van Buuren (2012, p. 185) as an informal, simple and direct method to create imputations under nonignorable models.</p>
@@ -2309,13 +1517,21 @@ cbind(delta, as.data.frame(t(output)))</code></pre>
   <script>
     function switchTab(btn, mode) {
       const container = btn.closest('.code-tabs');
-      // Update buttons
       container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      // Update content
       container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       container.querySelector('.tab-content.' + mode).classList.add('active');
     }
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const text = btn.getAttribute('data-copy') || '';
+        navigator.clipboard.writeText(text).then(() => {
+          const prev = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = prev; }, 1200);
+        });
+      });
+    });
   </script>
 </body>
 </html>

@@ -10,7 +10,7 @@ from lib.vignette_catalog import step_title
 _PROSE = REFERENCE_DIR / "07_ampute" / "vignette_prose.json"
 
 AUTHORS = "Rianne Schouten"
-SERIES_LABEL = "Ampute tutorial"
+SERIES_LABEL = "Vignette 7 of 8"
 TITLE = "Generate missing values with ampute"
 
 STEP_TITLES: dict[int, str] = {
@@ -61,7 +61,11 @@ N5_BEFORE = (
     "order than in the dataset itself."
 )
 
-N6_BEFORE = N5_BEFORE
+N6_BEFORE = (
+    "The missingness pattern heatmap (`md.pattern(..., plot=TRUE)`) visualizes which cells "
+    "are observed (blue) versus missing (red). PyMICE reproduces the pattern counts in the "
+    "console table above; the lattice heatmap is reference-only in this walkthrough."
+)
 
 N7_BEFORE = (
     "Function `bwplot` allows for a comparison between amputed and non-amputed data. Note "

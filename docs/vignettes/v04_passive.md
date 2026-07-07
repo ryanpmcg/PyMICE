@@ -2,10 +2,10 @@
 
 *Compare to **Passive imputation and Post-processing** by Gerko Vink and Stef van Buuren*
 
-**Reference:** https://www.gerkovink.com/micereference/Passive_Post_processing/Passive_imputation_post_processing.html
-**Parity status:** Partially compliant — 13 match, 10 partial, 0 skipped (R-only)
+**Reference:** https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html
+**Parity status:** Partially compliant — 8 match, 5 info, 10 partial, 0 skipped (R-only)
 
-This page walks through PyMICE equivalents of the numbered exercises in the reference vignette below. Console outputs are checked for parity where deterministic; RNG differences, diagnostic plots, and R-only features are labelled in the parity notes.
+This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
 ## Parity overview
 
@@ -33,7 +33,9 @@ In this vignette we will walk you through the more advanced features of `mice`, 
 
 ## 1. Dry run predictor matrix
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** Package load step; no R console output to compare.
 
 ### R code
 ```r
@@ -65,7 +67,8 @@ There is often a need for transformed, combined or recoded versions of the data.
 
 ## 2. Passive imputation formula
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (3 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 4 blocks)
+
 
 ### R code
 ```r
@@ -92,7 +95,6 @@ print(format_meth_r(ms_names, ini_ms.method, style='mammalsleep'))
 ""   ""   "pmm"   "pmm"   "pmm"   "pmm"   "pmm"   ""   ""   ""
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -135,7 +137,6 @@ sei     1   1   1   1   1   1   1   1   0   1
 odi     1   1   1   1   1   1   1   1   1   0
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -181,7 +182,7 @@ sei     1   1   1   1   1   1   1   1   0   1
 odi     1   1   1   1   1   1   1   1   1   0
 ```
 
-**Parity:** ✅ MATCH
+**Note:** PyMICE verifies circular ts = sws+ps constraint numerically; R prints nothing.
 
 ### R code
 ```r
@@ -206,7 +207,8 @@ We also gave the imputation algorithm 10 iterations to converge and fixed the se
 
 ## 3. Passive convergence trace
 
-**Parity:** ⚠️ PARTIAL
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -238,7 +240,9 @@ The `mice()` function has an argument called `post` that takes a vector of strin
 
 ## 4. PMM versus norm post
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** Constrained `norm` imputation via `post_squeeze(1, 25)`.
 
 ### R code
 ```r
@@ -265,9 +269,11 @@ In this way the imputed values of `tv` are constrained (squeezed by function `sq
 
 ## 5. Density comparison
 
+**Step parity:** ⚠️ PARTIAL (2 exact, 1 info, 2 visual, 0 skipped, 0 mismatch of 5 blocks)
+
 First, we recreate the default `pmm` solution
 
-**Parity:** ✅ MATCH
+**Note:** Creates `imp.pmm` object; R vignette prints no console output here.
 
 ### R code
 ```r
@@ -284,7 +290,6 @@ imp_pmm = mice(boys, column_names=boy_names, m=5, maxit=5, print_flag=False)
 (pmm imputation — no printed output)
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -308,7 +313,6 @@ print(_tv_table(imp_norm_post, boy_names))
 319  31  28  27  12  16   8  17   3  24   9  22   9   6  43  12  13  13   8  50   7   8   4  11  48
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -334,7 +338,6 @@ print(_tv_table(imp_pmm, boy_names))
 
 It is clear that the norm solution does not give us integer data as imputations. Next, we inspect and compare the density of the incomplete and imputed data for the constrained solution.
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Density of post-squeezed norm `tv` imputations.
 
 ### R code
@@ -354,7 +357,6 @@ plot_density(imp_norm_post, 'tv')
 
 A nice way of plotting the histograms of both datasets simultaneously is by creating first the dataframe (here we named it `tvm`) that contains the data in one column and the imputation method in another column.
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -386,8 +388,9 @@ Is there still a difference in distribution between the two different imputation
 
 ## 6. XY plot default PMM
 
-**Parity:** ⚠️ PARTIAL
-**Note:** Uses default `pmm` imputation (`imp.pmm`) — step 4 `imp` not available.
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
+**Note:** R `xyplot` uses norm+post `imp` from step 4; PyMICE plots default PMM (`imp_pmm`) to show BMI inconsistency before passive imputation in step 7.
 
 ### R code
 ```r
@@ -414,7 +417,8 @@ With this plot we show that the relation between `hgt`, `wgt` and `bmi` is not p
 
 ## 7. Passive BMI from weight and height
 
-**Parity:** ✅ MATCH
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 
 ### R code
 ```r
@@ -436,9 +440,10 @@ max |bmi - wgt/(hgt/100)^2| on missing rows: 0.00e+00
 
 ## 8. Circular passive imputation
 
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 To inspect the relation:
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -460,7 +465,6 @@ plot_xy_imputed(imp_bmi_circ, 'bmi', _calc_bmi(complete(imp_bmi_circ, 1), boy_na
 
 To study convergence for `bmi` alone:
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -486,9 +490,10 @@ Although the relation of `bmi` is preserved now in the imputations we get absurd
 
 ## 9. Fixed passive imputation
 
+**Step parity:** ⚠️ PARTIAL (2 exact, 1 info, 4 visual, 0 skipped, 0 mismatch of 7 blocks)
+
 First, we remove `bmi` as a predictor for `hgt` and `wgt` to remove circularity.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -529,7 +534,6 @@ phb     1   1   1   1   1   1   0   1   1
 reg     1   1   1   1   1   1   1   1   0
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -572,7 +576,7 @@ reg     1   1   1   1   1   1   1   1   0
 
 and we run the `mice` algorithm again with the new predictor matrix (we still ‘borrow’ the imputation methods object `meth` from before)
 
-**Parity:** ✅ MATCH
+**Note:** R vignette shows code only before diagnostic plots.
 
 ### R code
 ```r
@@ -591,7 +595,6 @@ imp_bmi = mice(boys, column_names=boy_names, method=meth_boys, predictor_matrix=
 
 Second, we recreate the plots from **Assignment 8**. We start with the plot to inspect the relations in the observed and imputed data
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -613,7 +616,6 @@ plot_xy_imputed(imp_bmi, 'bmi', _calc_bmi(complete(imp_bmi, 1), boy_names))
 
 and continue with the trace plot to study convergence
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code
@@ -643,7 +645,6 @@ It is important to ‘gain’ this control as a user. After all, we are imputing
 
 Never set all relations fixed. You will remain with the starting values and waste your computer’s energy (and your own).
 
-**Parity:** ⚠️ PARTIAL
 **Note:** R vignette prints iteration log; PyMICE runs imputation without event log.
 
 ### R code
@@ -701,7 +702,6 @@ imp_path = mice(boys, column_names=boy_names, method=meth_path, predictor_matrix
 (triple passive imputation — no printed output)
 ```
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Matplotlib equivalent of the R lattice plot.
 
 ### R code

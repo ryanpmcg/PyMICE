@@ -10,7 +10,7 @@ from lib.vignette_catalog import step_title
 _PROSE = REFERENCE_DIR / "04_passive_post_processing" / "vignette_prose.json"
 
 AUTHORS = "Gerko Vink and Stef van Buuren"
-SERIES_LABEL = "Vignette 4 of 6"
+SERIES_LABEL = "Vignette 4 of 8"
 TITLE = "`mice`: Passive imputation and Post-processing"
 
 PART_POST = "Post-processing of the imputations"

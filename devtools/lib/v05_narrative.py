@@ -10,7 +10,7 @@ from lib.vignette_catalog import step_title
 _PROSE = REFERENCE_DIR / "05_multilevel_data" / "vignette_prose.json"
 
 AUTHORS = "Gerko Vink and Stef van Buuren"
-SERIES_LABEL = "Vignette 5 of 6"
+SERIES_LABEL = "Vignette 5 of 8"
 TITLE = "`mice`: Imputing multi-level data"
 
 PART_INSPECTION = "Inspection of the incomplete data"
@@ -293,7 +293,31 @@ N16_AFTER = "What do you think of the imputed values?"
 
 def load_intro() -> str:
     data = json.loads(_PROSE.read_text(encoding="utf-8"))
-    return data["intro"]
+    intro = data["intro"]
+    intro = intro.replace(
+        "This is the fifth vignette in a series of six.",
+        "This is the fifth vignette in an eight-part series (see the index for the full path).",
+    )
+    ls_marker = "`ls()`"
+    if ls_marker in intro:
+        before, _, after = intro.partition(ls_marker)
+        if "## [9]" in after:
+            after = after.split("`", 1)[-1]  # drop R workspace listing block
+            if after.startswith("##"):
+                after = after.split("`", 1)[-1] if "`" in after else after
+            # skip through closing backtick of listing if still present
+            if after.lstrip().startswith("The dataset"):
+                pass
+            else:
+                idx = after.find("The dataset")
+                if idx >= 0:
+                    after = after[idx:]
+        intro = (
+            before + "If you'd like to see what is inside the R workspace, run `ls()`. "
+            "PyMICE loads the same datasets directly (`popNCR`, `popNCR2`, `popNCR3`, `popular`, …) "
+            "via `lib.data` — no workspace dump is shown here.\n\n" + after.lstrip()
+        )
+    return intro
 
 
 def load_step_title(num: int) -> str:

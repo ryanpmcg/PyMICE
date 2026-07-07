@@ -3,9 +3,9 @@
 *Compare to **Generate missing values with ampute** by Rianne Schouten*
 
 **Reference:** https://rianneschouten.github.io/mice_ampute/vignette/ampute.html
-**Parity status:** Partially compliant — 11 match, 2 partial, 2 skipped (R-only)
+**Parity status:** Partially compliant — 10 match, 1 info, 2 partial, 2 skipped (R-only)
 
-This page walks through PyMICE equivalents of the numbered exercises in the reference vignette below. Console outputs are checked for parity where deterministic; RNG differences, diagnostic plots, and R-only features are labelled in the parity notes.
+This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
 ## Parity overview
 
@@ -47,9 +47,11 @@ The walkthrough below follows the original tutorial's argument order (data, defa
 
 ## 1. Read ampute documentation
 
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 Use the help function to read `ampute`'s documentation. The function is available in multiple imputation package **mice**.
 
-**Parity:** ✅ MATCH
+**Note:** PyMICE help page; R opens a separate pager.
 
 ### R code
 ```r
@@ -107,9 +109,10 @@ See Also
 
 ## 2. Generate complete data
 
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 The first argument `data` is an input argument for a complete dataset. In this tutorial, as in many simulation studies, we will randomly generate a dataset to be our complete dataset. Here, we will use function `mvrnorm` from R-package **MASS** to sample from a multivariate normal distribution.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -154,9 +157,10 @@ print(format_ampute_summary_r(testdata, names))
 
 ## 3. Default amputation
 
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 We can immediately generate missing values by calling `ampute`. The resulting object is of class `mads` and contains the default values that are used as arguments. It is important to know that the incomplete dataset is stored under object `amp` in class `mads`.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -179,7 +183,6 @@ result = chain['result']
 [1] "mads"
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -215,9 +218,10 @@ print(format_ampute_head_r(result.amp[:6], names))
 
 ## 4. Inspect mads metadata
 
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 Apart from the argument values and the incomplete dataset, the `mads` object contains the assigned subset for each data row (`cand`), the weighted sum scores (`scores`) and the original data (`data`).
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -245,9 +249,10 @@ print(format_ampute_names_r())
 
 ## 5. Missing data pattern
 
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 We can quickly investigate the incomplete dataset with function `md.pattern`, where the resulting visualization shows the missing data in red and the observed data in blue. The first row always shows the complete cases, of which we have approximately 50%. Each subsequent row depicts a specific missing data pattern. By default, `ampute` generates missing values in each variable. Note that because `md.pattern` sorts the columns in increasing order of missing data proportion, the variables are displayed in a different order than in the dataset itself.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -285,9 +290,10 @@ print(format_md_pattern_r(md_pattern(result.amp, names)))
 
 ## 6. Pattern heatmap
 
-We can quickly investigate the incomplete dataset with function `md.pattern`, where the resulting visualization shows the missing data in red and the observed data in blue. The first row always shows the complete cases, of which we have approximately 50%. Each subsequent row depicts a specific missing data pattern. By default, `ampute` generates missing values in each variable. Note that because `md.pattern` sorts the columns in increasing order of missing data proportion, the variables are displayed in a different order than in the dataset itself.
+**Step parity:** ⏭️ SKIP (0 exact, 0 info, 0 visual, 1 skipped, 0 mismatch of 1 blocks)
 
-**Parity:** ⏭️ SKIP
+The missingness pattern heatmap (`md.pattern(..., plot=TRUE)`) visualizes which cells are observed (blue) versus missing (red). PyMICE reproduces the pattern counts in the console table above; the lattice heatmap is reference-only in this walkthrough.
+
 
 ### R code
 ```r
@@ -306,9 +312,10 @@ md.pattern(result$amp, plot=TRUE)
 
 ## 7. Amputed boxplots
 
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 Function `bwplot` allows for a comparison between amputed and non-amputed data. Note that the function uses as input the `mads` object and not the incomplete dataset.
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Boxplot after MNAR amputation (pattern 1).
 
 ### R code
@@ -330,9 +337,10 @@ plot_ampute_bwplot(result_mnar, names, which_pat=0, descriptives=True)
 
 ## 8. Amputed scatterplots
 
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 Similar inspections can be done using the function `xyplot`. The scatterplots show the correlation between the variable values and the weighted sum scores.
 
-**Parity:** ⚠️ PARTIAL
 **Note:** Scatter plot for pattern 4 after weighted continuous amputation.
 
 ### R code
@@ -358,9 +366,10 @@ plot_ampute_xyplot(result_xy, names, which_pat=3)
 
 ## 9. Proportion of incomplete cases
 
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 The argument `prop` specifies the **proportion** of incomplete rows. As a default, the missingness proportion is 0.5. A proportion of 0.5 means that 50% of the data rows will have missing values. This is not the same as the proportion of missing cells, because incomplete cases will still have some observed values for some variables.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -384,9 +393,10 @@ result.prop
 
 ## 10. Proportion of missing cells
 
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 To specify the proportion of missing cells, additional argument `bycases` should be set to `FALSE`. As the `testdata` contains 10000 × 3 = 30000 cells, a missing data proportion of 0.2 means that approximately 6000 cells will become missing.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -420,7 +430,6 @@ print(format_md_pattern_r(md_pattern(result2.amp, names)))
       1946   1990   2070  6006
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -450,9 +459,10 @@ In combination with the current set of missing data patterns, the resulting prop
 
 ## 11. MAR and MNAR mechanisms
 
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 Argument `mech` in function `ampute` is a string with either `MCAR`, `MAR` or `MNAR`. For MAR missingness, the information about the missing data is in the observed data; for MNAR missingness, the information about the missing data is missing itself.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -474,7 +484,6 @@ result_mar.mech
 [1] "MAR"
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -512,9 +521,22 @@ print(format_patterns_matrix_r(result_mnar.patterns, names))
 
 ## 12. Deep reference: `patterns`, `freq`, `weights`, `type`, `run`, and `odds`
 
-The R tutorial discusses custom missingness patterns, frequency vectors, MAR weights, variable `type`, the `run` flag, and MNAR `odds` in depth. PyMICE implements these via `ampute()` and `run_ampute_chain()`; see `Documentation/PARITY_STATUS.md` and `pymice.ampute` for API parity notes.
+**Step parity:** ⏭️ SKIP (0 exact, 0 info, 0 visual, 1 skipped, 0 mismatch of 1 blocks)
 
-**Parity:** ⏭️ SKIP
+The R tutorial discusses custom missingness patterns, frequency vectors, MAR weights, variable `type`, the `run` flag, and MNAR `odds` in depth. PyMICE exposes the same concepts on `ampute()`:
+
+```python
+from pymice import ampute
+import numpy as np
+x = np.random.default_rng(1).normal(size=(200, 3))
+res = ampute(x, prop=0.3, mech='MAR', patterns=[[1, 0, 1]], freq=[1])
+res.patterns  # which columns are amputed per pattern
+res.freq      # pattern weights
+res.weights   # MAR odds / weights matrix
+```
+
+See `docs/dev/PARITY_STATUS.md` and `help('ampute')` for full API notes.
+
 
 ### R code
 ```r

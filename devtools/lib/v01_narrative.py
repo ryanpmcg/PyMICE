@@ -10,7 +10,7 @@ from lib.vignette_catalog import step_title
 _PROSE = REFERENCE_DIR / "01_ad_hoc_and_mice" / "vignette_prose.json"
 
 AUTHORS = "Gerko Vink and Stef van Buuren"
-SERIES_LABEL = "Vignette 1 of 6"
+SERIES_LABEL = "Vignette 1 of 8"
 TITLE = "Ad hoc methods and mice"
 
 # R vignette step titles (some steps are bundled in vignette_prose.json).

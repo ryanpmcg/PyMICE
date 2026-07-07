@@ -2,10 +2,10 @@
 
 *Compare to **Wrapper function futuremice** by Thom Benjamin Volker and Gerko Vink*
 
-**Reference:** https://www.gerkovink.com/micereference/futuremice/Vignette_futuremice.html
-**Parity status:** Partially compliant — 8 match, 2 partial, 2 skipped (R-only)
+**Reference:** https://www.gerkovink.com/miceVignettes/futuremice/Vignette_futuremice.html
+**Parity status:** Partially compliant — 5 match, 5 info, 1 partial, 1 skipped (R-only)
 
-This page walks through PyMICE equivalents of the numbered exercises in the reference vignette below. Console outputs are checked for parity where deterministic; RNG differences, diagnostic plots, and R-only features are labelled in the parity notes.
+This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
 ## Parity overview
 
@@ -47,10 +47,11 @@ The original tutorial includes wall-clock timing benchmarks (Figures 1–2). Tho
 
 ## 1. Default futuremice run
 
+**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 We will now discuss the arguments of function `futuremice`. Easy imputation of an incomplete dataset (say, `nhanes`) can be performed with `futuremice` in the following way.
 
-**Parity:** ⚠️ PARTIAL
-**Note:** Core count may differ by machine; message structure matches R.
+**Note:** n.core message is informational; core count may differ by machine.
 
 ### R code
 ```r
@@ -77,10 +78,11 @@ The function returns a `mids` object as created by `mice`. In fact, `futuremice`
 
 ## 2. Inspect mids object
 
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 All other parts of the `mids` object are standard. Inspect the imputation metadata with `print(imp)`.
 
-**Parity:** ⚠️ PARTIAL
-**Note:** PyMICE returns Mids object (same role as mids).
+**Note:** PyMICE returns Mids object (same role as R mids).
 
 ### R code
 ```r
@@ -108,9 +110,10 @@ type(imp).__name__
 
 ## 3. Number of imputations
 
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 With `n.core`, the number of cores (or CPUs) is given, and the number of imputations `m` is (about) equally distributed over the cores. As a default, `m = 5`, just as in a regular `mice` call. We can check this by evaluating the `m` that is shown in the `mids` object.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -133,9 +136,10 @@ imp.m
 
 ## 4. Change imputation method
 
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
+
 Function `futuremice` is able to deal with the conventional `mice` arguments. In order to change the imputation method from its default (predictive mean matching) to, for example, Bayesian linear regression, the `method` argument can be adjusted.
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -165,9 +169,11 @@ age   bmi   hyp   chl
 
 ## 5. Global seed reproducibility
 
+**Step parity:** ✅ MATCH (1 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 In simulation studies, it is often desired to set a seed to make the results reproducible. Similarly to `mice`, the seed value for `futuremice` can be defined outside the function. Hence users can specify the following code to obtain identical results.
 
-**Parity:** ✅ MATCH
+**Note:** PyMICE reproducibility demo; R snapshot has no pooled table.
 
 ### R code
 ```r
@@ -192,7 +198,6 @@ format_pool_pooled_df_r(pool(with_mids(imp1, formula='chl ~ bmi')))
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -214,9 +219,11 @@ format_pool_pooled_df_r(pool(with_mids(imp2, formula='chl ~ bmi')))
 
 ## 6. Parallelseed reproducibility
 
+**Step parity:** ✅ MATCH (1 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 A user can also specify a seed within the `futuremice` call, by specifying the argument `parallelseed`. This seed is parsed to `withr::local_seed()`, such that the global environment is not affected by a different seed within the `futuremice` function.
 
-**Parity:** ✅ MATCH
+**Note:** PyMICE reproducibility demo; R snapshot has no pooled output.
 
 ### R code
 ```r
@@ -237,7 +244,6 @@ format_pool_pooled_df_r(pool(with_mids(imp3, formula='chl ~ bmi')))
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -258,9 +264,11 @@ format_pool_pooled_df_r(pool(with_mids(imp4, formula='chl ~ bmi')))
 
 ## 7. Drawn parallelseed
 
+**Step parity:** ✅ MATCH (1 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
+
 If no seed is specified by the user, a seed will be drawn randomly and returned in `imp$parallelseed`, such that the user can reproduce the obtained results even when no seed is specified.
 
-**Parity:** ✅ MATCH
+**Note:** PyMICE reproducibility demo; drawn parallelseed differs from R golden.
 
 ### R code
 ```r
@@ -282,7 +290,6 @@ format_pool_pooled_df_r(pool(with_mids(imp5, formula='chl ~ bmi')))
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341
 ```
 
-**Parity:** ✅ MATCH
 
 ### R code
 ```r
@@ -307,9 +314,10 @@ format_pool_pooled_df_r(pool(with_mids(imp6, formula='chl ~ bmi')))
 
 ## 8. Ampute then impute
 
+**Step parity:** ⏭️ SKIP (0 exact, 1 info, 0 visual, 1 skipped, 0 mismatch of 2 blocks)
+
 The original vignette also demonstrates timing benchmarks on simulated data (Figures 1–2). Those wall-clock comparisons are **R-only** and skipped here. As a closing example, we ampute a small multivariate dataset and impute it with the same PyMICE workflow.
 
-**Parity:** ⏭️ SKIP
 
 ### R code
 ```r
@@ -326,7 +334,7 @@ The original vignette also demonstrates timing benchmarks on simulated data (Fig
 (not run — )
 ```
 
-**Parity:** ⏭️ SKIP
+**Note:** PyMICE closing demo (ampute + parallel impute); no R snapshot output.
 
 ### R code
 ```r
@@ -335,11 +343,12 @@ imp_amp <- futuremice(ampute(nhanes, prop = 0.8, mech = 'MCAR')$amp)
 
 ### Python code
 ```python
-amputed_res = ampute(data, prop=0.8, mech='MCAR', seed=123)
-futuremice(amputed_res.amp, column_names=names, m=5, maxit=5, print=False)
+amputed_res = ampute(small_data, prop=0.8, mech='MCAR', seed=123)
+imp_amp = futuremice(amputed_res.amp, column_names=names, m=5, maxit=5, print=False)
+print(f'[1] {imp_amp.m}')
 ```
 
 ### Output
 ```text
-(not run — )
+[1] 5
 ```

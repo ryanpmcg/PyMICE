@@ -39,6 +39,8 @@ def _informational_partial(part: TutorialPart, *, match: bool) -> bool:
             "no R console output",
             "no printed output",
             "no console output",
+            "no R snapshot",
+            "R snapshot has no",
             "Package load",
             "shows code only",
             "Seed argument demonstration",
@@ -46,6 +48,12 @@ def _informational_partial(part: TutorialPart, *, match: bool) -> bool:
             "object created",
             "imputation complete",
             "imputation — no",
+            "Truncated R help",
+            "PyMICE closing demo",
+            "PyMICE reproducibility",
+            "Mids object",
+            "n.core",
+            "workspace `ls()`",
         )
     ):
         return True
@@ -58,6 +66,7 @@ class SectionStats:
     n_mismatch: int = 0
     n_skip: int = 0
     n_partial: int = 0
+    n_info: int = 0
 
 
 def render_tutorial_section(parts: list[TutorialPart], stats: SectionStats | None = None) -> str:
@@ -105,7 +114,11 @@ def render_tutorial_section(parts: list[TutorialPart], stats: SectionStats | Non
                 if part.r_expected
                 else (True, "")
             )
-            if part.partial and not _informational_partial(part, match=match):
+            if part.partial and _informational_partial(part, match=match):
+                status = "info"
+                st.n_info += 1
+                note = part.partial_reason
+            elif part.partial and not _informational_partial(part, match=match):
                 status = "partial"
                 st.n_partial += 1
                 note = part.partial_reason

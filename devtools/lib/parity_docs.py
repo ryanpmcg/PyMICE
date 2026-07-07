@@ -24,11 +24,9 @@ These numbered steps are deterministic and are checked against `reference/01_ad_
 ### Expected to differ (not bit-identical to R snapshot)
 
 - **Step 1** — package load; no R console output to compare.
+- **Step 2** — `help('nhanes')` static R pager snapshot (informational; text matches reference).
 - **Step 4** — `md.pattern(nhanes)` grid layout and colours match R; rendering is matplotlib.
 - **Step 7** — `densityplot(nhanes$bmi)` uses R ``bw.nrd0`` bandwidth and ``mdc`` palette; shape should closely match lattice.
-
-- **Step 2** — `help('nhanes')` R pager snapshot (static reference text).
-
 - **Steps 8–9** — `norm.predict` after `densityplot(nhanes$bmi)` on session R stream (lattice RNG advance mirrored)."""
 
 V02_PARITY_OVERVIEW = """\
