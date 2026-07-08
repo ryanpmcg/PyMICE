@@ -48,7 +48,8 @@ def md_pattern(
 
     missing = np.isnan(data)
     nmis = missing.sum(axis=0)
-    col_order = np.argsort(nmis)
+    # R orders columns by ascending missing count; ties keep original column order.
+    col_order = np.lexsort((np.arange(len(names)), nmis))
     missing = missing[:, col_order]
     ordered_names = [names[j] for j in col_order]
 

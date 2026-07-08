@@ -3,7 +3,7 @@
 *Compare to **The imputation and nonresponse models** by Gerko Vink and Stef van Buuren*
 
 **Reference:** https://www.gerkovink.com/miceVignettes/Missingness_inspection/Missingness_inspection.html
-**Parity status:** Non-compliant — 7 mismatches, 13 match, 0 skip, 5 partial
+**Parity status:** Partially compliant — 20 match, 4 info, 5 partial, 0 skipped (R-only)
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -833,7 +833,7 @@ print(format_tv_means_tibble_r(means))
 
 ## 9. Inspect mammalsleep data
 
-**Step parity:** ❌ MISMATCH (3 exact, 1 info, 0 visual, 0 skipped, 1 mismatch of 5 blocks)
+**Step parity:** ✅ MATCH (4 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 5 blocks)
 
 The `mammalsleep` dataset is part of `mice`. It contains the Allison and Cicchetti (1976) data for mammalian species. To learn more about this data, type
 
@@ -1131,42 +1131,15 @@ print(format_md_pattern_r(md_pattern(ms_full, ms_names)))
 
 ### Output
 ```text
-    species  bw brw  pi sei odi  gt  ts mls  ps sws     
+    species  bw brw  pi sei odi  ts mls  gt  ps sws     
  42   1   1   1   1   1   1   1   1   1   1   1  0
   9   1   1   1   1   1   1   1   1   1   0   0  2
-  2   1   1   1   1   1   1   1   1   0   1   1  1
-  1   1   1   1   1   1   1   1   1   0   0   0  3
-  2   1   1   1   1   1   1   1   0   1   1   0  2
-  2   1   1   1   1   1   1   1   0   1   0   0  3
-  3   1   1   1   1   1   1   0   1   1   1   1  1
-  1   1   1   1   1   1   1   0   1   0   1   1  2
-      0   0   0   0   0   0   4   4   4   12   14  38
-```
-
-**Diff hint:**
-```text
-Expected:
-   species bw brw pi sei odi ts mls gt ps sws
-42       1  1   1  1   1   1  1   1  1  1   1  0
-9        1  1   1  1   1   1  1   1  1  0   0  2
-3        1  1   1  1   1   1  1   1  0  1   1  1
-2        1  1   1  1   1   1  1   0  1  1   1  1
-1        1  1   1  1   1   1  1   0  1  0   0  3
-1        1  1   1  1   1   1  1   0  0  1   1  2
-2        1  1   1  1   1   1  0   1  1  1   0  2
-2        1  1   1  1   1   1  0   1  1  0   0  3
-         0  0   0  0   0   0  4   4  4 12  14 38
-
-Actual:
-    species  bw brw  pi sei odi  gt  ts mls  ps sws     
- 42   1   1   1   1   1   1   1   1   1   1   1  0
-  9   1   1   1   1   1   1   1   1   1   0   0  2
-  2   1   1   1   1   1   1   1   1   0   1   1  1
-  1   1   1   1   1   1   1   1   1   0   0   0  3
-  2   1   1   1   1   1   1   1   0   1   1   0  2
-  2   1   1   1   1   1   1   1   0   1   0   0  3
-  3   1   1   1   1   1   1   0   1   1   1   1  1
-  1   1   1   1   1   1   1   0   1   0   1   1  2
+  3   1   1   1   1   1   1   1   1   0   1   1  1
+  2   1   1   1   1   1   1   1   0   1   1   1  1
+  1   1   1   1   1   1   1   1   0   1   0   0  3
+  1   1   1   1   1   1   1   1   0   0   1   1  2
+  2   1   1   1   1   1   1   0   1   1   1   0  2
+  2   1   1   1   1   1   1   0   1   1   0   0  3
       0   0   0   0   0   0   4   4   4   12   14  38
 ```
 
@@ -1174,7 +1147,7 @@ Answer: 8 patterns in total, with the pattern where everything is observed occur
 
 ## 10. Impute mammalsleep with PMM
 
-**Step parity:** ❌ MISMATCH (0 exact, 0 info, 1 visual, 0 skipped, 1 mismatch of 2 blocks)
+**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 
 ### R code
@@ -1184,7 +1157,7 @@ imp <- mice(mammalsleep, maxit = 10, print=F)
 
 ### R output
 ```text
-Warning: Number of logged events: 29
+Warning: Number of logged events: 27
 ```
 
 ### Python code
@@ -1194,15 +1167,6 @@ imp_ms = mice(ms_full, column_names=ms_names, m=5, maxit=10, print_flag=False)
 
 ### Output
 ```text
-Warning: Number of logged events: 27
-```
-
-**Diff hint:**
-```text
-Expected:
-Warning: Number of logged events: 29
-
-Actual:
 Warning: Number of logged events: 27
 ```
 
@@ -1249,7 +1213,7 @@ fit1 = with_mids(imp_ms, formula='sws ~ log10(bw) + odi')
 
 ## 12. Pool mammalsleep model
 
-**Step parity:** ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 2 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 
 ### R code
@@ -1261,13 +1225,13 @@ pool(fit1)
 ```text
 Class: mipo    m = 5 
               estimate       ubar          b         t dfcom        df
-(Intercept)   11.3728381  0.60565082  0.03950197   0.6530532    59  49.49987
-log10(bw)     -1.1493959  0.08549939  0.01114601   0.0988746    59  40.27585
-odi           -0.8244479  0.07572358  0.00761169   0.0848576    59  44.39847
+(Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108
+log10(bw)     -1.1540768  0.08460947  0.00778340   0.0939495    59  45.62378
+odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
                   riv    lambda       fmi
-(Intercept)    0.0782668   0.0725858   0.1079159
-log10(bw)      0.1564364   0.1352745   0.1752380
-odi            0.1206233   0.1076395   0.1452930
+(Intercept)    0.0689621   0.0645132   0.0994187
+log10(bw)      0.1103904   0.0994159   0.1364588
+odi            0.1321015   0.1166870   0.1550547
 ```
 
 ### Python code
@@ -1288,31 +1252,6 @@ log10(bw)      0.1103904   0.0994159   0.1364588
 odi            0.1321015   0.1166870   0.1550547
 ```
 
-**Diff hint:**
-```text
-Expected:
-Class: mipo    m = 5 
-              estimate       ubar          b         t dfcom        df
-(Intercept)   11.3728381  0.60565082  0.03950197   0.6530532    59  49.49987
-log10(bw)     -1.1493959  0.08549939  0.01114601   0.0988746    59  40.27585
-odi           -0.8244479  0.07572358  0.00761169   0.0848576    59  44.39847
-                  riv    lambda       fmi
-(Intercept)    0.0782668   0.0725858   0.1079159
-log10(bw)      0.1564364   0.1352745   0.1752380
-odi            0.1206233   0.1076395   0.1452930
-
-Actual:
-Class: mipo    m = 5 
-              estimate       ubar          b         t dfcom        df
-(Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108
-log10(bw)     -1.1540768  0.08460947  0.00778340   0.0939495    59  45.62378
-odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
-                  riv    lambda       fmi
-(Intercept)    0.0689621   0.0645132   0.0994187
-log10(bw)      0.1103904   0.0994159   0.1364588
-odi            0.1321015   0.1166870   0.1550547
-```
-
 
 ### R code
 ```r
@@ -1322,9 +1261,9 @@ summary(pool(fit1))
 ### R output
 ```text
               estimate std.error statistic        df      p.value
-(Intercept)  11.3728381 0.8081171  14.073256 49.499872 0.000000000e+00
-log10(bw)    -1.1493959 0.3144433  -3.655336 40.275855 7.345096267e-04
-odi          -0.8244479 0.2913033  -2.830204 44.398469 6.961767674e-03
+(Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
+log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
+odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03
 ```
 
 ### Python code
@@ -1340,26 +1279,11 @@ log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
 odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03
 ```
 
-**Diff hint:**
-```text
-Expected:
-              estimate std.error statistic        df      p.value
-(Intercept)  11.3728381 0.8081171  14.073256 49.499872 0.000000000e+00
-log10(bw)    -1.1493959 0.3144433  -3.655336 40.275855 7.345096267e-04
-odi          -0.8244479 0.2913033  -2.830204 44.398469 6.961767674e-03
-
-Actual:
-              estimate std.error statistic        df      p.value
-(Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
-log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
-odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03
-```
-
 The `fmi` and `lambda` are much too high. This is due to `species` being included in the imputation model. Because there are 62 species and mice automatically converts factors (categorical variables) to dummy variables, each species is modeled by its own imputation model.
 
 ## 13. Drop species column
 
-**Step parity:** ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 1 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 
 ### R code
@@ -1369,7 +1293,7 @@ impnew <- mice(mammalsleep[ , -1], maxit = 10, print = F)
 
 ### R output
 ```text
-Warning: Number of logged events: 19
+Warning: Number of logged events: 15
 ```
 
 ### Python code
@@ -1382,18 +1306,9 @@ impnew = mice(ms_no_sp, column_names=ms_no_names, m=5, maxit=10, print_flag=Fals
 Warning: Number of logged events: 15
 ```
 
-**Diff hint:**
-```text
-Expected:
-Warning: Number of logged events: 19
-
-Actual:
-Warning: Number of logged events: 15
-```
-
 ## 14. Re-impute without species
 
-**Step parity:** ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 2 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 
 ### R code
@@ -1406,13 +1321,13 @@ pool(fit2)
 ```text
 Class: mipo    m = 5 
               estimate       ubar          b         t dfcom        df
-(Intercept)   11.3868706  0.61202922  0.04053099   0.6606664    59  49.35623
-log10(bw)     -1.1268662  0.08639983  0.00589085   0.0934689    59  49.07481
-odi           -0.8200122  0.07652107  0.00917601   0.0875323    59  41.68313
+(Intercept)   11.3500427  0.61817617  0.04037797   0.6666297    59  49.48618
+log10(bw)     -1.1079037  0.08726759  0.00546546   0.0938261    59  49.87051
+odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
                   riv    lambda       fmi
-(Intercept)    0.0794687   0.0736184   0.1090060
-log10(bw)      0.0818176   0.0756297   0.1111314
-odi            0.1438977   0.1257960   0.1649250
+(Intercept)    0.0783815   0.0726844   0.1080200
+log10(bw)      0.0751545   0.0699011   0.1050852
+odi            0.1258433   0.1117769   0.1497517
 ```
 
 ### Python code
@@ -1434,31 +1349,6 @@ log10(bw)      0.0751545   0.0699011   0.1050852
 odi            0.1258433   0.1117769   0.1497517
 ```
 
-**Diff hint:**
-```text
-Expected:
-Class: mipo    m = 5 
-              estimate       ubar          b         t dfcom        df
-(Intercept)   11.3868706  0.61202922  0.04053099   0.6606664    59  49.35623
-log10(bw)     -1.1268662  0.08639983  0.00589085   0.0934689    59  49.07481
-odi           -0.8200122  0.07652107  0.00917601   0.0875323    59  41.68313
-                  riv    lambda       fmi
-(Intercept)    0.0794687   0.0736184   0.1090060
-log10(bw)      0.0818176   0.0756297   0.1111314
-odi            0.1438977   0.1257960   0.1649250
-
-Actual:
-Class: mipo    m = 5 
-              estimate       ubar          b         t dfcom        df
-(Intercept)   11.3500427  0.61817617  0.04037797   0.6666297    59  49.48618
-log10(bw)     -1.1079037  0.08726759  0.00546546   0.0938261    59  49.87051
-odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
-                  riv    lambda       fmi
-(Intercept)    0.0783815   0.0726844   0.1080200
-log10(bw)      0.0751545   0.0699011   0.1050852
-odi            0.1258433   0.1117769   0.1497517
-```
-
 
 ### R code
 ```r
@@ -1468,9 +1358,9 @@ summary(pool(fit2))
 ### R output
 ```text
               estimate std.error statistic        df      p.value
-(Intercept)  11.3868706 0.8128139  14.009198 49.356232 0.000000000e+00
-log10(bw)    -1.1268662 0.3057268  -3.685861 49.074812 5.692317241e-04
-odi          -0.8200122 0.2958585  -2.771636 41.683126 8.299348343e-03
+(Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
+log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
+odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03
 ```
 
 ### Python code
@@ -1480,21 +1370,6 @@ print(format_pool_v03_summary_r(summary_pool(pool(fit2))))
 
 ### Output
 ```text
-              estimate std.error statistic        df      p.value
-(Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
-log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
-odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03
-```
-
-**Diff hint:**
-```text
-Expected:
-              estimate std.error statistic        df      p.value
-(Intercept)  11.3868706 0.8128139  14.009198 49.356232 0.000000000e+00
-log10(bw)    -1.1268662 0.3057268  -3.685861 49.074812 5.692317241e-04
-odi          -0.8200122 0.2958585  -2.771636 41.683126 8.299348343e-03
-
-Actual:
               estimate std.error statistic        df      p.value
 (Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
 log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04

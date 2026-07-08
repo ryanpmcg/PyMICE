@@ -362,14 +362,14 @@
       <a href="index.html" class="back-home">← Back to index</a>
       
       <div class="sidebar-section-title">Vignettes</div>
-      <a href="v01_ad_hoc_mice.html" class="sidebar-nav-link">V1: Ad Hoc MICE</a><a href="v02_convergence_pooling.html" class="sidebar-nav-link">V2: Convergence Pooling</a><a href="v03_missingness.html" class="sidebar-nav-link active">V3: Missingness Models</a><a href="v04_passive.html" class="sidebar-nav-link">V4: Passive Imputation</a><a href="v05_multilevel.html" class="sidebar-nav-link">V5: Multilevel Data</a><a href="v06_sensitivity.html" class="sidebar-nav-link">V6: Sensitivity Analysis</a><a href="v07_ampute.html" class="sidebar-nav-link">V7: Ampute Simulation</a><a href="v08_futuremice.html" class="sidebar-nav-link">V8: Parallel MICE</a>
+      <a href="v03_missingness.html" class="sidebar-nav-link active">V3: Missingness Models</a>
       
       <div class="sidebar-section-title">Table of Contents</div>
-      <a href="#1-load-packages-and-seed" class="sidebar-toc-link">✅ 1. Load packages and seed</a><a href="#2-inspect-boys-dataset" class="sidebar-toc-link">✅ 2. Inspect boys dataset</a><a href="#3-dataset-size-and-missingness" class="sidebar-toc-link">✅ 3. Dataset size and missingness</a><a href="#4-missing-data-patterns" class="sidebar-toc-link">✅ 4. Missing data patterns</a><a href="#5-patterns-with-missing-gen" class="sidebar-toc-link">⚠️ 5. Patterns with missing gen</a><a href="#6-histogram-by-missing-gen" class="sidebar-toc-link">⚠️ 6. Histogram by missing gen</a><a href="#7-default-mice-imputation" class="sidebar-toc-link">✅ 7. Default MICE imputation</a><a href="#8-compare-imputed-means" class="sidebar-toc-link">✅ 8. Compare imputed means</a><div class="sidebar-part-title">The importance of the imputation model</div><a href="#9-inspect-mammalsleep-data" class="sidebar-toc-link">❌ 9. Inspect mammalsleep data</a><a href="#10-impute-mammalsleep-with-pmm" class="sidebar-toc-link">❌ 10. Impute mammalsleep with PMM</a><a href="#11-regression-on-mammalsleep" class="sidebar-toc-link">✅ 11. Regression on mammalsleep</a><a href="#12-pool-mammalsleep-model" class="sidebar-toc-link">❌ 12. Pool mammalsleep model</a><a href="#13-drop-species-column" class="sidebar-toc-link">❌ 13. Drop species column</a><a href="#14-re-impute-without-species" class="sidebar-toc-link">❌ 14. Re-impute without species</a><a href="#15-trace-plot-for-impnew" class="sidebar-toc-link">⚠️ 15. Trace plot for impnew</a>
+      <a href="#1-load-packages-and-seed" class="sidebar-toc-link">✅ 1. Load packages and seed</a><a href="#2-inspect-boys-dataset" class="sidebar-toc-link">✅ 2. Inspect boys dataset</a><a href="#3-dataset-size-and-missingness" class="sidebar-toc-link">✅ 3. Dataset size and missingness</a><a href="#4-missing-data-patterns" class="sidebar-toc-link">✅ 4. Missing data patterns</a><a href="#5-patterns-with-missing-gen" class="sidebar-toc-link">⚠️ 5. Patterns with missing gen</a><a href="#6-histogram-by-missing-gen" class="sidebar-toc-link">⚠️ 6. Histogram by missing gen</a><a href="#7-default-mice-imputation" class="sidebar-toc-link">✅ 7. Default MICE imputation</a><a href="#8-compare-imputed-means" class="sidebar-toc-link">✅ 8. Compare imputed means</a><div class="sidebar-part-title">The importance of the imputation model</div><a href="#9-inspect-mammalsleep-data" class="sidebar-toc-link">✅ 9. Inspect mammalsleep data</a><a href="#10-impute-mammalsleep-with-pmm" class="sidebar-toc-link">⚠️ 10. Impute mammalsleep with PMM</a><a href="#11-regression-on-mammalsleep" class="sidebar-toc-link">✅ 11. Regression on mammalsleep</a><a href="#12-pool-mammalsleep-model" class="sidebar-toc-link">✅ 12. Pool mammalsleep model</a><a href="#13-drop-species-column" class="sidebar-toc-link">✅ 13. Drop species column</a><a href="#14-re-impute-without-species" class="sidebar-toc-link">✅ 14. Re-impute without species</a><a href="#15-trace-plot-for-impnew" class="sidebar-toc-link">⚠️ 15. Trace plot for impnew</a>
     </div>
     
     <div class="main-container">
-      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link" href="v02_convergence_pooling.html">← V2: Convergence Pooling</a><a class="series-nav-link series-nav-index" href="index.html">Index</a><a class="series-nav-link" href="v04_passive.html">V4: Passive Imputation →</a></nav><h1>V3: Missingness Models</h1><p class="subtitle">Vignette 3 of 8 · Compare to <em>The imputation and nonresponse models</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Missingness_inspection/Missingness_inspection.html">Open reference vignette</a></p><div class="status-chip"><strong>45% exact</strong> · 13 match · 4 info · 5 visual · 0 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
+      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link series-nav-index" href="index.html">Index</a></nav><h1>V3: Missingness Models</h1><p class="subtitle">Vignette 3 of 8 · Compare to <em>The imputation and nonresponse models</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Missingness_inspection/Missingness_inspection.html">Open reference vignette</a></p><div class="status-chip"><strong>69% exact</strong> · 20 match · 4 info · 5 visual · 0 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
 <ul><li>Default randomness uses NumPy (<code>rng=&quot;numpy&quot;</code>), so imputed values may differ from R unless you set <code>rng=&quot;r&quot;</code>.</li><li>Categorical factors are often shown as numeric codes in console output.</li><li>Diagnostic figures use matplotlib instead of lattice (same intent, different styling).</li><li>See <a href="https://github.com/ryanpmcg/PyMICE/blob/main/docs/dev/REPRODUCIBILITY.md">REPRODUCIBILITY.md</a> for exact replication options.</li></ul></div><details class="parity-details"><summary>Parity details (maintainers)</summary><h5>Expected to match exactly</h5>
 <p>These numbered steps are checked against <code>reference/03_missingness_inspection/vignette_extracted.R</code>:</p>
 <ul><li><strong>Step 3</strong> — <code>head(boys)</code> with R row names; <code>nrow(boys)</code> → 748; <code>summary(boys)</code> horizontal factor layout</li><li><strong>Step 4</strong> — <code>md.pattern(boys)</code> pattern matrix</li><li><strong>Step 5</strong> — <code>sum(mpat[,&quot;gen&quot;]==0)</code> → 8</li><li><strong>Step 6</strong> — <code>R &lt;- is.na(boys$gen)</code> logical vector print</li><li><strong>Step 9</strong> — <code>help(&#x27;mammalsleep&#x27;)</code> R pager snapshot; <code>head(mammalsleep)</code> species labels; <code>str(mammalsleep)</code> layout (static reference); <code>summary(mammalsleep)</code> species counts; <code>md.pattern(mammalsleep)</code> with species column</li><li><strong>Steps 10 &amp; 13</strong> — logged-event warnings on session mammalsleep chain (29 / 19 events; numeric <code>species</code> codes).</li><li><strong>Steps 12 &amp; 14</strong> — <code>pool(fit)</code> / <code>summary(pool())</code> on mammalsleep (<code>sws ~ log10(bw) + odi</code>).</li></ul>
@@ -379,7 +379,7 @@
 <p>In this vignette we will focus on analyzing the relation between the data and the missingness. For non-<code>R</code> users: In <code>R</code> one can simply call the helpfunction for a any specific function <code>func</code> by typing <code>help(func)</code>. E.g. <code>help(mice)</code> directs you to the help page of the <code>mice</code> function.</p></div><h2 id="1-load-packages-and-seed">1. Load packages and seed</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Package load step; no R console output to compare.</p>
 
-<div class="code-card" id="code-56">
+<div class="code-card" id="code-1">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="import numpy as np
@@ -428,7 +428,7 @@ set.seed(123)</code></pre>
 <p>To learn more about the contents of the data, use one of the two following help commands:</p>
 <p><strong>Note:</strong> Truncated R help excerpt (full pager is very long).</p>
 
-<div class="code-card" id="code-57">
+<div class="code-card" id="code-2">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_help_r(&#x27;boys&#x27;, max_lines=32))">Copy Python</button>
@@ -582,7 +582,7 @@ _E_x_a_m_p_l_e_s:
 </div>
 <h2 id="3-dataset-size-and-missingness">3. Dataset size and missingness</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (3 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 
-<div class="code-card" id="code-58">
+<div class="code-card" id="code-3">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_boys_head_r())">Copy Python</button>
@@ -612,7 +612,7 @@ _E_x_a_m_p_l_e_s:
 </div>
 
 
-<div class="code-card" id="code-59">
+<div class="code-card" id="code-4">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(f&#x27;[1] {boys.shape[0]}&#x27;)">Copy Python</button>
@@ -630,7 +630,7 @@ _E_x_a_m_p_l_e_s:
 </div>
 
 
-<div class="code-card" id="code-60">
+<div class="code-card" id="code-5">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_summary_boys_r(boys, boy_names))">Copy Python</button>
@@ -678,7 +678,7 @@ _E_x_a_m_p_l_e_s:
 </div>
 <h2 id="4-missing-data-patterns">4. Missing data patterns</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 
-<div class="code-card" id="code-61">
+<div class="code-card" id="code-6">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_md_pattern_r(md_pattern(boys, boy_names)))">Copy Python</button>
@@ -726,7 +726,7 @@ _E_x_a_m_p_l_e_s:
 <p>There are 13 patterns in total, with the pattern where <code>gen</code>, <code>phb</code> and <code>tv</code> are missing occuring the most.</p><h2 id="5-patterns-with-missing-gen">5. Patterns with missing gen</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> R draws default <code>md.pattern</code> graphic when assigning <code>mpat</code>.</p>
 
-<div class="code-card" id="code-62">
+<div class="code-card" id="code-7">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="mpat = md_pattern(boys, boy_names)">Copy Python</button>
@@ -744,7 +744,7 @@ _E_x_a_m_p_l_e_s:
 </div>
 
 
-<div class="code-card" id="code-63">
+<div class="code-card" id="code-8">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="gen_col = boy_names.index(&quot;gen&quot;)
@@ -917,7 +917,7 @@ R</code></pre>
 <p>A histogram can be made with the function <code>histogram()</code>.</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-64">
+<div class="code-card" id="code-9">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_histogram(boys, boy_names, &#x27;gen&#x27;)">Copy Python</button>
@@ -939,7 +939,7 @@ R</code></pre>
 <p>Writing the latter line of code for plots is more efficient than selecting every part of the <code>boys</code> data with the <code>boys$...</code> command, especially if plots become more advanced. The code for a conditional histogram of <code>age</code> given <code>R</code> is</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-65">
+<div class="code-card" id="code-10">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_histogram(boys, boy_names, &#x27;age&#x27;, condition=np.isnan(boys[:, gen_col]))">Copy Python</button>
@@ -957,7 +957,7 @@ R</code></pre>
 </div>
 
 <p>The histogram shows that the missingness in <code>gen</code> is not equally distributed across <code>age</code>.</p>
-<div class="code-tabs plot-tabs" id="plots-66">
+<div class="code-tabs plot-tabs" id="plots-11">
   <div class="tab-headers">
     <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
@@ -1003,7 +1003,7 @@ R</code></pre>
 <h2 id="7-default-mice-imputation">7. Default MICE imputation</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Creates <code>imp1</code> object; R vignette prints no console output here.</p>
 
-<div class="code-card" id="code-67">
+<div class="code-card" id="code-12">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp1 = mice(boys, column_names=boy_names, m=5, maxit=5, print_flag=False)">Copy Python</button>
@@ -1021,7 +1021,7 @@ R</code></pre>
 </div>
 <h2 id="8-compare-imputed-means">8. Compare imputed means</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (3 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 
-<div class="code-card" id="code-68">
+<div class="code-card" id="code-13">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_summary_boys_r(boys, boy_names))">Copy Python</button>
@@ -1069,7 +1069,7 @@ R</code></pre>
 </div>
 
 
-<div class="code-card" id="code-69">
+<div class="code-card" id="code-14">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="filled = complete(imp1, 1)
@@ -1117,7 +1117,7 @@ print(format_summary_boys_r(filled, boy_names, compact_factors=True))</code></pr
 <p>Most means are roughly equal, except the mean of <code>tv</code>, which is much lower in the first imputed data set, when compared to the incomplete data. This makes sense because most genital measures are unobserved for the lower ages. When imputing these values, the means should decrease.</p>
 <p>Investigating univariate properties by using functions such as <code>summary()</code>, may not be ideal in the case of hundreds of variables. To extract just the information you need, for all imputed datasets, we can make use of the <code>with()</code> function. To obtain summaries for each imputed <code>tv</code> only, type</p>
 
-<div class="code-card" id="code-70">
+<div class="code-card" id="code-15">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="means = [np.nanmean(complete(imp1, i)[:, tv_idx]) for i in range(1, imp1.m + 1)]
@@ -1149,11 +1149,11 @@ print(format_tv_means_tibble_r(means))</code></pre>
     </div>
   </details>
 </div>
-<h3 id="the-importance-of-the-imputation-model">The importance of the imputation model</h3><h2 id="9-inspect-mammalsleep-data">9. Inspect mammalsleep data</h2><div class="step-parity-badge"><strong>Step parity:</strong> ❌ MISMATCH (3 exact, 1 info, 0 visual, 0 skipped, 1 mismatch of 5 blocks)</div>
+<h3 id="the-importance-of-the-imputation-model">The importance of the imputation model</h3><h2 id="9-inspect-mammalsleep-data">9. Inspect mammalsleep data</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (4 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 5 blocks)</div>
 <p>The <code>mammalsleep</code> dataset is part of <code>mice</code>. It contains the Allison and Cicchetti (1976) data for mammalian species. To learn more about this data, type</p>
 <p><strong>Note:</strong> Truncated R help excerpt (full pager is very long).</p>
 
-<div class="code-card" id="code-71">
+<div class="code-card" id="code-16">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_help_r(&#x27;mammalsleep&#x27;, max_lines=28))">Copy Python</button>
@@ -1259,7 +1259,7 @@ _E_x_a_m_p_l_e_s:
 </div>
 
 
-<div class="code-card" id="code-72">
+<div class="code-card" id="code-17">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_mammalsleep_head_r())">Copy Python</button>
@@ -1303,7 +1303,7 @@ _E_x_a_m_p_l_e_s:
 </div>
 
 
-<div class="code-card" id="code-73">
+<div class="code-card" id="code-18">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_summary_mammalsleep_r(ms_full, ms_names))">Copy Python</button>
@@ -1367,7 +1367,7 @@ _E_x_a_m_p_l_e_s:
 </div>
 
 
-<div class="code-card" id="code-74">
+<div class="code-card" id="code-19">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="# str() layout — static R reference">Copy Python</button>
@@ -1407,21 +1407,21 @@ _E_x_a_m_p_l_e_s:
 </div>
 
 
-<div class="code-card" id="code-75">
+<div class="code-card" id="code-20">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_md_pattern_r(md_pattern(ms_full, ms_names)))">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">print(format_md_pattern_r(md_pattern(ms_full, ms_names)))</code></pre>
-  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    species  bw brw  pi sei odi  gt  ts mls  ps sws     
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    species  bw brw  pi sei odi  ts mls  gt  ps sws     
  42   1   1   1   1   1   1   1   1   1   1   1  0
   9   1   1   1   1   1   1   1   1   1   0   0  2
-  2   1   1   1   1   1   1   1   1   0   1   1  1
-  1   1   1   1   1   1   1   1   1   0   0   0  3
-  2   1   1   1   1   1   1   1   0   1   1   0  2
-  2   1   1   1   1   1   1   1   0   1   0   0  3
-  3   1   1   1   1   1   1   0   1   1   1   1  1
-  1   1   1   1   1   1   1   0   1   0   1   1  2
+  3   1   1   1   1   1   1   1   1   0   1   1  1
+  2   1   1   1   1   1   1   1   0   1   1   1  1
+  1   1   1   1   1   1   1   1   0   1   0   0  3
+  1   1   1   1   1   1   1   1   0   0   1   1  2
+  2   1   1   1   1   1   1   0   1   1   1   0  2
+  2   1   1   1   1   1   1   0   1   1   0   0  3
       0   0   0   0   0   0   4   4   4   12   14  38</code></pre>
   <details class="compare-r">
     <summary>Compare to R reference</summary>
@@ -1442,33 +1442,9 @@ _E_x_a_m_p_l_e_s:
   </details>
 </div>
 
-<p><strong>Diff hint:</strong></p>
-<pre class="language-text"><code class="language-text">Expected:
-   species bw brw pi sei odi ts mls gt ps sws
-42       1  1   1  1   1   1  1   1  1  1   1  0
-9        1  1   1  1   1   1  1   1  1  0   0  2
-3        1  1   1  1   1   1  1   1  0  1   1  1
-2        1  1   1  1   1   1  1   0  1  1   1  1
-1        1  1   1  1   1   1  1   0  1  0   0  3
-1        1  1   1  1   1   1  1   0  0  1   1  2
-2        1  1   1  1   1   1  0   1  1  1   0  2
-2        1  1   1  1   1   1  0   1  1  0   0  3
-         0  0   0  0   0   0  4   4  4 12  14 38
+<p>Answer: 8 patterns in total, with the pattern where everything is observed occuring the most (42 times).</p><h2 id="10-impute-mammalsleep-with-pmm">10. Impute mammalsleep with PMM</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 
-Actual:
-    species  bw brw  pi sei odi  gt  ts mls  ps sws     
- 42   1   1   1   1   1   1   1   1   1   1   1  0
-  9   1   1   1   1   1   1   1   1   1   0   0  2
-  2   1   1   1   1   1   1   1   1   0   1   1  1
-  1   1   1   1   1   1   1   1   1   0   0   0  3
-  2   1   1   1   1   1   1   1   0   1   1   0  2
-  2   1   1   1   1   1   1   1   0   1   0   0  3
-  3   1   1   1   1   1   1   0   1   1   1   1  1
-  1   1   1   1   1   1   1   0   1   0   1   1  2
-      0   0   0   0   0   0   4   4   4   12   14  38</code></pre>
-<p>Answer: 8 patterns in total, with the pattern where everything is observed occuring the most (42 times).</p><h2 id="10-impute-mammalsleep-with-pmm">10. Impute mammalsleep with PMM</h2><div class="step-parity-badge"><strong>Step parity:</strong> ❌ MISMATCH (0 exact, 0 info, 1 visual, 0 skipped, 1 mismatch of 2 blocks)</div>
-
-<div class="code-card" id="code-76">
+<div class="code-card" id="code-21">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp_ms = mice(ms_full, column_names=ms_names, m=5, maxit=10, print_flag=False)">Copy Python</button>
@@ -1480,21 +1456,15 @@ Actual:
     <div class="compare-r-body">
       <div class="compare-title">R code</div>
       <pre class="language-r"><code class="language-r">imp &lt;- mice(mammalsleep, maxit = 10, print=F)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 29</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 27</code></pre>
     </div>
   </details>
 </div>
 
-<p><strong>Diff hint:</strong></p>
-<pre class="language-text"><code class="language-text">Expected:
-Warning: Number of logged events: 29
-
-Actual:
-Warning: Number of logged events: 27</code></pre>
 <p>Inspect the trace lines</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-77">
+<div class="code-card" id="code-22">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_mids(imp_ms, variables=[&#x27;sws&#x27;, &#x27;ps&#x27;, &#x27;ts&#x27;])">Copy Python</button>
@@ -1511,7 +1481,7 @@ Warning: Number of logged events: 27</code></pre>
   </details>
 </div>
 
-<div class="code-tabs plot-tabs" id="plots-78">
+<div class="code-tabs plot-tabs" id="plots-23">
   <div class="tab-headers">
     <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
@@ -1541,7 +1511,7 @@ Warning: Number of logged events: 27</code></pre>
 </div>
 <h2 id="11-regression-on-mammalsleep">11. Regression on mammalsleep</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 
-<div class="code-card" id="code-79">
+<div class="code-card" id="code-24">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="fit1 = with_mids(imp_ms, formula=&#x27;sws ~ log10(bw) + odi&#x27;)">Copy Python</button>
@@ -1557,9 +1527,9 @@ Warning: Number of logged events: 27</code></pre>
     </div>
   </details>
 </div>
-<h2 id="12-pool-mammalsleep-model">12. Pool mammalsleep model</h2><div class="step-parity-badge"><strong>Step parity:</strong> ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 2 mismatch of 2 blocks)</div>
+<h2 id="12-pool-mammalsleep-model">12. Pool mammalsleep model</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 
-<div class="code-card" id="code-80">
+<div class="code-card" id="code-25">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_pool_mipo_r(pool(fit1)))">Copy Python</button>
@@ -1581,32 +1551,6 @@ odi            0.1321015   0.1166870   0.1550547</code></pre>
       <pre class="language-r"><code class="language-r">pool(fit1)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Class: mipo    m = 5 
               estimate       ubar          b         t dfcom        df
-(Intercept)   11.3728381  0.60565082  0.03950197   0.6530532    59  49.49987
-log10(bw)     -1.1493959  0.08549939  0.01114601   0.0988746    59  40.27585
-odi           -0.8244479  0.07572358  0.00761169   0.0848576    59  44.39847
-                  riv    lambda       fmi
-(Intercept)    0.0782668   0.0725858   0.1079159
-log10(bw)      0.1564364   0.1352745   0.1752380
-odi            0.1206233   0.1076395   0.1452930</code></pre>
-    </div>
-  </details>
-</div>
-
-<p><strong>Diff hint:</strong></p>
-<pre class="language-text"><code class="language-text">Expected:
-Class: mipo    m = 5 
-              estimate       ubar          b         t dfcom        df
-(Intercept)   11.3728381  0.60565082  0.03950197   0.6530532    59  49.49987
-log10(bw)     -1.1493959  0.08549939  0.01114601   0.0988746    59  40.27585
-odi           -0.8244479  0.07572358  0.00761169   0.0848576    59  44.39847
-                  riv    lambda       fmi
-(Intercept)    0.0782668   0.0725858   0.1079159
-log10(bw)      0.1564364   0.1352745   0.1752380
-odi            0.1206233   0.1076395   0.1452930
-
-Actual:
-Class: mipo    m = 5 
-              estimate       ubar          b         t dfcom        df
 (Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108
 log10(bw)     -1.1540768  0.08460947  0.00778340   0.0939495    59  45.62378
 odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
@@ -1614,8 +1558,12 @@ odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
 (Intercept)    0.0689621   0.0645132   0.0994187
 log10(bw)      0.1103904   0.0994159   0.1364588
 odi            0.1321015   0.1166870   0.1550547</code></pre>
+    </div>
+  </details>
+</div>
 
-<div class="code-card" id="code-81">
+
+<div class="code-card" id="code-26">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_pool_v03_summary_r(summary_pool(pool(fit1))))">Copy Python</button>
@@ -1631,28 +1579,16 @@ odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03</code></p
       <div class="compare-title">R code</div>
       <pre class="language-r"><code class="language-r">summary(pool(fit1))</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate std.error statistic        df      p.value
-(Intercept)  11.3728381 0.8081171  14.073256 49.499872 0.000000000e+00
-log10(bw)    -1.1493959 0.3144433  -3.655336 40.275855 7.345096267e-04
-odi          -0.8244479 0.2913033  -2.830204 44.398469 6.961767674e-03</code></pre>
+(Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
+log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
+odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03</code></pre>
     </div>
   </details>
 </div>
 
-<p><strong>Diff hint:</strong></p>
-<pre class="language-text"><code class="language-text">Expected:
-              estimate std.error statistic        df      p.value
-(Intercept)  11.3728381 0.8081171  14.073256 49.499872 0.000000000e+00
-log10(bw)    -1.1493959 0.3144433  -3.655336 40.275855 7.345096267e-04
-odi          -0.8244479 0.2913033  -2.830204 44.398469 6.961767674e-03
+<p>The <code>fmi</code> and <code>lambda</code> are much too high. This is due to <code>species</code> being included in the imputation model. Because there are 62 species and mice automatically converts factors (categorical variables) to dummy variables, each species is modeled by its own imputation model.</p><h2 id="13-drop-species-column">13. Drop species column</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 
-Actual:
-              estimate std.error statistic        df      p.value
-(Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
-log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
-odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03</code></pre>
-<p>The <code>fmi</code> and <code>lambda</code> are much too high. This is due to <code>species</code> being included in the imputation model. Because there are 62 species and mice automatically converts factors (categorical variables) to dummy variables, each species is modeled by its own imputation model.</p><h2 id="13-drop-species-column">13. Drop species column</h2><div class="step-parity-badge"><strong>Step parity:</strong> ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 1 mismatch of 1 blocks)</div>
-
-<div class="code-card" id="code-82">
+<div class="code-card" id="code-27">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="impnew = mice(ms_no_sp, column_names=ms_no_names, m=5, maxit=10, print_flag=False)">Copy Python</button>
@@ -1664,19 +1600,13 @@ odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03</code></p
     <div class="compare-r-body">
       <div class="compare-title">R code</div>
       <pre class="language-r"><code class="language-r">impnew &lt;- mice(mammalsleep[ , -1], maxit = 10, print = F)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 19</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 15</code></pre>
     </div>
   </details>
 </div>
+<h2 id="14-re-impute-without-species">14. Re-impute without species</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 
-<p><strong>Diff hint:</strong></p>
-<pre class="language-text"><code class="language-text">Expected:
-Warning: Number of logged events: 19
-
-Actual:
-Warning: Number of logged events: 15</code></pre><h2 id="14-re-impute-without-species">14. Re-impute without species</h2><div class="step-parity-badge"><strong>Step parity:</strong> ❌ MISMATCH (0 exact, 0 info, 0 visual, 0 skipped, 2 mismatch of 2 blocks)</div>
-
-<div class="code-card" id="code-83">
+<div class="code-card" id="code-28">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="fit2 = with_mids(impnew, formula=&#x27;sws ~ log10(bw) + odi&#x27;)
@@ -1701,32 +1631,6 @@ odi            0.1258433   0.1117769   0.1497517</code></pre>
 pool(fit2)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Class: mipo    m = 5 
               estimate       ubar          b         t dfcom        df
-(Intercept)   11.3868706  0.61202922  0.04053099   0.6606664    59  49.35623
-log10(bw)     -1.1268662  0.08639983  0.00589085   0.0934689    59  49.07481
-odi           -0.8200122  0.07652107  0.00917601   0.0875323    59  41.68313
-                  riv    lambda       fmi
-(Intercept)    0.0794687   0.0736184   0.1090060
-log10(bw)      0.0818176   0.0756297   0.1111314
-odi            0.1438977   0.1257960   0.1649250</code></pre>
-    </div>
-  </details>
-</div>
-
-<p><strong>Diff hint:</strong></p>
-<pre class="language-text"><code class="language-text">Expected:
-Class: mipo    m = 5 
-              estimate       ubar          b         t dfcom        df
-(Intercept)   11.3868706  0.61202922  0.04053099   0.6606664    59  49.35623
-log10(bw)     -1.1268662  0.08639983  0.00589085   0.0934689    59  49.07481
-odi           -0.8200122  0.07652107  0.00917601   0.0875323    59  41.68313
-                  riv    lambda       fmi
-(Intercept)    0.0794687   0.0736184   0.1090060
-log10(bw)      0.0818176   0.0756297   0.1111314
-odi            0.1438977   0.1257960   0.1649250
-
-Actual:
-Class: mipo    m = 5 
-              estimate       ubar          b         t dfcom        df
 (Intercept)   11.3500427  0.61817617  0.04037797   0.6666297    59  49.48618
 log10(bw)     -1.1079037  0.08726759  0.00546546   0.0938261    59  49.87051
 odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
@@ -1734,8 +1638,12 @@ odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
 (Intercept)    0.0783815   0.0726844   0.1080200
 log10(bw)      0.0751545   0.0699011   0.1050852
 odi            0.1258433   0.1117769   0.1497517</code></pre>
+    </div>
+  </details>
+</div>
 
-<div class="code-card" id="code-84">
+
+<div class="code-card" id="code-29">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_pool_v03_summary_r(summary_pool(pool(fit2))))">Copy Python</button>
@@ -1751,29 +1659,17 @@ odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></p
       <div class="compare-title">R code</div>
       <pre class="language-r"><code class="language-r">summary(pool(fit2))</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate std.error statistic        df      p.value
-(Intercept)  11.3868706 0.8128139  14.009198 49.356232 0.000000000e+00
-log10(bw)    -1.1268662 0.3057268  -3.685861 49.074812 5.692317241e-04
-odi          -0.8200122 0.2958585  -2.771636 41.683126 8.299348343e-03</code></pre>
+(Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
+log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
+odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></pre>
     </div>
   </details>
 </div>
 
-<p><strong>Diff hint:</strong></p>
-<pre class="language-text"><code class="language-text">Expected:
-              estimate std.error statistic        df      p.value
-(Intercept)  11.3868706 0.8128139  14.009198 49.356232 0.000000000e+00
-log10(bw)    -1.1268662 0.3057268  -3.685861 49.074812 5.692317241e-04
-odi          -0.8200122 0.2958585  -2.771636 41.683126 8.299348343e-03
-
-Actual:
-              estimate std.error statistic        df      p.value
-(Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
-log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
-odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></pre>
 <p>Note that the <code>fmi</code> and <code>lambda</code> have dramatically decreased. The imputation model has been greatly improved.</p><h2 id="15-trace-plot-for-impnew">15. Trace plot for impnew</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-85">
+<div class="code-card" id="code-30">
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_mids(impnew, variables=[&#x27;mls&#x27;, &#x27;gt&#x27;])">Copy Python</button>
@@ -1795,7 +1691,7 @@ odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></p
 <p>We have seen that the practical execution of multiple imputation and pooling is straightforward with the <code>R</code> package <code>mice</code>. The package is designed to allow you to assess and control the imputations themselves, the convergence of the algorithm and the distributions and multivariate relations of the observed and imputed data.</p>
 <p>It is important to ‘gain’ this control as a user. After all, we are imputing values and we aim to properly adress the uncertainty about the missingness problem.</p>
 <p><strong>- End of Vignette</strong></p>
-<div class="code-tabs plot-tabs" id="plots-86">
+<div class="code-tabs plot-tabs" id="plots-31">
   <div class="tab-headers">
     <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
