@@ -1231,7 +1231,7 @@ def write_reports(
     assets.mkdir(exist_ok=True)
 
     from lib.figure_map import copy_reference_assets
-    from lib.vignette_catalog import all_metas_ordered, get_meta, nav_label
+    from lib.vignette_catalog import all_metas_ordered, nav_label
 
     nav = [(m.number, m.slug, m.short_title, nav_label(m)) for m in all_metas_ordered()]
     generated_at = datetime.now(timezone.utc)
