@@ -33,6 +33,7 @@ class VignetteBuilder:
     n_mismatch: int = 0
     n_skip: int = 0
     n_partial: int = 0
+    n_visual: int = 0
     n_info: int = 0
     disclaimer_md: str = ""
     parity_overview_md: str = ""
@@ -128,7 +129,7 @@ class VignetteBuilder:
         note: str = "Python equivalent (matplotlib); content matches R diagnostic.",
     ) -> None:
         """Record a plot-only step without numeric R comparison."""
-        self.n_partial += 1
+        self.n_visual += 1
         body = "\n".join(
             [
                 "**Parity:** ⚠️ PARTIAL (plot)",
@@ -211,6 +212,7 @@ class VignetteBuilder:
         self.n_mismatch += stats.n_mismatch
         self.n_skip += stats.n_skip
         self.n_partial += stats.n_partial
+        self.n_visual += stats.n_visual
         self.n_info += stats.n_info
 
     def part(self, title: str) -> None:
@@ -254,7 +256,7 @@ class VignetteBuilder:
         note: str = "Matplotlib equivalent of the R lattice plot.",
     ) -> None:
         """Plot step in tutorial layout (output is the figure)."""
-        self.n_partial += 1
+        self.n_visual += 1
         body = format_tutorial_step_md(
             r_code,
             python_code,
@@ -265,13 +267,20 @@ class VignetteBuilder:
         self.sections.append(Section(exercise, body, image_paths=images))
 
     def build(self) -> VignetteReport:
-        total = self.n_match + self.n_mismatch + self.n_skip + self.n_partial + self.n_info
+        total = (
+            self.n_match
+            + self.n_mismatch
+            + self.n_skip
+            + self.n_partial
+            + self.n_visual
+            + self.n_info
+        )
         if self.n_mismatch == 0 and self.n_skip == 0 and self.n_partial == 0:
             status = f"Compliant ({self.n_match}/{total} blocks match R)"
         elif self.n_mismatch == 0:
             status = (
                 f"Partially compliant — {self.n_match} match, "
-                f"{self.n_info} info, {self.n_partial} partial, {self.n_skip} skipped (R-only)"
+                f"{self.n_info} info, {self.n_visual} visual, {self.n_skip} skipped (R-only)"
             )
         else:
             status = (
@@ -298,5 +307,6 @@ class VignetteBuilder:
             n_mismatch=self.n_mismatch,
             n_skip=self.n_skip,
             n_partial=self.n_partial,
+            n_visual=self.n_visual,
             n_info=self.n_info,
         )

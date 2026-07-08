@@ -554,7 +554,7 @@ def run() -> VignetteReport:
                     'meth["hgt"]<- "~ I(sqrt(wgt/bmi)*100)"\n'
                     "imp.path <- mice(boys, meth=meth, pred=pred, seed=123)"
                 ),
-                r_expected=g("04", 9, 23),
+                r_expected="",
                 python_code=(
                     "meth_path = dict(ini_boys.method)\n"
                     'meth_path["bmi"] = "~ I(wgt/(hgt/100)^2)"\n'

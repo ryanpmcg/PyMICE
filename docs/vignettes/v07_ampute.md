@@ -3,7 +3,7 @@
 *Compare to **Generate missing values with ampute** by Rianne Schouten*
 
 **Reference:** https://rianneschouten.github.io/mice_ampute/vignette/ampute.html
-**Parity status:** Partially compliant — 10 match, 1 info, 2 partial, 2 skipped (R-only)
+**Parity status:** Partially compliant — 10 match, 1 info, 2 visual, 2 skipped (R-only)
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -312,7 +312,7 @@ md.pattern(result$amp, plot=TRUE)
 
 ## 7. Amputed boxplots
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 Function `bwplot` allows for a comparison between amputed and non-amputed data. Note that the function uses as input the `mads` object and not the incomplete dataset.
 
@@ -337,7 +337,7 @@ plot_ampute_bwplot(result_mnar, names, which_pat=0, descriptives=True)
 
 ## 8. Amputed scatterplots
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 Similar inspections can be done using the function `xyplot`. The scatterplots show the correlation between the variable values and the weighted sum scores.
 

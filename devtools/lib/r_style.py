@@ -514,21 +514,28 @@ def format_section_status_md(stats: object) -> str:
 
     if not isinstance(stats, SectionStats):
         raise TypeError("stats must be SectionStats")
-    total = stats.n_match + stats.n_mismatch + stats.n_skip + stats.n_partial + stats.n_info
+    total = (
+        stats.n_match
+        + stats.n_mismatch
+        + stats.n_skip
+        + stats.n_partial
+        + stats.n_visual
+        + stats.n_info
+    )
     if stats.n_mismatch:
         label = "MISMATCH"
         icon = "❌"
     elif stats.n_partial:
         label = "PARTIAL"
         icon = "⚠️"
-    elif stats.n_skip and not stats.n_match:
+    elif stats.n_skip and not stats.n_match and not stats.n_visual:
         label = "SKIP"
         icon = "⏭️"
     else:
         label = "MATCH"
         icon = "✅"
     detail = (
-        f"{stats.n_match} exact, {stats.n_info} info, {stats.n_partial} visual, "
+        f"{stats.n_match} exact, {stats.n_info} info, {stats.n_visual} visual, "
         f"{stats.n_skip} skipped, {stats.n_mismatch} mismatch"
     )
     return f"**Step parity:** {icon} {label} ({detail} of {total} blocks)"

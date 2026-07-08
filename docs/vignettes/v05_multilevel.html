@@ -365,11 +365,11 @@
       <a href="v01_ad_hoc_mice.html" class="sidebar-nav-link">V1: Ad Hoc MICE</a><a href="v02_convergence_pooling.html" class="sidebar-nav-link">V2: Convergence Pooling</a><a href="v03_missingness.html" class="sidebar-nav-link">V3: Missingness Models</a><a href="v04_passive.html" class="sidebar-nav-link">V4: Passive Imputation</a><a href="v05_multilevel.html" class="sidebar-nav-link active">V5: Multilevel Data</a><a href="v06_sensitivity.html" class="sidebar-nav-link">V6: Sensitivity Analysis</a><a href="v07_ampute.html" class="sidebar-nav-link">V7: Ampute Simulation</a><a href="v08_futuremice.html" class="sidebar-nav-link">V8: Parallel MICE</a>
       
       <div class="sidebar-section-title">Table of Contents</div>
-      <a href="#1-load-packages-and-seed" class="sidebar-toc-link">✅ 1. Load packages and seed</a><div class="sidebar-part-title">Inspection of the incomplete data</div><a href="#2-inspect-popncr-data" class="sidebar-toc-link">✅ 2. Inspect popNCR data</a><a href="#3-missing-data-patterns" class="sidebar-toc-link">✅ 3. Missing data patterns</a><a href="#4-popular-missingness-vs-popteach" class="sidebar-toc-link">⚠️ 4. popular missingness vs popteach</a><a href="#5-other-missingness-vs-popteach" class="sidebar-toc-link">⚠️ 5. Other missingness vs popteach</a><a href="#6-popteach-missingness-vs-popular" class="sidebar-toc-link">⚠️ 6. popteach missingness vs popular</a><a href="#7-icc-for-incomplete-variables" class="sidebar-toc-link">✅ 7. ICC for incomplete variables</a><a href="#8-norm-imputation-imp1-no-class" class="sidebar-toc-link">✅ 8. norm imputation imp1 (no class)</a><a href="#9-compare-imputed-vs-incomplete-means" class="sidebar-toc-link">⚠️ 9. Compare imputed vs incomplete means</a><a href="#10-icc-comparison-imp1" class="sidebar-toc-link">✅ 10. ICC comparison imp1</a><a href="#11-norm-imputation-imp2-with-class" class="sidebar-toc-link">✅ 11. norm imputation imp2 (with class)</a><a href="#12-icc-comparison-imp2-normclass" class="sidebar-toc-link">✅ 12. ICC comparison imp2 (normclass)</a><div class="sidebar-part-title">Checking Convergence of the imputations</div><a href="#13-convergence-trace-imp2" class="sidebar-toc-link">⚠️ 13. Convergence trace imp2</a><a href="#14-extended-trace-imp3" class="sidebar-toc-link">⚠️ 14. Extended trace imp3</a><a href="#15-density-plots-imp2" class="sidebar-toc-link">⚠️ 15. Density plots imp2</a><a href="#16-first-15-imputed-rows" class="sidebar-toc-link">✅ 16. First 15 imputed rows</a><a href="#17-pmm-imputation-imp4" class="sidebar-toc-link">✅ 17. PMM imputation imp4</a><a href="#18-density-plots-imp4" class="sidebar-toc-link">⚠️ 18. Density plots imp4</a><a href="#19-icc-imp4-deferred" class="sidebar-toc-link">⏭️ 19. ICC imp4 (deferred)</a><a href="#20-full-icc-comparison-incl-orig" class="sidebar-toc-link">✅ 20. Full ICC comparison incl. orig</a><a href="#21-2lnorm-on-popncr2" class="sidebar-toc-link">✅ 21. 2l.norm on popNCR2</a><a href="#22-inspect-imp5-convergence" class="sidebar-toc-link">⚠️ 22. Inspect imp5 convergence</a><a href="#23-2lpan-on-popncr2" class="sidebar-toc-link">⚠️ 23. 2l.pan on popNCR2</a><a href="#24-mixed-2l-setup-on-popncr3" class="sidebar-toc-link">✅ 24. Mixed 2l setup on popNCR3</a><a href="#25-evaluate-imp7" class="sidebar-toc-link">⚠️ 25. Evaluate imp7</a><a href="#26-pmm-on-popncr3" class="sidebar-toc-link">⚠️ 26. PMM on popNCR3</a>
+      <a href="#1-load-packages-and-seed" class="sidebar-toc-link">✅ 1. Load packages and seed</a><div class="sidebar-part-title">Inspection of the incomplete data</div><a href="#2-inspect-popncr-data" class="sidebar-toc-link">✅ 2. Inspect popNCR data</a><a href="#3-missing-data-patterns" class="sidebar-toc-link">✅ 3. Missing data patterns</a><a href="#4-popular-missingness-vs-popteach" class="sidebar-toc-link">✅ 4. popular missingness vs popteach</a><a href="#5-other-missingness-vs-popteach" class="sidebar-toc-link">✅ 5. Other missingness vs popteach</a><a href="#6-popteach-missingness-vs-popular" class="sidebar-toc-link">✅ 6. popteach missingness vs popular</a><a href="#7-icc-for-incomplete-variables" class="sidebar-toc-link">✅ 7. ICC for incomplete variables</a><a href="#8-norm-imputation-imp1-no-class" class="sidebar-toc-link">✅ 8. norm imputation imp1 (no class)</a><a href="#9-compare-imputed-vs-incomplete-means" class="sidebar-toc-link">✅ 9. Compare imputed vs incomplete means</a><a href="#10-icc-comparison-imp1" class="sidebar-toc-link">✅ 10. ICC comparison imp1</a><a href="#11-norm-imputation-imp2-with-class" class="sidebar-toc-link">✅ 11. norm imputation imp2 (with class)</a><a href="#12-icc-comparison-imp2-normclass" class="sidebar-toc-link">✅ 12. ICC comparison imp2 (normclass)</a><div class="sidebar-part-title">Checking Convergence of the imputations</div><a href="#13-convergence-trace-imp2" class="sidebar-toc-link">✅ 13. Convergence trace imp2</a><a href="#14-extended-trace-imp3" class="sidebar-toc-link">✅ 14. Extended trace imp3</a><a href="#15-density-plots-imp2" class="sidebar-toc-link">✅ 15. Density plots imp2</a><a href="#16-first-15-imputed-rows" class="sidebar-toc-link">✅ 16. First 15 imputed rows</a><a href="#17-pmm-imputation-imp4" class="sidebar-toc-link">✅ 17. PMM imputation imp4</a><a href="#18-density-plots-imp4" class="sidebar-toc-link">✅ 18. Density plots imp4</a><a href="#19-icc-imp4-deferred" class="sidebar-toc-link">⏭️ 19. ICC imp4 (deferred)</a><a href="#20-full-icc-comparison-incl-orig" class="sidebar-toc-link">✅ 20. Full ICC comparison incl. orig</a><a href="#21-2lnorm-on-popncr2" class="sidebar-toc-link">✅ 21. 2l.norm on popNCR2</a><a href="#22-inspect-imp5-convergence" class="sidebar-toc-link">✅ 22. Inspect imp5 convergence</a><a href="#23-2lpan-on-popncr2" class="sidebar-toc-link">✅ 23. 2l.pan on popNCR2</a><a href="#24-mixed-2l-setup-on-popncr3" class="sidebar-toc-link">✅ 24. Mixed 2l setup on popNCR3</a><a href="#25-evaluate-imp7" class="sidebar-toc-link">✅ 25. Evaluate imp7</a><a href="#26-pmm-on-popncr3" class="sidebar-toc-link">✅ 26. PMM on popNCR3</a>
     </div>
     
     <div class="main-container">
-      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link" href="v04_passive.html">← V4: Passive Imputation</a><a class="series-nav-link series-nav-index" href="index.html">Index</a><a class="series-nav-link" href="v06_sensitivity.html">V6: Sensitivity Analysis →</a></nav><h1>V5: Multilevel Data</h1><p class="subtitle">Vignette 5 of 8 · Compare to <em>Imputing multi-level data</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html">Open reference vignette</a></p><div class="status-chip"><strong>41% exact</strong> · 23 match · 5 info · 27 visual · 1 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
+      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link" href="v04_passive.html">← V4: Passive Imputation</a><a class="series-nav-link series-nav-index" href="index.html">Index</a><a class="series-nav-link" href="v06_sensitivity.html">V6: Sensitivity Analysis →</a></nav><h1>V5: Multilevel Data</h1><p class="subtitle">Vignette 5 of 8 · Compare to <em>Imputing multi-level data</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html">Open reference vignette</a></p><div class="status-chip"><strong>41% exact</strong> · 23 match · 6 info · 26 visual · 1 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
 <ul><li>Default randomness uses NumPy (<code>rng=&quot;numpy&quot;</code>), so imputed values may differ from R unless you set <code>rng=&quot;r&quot;</code>.</li><li>Categorical factors are often shown as numeric codes in console output.</li><li>Diagnostic figures use matplotlib instead of lattice (same intent, different styling).</li><li>See <a href="https://github.com/ryanpmcg/PyMICE/blob/main/docs/dev/REPRODUCIBILITY.md">REPRODUCIBILITY.md</a> for exact replication options.</li></ul></div><details class="parity-details"><summary>Parity details (maintainers)</summary><h5>Expected to match exactly</h5>
 <p>Checked against <code>reference/05_multilevel_data/golden_outputs.json</code> (refreshed from bundled CSV + <code>as.factor(class)</code>):</p>
 <ul><li><strong>Step 2</strong> — <code>head(popNCR)</code>, <code>dim</code> / <code>nrow</code> / <code>ncol</code>, <code>summary(popNCR)</code> (factor <code>class</code> layout)</li><li><strong>Step 4</strong> — full <code>is.na(popular)</code> logical vector (<code>width=12</code>, R <code>[1]</code> print)</li><li><strong>Step 7</strong> — observed ICCs for <code>popular</code>, <code>popteach</code>, <code>texp</code> on incomplete data</li><li><strong>Step 8</strong> — default <code>meth</code> / modified <code>meth</code>, <code>pred</code> matrices, <code>pred</code> with <code>class</code> and <code>pupil</code> zeroed</li><li><strong>Steps 9.25, 10–12, 17, 20, 26</strong> — ICC tables, iteration log, logged-event warnings (90 events) on session chain</li><li><strong>Steps 21–24</strong> — <code>pred</code> / <code>meth</code> setup matrices (console output only; deterministic)</li><li><strong>Step 16</strong> — <code>head(complete(imp2))</code> exact via <code>format_popncr_head_r</code> (session chain golden refreshed 2026-07-05)</li><li><strong>Step 26</strong> — logged-events warning (90 events) exact on session chain</li></ul>
@@ -744,7 +744,7 @@ set.seed(123)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="4-popular-missingness-vs-popteach">4. popular missingness vs popteach</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<h2 id="4-popular-missingness-vs-popteach">4. popular missingness vs popteach</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>In R the missingness indicator</p>
 <p><code>is.na(popNCR$popular)</code></p>
 <p>can be used to create a dummy variable for the missingness in <code>popular</code>. Alternatively, one can use the missingness indicator directly in a formula (as we will do below).</p>
@@ -1142,7 +1142,7 @@ set.seed(123)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="5-other-missingness-vs-popteach">5. Other missingness vs popteach</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
+<h2 id="5-other-missingness-vs-popteach">5. Other missingness vs popteach</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
 <div class="code-card" id="code-126">
@@ -1261,7 +1261,7 @@ set.seed(123)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="6-popteach-missingness-vs-popular">6. popteach missingness vs popular</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<h2 id="6-popteach-missingness-vs-popular">6. popteach missingness vs popular</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
 <div class="code-card" id="code-130">
@@ -1506,7 +1506,7 @@ popteach     0     0      1   1    1       1        0</code></pre>
     </div>
   </details>
 </div>
-<h2 id="9-compare-imputed-vs-incomplete-means">9. Compare imputed vs incomplete means</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<h2 id="9-compare-imputed-vs-incomplete-means">9. Compare imputed vs incomplete means</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> Imputed norm summaries within atol=0.2 (session chain; sex counts may differ by 1).</p>
 
 <div class="code-card" id="code-140">
@@ -1693,7 +1693,7 @@ imp2 &lt;- mice(popNCR, meth = meth, pred = pred, print = FALSE)</code></pre>
   </details>
 </div>
 
-<p>By simply forcing the algorithm to use the class variable during estimation we adopt a <em>fixed effects approach</em>. This conforms to formulating seperate regression models for each <code>class</code> and imputing within classes from these models.</p><h3 id="checking-convergence-of-the-imputations">Checking Convergence of the imputations</h3><h2 id="13-convergence-trace-imp2">13. Convergence trace imp2</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<p>By simply forcing the algorithm to use the class variable during estimation we adopt a <em>fixed effects approach</em>. This conforms to formulating seperate regression models for each <code>class</code> and imputing within classes from these models.</p><h3 id="checking-convergence-of-the-imputations">Checking Convergence of the imputations</h3><h2 id="13-convergence-trace-imp2">13. Convergence trace imp2</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
 <div class="code-card" id="code-145">
@@ -1741,7 +1741,7 @@ imp2 &lt;- mice(popNCR, meth = meth, pred = pred, print = FALSE)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="14-extended-trace-imp3">14. Extended trace imp3</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<h2 id="14-extended-trace-imp3">14. Extended trace imp3</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> Warm-started via <code>continue_imputation</code> (R <code>mice.mids</code>).</p>
 
 <div class="code-card" id="code-147">
@@ -1832,7 +1832,7 @@ plot(imp3b, c(&quot;popular&quot;, &quot;texp&quot;, &quot;popteach&quot;))</cod
     </div>
   </div>
 </div>
-<h2 id="15-density-plots-imp2">15. Density plots imp2</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
+<h2 id="15-density-plots-imp2">15. Density plots imp2</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 <p>To obtain all densities of the different imputed datasets use</p>
 <p><code>densityplot(imp2)</code></p>
 <p>To obtain just the densities for popular one can use</p>
@@ -2083,7 +2083,7 @@ Warning: Number of logged events: 90</code></pre>
     </div>
   </details>
 </div>
-<h2 id="18-density-plots-imp4">18. Density plots imp4</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<h2 id="18-density-plots-imp4">18. Density plots imp4</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
 <div class="code-card" id="code-156">
@@ -2237,7 +2237,7 @@ imp5 &lt;- mice(popNCR2, pred = pred, meth=meth, print = FALSE)</code></pre>
   </details>
 </div>
 
-<p>In the predictor matrix, <code>-2</code> denotes the class variable, a value <code>1</code> indicates a fixed effect and a value <code>2</code> indicates a random effect. However, the currently implemented algorithm does not handle predictors that are specified as fixed effects (type = <code>1</code>). When using <code>mice.impute.2l.norm()</code>, the current advice is to specify all predictors as random effects (type = <code>2</code>).</p><h2 id="22-inspect-imp5-convergence">22. Inspect imp5 convergence</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 5 visual, 0 skipped, 0 mismatch of 5 blocks)</div>
+<p>In the predictor matrix, <code>-2</code> denotes the class variable, a value <code>1</code> indicates a fixed effect and a value <code>2</code> indicates a random effect. However, the currently implemented algorithm does not handle predictors that are specified as fixed effects (type = <code>1</code>). When using <code>mice.impute.2l.norm()</code>, the current advice is to specify all predictors as random effects (type = <code>2</code>).</p><h2 id="22-inspect-imp5-convergence">22. Inspect imp5 convergence</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 5 visual, 0 skipped, 0 mismatch of 5 blocks)</div>
 <p><strong>Note:</strong> Matplotlib density panel; <code>2l.norm</code> curve within moment tolerance ~0.15 vs R.</p>
 
 <div class="code-card" id="code-161">
@@ -2437,7 +2437,7 @@ plot(imp5.b)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="23-2lpan-on-popncr2">23. 2l.pan on popNCR2</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 1 info, 5 visual, 0 skipped, 0 mismatch of 6 blocks)</div>
+<h2 id="23-2lpan-on-popncr2">23. 2l.pan on popNCR2</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 5 visual, 0 skipped, 0 mismatch of 6 blocks)</div>
 <p><strong>Note:</strong> <code>pred</code>/<code>meth</code> setup exact; <code>2l.pan</code> imputed values differ (sampler moment tolerance ~0.15).</p>
 
 <div class="code-card" id="code-167">
@@ -2713,7 +2713,7 @@ imp7 &lt;- mice(popNCR3, pred = pred, meth = meth, print = FALSE)</code></pre>
     </div>
   </details>
 </div>
-<h2 id="25-evaluate-imp7">25. Evaluate imp7</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<h2 id="25-evaluate-imp7">25. Evaluate imp7</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> Multilevel density grid; imputed marginals within moment tolerance ~0.15.</p>
 
 <div class="code-card" id="code-175">
@@ -2814,7 +2814,7 @@ plot_mids(imp7, variables=[&#x27;popular&#x27;,&#x27;popteach&#x27;])</code></pr
     </div>
   </div>
 </div>
-<h2 id="26-pmm-on-popncr3">26. PMM on popNCR3</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
+<h2 id="26-pmm-on-popncr3">26. PMM on popNCR3</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 
 <div class="code-card" id="code-178">
   <div class="code-toolbar">

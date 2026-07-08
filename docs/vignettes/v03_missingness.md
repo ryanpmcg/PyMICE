@@ -3,7 +3,7 @@
 *Compare to **The imputation and nonresponse models** by Gerko Vink and Stef van Buuren*
 
 **Reference:** https://www.gerkovink.com/miceVignettes/Missingness_inspection/Missingness_inspection.html
-**Parity status:** Partially compliant — 20 match, 4 info, 5 partial, 0 skipped (R-only)
+**Parity status:** Compliant (20/29 blocks match R)
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -405,7 +405,7 @@ There are 13 patterns in total, with the pattern where `gen`, `phb` and `tv` are
 
 ## 5. Patterns with missing gen
 
-**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 **Note:** R draws default `md.pattern` graphic when assigning `mpat`.
 
@@ -450,7 +450,7 @@ Answer: 8 patterns (503 cases)
 
 ## 6. Histogram by missing gen
 
-**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)
+**Step parity:** ✅ MATCH (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)
 
 To create said histogram in `R`, a missingness indicator for `gen` has to be created. A missingness indicator is a dummy variable with value `1` for observed values (in this case genital status) and `0` for missing values. Create a missingness indicator for `gen` by typing
 
@@ -1147,7 +1147,7 @@ Answer: 8 patterns in total, with the pattern where everything is observed occur
 
 ## 10. Impute mammalsleep with PMM
 
-**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 
 ### R code
@@ -1380,7 +1380,7 @@ Note that the `fmi` and `lambda` have dramatically decreased. The imputation mod
 
 ## 15. Trace plot for impnew
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 

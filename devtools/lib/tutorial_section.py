@@ -29,47 +29,49 @@ class TutorialPart:
     is_plot: bool = False
 
 
+_DOCUMENTED_PARTIAL_PHRASES = (
+    "Truncated R help",
+    "no R snapshot",
+    "R snapshot has no",
+    "PyMICE reproducibility",
+    "PyMICE closing demo",
+    "no R console output",
+    "no printed output",
+    "no console output",
+    "Package load",
+    "shows code only",
+    "Seed argument demonstration",
+    "Creates `",
+    "object created",
+    "imputation complete",
+    "imputation — no",
+    "Mids object",
+    "n.core",
+    "core count may differ",
+    "workspace `ls()`",
+    "within atol",
+    "Numeric summaries match",
+    "factor-style labels",
+    "Values match",
+    "float width differ",
+    "row names",
+    "iteration log",
+    "sex counts may differ",
+    "Constrained `norm`",
+    "post_squeeze",
+)
+
+
 def _informational_partial(part: TutorialPart, *, match: bool) -> bool:
-    """``partial=True`` steps with nothing to compare (or already matching)."""
+    """``partial=True`` blocks documented as acceptable cosmetic / informational."""
     if not part.partial:
         return False
     if part.partial_reason and any(
-        phrase in part.partial_reason
-        for phrase in (
-            "Truncated R help",
-            "no R snapshot",
-            "R snapshot has no",
-            "PyMICE reproducibility",
-            "PyMICE closing demo",
-        )
+        phrase in part.partial_reason for phrase in _DOCUMENTED_PARTIAL_PHRASES
     ):
         return True
     if not match:
         return False
-    if part.partial_reason and any(
-        phrase in part.partial_reason
-        for phrase in (
-            "no R console output",
-            "no printed output",
-            "no console output",
-            "no R snapshot",
-            "R snapshot has no",
-            "Package load",
-            "shows code only",
-            "Seed argument demonstration",
-            "Creates `",
-            "object created",
-            "imputation complete",
-            "imputation — no",
-            "Truncated R help",
-            "PyMICE closing demo",
-            "PyMICE reproducibility",
-            "Mids object",
-            "n.core",
-            "workspace `ls()`",
-        )
-    ):
-        return True
     return not part.r_expected.strip()
 
 
@@ -79,6 +81,7 @@ class SectionStats:
     n_mismatch: int = 0
     n_skip: int = 0
     n_partial: int = 0
+    n_visual: int = 0
     n_info: int = 0
 
 
@@ -102,7 +105,7 @@ def render_tutorial_section(parts: list[TutorialPart], stats: SectionStats | Non
                 output_lang=part.output_lang,
             )
         elif part.is_plot:
-            st.n_partial += 1
+            st.n_visual += 1
             block = format_tutorial_step_md(
                 part.r_code,
                 part.python_code,

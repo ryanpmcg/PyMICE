@@ -41,6 +41,7 @@ class VignetteReport:
     n_mismatch: int = 0
     n_skip: int = 0
     n_partial: int = 0
+    n_visual: int = 0
     n_info: int = 0
 
 
@@ -519,7 +520,14 @@ def _series_nav_html(report: VignetteReport, all_slugs: list[tuple[str, str, str
 
 
 def _status_chip_html(report: VignetteReport) -> str:
-    total = report.n_match + report.n_mismatch + report.n_skip + report.n_partial + report.n_info
+    total = (
+        report.n_match
+        + report.n_mismatch
+        + report.n_skip
+        + report.n_partial
+        + report.n_visual
+        + report.n_info
+    )
     if total == 0:
         return f'<div class="status-chip">{_esc(report.status)}</div>'
     pct = round(100 * report.n_match / total) if total else 0
@@ -527,7 +535,7 @@ def _status_chip_html(report: VignetteReport) -> str:
         f'<div class="status-chip">'
         f"<strong>{pct}% exact</strong> · "
         f"{report.n_match} match · {report.n_info} info · "
-        f"{report.n_partial} visual · {report.n_skip} skipped"
+        f"{report.n_visual} visual · {report.n_skip} skipped"
         f"</div>"
     )
 
@@ -1050,7 +1058,9 @@ def index_html(
             cls = "fail"
         vnum = int(r.number)
         label = r.short_title or r.title
-        total = r.n_match + r.n_mismatch + r.n_skip + r.n_partial + r.n_info
+        total = (
+            r.n_match + r.n_mismatch + r.n_skip + r.n_partial + r.n_visual + r.n_info
+        )
         pct = f"{round(100 * r.n_match / total):.0f}%" if total else "—"
         rows += (
             f"<tr><td>V{vnum}</td><td>{_esc(label)}</td>"
@@ -1060,9 +1070,11 @@ def index_html(
             f'<a href="{_esc(r.slug)}.md" class="action-link">MD</a></td></tr>'
         )
 
+    from lib.vignette_catalog import get_meta
+
     learning_rows = ""
     for num, title, hint in LEARNING_PATH:
-        slug = next((r.slug for r in reports if r.number == num), f"v{num}")
+        slug = get_meta(num).slug
         learning_rows += (
             f'<tr><td>V{int(num)}</td><td><a href="{_esc(slug)}.html">{_esc(title)}</a></td>'
             f"<td>{_esc(hint)}</td></tr>"
@@ -1221,10 +1233,10 @@ def write_reports(
     assets.mkdir(exist_ok=True)
 
     from lib.figure_map import copy_reference_assets
-    from lib.vignette_catalog import get_meta, nav_label
+    from lib.vignette_catalog import all_metas_ordered, get_meta, nav_label
 
     nav = [
-        (r.number, r.slug, r.short_title or r.title, nav_label(get_meta(r.number))) for r in reports
+        (m.number, m.slug, m.short_title, nav_label(m)) for m in all_metas_ordered()
     ]
     generated_at = datetime.now(timezone.utc)
     copy_reference_assets(assets)

@@ -3,7 +3,7 @@
 *Compare to **Wrapper function futuremice** by Thom Benjamin Volker and Gerko Vink*
 
 **Reference:** https://www.gerkovink.com/miceVignettes/futuremice/Vignette_futuremice.html
-**Parity status:** Partially compliant — 5 match, 5 info, 1 partial, 1 skipped (R-only)
+**Parity status:** Partially compliant — 5 match, 6 info, 0 visual, 1 skipped (R-only)
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -47,7 +47,7 @@ The original tutorial includes wall-clock timing benchmarks (Figures 1–2). Tho
 
 ## 1. Default futuremice run
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 We will now discuss the arguments of function `futuremice`. Easy imputation of an incomplete dataset (say, `nhanes`) can be performed with `futuremice` in the following way.
 

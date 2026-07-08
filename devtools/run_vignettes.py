@@ -46,6 +46,7 @@ RUNNERS = [
 def run_pytest_ci_subset() -> tuple[int, str]:
     """Run the same pytest subset as GitHub Actions (no R-backend tests)."""
     import io
+    import warnings
 
     import pytest
 
@@ -54,18 +55,25 @@ def run_pytest_ci_subset() -> tuple[int, str]:
     old_stderr = sys.stderr
     sys.stdout = buffer
     sys.stderr = buffer
+    # devtools on PYTHONPATH can shadow the repo ``tests`` package via a PyPI module.
+    saved_tests = sys.modules.pop("tests", None)
     try:
-        exit_code = pytest.main(
-            [
-                "tests/",
-                "-q",
-                "--tb=line",
-                "--ignore=tests/parity/test_rng_parity.py",
-                "-m",
-                "not r_backend",
-            ]
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", RuntimeWarning)
+            exit_code = pytest.main(
+                [
+                    str(ROOT / "tests"),
+                    "-q",
+                    "--tb=line",
+                    f"--rootdir={ROOT}",
+                    "--ignore=tests/parity/test_rng_parity.py",
+                    "-m",
+                    "not r_backend",
+                ]
+            )
     finally:
+        if saved_tests is not None:
+            sys.modules["tests"] = saved_tests
         sys.stdout = old_stdout
         sys.stderr = old_stderr
     text = buffer.getvalue().strip() or "(pytest produced no output)"

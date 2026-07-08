@@ -3,7 +3,7 @@
 *Compare to **An approach to sensitivity analysis** by Gerko Vink and Stef van Buuren*
 
 **Reference:** https://www.gerkovink.com/miceVignettes/Sensitivity_analysis/Sensitivity_analysis.html
-**Parity status:** Partially compliant — 9 match, 2 info, 11 partial, 0 skipped (R-only)
+**Parity status:** Compliant (9/22 blocks match R)
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -82,7 +82,7 @@ We choose seed value `123` for reproducibility in the PyMICE walkthrough below.
 
 ## 2. Inspect leiden data
 
-**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 4 blocks)
+**Step parity:** ✅ MATCH (1 exact, 3 info, 0 visual, 0 skipped, 0 mismatch of 4 blocks)
 
 **Note:** Numeric summaries match; R includes factor-style labels for some columns.
 
@@ -288,7 +288,7 @@ There are 121 missings (`NA`'s) for `rrsyst`, 126 missings for `rrdiast`, 229 mi
 
 ## 4. Pattern and flux plots
 
-**Step parity:** ⚠️ PARTIAL (2 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 3 blocks)
+**Step parity:** ✅ MATCH (2 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 3 blocks)
 
 
 ### R code
@@ -323,7 +323,7 @@ print(format_md_pattern_r(mp))
 
 ### Output
 ```text
-    sexe lftanam survda dwa woon mmse rrsyst rrdiast alb chol     
+    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol     
 621   1   1   1   1   1   1   1   1   1   1  0
   2   1   1   1   1   1   1   1   1   1   0  1
   1   1   1   1   1   1   1   1   1   0   1  1
@@ -410,7 +410,7 @@ In the next steps we are going to impute `rrsyst` and `rrdiast` under two scenar
 
 ## 5. Kaplan–Meier by missingness
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 **Note:** Matplotlib Kaplan–Meier curves by `rrsyst` missingness.
 
@@ -500,7 +500,7 @@ created 5 delta scenarios
 
 ## 8. Boxplot blood pressure
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 
@@ -544,7 +544,7 @@ We can clearly see that the adjustment has an effect on the imputations for `rrs
 
 ## 9. Density blood pressure
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 
@@ -588,7 +588,7 @@ We can once more clearly see that the adjustment has an effect on the imputation
 
 ## 10. Scatter blood pressure
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 

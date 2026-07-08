@@ -365,11 +365,11 @@
       <a href="v01_ad_hoc_mice.html" class="sidebar-nav-link">V1: Ad Hoc MICE</a><a href="v02_convergence_pooling.html" class="sidebar-nav-link">V2: Convergence Pooling</a><a href="v03_missingness.html" class="sidebar-nav-link">V3: Missingness Models</a><a href="v04_passive.html" class="sidebar-nav-link active">V4: Passive Imputation</a><a href="v05_multilevel.html" class="sidebar-nav-link">V5: Multilevel Data</a><a href="v06_sensitivity.html" class="sidebar-nav-link">V6: Sensitivity Analysis</a><a href="v07_ampute.html" class="sidebar-nav-link">V7: Ampute Simulation</a><a href="v08_futuremice.html" class="sidebar-nav-link">V8: Parallel MICE</a>
       
       <div class="sidebar-section-title">Table of Contents</div>
-      <a href="#1-dry-run-predictor-matrix" class="sidebar-toc-link">✅ 1. Dry run predictor matrix</a><a href="#2-passive-imputation-formula" class="sidebar-toc-link">✅ 2. Passive imputation formula</a><a href="#3-passive-convergence-trace" class="sidebar-toc-link">⚠️ 3. Passive convergence trace</a><div class="sidebar-part-title">Post-processing of the imputations</div><a href="#4-pmm-versus-norm-post" class="sidebar-toc-link">✅ 4. PMM versus norm post</a><a href="#5-density-comparison" class="sidebar-toc-link">⚠️ 5. Density comparison</a><a href="#6-xy-plot-default-pmm" class="sidebar-toc-link">⚠️ 6. XY plot default PMM</a><a href="#7-passive-bmi-from-weight-and-height" class="sidebar-toc-link">✅ 7. Passive BMI from weight and height</a><a href="#8-circular-passive-imputation" class="sidebar-toc-link">⚠️ 8. Circular passive imputation</a><a href="#9-fixed-passive-imputation" class="sidebar-toc-link">⚠️ 9. Fixed passive imputation</a>
+      <a href="#1-dry-run-predictor-matrix" class="sidebar-toc-link">✅ 1. Dry run predictor matrix</a><a href="#2-passive-imputation-formula" class="sidebar-toc-link">✅ 2. Passive imputation formula</a><a href="#3-passive-convergence-trace" class="sidebar-toc-link">✅ 3. Passive convergence trace</a><div class="sidebar-part-title">Post-processing of the imputations</div><a href="#4-pmm-versus-norm-post" class="sidebar-toc-link">✅ 4. PMM versus norm post</a><a href="#5-density-comparison" class="sidebar-toc-link">✅ 5. Density comparison</a><a href="#6-xy-plot-default-pmm" class="sidebar-toc-link">✅ 6. XY plot default PMM</a><a href="#7-passive-bmi-from-weight-and-height" class="sidebar-toc-link">✅ 7. Passive BMI from weight and height</a><a href="#8-circular-passive-imputation" class="sidebar-toc-link">✅ 8. Circular passive imputation</a><a href="#9-fixed-passive-imputation" class="sidebar-toc-link">✅ 9. Fixed passive imputation</a>
     </div>
     
     <div class="main-container">
-      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link" href="v03_missingness.html">← V3: Missingness Models</a><a class="series-nav-link series-nav-index" href="index.html">Index</a><a class="series-nav-link" href="v05_multilevel.html">V5: Multilevel Data →</a></nav><h1>V4: Passive Imputation</h1><p class="subtitle">Vignette 4 of 8 · Compare to <em>Passive imputation and Post-processing</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html">Open reference vignette</a></p><div class="status-chip"><strong>35% exact</strong> · 8 match · 5 info · 10 visual · 0 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
+      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link" href="v03_missingness.html">← V3: Missingness Models</a><a class="series-nav-link series-nav-index" href="index.html">Index</a><a class="series-nav-link" href="v05_multilevel.html">V5: Multilevel Data →</a></nav><h1>V4: Passive Imputation</h1><p class="subtitle">Vignette 4 of 8 · Compare to <em>Passive imputation and Post-processing</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html">Open reference vignette</a></p><div class="status-chip"><strong>35% exact</strong> · 8 match · 6 info · 9 visual · 0 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
 <ul><li>Default randomness uses NumPy (<code>rng=&quot;numpy&quot;</code>), so imputed values may differ from R unless you set <code>rng=&quot;r&quot;</code>.</li><li>Categorical factors are often shown as numeric codes in console output.</li><li>Diagnostic figures use matplotlib instead of lattice (same intent, different styling).</li><li>See <a href="https://github.com/ryanpmcg/PyMICE/blob/main/docs/dev/REPRODUCIBILITY.md">REPRODUCIBILITY.md</a> for exact replication options.</li></ul></div><details class="parity-details"><summary>Parity details (maintainers)</summary><h5>Expected to match exactly</h5>
 <p>Checked against <code>reference/04_passive_post_processing/vignette_extracted.R</code>:</p>
 <ul><li><strong>Step 2</strong> — default <code>meth</code> and <code>pred</code> matrices; modified <code>pred</code> (exclude <code>ts</code> from <code>sws</code>/<code>ps</code>); passive <code>ts = sws + ps</code> consistency check (<code>pas.imp</code> uses <code>seed=123</code> like R)</li><li><strong>Step 5</strong> — <code>table(complete(imp)$tv)</code> and <code>table(complete(imp.pmm)$tv)</code> frequency tables (chain-aligned goldens refreshed 2026-07-05)</li><li><strong>Step 7</strong> — passive <code>bmi = I(wgt/(hgt/100)^2)</code>; numeric constraint <code>|bmi - calc| = 0</code> on missing rows (visit order imputes <code>hgt</code>/<code>wgt</code> first)</li></ul>
@@ -541,7 +541,7 @@ pas.imp &lt;- mice(mammalsleep[, -1], meth=meth, pred=pred, maxit=10, seed=123, 
 </div>
 
 <p>We used a custom predictor matrix and method vector to tailor our imputation approach to the passive imputation problem. We made sure to exclude <code>ts</code> as a predictor for the imputation of <code>sws</code> and <code>ps</code> to avoid circularity.</p>
-<p>We also gave the imputation algorithm 10 iterations to converge and fixed the seed to <code>123</code> for this <code>mice</code> instance. This means that even when people do not fix the overall <code>R</code> seed for a session, exact replication of results can be obtained by simply fixing the <code>seed</code> for the random number generator within <code>mice</code>. Naturally, the same input (data) is each time required to yield the same output (<code>mids</code>-object).</p><h2 id="3-passive-convergence-trace">3. Passive convergence trace</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<p>We also gave the imputation algorithm 10 iterations to converge and fixed the seed to <code>123</code> for this <code>mice</code> instance. This means that even when people do not fix the overall <code>R</code> seed for a session, exact replication of results can be obtained by simply fixing the <code>seed</code> for the random number generator within <code>mice</code>. Naturally, the same input (data) is each time required to yield the same output (<code>mids</code>-object).</p><h2 id="3-passive-convergence-trace">3. Passive convergence trace</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
 <div class="code-card" id="code-92">
@@ -619,7 +619,7 @@ imp &lt;- mice(boys, meth=meth, post=post, print=FALSE)</code></pre>
   </details>
 </div>
 
-<p>In this way the imputed values of <code>tv</code> are constrained (squeezed by function <code>squeeze()</code>) between 1 and 25.</p><h2 id="5-density-comparison">5. Density comparison</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (2 exact, 1 info, 2 visual, 0 skipped, 0 mismatch of 5 blocks)</div>
+<p>In this way the imputed values of <code>tv</code> are constrained (squeezed by function <code>squeeze()</code>) between 1 and 25.</p><h2 id="5-density-comparison">5. Density comparison</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 1 info, 2 visual, 0 skipped, 0 mismatch of 5 blocks)</div>
 <p>First, we recreate the default <code>pmm</code> solution</p>
 <p><strong>Note:</strong> Creates <code>imp.pmm</code> object; R vignette prints no console output here.</p>
 
@@ -773,7 +773,7 @@ histogram( ~tv | method, data = tvm, nint = 25)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="6-xy-plot-default-pmm">6. XY plot default PMM</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<h2 id="6-xy-plot-default-pmm">6. XY plot default PMM</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> R <code>xyplot</code> uses norm+post <code>imp</code> from step 4; PyMICE plots default PMM (<code>imp_pmm</code>) to show BMI inconsistency before passive imputation in step 7.</p>
 
 <div class="code-card" id="code-101">
@@ -849,7 +849,7 @@ imp &lt;- mice(boys, meth=meth, print=FALSE)</code></pre>
     </div>
   </details>
 </div>
-<h2 id="8-circular-passive-imputation">8. Circular passive imputation</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<h2 id="8-circular-passive-imputation">8. Circular passive imputation</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>To inspect the relation:</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
@@ -936,7 +936,7 @@ imp &lt;- mice(boys, meth=meth, print=FALSE)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="9-fixed-passive-imputation">9. Fixed passive imputation</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (2 exact, 1 info, 4 visual, 0 skipped, 0 mismatch of 7 blocks)</div>
+<h2 id="9-fixed-passive-imputation">9. Fixed passive imputation</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 2 info, 3 visual, 0 skipped, 0 mismatch of 7 blocks)</div>
 <p>First, we remove <code>bmi</code> as a predictor for <code>hgt</code> and <code>wgt</code> to remove circularity.</p>
 
 <div class="code-card" id="code-107">
@@ -1108,32 +1108,7 @@ meth[&quot;bmi&quot;]&lt;- &quot;~ I(wgt/(hgt/100)^2)&quot;
 meth[&quot;wgt&quot;]&lt;- &quot;~ I(bmi*(hgt/100)^2)&quot;
 meth[&quot;hgt&quot;]&lt;- &quot;~ I(sqrt(wgt/bmi)*100)&quot;
 imp.path &lt;- mice(boys, meth=meth, pred=pred, seed=123)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text"> iter imp variable
-  1   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  1   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  1   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  1   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  1   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   5  hgt  wgt  bmi  hc  gen  phb  tv  reg</code></pre>
+      
     </div>
   </details>
 </div>

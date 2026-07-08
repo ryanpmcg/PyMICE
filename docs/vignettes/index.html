@@ -109,13 +109,13 @@
 </head>
 <body>
   <h1>PyMICE Vignette Reports</h1>
-  <p class="meta-time">Generated: 2026-07-08T03:11:31.618068+00:00 · pytest: failed (exit 4)</p>
+  <p class="meta-time">Generated: 2026-07-08T04:26:40.571306+00:00 · pytest: passed</p>
   <p>Python walkthroughs of the official R <code>mice</code> tutorials (V01–V08), with deterministic console checks and labelled visual/RNG differences.</p>
 
   <h2>Recommended learning path</h2>
   <table>
     <thead><tr><th>#</th><th>Title</th><th>Notes</th></tr></thead>
-    <tbody><tr><td>V1</td><td><a href="v01.html">Ad Hoc MICE</a></td><td>Start here — first imputation workflow</td></tr><tr><td>V2</td><td><a href="v02.html">Convergence Pooling</a></td><td>Convergence traces and pooling</td></tr><tr><td>V3</td><td><a href="v03_missingness.html">Missingness Models</a></td><td>Missingness patterns and models</td></tr><tr><td>V4</td><td><a href="v04.html">Passive Imputation</a></td><td>Passive imputation and post-processing</td></tr><tr><td>V5</td><td><a href="v05.html">Multilevel Data</a></td><td>Multilevel / clustered imputation</td></tr><tr><td>V6</td><td><a href="v06.html">Sensitivity Analysis</a></td><td>δ sensitivity and survival</td></tr><tr><td>V7</td><td><a href="v07.html">Ampute Simulation</a></td><td>Simulate missingness (appendix)</td></tr><tr><td>V8</td><td><a href="v08.html">Parallel MICE</a></td><td>Parallel imputation (appendix)</td></tr></tbody>
+    <tbody><tr><td>V1</td><td><a href="v01_ad_hoc_mice.html">Ad Hoc MICE</a></td><td>Start here — first imputation workflow</td></tr><tr><td>V2</td><td><a href="v02_convergence_pooling.html">Convergence Pooling</a></td><td>Convergence traces and pooling</td></tr><tr><td>V3</td><td><a href="v03_missingness.html">Missingness Models</a></td><td>Missingness patterns and models</td></tr><tr><td>V4</td><td><a href="v04_passive.html">Passive Imputation</a></td><td>Passive imputation and post-processing</td></tr><tr><td>V5</td><td><a href="v05_multilevel.html">Multilevel Data</a></td><td>Multilevel / clustered imputation</td></tr><tr><td>V6</td><td><a href="v06_sensitivity.html">Sensitivity Analysis</a></td><td>δ sensitivity and survival</td></tr><tr><td>V7</td><td><a href="v07_ampute.html">Ampute Simulation</a></td><td>Simulate missingness (appendix)</td></tr><tr><td>V8</td><td><a href="v08_futuremice.html">Parallel MICE</a></td><td>Parallel imputation (appendix)</td></tr></tbody>
   </table>
 
   <h2>Status legend</h2>
@@ -124,11 +124,13 @@
   <h2>Verification catalog</h2>
   <table>
     <thead><tr><th>#</th><th>Title</th><th>Exact %</th><th>Parity status</th><th>Links</th></tr></thead>
-    <tbody><tr><td>V3</td><td>Missingness Models</td><td>69%</td><td><span class="badge ok">Partially compliant — 20 match, 4 info, 5 partial, 0 skipped (R-only)</span></td><td><a href="v03_missingness.html" class="action-link">HTML</a> · <a href="v03_missingness.md" class="action-link">MD</a></td></tr></tbody>
+    <tbody><tr><td>V1</td><td>Ad Hoc MICE</td><td>89%</td><td><span class="badge ok">Compliant (24/27 blocks match R)</span></td><td><a href="v01_ad_hoc_mice.html" class="action-link">HTML</a> · <a href="v01_ad_hoc_mice.md" class="action-link">MD</a></td></tr><tr><td>V2</td><td>Convergence Pooling</td><td>62%</td><td><span class="badge ok">Compliant (16/26 blocks match R)</span></td><td><a href="v02_convergence_pooling.html" class="action-link">HTML</a> · <a href="v02_convergence_pooling.md" class="action-link">MD</a></td></tr><tr><td>V3</td><td>Missingness Models</td><td>69%</td><td><span class="badge ok">Compliant (20/29 blocks match R)</span></td><td><a href="v03_missingness.html" class="action-link">HTML</a> · <a href="v03_missingness.md" class="action-link">MD</a></td></tr><tr><td>V4</td><td>Passive Imputation</td><td>35%</td><td><span class="badge ok">Compliant (8/23 blocks match R)</span></td><td><a href="v04_passive.html" class="action-link">HTML</a> · <a href="v04_passive.md" class="action-link">MD</a></td></tr><tr><td>V5</td><td>Multilevel Data</td><td>41%</td><td><span class="badge ok">Partially compliant — 23 match, 6 info, 26 visual, 1 skipped (R-only)</span></td><td><a href="v05_multilevel.html" class="action-link">HTML</a> · <a href="v05_multilevel.md" class="action-link">MD</a></td></tr><tr><td>V6</td><td>Sensitivity Analysis</td><td>41%</td><td><span class="badge ok">Compliant (9/22 blocks match R)</span></td><td><a href="v06_sensitivity.html" class="action-link">HTML</a> · <a href="v06_sensitivity.md" class="action-link">MD</a></td></tr><tr><td>V7</td><td>Ampute Simulation</td><td>67%</td><td><span class="badge ok">Partially compliant — 10 match, 1 info, 2 visual, 2 skipped (R-only)</span></td><td><a href="v07_ampute.html" class="action-link">HTML</a> · <a href="v07_ampute.md" class="action-link">MD</a></td></tr><tr><td>V8</td><td>Parallel MICE</td><td>42%</td><td><span class="badge ok">Partially compliant — 5 match, 6 info, 0 visual, 1 skipped (R-only)</span></td><td><a href="v08_futuremice.html" class="action-link">HTML</a> · <a href="v08_futuremice.md" class="action-link">MD</a></td></tr></tbody>
   </table>
   
   <h2>Test suite (pytest)</h2>
-  <pre><code>ImportError while loading conftest &#x27;C:\Users\Ryan McGehee\pymice\tests\conftest.py&#x27;.
-KeyError: &#x27;tests&#x27;</code></pre>
+  <pre><code>........................................................................ [ 28%]
+........................................................................ [ 56%]
+........................................................................ [ 84%]
+........................................                                 [100%]</code></pre>
 </body>
 </html>

@@ -3,7 +3,7 @@
 *Compare to **Imputing multi-level data** by Gerko Vink and Stef van Buuren*
 
 **Reference:** https://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html
-**Parity status:** Partially compliant — 23 match, 5 info, 27 partial, 1 skipped (R-only)
+**Parity status:** Partially compliant — 23 match, 6 info, 26 visual, 1 skipped (R-only)
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -405,7 +405,7 @@ Without texp, there are only 16 patterns.
 
 ## 4. popular missingness vs popteach
 
-**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 In R the missingness indicator
 
@@ -794,7 +794,7 @@ The histogram shows that the missingness in `popular` is not equally distributed
 
 ## 5. Other missingness vs popteach
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 
@@ -861,7 +861,7 @@ There seems to be no observable relation between `popteach` and the missingness 
 
 ## 6. popteach missingness vs popular
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 
@@ -1107,7 +1107,7 @@ imp1 = mice(data, column_names=names, method=meth, predictor_matrix=pred_no_clas
 
 ## 9. Compare imputed vs incomplete means
 
-**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (1 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 **Note:** Imputed norm summaries within atol=0.2 (session chain; sex counts may differ by 1).
 
@@ -1329,7 +1329,7 @@ By simply forcing the algorithm to use the class variable during estimation we a
 
 ## 13. Convergence trace imp2
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 
@@ -1352,7 +1352,7 @@ plot_mids(imp2, variables=['popular', 'texp', 'popteach'])
 
 ## 14. Extended trace imp3
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 **Note:** Warm-started via `continue_imputation` (R `mice.mids`).
 
@@ -1404,7 +1404,7 @@ Several plotting methods based on the package `lattice` for Trellis graphics are
 
 ## 15. Density plots imp2
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 3 blocks)
 
 To obtain all densities of the different imputed datasets use
 
@@ -1616,7 +1616,7 @@ Warning: Number of logged events: 90
 
 ## 18. Density plots imp4
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 
@@ -1764,7 +1764,7 @@ In the predictor matrix, `-2` denotes the class variable, a value `1` indicates 
 
 ## 22. Inspect imp5 convergence
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 5 visual, 0 skipped, 0 mismatch of 5 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 5 visual, 0 skipped, 0 mismatch of 5 blocks)
 
 **Note:** Matplotlib density panel; `2l.norm` curve within moment tolerance ~0.15 vs R.
 
@@ -1874,7 +1874,7 @@ The imputations generated with `2l.norm` are very similar to the ones obtained b
 
 ## 23. 2l.pan on popNCR2
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 1 info, 5 visual, 0 skipped, 0 mismatch of 6 blocks)
+**Step parity:** ✅ MATCH (0 exact, 1 info, 5 visual, 0 skipped, 0 mismatch of 6 blocks)
 
 **Note:** `pred`/`meth` setup exact; `2l.pan` imputed values differ (sampler moment tolerance ~0.15).
 
@@ -2056,7 +2056,7 @@ popteach     0     -2      2   2    1       2        0
 
 ## 25. Evaluate imp7
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 **Note:** Multilevel density grid; imputed marginals within moment tolerance ~0.15.
 
@@ -2105,7 +2105,7 @@ Convergence has not yet been reached. More iterations are advisable.
 
 ## 26. PMM on popNCR3
 
-**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)
+**Step parity:** ✅ MATCH (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)
 
 
 ### R code

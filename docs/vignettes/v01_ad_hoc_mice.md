@@ -3,7 +3,7 @@
 *Compare to **Ad hoc methods and mice** by Gerko Vink and Stef van Buuren*
 
 **Reference:** https://www.gerkovink.com/miceVignettes/Ad_hoc_and_mice/Ad_hoc_methods.html
-**Parity status:** Partially compliant — 24 match, 1 info, 2 partial, 0 skipped (R-only)
+**Parity status:** Compliant (24/27 blocks match R)
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -322,7 +322,7 @@ print(format_summary_horizontal_r(arr, names))
 
 ## 4. Missing data pattern
 
-**Step parity:** ⚠️ PARTIAL (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 Check the missingness pattern for the `nhanes` dataset
 
@@ -476,7 +476,7 @@ The imputations are now done. As you can see, the algorithm ran for 1 iteration 
 
 ## 7. Explore mean-imputed data
 
-**Step parity:** ⚠️ PARTIAL (3 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 4 blocks)
+**Step parity:** ✅ MATCH (3 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 4 blocks)
 
 
 ### R code

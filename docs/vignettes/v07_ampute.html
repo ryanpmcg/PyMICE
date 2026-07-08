@@ -365,7 +365,7 @@
       <a href="v01_ad_hoc_mice.html" class="sidebar-nav-link">V1: Ad Hoc MICE</a><a href="v02_convergence_pooling.html" class="sidebar-nav-link">V2: Convergence Pooling</a><a href="v03_missingness.html" class="sidebar-nav-link">V3: Missingness Models</a><a href="v04_passive.html" class="sidebar-nav-link">V4: Passive Imputation</a><a href="v05_multilevel.html" class="sidebar-nav-link">V5: Multilevel Data</a><a href="v06_sensitivity.html" class="sidebar-nav-link">V6: Sensitivity Analysis</a><a href="v07_ampute.html" class="sidebar-nav-link active">V7: Ampute Simulation</a><a href="v08_futuremice.html" class="sidebar-nav-link">V8: Parallel MICE</a>
       
       <div class="sidebar-section-title">Table of Contents</div>
-      <div class="sidebar-part-title">Function `ampute` and its arguments</div><a href="#1-read-ampute-documentation" class="sidebar-toc-link">✅ 1. Read ampute documentation</a><a href="#2-generate-complete-data" class="sidebar-toc-link">✅ 2. Generate complete data</a><a href="#3-default-amputation" class="sidebar-toc-link">✅ 3. Default amputation</a><a href="#4-inspect-mads-metadata" class="sidebar-toc-link">✅ 4. Inspect mads metadata</a><a href="#5-missing-data-pattern" class="sidebar-toc-link">✅ 5. Missing data pattern</a><div class="sidebar-part-title">Additional features in `ampute`</div><a href="#6-pattern-heatmap" class="sidebar-toc-link">⏭️ 6. Pattern heatmap</a><a href="#7-amputed-boxplots" class="sidebar-toc-link">⚠️ 7. Amputed boxplots</a><a href="#8-amputed-scatterplots" class="sidebar-toc-link">⚠️ 8. Amputed scatterplots</a><div class="sidebar-part-title">Argument `prop`</div><a href="#9-proportion-of-incomplete-cases" class="sidebar-toc-link">✅ 9. Proportion of incomplete cases</a><a href="#10-proportion-of-missing-cells" class="sidebar-toc-link">✅ 10. Proportion of missing cells</a><div class="sidebar-part-title">Missingness mechanisms</div><a href="#11-mar-and-mnar-mechanisms" class="sidebar-toc-link">✅ 11. MAR and MNAR mechanisms</a><div class="sidebar-part-title">Reference (not in R snapshot walkthrough)</div><a href="#12-deep-reference-patterns-freq-weights-type-run-and-odds" class="sidebar-toc-link">⏭️ 12. Deep reference: `patterns`, `freq`, `weights`, `type`, `run`, and `odds`</a>
+      <div class="sidebar-part-title">Function `ampute` and its arguments</div><a href="#1-read-ampute-documentation" class="sidebar-toc-link">✅ 1. Read ampute documentation</a><a href="#2-generate-complete-data" class="sidebar-toc-link">✅ 2. Generate complete data</a><a href="#3-default-amputation" class="sidebar-toc-link">✅ 3. Default amputation</a><a href="#4-inspect-mads-metadata" class="sidebar-toc-link">✅ 4. Inspect mads metadata</a><a href="#5-missing-data-pattern" class="sidebar-toc-link">✅ 5. Missing data pattern</a><div class="sidebar-part-title">Additional features in `ampute`</div><a href="#6-pattern-heatmap" class="sidebar-toc-link">⏭️ 6. Pattern heatmap</a><a href="#7-amputed-boxplots" class="sidebar-toc-link">✅ 7. Amputed boxplots</a><a href="#8-amputed-scatterplots" class="sidebar-toc-link">✅ 8. Amputed scatterplots</a><div class="sidebar-part-title">Argument `prop`</div><a href="#9-proportion-of-incomplete-cases" class="sidebar-toc-link">✅ 9. Proportion of incomplete cases</a><a href="#10-proportion-of-missing-cells" class="sidebar-toc-link">✅ 10. Proportion of missing cells</a><div class="sidebar-part-title">Missingness mechanisms</div><a href="#11-mar-and-mnar-mechanisms" class="sidebar-toc-link">✅ 11. MAR and MNAR mechanisms</a><div class="sidebar-part-title">Reference (not in R snapshot walkthrough)</div><a href="#12-deep-reference-patterns-freq-weights-type-run-and-odds" class="sidebar-toc-link">⏭️ 12. Deep reference: `patterns`, `freq`, `weights`, `type`, `run`, and `odds`</a>
     </div>
     
     <div class="main-container">
@@ -601,7 +601,7 @@ class(result)</code></pre>
     </div>
   </details>
 </div>
-<h2 id="7-amputed-boxplots">7. Amputed boxplots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<h2 id="7-amputed-boxplots">7. Amputed boxplots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Function <code>bwplot</code> allows for a comparison between amputed and non-amputed data. Note that the function uses as input the <code>mads</code> object and not the incomplete dataset.</p>
 <p><strong>Note:</strong> Boxplot after MNAR amputation (pattern 1).</p>
 
@@ -650,7 +650,7 @@ class(result)</code></pre>
     </div>
   </div>
 </div>
-<h2 id="8-amputed-scatterplots">8. Amputed scatterplots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<h2 id="8-amputed-scatterplots">8. Amputed scatterplots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Similar inspections can be done using the function <code>xyplot</code>. The scatterplots show the correlation between the variable values and the weighted sum scores.</p>
 <p><strong>Note:</strong> Scatter plot for pattern 4 after weighted continuous amputation.</p>
 

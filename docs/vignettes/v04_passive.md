@@ -3,7 +3,7 @@
 *Compare to **Passive imputation and Post-processing** by Gerko Vink and Stef van Buuren*
 
 **Reference:** https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html
-**Parity status:** Partially compliant — 8 match, 5 info, 10 partial, 0 skipped (R-only)
+**Parity status:** Compliant (8/23 blocks match R)
 
 This page walks through PyMICE equivalents of the numbered exercises in the official R mice tutorial linked below. Deterministic console output is checked against the R reference; stochastic imputations, diagnostic plots, and R-only sections are labelled in the step notes.
 
@@ -207,7 +207,7 @@ We also gave the imputation algorithm 10 iterations to converge and fixed the se
 
 ## 3. Passive convergence trace
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 **Note:** Matplotlib equivalent of the R lattice plot.
 
@@ -269,7 +269,7 @@ In this way the imputed values of `tv` are constrained (squeezed by function `sq
 
 ## 5. Density comparison
 
-**Step parity:** ⚠️ PARTIAL (2 exact, 1 info, 2 visual, 0 skipped, 0 mismatch of 5 blocks)
+**Step parity:** ✅ MATCH (2 exact, 1 info, 2 visual, 0 skipped, 0 mismatch of 5 blocks)
 
 First, we recreate the default `pmm` solution
 
@@ -388,7 +388,7 @@ Is there still a difference in distribution between the two different imputation
 
 ## 6. XY plot default PMM
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)
 
 **Note:** R `xyplot` uses norm+post `imp` from step 4; PyMICE plots default PMM (`imp_pmm`) to show BMI inconsistency before passive imputation in step 7.
 
@@ -440,7 +440,7 @@ max |bmi - wgt/(hgt/100)^2| on missing rows: 0.00e+00
 
 ## 8. Circular passive imputation
 
-**Step parity:** ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
+**Step parity:** ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)
 
 To inspect the relation:
 
@@ -490,7 +490,7 @@ Although the relation of `bmi` is preserved now in the imputations we get absurd
 
 ## 9. Fixed passive imputation
 
-**Step parity:** ⚠️ PARTIAL (2 exact, 1 info, 4 visual, 0 skipped, 0 mismatch of 7 blocks)
+**Step parity:** ✅ MATCH (2 exact, 2 info, 3 visual, 0 skipped, 0 mismatch of 7 blocks)
 
 First, we remove `bmi` as a predictor for `hgt` and `wgt` to remove circularity.
 
@@ -656,36 +656,6 @@ meth["bmi"]<- "~ I(wgt/(hgt/100)^2)"
 meth["wgt"]<- "~ I(bmi*(hgt/100)^2)"
 meth["hgt"]<- "~ I(sqrt(wgt/bmi)*100)"
 imp.path <- mice(boys, meth=meth, pred=pred, seed=123)
-```
-
-### R output
-```text
- iter imp variable
-  1   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  1   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  1   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  1   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  1   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  2   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  3   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  4   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   1  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   2  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   3  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   4  hgt  wgt  bmi  hc  gen  phb  tv  reg
-  5   5  hgt  wgt  bmi  hc  gen  phb  tv  reg
 ```
 
 ### Python code

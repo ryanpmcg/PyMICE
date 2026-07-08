@@ -365,11 +365,11 @@
       <a href="v01_ad_hoc_mice.html" class="sidebar-nav-link">V1: Ad Hoc MICE</a><a href="v02_convergence_pooling.html" class="sidebar-nav-link">V2: Convergence Pooling</a><a href="v03_missingness.html" class="sidebar-nav-link">V3: Missingness Models</a><a href="v04_passive.html" class="sidebar-nav-link">V4: Passive Imputation</a><a href="v05_multilevel.html" class="sidebar-nav-link">V5: Multilevel Data</a><a href="v06_sensitivity.html" class="sidebar-nav-link active">V6: Sensitivity Analysis</a><a href="v07_ampute.html" class="sidebar-nav-link">V7: Ampute Simulation</a><a href="v08_futuremice.html" class="sidebar-nav-link">V8: Parallel MICE</a>
       
       <div class="sidebar-section-title">Table of Contents</div>
-      <a href="#1-load-packages" class="sidebar-toc-link">✅ 1. Load packages</a><a href="#2-inspect-leiden-data" class="sidebar-toc-link">⚠️ 2. Inspect leiden data</a><a href="#3-dry-run-missing-counts" class="sidebar-toc-link">✅ 3. Dry run missing counts</a><a href="#4-pattern-and-flux-plots" class="sidebar-toc-link">⚠️ 4. Pattern and flux plots</a><a href="#5-kaplanmeier-by-missingness" class="sidebar-toc-link">⚠️ 5. Kaplan–Meier by missingness</a><a href="#6-delta-adjustment-vector" class="sidebar-toc-link">✅ 6. Delta adjustment vector</a><a href="#7-delta-adjusted-imputation" class="sidebar-toc-link">✅ 7. Delta-adjusted imputation</a><a href="#8-boxplot-blood-pressure" class="sidebar-toc-link">⚠️ 8. Boxplot blood pressure</a><a href="#9-density-blood-pressure" class="sidebar-toc-link">⚠️ 9. Density blood pressure</a><a href="#10-scatter-blood-pressure" class="sidebar-toc-link">⚠️ 10. Scatter blood pressure</a><a href="#11-survival-models-per-scenario" class="sidebar-toc-link">✅ 11. Survival models per scenario</a><a href="#12-pool-survival-models" class="sidebar-toc-link">✅ 12. Pool survival models</a><a href="#13-mammalsleep-sensitivity" class="sidebar-toc-link">✅ 13. Mammalsleep sensitivity</a>
+      <a href="#1-load-packages" class="sidebar-toc-link">✅ 1. Load packages</a><a href="#2-inspect-leiden-data" class="sidebar-toc-link">✅ 2. Inspect leiden data</a><a href="#3-dry-run-missing-counts" class="sidebar-toc-link">✅ 3. Dry run missing counts</a><a href="#4-pattern-and-flux-plots" class="sidebar-toc-link">✅ 4. Pattern and flux plots</a><a href="#5-kaplanmeier-by-missingness" class="sidebar-toc-link">✅ 5. Kaplan–Meier by missingness</a><a href="#6-delta-adjustment-vector" class="sidebar-toc-link">✅ 6. Delta adjustment vector</a><a href="#7-delta-adjusted-imputation" class="sidebar-toc-link">✅ 7. Delta-adjusted imputation</a><a href="#8-boxplot-blood-pressure" class="sidebar-toc-link">✅ 8. Boxplot blood pressure</a><a href="#9-density-blood-pressure" class="sidebar-toc-link">✅ 9. Density blood pressure</a><a href="#10-scatter-blood-pressure" class="sidebar-toc-link">✅ 10. Scatter blood pressure</a><a href="#11-survival-models-per-scenario" class="sidebar-toc-link">✅ 11. Survival models per scenario</a><a href="#12-pool-survival-models" class="sidebar-toc-link">✅ 12. Pool survival models</a><a href="#13-mammalsleep-sensitivity" class="sidebar-toc-link">✅ 13. Mammalsleep sensitivity</a>
     </div>
     
     <div class="main-container">
-      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link" href="v05_multilevel.html">← V5: Multilevel Data</a><a class="series-nav-link series-nav-index" href="index.html">Index</a><a class="series-nav-link" href="v07_ampute.html">V7: Ampute Simulation →</a></nav><h1>V6: Sensitivity Analysis</h1><p class="subtitle">Vignette 6 of 8 · Compare to <em>An approach to sensitivity analysis</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Sensitivity_analysis/Sensitivity_analysis.html">Open reference vignette</a></p><div class="status-chip"><strong>41% exact</strong> · 9 match · 2 info · 11 visual · 0 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
+      <nav class="series-nav" aria-label="Vignette series"><a class="series-nav-link" href="v05_multilevel.html">← V5: Multilevel Data</a><a class="series-nav-link series-nav-index" href="index.html">Index</a><a class="series-nav-link" href="v07_ampute.html">V7: Ampute Simulation →</a></nav><h1>V6: Sensitivity Analysis</h1><p class="subtitle">Vignette 6 of 8 · Compare to <em>An approach to sensitivity analysis</em> by Gerko Vink and Stef van Buuren</p><p class="subtitle"><a href="https://www.gerkovink.com/miceVignettes/Sensitivity_analysis/Sensitivity_analysis.html">Open reference vignette</a></p><div class="status-chip"><strong>41% exact</strong> · 9 match · 5 info · 8 visual · 0 skipped</div><div class="reader-guide"><p>This walkthrough mirrors the official R **mice** tutorials in Python. Deterministic tables and formulas are checked against the R reference; stochastic imputations and plots are labelled when they may differ.</p><p><strong>What PyMICE does differently from R</strong></p>
 <ul><li>Default randomness uses NumPy (<code>rng=&quot;numpy&quot;</code>), so imputed values may differ from R unless you set <code>rng=&quot;r&quot;</code>.</li><li>Categorical factors are often shown as numeric codes in console output.</li><li>Diagnostic figures use matplotlib instead of lattice (same intent, different styling).</li><li>See <a href="https://github.com/ryanpmcg/PyMICE/blob/main/docs/dev/REPRODUCIBILITY.md">REPRODUCIBILITY.md</a> for exact replication options.</li></ul></div><details class="parity-details"><summary>Parity details (maintainers)</summary><h5>Expected to match exactly</h5>
 <p>Checked against <code>reference/06_sensitivity_analysis/vignette_extracted.R</code>:</p>
 <ul><li><strong>Step 2</strong> — <code>nrow(leiden)</code> → 956</li><li><strong>Step 3</strong> — <code>mice(leiden, maxit=0)$nmis</code> missing-count table</li><li><strong>Step 4</strong> — <code>flux()</code> table for all variables; <code>md.pattern</code> pattern count</li><li><strong>Step 6</strong> — <code>delta &lt;- c(0, -5, -10, -15, -20)</code></li></ul>
@@ -425,7 +425,7 @@ library(&quot;survival&quot;)</code></pre>
   </details>
 </div>
 
-<p>We choose seed value <code>123</code> for reproducibility in the PyMICE walkthrough below.</p><h2 id="2-inspect-leiden-data">2. Inspect leiden data</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (1 exact, 0 info, 3 visual, 0 skipped, 0 mismatch of 4 blocks)</div>
+<p>We choose seed value <code>123</code> for reproducibility in the PyMICE walkthrough below.</p><h2 id="2-inspect-leiden-data">2. Inspect leiden data</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 3 info, 0 visual, 0 skipped, 0 mismatch of 4 blocks)</div>
 <p><strong>Note:</strong> Numeric summaries match; R includes factor-style labels for some columns.</p>
 
 <div class="code-card" id="code-183">
@@ -608,7 +608,7 @@ ini$nmis</code></pre>
   </details>
 </div>
 
-<p>There are 121 missings (<code>NA</code>&#x27;s) for <code>rrsyst</code>, 126 missings for <code>rrdiast</code>, 229 missings for <code>alb</code>, 232 missings for <code>chol</code> and 85 missing values for <code>mmse</code>.</p><h2 id="4-pattern-and-flux-plots">4. Pattern and flux plots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (2 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
+<p>There are 121 missings (<code>NA</code>&#x27;s) for <code>rrsyst</code>, 126 missings for <code>rrdiast</code>, 229 missings for <code>alb</code>, 232 missings for <code>chol</code> and 85 missing values for <code>mmse</code>.</p><h2 id="4-pattern-and-flux-plots">4. Pattern and flux plots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 
 <div class="code-card" id="code-188">
   <div class="code-toolbar">
@@ -616,7 +616,7 @@ ini$nmis</code></pre>
     <button type="button" class="copy-btn" data-copy="print(format_md_pattern_r(mp))">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">print(format_md_pattern_r(mp))</code></pre>
-  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    sexe lftanam survda dwa woon mmse rrsyst rrdiast alb chol     
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol     
 621   1   1   1   1   1   1   1   1   1   1  0
   2   1   1   1   1   1   1   1   1   1   0  1
   1   1   1   1   1   1   1   1   1   0   1  1
@@ -747,7 +747,7 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
     </div>
   </div>
 </div>
-<h2 id="5-kaplanmeier-by-missingness">5. Kaplan–Meier by missingness</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+<h2 id="5-kaplanmeier-by-missingness">5. Kaplan–Meier by missingness</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Matplotlib Kaplan–Meier curves by <code>rrsyst</code> missingness.</p>
 
 <div class="code-card" id="code-192">
@@ -861,7 +861,7 @@ for (i in 1:length(delta)){
     </div>
   </details>
 </div>
-<h2 id="8-boxplot-blood-pressure">8. Boxplot blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<h2 id="8-boxplot-blood-pressure">8. Boxplot blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
 <div class="code-card" id="code-196">
@@ -944,7 +944,7 @@ for (i in 1:length(delta)){
     </div>
   </div>
 </div>
-<h2 id="9-density-blood-pressure">9. Density blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<h2 id="9-density-blood-pressure">9. Density blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
 <div class="code-card" id="code-199">
@@ -1027,7 +1027,7 @@ for (i in 1:length(delta)){
     </div>
   </div>
 </div>
-<h2 id="10-scatter-blood-pressure">10. Scatter blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⚠️ PARTIAL (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+<h2 id="10-scatter-blood-pressure">10. Scatter blood pressure</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
 <div class="code-card" id="code-202">
