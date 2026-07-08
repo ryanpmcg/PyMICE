@@ -189,7 +189,7 @@ python devtools\run_vignettes.py
 
 ### CI/CD
 
-Every push and pull request runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on pushes and pull requests that touch PyMICE code (`src/`, `tests/`, `reference/`, `devtools/`, `pyproject.toml`, or CI workflow files). Docs-only commits skip CI.
 
 | Job | What it verifies |
 |-----|------------------|
@@ -198,13 +198,12 @@ Every push and pull request runs [`.github/workflows/ci.yml`](.github/workflows/
 | `r-smoke` | Ubuntu + CRAN `mice`/`pan`: R RNG stream and `mice(..., rng="r")` smoke tests |
 | `build` | Wheel/sdist build and Linux smoke install |
 | `install-smoke` | Wheel-only install on Ubuntu, macOS, and Windows (no source tree) |
-| `pages` | MkDocs deploy to GitHub Pages on push to `main` |
 
 Full R chain parity (RNG + `maintain_parity.py`) runs nightly via [`.github/workflows/parity-nightly.yml`](.github/workflows/parity-nightly.yml).
 
 ### GitHub Pages
 
-Push to `main` deploys [ryanpmcg.github.io/PyMICE](https://ryanpmcg.github.io/PyMICE/) (CI `pages` job). One-time: repo **Settings → Pages → Build and deployment → GitHub Actions**. Regenerate and commit `docs/vignettes/` after vignette changes (`make vignettes`).
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) publishes [ryanpmcg.github.io/PyMICE](https://ryanpmcg.github.io/PyMICE/) when `docs/` (including `docs/vignettes/`), `mkdocs.yml`, or the Pages workflow changes. Deployment requires a green CI/CD run on `main`—either from the same push (code + docs) or the latest successful CI on the branch (docs-only). One-time: repo **Settings → Pages → Build and deployment → GitHub Actions**. Regenerate and commit `docs/vignettes/` after vignette changes (`make vignettes`).
 
 ## License
 

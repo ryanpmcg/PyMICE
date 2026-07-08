@@ -1,0 +1,118 @@
+# Deploy MkDocs site + vignette reports to GitHub Pages.
+# Site: https://ryanpmcg.github.io/PyMICE/
+name: Pages
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - ".github/workflows/pages.yml"
+  workflow_run:
+    workflows: ["CI/CD"]
+    types: [completed]
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+
+jobs:
+  push-context:
+    name: Detect push scope
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      code_touched: ${{ steps.code.outputs.touched }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Code paths in this commit
+        id: code
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -qE \
+            '^(src/|tests/|reference/|devtools/|pyproject\.toml$|\.github/workflows/ci\.yml$|\.github/workflows/parity-nightly\.yml$)'; then
+            echo "touched=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "touched=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  verify-ci:
+    name: Require green CI/CD on main
+    if: github.event_name == 'push' && needs.push-context.outputs.code_touched != 'true'
+    needs: [push-context]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Latest successful CI/CD on main
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branch = context.ref.replace('refs/heads/', '');
+            const { data } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'ci.yml',
+              branch,
+              status: 'completed',
+              per_page: 1,
+            });
+            const run = data.workflow_runs[0];
+            if (!run || run.conclusion !== 'success') {
+              const msg = run
+                ? `Latest CI/CD on ${branch} concluded: ${run.conclusion}`
+                : `No completed CI/CD run found on ${branch}`;
+              core.setFailed(`${msg}. Push PyMICE code changes (or workflow_dispatch CI/CD) before publishing docs-only updates.`);
+            }
+            core.info(`CI/CD run #${run.run_number} (${run.head_sha.slice(0, 7)}) is green.`);
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: [push-context, verify-ci]
+    if: |
+      always() &&
+      (
+        (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+        github.event_name == 'workflow_dispatch' ||
+        (github.event_name == 'push' && needs.push-context.result == 'success' && needs.verify-ci.result == 'success')
+      )
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs
+        run: python -m pip install --upgrade pip mkdocs mkdocs-material
+
+      - name: Build docs site
+        run: mkdocs build -d site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
