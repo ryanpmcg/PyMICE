@@ -16,7 +16,9 @@ defaults:
 jobs:
   parity:
     name: R chain parity + vignette alignment
-    runs-on: ubuntu-latest
+    # Draw-order goldens are generated on Windows (see golden _provenance); Linux BLAS
+    # yields different mammalsleep logged-event counts and pool tables.
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -37,10 +39,10 @@ jobs:
           python -m pip install -e ".[dev,plot,pandas,ml,survival]" numpy==2.5.1 scipy==1.18.0
 
       - name: Structural alignment
-        run: python -m pytest tests/parity/test_structural_alignment.py -q
+        run: python -m pytest tests/parity/test_structural_alignment.py -q --rootdir="${{ github.workspace }}"
 
       - name: RNG chain parity (V01–V05)
-        run: python -m pytest tests/parity/test_rng_parity.py -q
+        run: python -m pytest tests/parity/test_rng_parity.py -q --rootdir="${{ github.workspace }}"
 
       - name: Full maintain_parity audit
         run: python devtools/maintain_parity.py
