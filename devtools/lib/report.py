@@ -399,11 +399,73 @@ def render_comparison_tabs(r_expected: str, py_output: str) -> str:
 """
 
 
+def _code_from_details_para(block: Block) -> tuple[str, str] | None:
+    """Recover fenced code embedded in legacy long-output <details> paragraphs."""
+    if not isinstance(block, ParaBlock):
+        return None
+    text = block.text.strip()
+    if not text.startswith("<details"):
+        return None
+    match = re.search(r"```(\w+)\s*\n([\s\S]*?)\n```", text)
+    if not match:
+        return None
+    return match.group(1), match.group(2)
+
+
 def blocks_to_html(blocks: list[Block]) -> str:
     parts: list[str] = []
     i = 0
     n = len(blocks)
     while i < n:
+        # Legacy: R / R output / Python / <details> output (pre-side-by-side markdown)
+        if (
+            i + 6 < n
+            and isinstance(blocks[i], HeadingBlock)
+            and blocks[i].text.lower() == "r code"
+            and isinstance(blocks[i + 1], CodeBlock)
+            and isinstance(blocks[i + 2], HeadingBlock)
+            and blocks[i + 2].text.lower() == "r output"
+            and isinstance(blocks[i + 3], CodeBlock)
+            and isinstance(blocks[i + 4], HeadingBlock)
+            and blocks[i + 4].text.lower() == "python code"
+            and isinstance(blocks[i + 5], CodeBlock)
+            and (legacy := _code_from_details_para(blocks[i + 6])) is not None
+        ):
+            out_lang, out_code = legacy
+            parts.append(
+                render_dual_code_tabs(
+                    blocks[i + 1].code,
+                    blocks[i + 5].code,
+                    out_code,
+                    out_lang,
+                    r_out=blocks[i + 3].code,
+                )
+            )
+            i += 7
+            continue
+
+        if (
+            i + 4 < n
+            and isinstance(blocks[i], HeadingBlock)
+            and blocks[i].text.lower() == "r code"
+            and isinstance(blocks[i + 1], CodeBlock)
+            and isinstance(blocks[i + 2], HeadingBlock)
+            and blocks[i + 2].text.lower() == "python code"
+            and isinstance(blocks[i + 3], CodeBlock)
+            and (legacy := _code_from_details_para(blocks[i + 4])) is not None
+        ):
+            out_lang, out_code = legacy
+            parts.append(
+                render_dual_code_tabs(
+                    blocks[i + 1].code,
+                    blocks[i + 3].code,
+                    out_code,
+                    out_lang,
+                )
+            )
+            i += 5
+            continue
+
         # Check for R-Python-Output tutorial pattern (with R output block)
         if (
             i + 7 < n

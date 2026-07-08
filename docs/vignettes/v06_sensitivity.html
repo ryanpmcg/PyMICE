@@ -1707,15 +1707,156 @@ for (i in 1:length(delta)){
   </div>
 </div>
 <h2 id="11-survival-models-per-scenario">11. Survival models per scenario</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
-<h5>R code</h5>
-<pre class="language-r"><code class="language-r">fit1 &lt;- with(imp.all[[1]], cda)
+
+<div class="code-tabs dual-code-tabs" id="code-208">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">cox_fits = [with_mids(imp, expr=leiden_coxph) for imp in imp_all]
+print(format_mira_cox_v06_r(fit3, nmis=imp_all[2].nmis))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">call :
+with.mids(data = imp.all[[3]], expr = cda)
+
+call1 :
+mice(data = leiden, post = post, maxit = 5, printFlag = FALSE,
+    seed = i)
+
+nmis :
+   sexe lftanam  rrsyst rrdiast     dwa  survda     alb    chol    mmse
+      0       0     121     126       0       0     229     232      85
+   woon
+      0 
+
+analyses :
+[[1]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.53565   1.70856  0.11709  4.575
+C(sbpgp, contr.treatment(6, base = 3))2   0.39979   1.49151  0.10260  3.896
+C(sbpgp, contr.treatment(6, base = 3))4   0.11222   1.11876  0.11727  0.957
+C(sbpgp, contr.treatment(6, base = 3))5   0.11495   1.12182  0.14628  0.786
+C(sbpgp, contr.treatment(6, base = 3))6   -0.13956   0.86974  0.28763 -0.485
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   4.77e-6
+C(sbpgp, contr.treatment(6, base = 3))2   9.76e-5
+C(sbpgp, contr.treatment(6, base = 3))4   0.338581
+C(sbpgp, contr.treatment(6, base = 3))5   0.431953
+C(sbpgp, contr.treatment(6, base = 3))6   0.627525
+
+Likelihood ratio test=30.25  on 5 df, p=1.32e-5
+n= 956, number of events= 723 
+
+[[2]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.47629   1.61008  0.11871  4.012
+C(sbpgp, contr.treatment(6, base = 3))2   0.35318   1.42358  0.10127  3.487
+C(sbpgp, contr.treatment(6, base = 3))4   0.07637   1.07936  0.11755  0.650
+C(sbpgp, contr.treatment(6, base = 3))5   0.07489   1.07777  0.14472  0.518
+C(sbpgp, contr.treatment(6, base = 3))6   -0.13686   0.87209  0.27758 -0.493
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   6.02e-5
+C(sbpgp, contr.treatment(6, base = 3))2   0.000488
+C(sbpgp, contr.treatment(6, base = 3))4   0.515888
+C(sbpgp, contr.treatment(6, base = 3))5   0.604800
+C(sbpgp, contr.treatment(6, base = 3))6   0.621975
+
+Likelihood ratio test=24.59  on 5 df, p=0.000167
+n= 956, number of events= 723 
+
+[[3]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.61947   1.85794  0.11692  5.298
+C(sbpgp, contr.treatment(6, base = 3))2   0.35571   1.42720  0.10325  3.445
+C(sbpgp, contr.treatment(6, base = 3))4   0.06040   1.06226  0.11834  0.510
+C(sbpgp, contr.treatment(6, base = 3))5   0.11028   1.11659  0.14501  0.761
+C(sbpgp, contr.treatment(6, base = 3))6   -0.15074   0.86007  0.28772 -0.524
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   1.17e-7
+C(sbpgp, contr.treatment(6, base = 3))2   0.000571
+C(sbpgp, contr.treatment(6, base = 3))4   0.609778
+C(sbpgp, contr.treatment(6, base = 3))5   0.446954
+C(sbpgp, contr.treatment(6, base = 3))6   0.600334
+
+Likelihood ratio test=35.87  on 5 df, p=1.01e-6
+n= 956, number of events= 723 
+
+[[4]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.52000   1.68202  0.11625  4.473
+C(sbpgp, contr.treatment(6, base = 3))2   0.33831   1.40258  0.10369  3.263
+C(sbpgp, contr.treatment(6, base = 3))4   0.04763   1.04879  0.11704  0.407
+C(sbpgp, contr.treatment(6, base = 3))5   0.10874   1.11487  0.14579  0.746
+C(sbpgp, contr.treatment(6, base = 3))6   -0.16630   0.84679  0.28780 -0.578
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   7.72e-6
+C(sbpgp, contr.treatment(6, base = 3))2   0.001103
+C(sbpgp, contr.treatment(6, base = 3))4   0.684023
+C(sbpgp, contr.treatment(6, base = 3))5   0.455752
+C(sbpgp, contr.treatment(6, base = 3))6   0.563377
+
+Likelihood ratio test=28.19  on 5 df, p=3.34e-5
+n= 956, number of events= 723 
+
+[[5]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.62074   1.86031  0.11484  5.405
+C(sbpgp, contr.treatment(6, base = 3))2   0.38188   1.46504  0.10358  3.687
+C(sbpgp, contr.treatment(6, base = 3))4   0.03305   1.03360  0.11994  0.276
+C(sbpgp, contr.treatment(6, base = 3))5   0.13979   1.15003  0.14650  0.954
+C(sbpgp, contr.treatment(6, base = 3))6   -0.04512   0.95588  0.26928 -0.168
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   6.47e-8
+C(sbpgp, contr.treatment(6, base = 3))2   0.000227
+C(sbpgp, contr.treatment(6, base = 3))4   0.782896
+C(sbpgp, contr.treatment(6, base = 3))5   0.339991
+C(sbpgp, contr.treatment(6, base = 3))6   0.866917
+
+Likelihood ratio test=38.51  on 5 df, p=2.99e-7
+n= 956, number of events= 723</code></pre></details>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">fit1 &lt;- with(imp.all[[1]], cda)
 fit2 &lt;- with(imp.all[[2]], cda)
 fit3 &lt;- with(imp.all[[3]], cda)
 fit4 &lt;- with(imp.all[[4]], cda)
 fit5 &lt;- with(imp.all[[5]], cda)
 fit3</code></pre>
-<h5>R output</h5>
-<pre class="language-text"><code class="language-text">call :
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">call :
 with.mids(data = imp.all[[3]], expr = cda)
 
 call1 :
@@ -1838,13 +1979,19 @@ C(sbpgp, contr.treatment(6, base = 3))6   0.866917
 
 Likelihood ratio test=38.51  on 5 df, p=2.99e-7
 n= 956, number of events= 723</code></pre>
-<h5>Python code</h5>
-<pre class="language-python"><code class="language-python">cox_fits = [with_mids(imp, expr=leiden_coxph) for imp in imp_all]
-print(format_mira_cox_v06_r(fit3, nmis=imp_all[2].nmis))</code></pre>
-<details class="long-output"><summary>Console output (click to expand)</summary>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
 
-```text
-call :
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="cox_fits = [with_mids(imp, expr=leiden_coxph) for imp in imp_all]
+print(format_mira_cox_v06_r(fit3, nmis=imp_all[2].nmis))">Copy Python</button>
+  </div>
+  <pre class="language-python"><code class="language-python">cox_fits = [with_mids(imp, expr=leiden_coxph) for imp in imp_all]
+print(format_mira_cox_v06_r(fit3, nmis=imp_all[2].nmis))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">call :
 with.mids(data = imp.all[[3]], expr = cda)
 
 call1 :
@@ -1966,10 +2113,142 @@ C(sbpgp, contr.treatment(6, base = 3))5   0.339991
 C(sbpgp, contr.treatment(6, base = 3))6   0.866917
 
 Likelihood ratio test=38.51  on 5 df, p=2.99e-7
-n= 956, number of events= 723
-```
+n= 956, number of events= 723</code></pre></details>
+  </div>
+  <div class="tab-content r">
 
-</details><h2 id="12-pool-survival-models">12. Pool survival models</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
+  <pre class="language-r"><code class="language-r">fit1 &lt;- with(imp.all[[1]], cda)
+fit2 &lt;- with(imp.all[[2]], cda)
+fit3 &lt;- with(imp.all[[3]], cda)
+fit4 &lt;- with(imp.all[[4]], cda)
+fit5 &lt;- with(imp.all[[5]], cda)
+fit3</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">call :
+with.mids(data = imp.all[[3]], expr = cda)
+
+call1 :
+mice(data = leiden, post = post, maxit = 5, printFlag = FALSE,
+    seed = i)
+
+nmis :
+   sexe lftanam  rrsyst rrdiast     dwa  survda     alb    chol    mmse
+      0       0     121     126       0       0     229     232      85
+   woon
+      0 
+
+analyses :
+[[1]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.53565   1.70856  0.11709  4.575
+C(sbpgp, contr.treatment(6, base = 3))2   0.39979   1.49151  0.10260  3.896
+C(sbpgp, contr.treatment(6, base = 3))4   0.11222   1.11876  0.11727  0.957
+C(sbpgp, contr.treatment(6, base = 3))5   0.11495   1.12182  0.14628  0.786
+C(sbpgp, contr.treatment(6, base = 3))6   -0.13956   0.86974  0.28763 -0.485
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   4.77e-6
+C(sbpgp, contr.treatment(6, base = 3))2   9.76e-5
+C(sbpgp, contr.treatment(6, base = 3))4   0.338581
+C(sbpgp, contr.treatment(6, base = 3))5   0.431953
+C(sbpgp, contr.treatment(6, base = 3))6   0.627525
+
+Likelihood ratio test=30.25  on 5 df, p=1.32e-5
+n= 956, number of events= 723 
+
+[[2]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.47629   1.61008  0.11871  4.012
+C(sbpgp, contr.treatment(6, base = 3))2   0.35318   1.42358  0.10127  3.487
+C(sbpgp, contr.treatment(6, base = 3))4   0.07637   1.07936  0.11755  0.650
+C(sbpgp, contr.treatment(6, base = 3))5   0.07489   1.07777  0.14472  0.518
+C(sbpgp, contr.treatment(6, base = 3))6   -0.13686   0.87209  0.27758 -0.493
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   6.02e-5
+C(sbpgp, contr.treatment(6, base = 3))2   0.000488
+C(sbpgp, contr.treatment(6, base = 3))4   0.515888
+C(sbpgp, contr.treatment(6, base = 3))5   0.604800
+C(sbpgp, contr.treatment(6, base = 3))6   0.621975
+
+Likelihood ratio test=24.59  on 5 df, p=0.000167
+n= 956, number of events= 723 
+
+[[3]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.61947   1.85794  0.11692  5.298
+C(sbpgp, contr.treatment(6, base = 3))2   0.35571   1.42720  0.10325  3.445
+C(sbpgp, contr.treatment(6, base = 3))4   0.06040   1.06226  0.11834  0.510
+C(sbpgp, contr.treatment(6, base = 3))5   0.11028   1.11659  0.14501  0.761
+C(sbpgp, contr.treatment(6, base = 3))6   -0.15074   0.86007  0.28772 -0.524
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   1.17e-7
+C(sbpgp, contr.treatment(6, base = 3))2   0.000571
+C(sbpgp, contr.treatment(6, base = 3))4   0.609778
+C(sbpgp, contr.treatment(6, base = 3))5   0.446954
+C(sbpgp, contr.treatment(6, base = 3))6   0.600334
+
+Likelihood ratio test=35.87  on 5 df, p=1.01e-6
+n= 956, number of events= 723 
+
+[[4]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.52000   1.68202  0.11625  4.473
+C(sbpgp, contr.treatment(6, base = 3))2   0.33831   1.40258  0.10369  3.263
+C(sbpgp, contr.treatment(6, base = 3))4   0.04763   1.04879  0.11704  0.407
+C(sbpgp, contr.treatment(6, base = 3))5   0.10874   1.11487  0.14579  0.746
+C(sbpgp, contr.treatment(6, base = 3))6   -0.16630   0.84679  0.28780 -0.578
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   7.72e-6
+C(sbpgp, contr.treatment(6, base = 3))2   0.001103
+C(sbpgp, contr.treatment(6, base = 3))4   0.684023
+C(sbpgp, contr.treatment(6, base = 3))5   0.455752
+C(sbpgp, contr.treatment(6, base = 3))6   0.563377
+
+Likelihood ratio test=28.19  on 5 df, p=3.34e-5
+n= 956, number of events= 723 
+
+[[5]]
+
+Call:
+coxph(formula = Surv(survda, dead) ~ C(sbpgp, contr.treatment(6,
+    base = 3)) + strata(sexe, agegp))
+
+                                            coef exp(coef) se(coef)      z
+C(sbpgp, contr.treatment(6, base = 3))1   0.62074   1.86031  0.11484  5.405
+C(sbpgp, contr.treatment(6, base = 3))2   0.38188   1.46504  0.10358  3.687
+C(sbpgp, contr.treatment(6, base = 3))4   0.03305   1.03360  0.11994  0.276
+C(sbpgp, contr.treatment(6, base = 3))5   0.13979   1.15003  0.14650  0.954
+C(sbpgp, contr.treatment(6, base = 3))6   -0.04512   0.95588  0.26928 -0.168
+                                               p
+C(sbpgp, contr.treatment(6, base = 3))1   6.47e-8
+C(sbpgp, contr.treatment(6, base = 3))2   0.000227
+C(sbpgp, contr.treatment(6, base = 3))4   0.782896
+C(sbpgp, contr.treatment(6, base = 3))5   0.339991
+C(sbpgp, contr.treatment(6, base = 3))6   0.866917
+
+Likelihood ratio test=38.51  on 5 df, p=2.99e-7
+n= 956, number of events= 723</code></pre>
+  </div>
+</div>
+<h2 id="12-pool-survival-models">12. Pool survival models</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 
 <div class="code-tabs dual-code-tabs" id="code-205">
 

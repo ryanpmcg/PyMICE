@@ -635,11 +635,70 @@ set.seed(123)</code></pre>
 
 <p>The <code>nhanes</code> dataset is a small data set with non-monotone missing values. It contains 25 observations on four variables: <em>age group</em>, <em>body mass index</em>, <em>hypertension</em> and <em>cholesterol (mg/dL)</em>.</p>
 <p>To learn more about the data, use one of the two following help commands:</p>
-<h5>R code</h5>
-<pre class="language-r"><code class="language-r">help(nhanes)
+
+<div class="code-tabs dual-code-tabs" id="code-27">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_help_r(&#x27;nhanes&#x27;))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">nhanes                  package:mice                   R Documentation
+
+_N_H_A_N_E_S _e_x_a_m_p_l_e - _a_l_l _v_a_r_i_a_b_l_e_s _n_u_m_e_r_i_c_a_l
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     A small data set with non-monotone missing values.
+
+_F_o_r_m_a_t:
+
+     A data frame with 25 observations on the following 4 variables.
+
+     age Age group (1=20-39, 2=40-59, 3=60+)
+
+     bmi Body mass index (kg/m**2)
+
+     hyp Hypertensive (1=no,2=yes)
+
+     chl Total serum cholesterol (mg/dL)
+
+_D_e_t_a_i_l_s:
+
+     A small data set with all numerical variables. The data set
+     ‘nhanes2’ is the same data set, but with ‘age’ and ‘hyp’ treated
+     as factors.
+
+_S_o_u_r_c_e:
+
+     Schafer, J.L. (1997).  _Analysis of Incomplete Multivariate Data._
+     London: Chapman &amp; Hall. Table 6.14.
+
+_S_e_e _A_l_s_o:
+
+     ‘nhanes2’
+
+_E_x_a_m_p_l_e_s:
+
+     # create 5 imputed data sets
+     imp &lt;- mice(nhanes)
+     
+     # print the first imputed data set
+     complete(imp)</code></pre></details>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">help(nhanes)
 ?nhanes</code></pre>
-<h5>R output</h5>
-<pre class="language-text"><code class="language-text">nhanes                  package:mice                   R Documentation
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">nhanes                  package:mice                   R Documentation
 
 _N_H_A_N_E_S _e_x_a_m_p_l_e - _a_l_l _v_a_r_i_a_b_l_e_s _n_u_m_e_r_i_c_a_l
 
@@ -681,12 +740,17 @@ _E_x_a_m_p_l_e_s:
      
      # print the first imputed data set
      complete(imp)</code></pre>
-<h5>Python code</h5>
-<pre class="language-python"><code class="language-python">print(format_help_r(&#x27;nhanes&#x27;))</code></pre>
-<details class="long-output"><summary>Console output (click to expand)</summary>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
 
-```text
-nhanes                  package:mice                   R Documentation
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_help_r(&#x27;nhanes&#x27;))">Copy Python</button>
+  </div>
+  <pre class="language-python"><code class="language-python">print(format_help_r(&#x27;nhanes&#x27;))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">nhanes                  package:mice                   R Documentation
 
 _N_H_A_N_E_S _e_x_a_m_p_l_e - _a_l_l _v_a_r_i_a_b_l_e_s _n_u_m_e_r_i_c_a_l
 
@@ -715,7 +779,7 @@ _D_e_t_a_i_l_s:
 _S_o_u_r_c_e:
 
      Schafer, J.L. (1997).  _Analysis of Incomplete Multivariate Data._
-     London: Chapman & Hall. Table 6.14.
+     London: Chapman &amp; Hall. Table 6.14.
 
 _S_e_e _A_l_s_o:
 
@@ -724,13 +788,60 @@ _S_e_e _A_l_s_o:
 _E_x_a_m_p_l_e_s:
 
      # create 5 imputed data sets
-     imp <- mice(nhanes)
+     imp &lt;- mice(nhanes)
      
      # print the first imputed data set
-     complete(imp)
-```
+     complete(imp)</code></pre></details>
+  </div>
+  <div class="tab-content r">
 
-</details><h2 id="3-summarize-variables">3. Summarize variables</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
+  <pre class="language-r"><code class="language-r">help(nhanes)
+?nhanes</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">nhanes                  package:mice                   R Documentation
+
+_N_H_A_N_E_S _e_x_a_m_p_l_e - _a_l_l _v_a_r_i_a_b_l_e_s _n_u_m_e_r_i_c_a_l
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     A small data set with non-monotone missing values.
+
+_F_o_r_m_a_t:
+
+     A data frame with 25 observations on the following 4 variables.
+
+     age Age group (1=20-39, 2=40-59, 3=60+)
+
+     bmi Body mass index (kg/m**2)
+
+     hyp Hypertensive (1=no,2=yes)
+
+     chl Total serum cholesterol (mg/dL)
+
+_D_e_t_a_i_l_s:
+
+     A small data set with all numerical variables. The data set
+     ‘nhanes2’ is the same data set, but with ‘age’ and ‘hyp’ treated
+     as factors.
+
+_S_o_u_r_c_e:
+
+     Schafer, J.L. (1997).  _Analysis of Incomplete Multivariate Data._
+     London: Chapman &amp; Hall. Table 6.14.
+
+_S_e_e _A_l_s_o:
+
+     ‘nhanes2’
+
+_E_x_a_m_p_l_e_s:
+
+     # create 5 imputed data sets
+     imp &lt;- mice(nhanes)
+     
+     # print the first imputed data set
+     complete(imp)</code></pre>
+  </div>
+</div>
+<h2 id="3-summarize-variables">3. Summarize variables</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Get an overview of the data by the <code>summary()</code> command:</p>
 
 <div class="code-tabs dual-code-tabs" id="code-3">
@@ -2749,11 +2860,154 @@ md.pattern(c3)</code></pre>
 </div>
 
 <p>The collection of the <em>m</em> imputed data sets can be exported by function <code>complete()</code> in long, broad and repeated formats. For example,</p>
-<h5>R code</h5>
-<pre class="language-r"><code class="language-r">c.long &lt;- complete(imp, &quot;long&quot;)
+
+<div class="code-tabs dual-code-tabs" id="code-28">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_complete_long_r(imp_pmm, names))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">    .imp .id age bmi hyp chl
+ 1      1   1    1 24.9   1 187
+ 2      1   2    2 22.7   1 187
+ 3      1   3    1 28.7   1 187
+ 4      1   4    3 27.4   2 206
+ 5      1   5    1 20.4   1 113
+ 6      1   6    3 25.5   2 184
+ 7      1   7    1 22.5   1 118
+ 8      1   8    1 30.1   1 187
+ 9      1   9    2 22.0   1 238
+10      1  10    2 21.7   2 187
+11      1  11    1 22.5   1 113
+12      1  12    2 27.2   1 206
+13      1  13    3 21.7   1 206
+14      1  14    2 28.7   2 204
+15      1  15    1 29.6   1 229
+16      1  16    1 30.1   1 187
+17      1  17    3 27.2   2 284
+18      1  18    2 26.3   2 199
+19      1  19    1 35.3   1 218
+20      1  20    3 25.5   2 186
+21      1  21    1 30.1   1 199
+22      1  22    1 33.2   1 229
+23      1  23    1 27.5   1 131
+24      1  24    3 24.9   1 184
+25      1  25    2 27.4   1 186
+26      2   1    1 25.5   1 238
+27      2   2    2 22.7   1 187
+28      2   3    1 22.0   1 187
+29      2   4    3 29.6   1 218
+30      2   5    1 20.4   1 113
+31      2   6    3 21.7   2 184
+32      2   7    1 22.5   1 118
+33      2   8    1 30.1   1 187
+34      2   9    2 22.0   1 238
+35      2  10    2 20.4   1 113
+36      2  11    1 33.2   1 206
+37      2  12    2 27.5   2 184
+38      2  13    3 21.7   1 206
+39      2  14    2 28.7   2 204
+40      2  15    1 29.6   1 184
+41      2  16    1 22.5   1 238
+42      2  17    3 27.2   2 284
+43      2  18    2 26.3   2 199
+44      2  19    1 35.3   1 218
+45      2  20    3 25.5   2 206
+46      2  21    1 30.1   1 229
+47      2  22    1 33.2   1 229
+48      2  23    1 27.5   1 131
+49      2  24    3 24.9   1 284
+50      2  25    2 27.4   1 186
+51      3   1    1 27.4   1 187
+52      3   2    2 22.7   1 187
+53      3   3    1 29.6   1 187
+54      3   4    3 20.4   2 187
+55      3   5    1 20.4   1 113
+56      3   6    3 24.9   2 184
+57      3   7    1 22.5   1 118
+58      3   8    1 30.1   1 187
+59      3   9    2 22.0   1 238
+60      3  10    2 27.4   1 229
+61      3  11    1 22.0   1 187
+62      3  12    2 27.5   1 206
+63      3  13    3 21.7   1 206
+64      3  14    2 28.7   2 204
+65      3  15    1 29.6   1 238
+66      3  16    1 27.5   1 187
+67      3  17    3 27.2   2 284
+68      3  18    2 26.3   2 199
+69      3  19    1 35.3   1 218
+70      3  20    3 25.5   2 184
+71      3  21    1 28.7   1 238
+72      3  22    1 33.2   1 229
+73      3  23    1 27.5   1 131
+74      3  24    3 24.9   1 186
+75      3  25    2 27.4   1 186
+76      4   1    1 22.0   1 131
+77      4   2    2 22.7   1 187
+78      4   3    1 28.7   1 187
+79      4   4    3 25.5   1 186
+80      4   5    1 20.4   1 113
+81      4   6    3 20.4   2 184
+82      4   7    1 22.5   1 118
+83      4   8    1 30.1   1 187
+84      4   9    2 22.0   1 238
+85      4  10    2 27.5   1 186
+86      4  11    1 33.2   1 229
+87      4  12    2 27.2   2 218
+88      4  13    3 21.7   1 206
+89      4  14    2 28.7   2 204
+90      4  15    1 29.6   1 187
+91      4  16    1 30.1   1 184
+92      4  17    3 27.2   2 284
+93      4  18    2 26.3   2 199
+94      4  19    1 35.3   1 218
+95      4  20    3 25.5   2 284
+96      4  21    1 28.7   1 187
+97      4  22    1 33.2   1 229
+98      4  23    1 27.5   1 131
+99      4  24    3 24.9   1 204
+100      4  25    2 27.4   1 186
+101      5   1    1 28.7   1 187
+102      5   2    2 22.7   1 187
+103      5   3    1 22.0   1 187
+104      5   4    3 20.4   1 204
+105      5   5    1 20.4   1 113
+106      5   6    3 27.4   2 184
+107      5   7    1 22.5   1 118
+108      5   8    1 30.1   1 187
+109      5   9    2 22.0   1 238
+110      5  10    2 28.7   1 206
+111      5  11    1 35.3   1 229
+112      5  12    2 22.5   1 199
+113      5  13    3 21.7   1 206
+114      5  14    2 28.7   2 204
+115      5  15    1 29.6   1 187
+116      5  16    1 27.2   1 238
+117      5  17    3 27.2   2 284
+118      5  18    2 26.3   2 199
+119      5  19    1 35.3   1 218
+120      5  20    3 25.5   2 229
+121      5  21    1 22.0   1 238
+122      5  22    1 33.2   1 229
+123      5  23    1 27.5   1 131
+124      5  24    3 24.9   1 206
+125      5  25    2 27.4   1 186</code></pre></details>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">c.long &lt;- complete(imp, &quot;long&quot;)
 c.long</code></pre>
-<h5>R output</h5>
-<pre class="language-text"><code class="language-text">    .imp .id age bmi hyp chl
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    .imp .id age bmi hyp chl
  1      1   1    1 24.9   1 187
  2      1   2    2 22.7   1 187
  3      1   3    1 28.7   1 187
@@ -2879,12 +3133,17 @@ c.long</code></pre>
 123      5  23    1 27.5   1 131
 124      5  24    3 24.9   1 206
 125      5  25    2 27.4   1 186</code></pre>
-<h5>Python code</h5>
-<pre class="language-python"><code class="language-python">print(format_complete_long_r(imp_pmm, names))</code></pre>
-<details class="long-output"><summary>Console output (click to expand)</summary>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
 
-```text
-    .imp .id age bmi hyp chl
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_complete_long_r(imp_pmm, names))">Copy Python</button>
+  </div>
+  <pre class="language-python"><code class="language-python">print(format_complete_long_r(imp_pmm, names))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">    .imp .id age bmi hyp chl
  1      1   1    1 24.9   1 187
  2      1   2    2 22.7   1 187
  3      1   3    1 28.7   1 187
@@ -3009,16 +3268,216 @@ c.long</code></pre>
 122      5  22    1 33.2   1 229
 123      5  23    1 27.5   1 131
 124      5  24    3 24.9   1 206
-125      5  25    2 27.4   1 186
-```
+125      5  25    2 27.4   1 186</code></pre></details>
+  </div>
+  <div class="tab-content r">
 
-</details>
+  <pre class="language-r"><code class="language-r">c.long &lt;- complete(imp, &quot;long&quot;)
+c.long</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    .imp .id age bmi hyp chl
+ 1      1   1    1 24.9   1 187
+ 2      1   2    2 22.7   1 187
+ 3      1   3    1 28.7   1 187
+ 4      1   4    3 27.4   2 206
+ 5      1   5    1 20.4   1 113
+ 6      1   6    3 25.5   2 184
+ 7      1   7    1 22.5   1 118
+ 8      1   8    1 30.1   1 187
+ 9      1   9    2 22.0   1 238
+10      1  10    2 21.7   2 187
+11      1  11    1 22.5   1 113
+12      1  12    2 27.2   1 206
+13      1  13    3 21.7   1 206
+14      1  14    2 28.7   2 204
+15      1  15    1 29.6   1 229
+16      1  16    1 30.1   1 187
+17      1  17    3 27.2   2 284
+18      1  18    2 26.3   2 199
+19      1  19    1 35.3   1 218
+20      1  20    3 25.5   2 186
+21      1  21    1 30.1   1 199
+22      1  22    1 33.2   1 229
+23      1  23    1 27.5   1 131
+24      1  24    3 24.9   1 184
+25      1  25    2 27.4   1 186
+26      2   1    1 25.5   1 238
+27      2   2    2 22.7   1 187
+28      2   3    1 22.0   1 187
+29      2   4    3 29.6   1 218
+30      2   5    1 20.4   1 113
+31      2   6    3 21.7   2 184
+32      2   7    1 22.5   1 118
+33      2   8    1 30.1   1 187
+34      2   9    2 22.0   1 238
+35      2  10    2 20.4   1 113
+36      2  11    1 33.2   1 206
+37      2  12    2 27.5   2 184
+38      2  13    3 21.7   1 206
+39      2  14    2 28.7   2 204
+40      2  15    1 29.6   1 184
+41      2  16    1 22.5   1 238
+42      2  17    3 27.2   2 284
+43      2  18    2 26.3   2 199
+44      2  19    1 35.3   1 218
+45      2  20    3 25.5   2 206
+46      2  21    1 30.1   1 229
+47      2  22    1 33.2   1 229
+48      2  23    1 27.5   1 131
+49      2  24    3 24.9   1 284
+50      2  25    2 27.4   1 186
+51      3   1    1 27.4   1 187
+52      3   2    2 22.7   1 187
+53      3   3    1 29.6   1 187
+54      3   4    3 20.4   2 187
+55      3   5    1 20.4   1 113
+56      3   6    3 24.9   2 184
+57      3   7    1 22.5   1 118
+58      3   8    1 30.1   1 187
+59      3   9    2 22.0   1 238
+60      3  10    2 27.4   1 229
+61      3  11    1 22.0   1 187
+62      3  12    2 27.5   1 206
+63      3  13    3 21.7   1 206
+64      3  14    2 28.7   2 204
+65      3  15    1 29.6   1 238
+66      3  16    1 27.5   1 187
+67      3  17    3 27.2   2 284
+68      3  18    2 26.3   2 199
+69      3  19    1 35.3   1 218
+70      3  20    3 25.5   2 184
+71      3  21    1 28.7   1 238
+72      3  22    1 33.2   1 229
+73      3  23    1 27.5   1 131
+74      3  24    3 24.9   1 186
+75      3  25    2 27.4   1 186
+76      4   1    1 22.0   1 131
+77      4   2    2 22.7   1 187
+78      4   3    1 28.7   1 187
+79      4   4    3 25.5   1 186
+80      4   5    1 20.4   1 113
+81      4   6    3 20.4   2 184
+82      4   7    1 22.5   1 118
+83      4   8    1 30.1   1 187
+84      4   9    2 22.0   1 238
+85      4  10    2 27.5   1 186
+86      4  11    1 33.2   1 229
+87      4  12    2 27.2   2 218
+88      4  13    3 21.7   1 206
+89      4  14    2 28.7   2 204
+90      4  15    1 29.6   1 187
+91      4  16    1 30.1   1 184
+92      4  17    3 27.2   2 284
+93      4  18    2 26.3   2 199
+94      4  19    1 35.3   1 218
+95      4  20    3 25.5   2 284
+96      4  21    1 28.7   1 187
+97      4  22    1 33.2   1 229
+98      4  23    1 27.5   1 131
+99      4  24    3 24.9   1 204
+100      4  25    2 27.4   1 186
+101      5   1    1 28.7   1 187
+102      5   2    2 22.7   1 187
+103      5   3    1 22.0   1 187
+104      5   4    3 20.4   1 204
+105      5   5    1 20.4   1 113
+106      5   6    3 27.4   2 184
+107      5   7    1 22.5   1 118
+108      5   8    1 30.1   1 187
+109      5   9    2 22.0   1 238
+110      5  10    2 28.7   1 206
+111      5  11    1 35.3   1 229
+112      5  12    2 22.5   1 199
+113      5  13    3 21.7   1 206
+114      5  14    2 28.7   2 204
+115      5  15    1 29.6   1 187
+116      5  16    1 27.2   1 238
+117      5  17    3 27.2   2 284
+118      5  18    2 26.3   2 199
+119      5  19    1 35.3   1 218
+120      5  20    3 25.5   2 229
+121      5  21    1 22.0   1 238
+122      5  22    1 33.2   1 229
+123      5  23    1 27.5   1 131
+124      5  24    3 24.9   1 206
+125      5  25    2 27.4   1 186</code></pre>
+  </div>
+</div>
+
 <p>and</p>
-<h5>R code</h5>
-<pre class="language-r"><code class="language-r">c.broad &lt;- complete(imp, &quot;broad&quot;)
+
+<div class="code-tabs dual-code-tabs" id="code-29">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_complete_broad_r(imp_pmm, names))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">   age.1 bmi.1 hyp.1 chl.1 age.2 bmi.2 hyp.2 chl.2 age.3 bmi.3 hyp.3 chl.3
+ 1         1  24.9     1   187     1  25.5     1   238     1  27.4     1   187
+ 2         2  22.7     1   187     2  22.7     1   187     2  22.7     1   187
+ 3         1  28.7     1   187     1  22.0     1   187     1  29.6     1   187
+ 4         3  27.4     2   206     3  29.6     1   218     3  20.4     2   187
+ 5         1  20.4     1   113     1  20.4     1   113     1  20.4     1   113
+ 6         3  25.5     2   184     3  21.7     2   184     3  24.9     2   184
+ 7         1  22.5     1   118     1  22.5     1   118     1  22.5     1   118
+ 8         1  30.1     1   187     1  30.1     1   187     1  30.1     1   187
+ 9         2  22.0     1   238     2  22.0     1   238     2  22.0     1   238
+10         2  21.7     2   187     2  20.4     1   113     2  27.4     1   229
+11         1  22.5     1   113     1  33.2     1   206     1  22.0     1   187
+12         2  27.2     1   206     2  27.5     2   184     2  27.5     1   206
+13         3  21.7     1   206     3  21.7     1   206     3  21.7     1   206
+14         2  28.7     2   204     2  28.7     2   204     2  28.7     2   204
+15         1  29.6     1   229     1  29.6     1   184     1  29.6     1   238
+16         1  30.1     1   187     1  22.5     1   238     1  27.5     1   187
+17         3  27.2     2   284     3  27.2     2   284     3  27.2     2   284
+18         2  26.3     2   199     2  26.3     2   199     2  26.3     2   199
+19         1  35.3     1   218     1  35.3     1   218     1  35.3     1   218
+20         3  25.5     2   186     3  25.5     2   206     3  25.5     2   184
+21         1  30.1     1   199     1  30.1     1   229     1  28.7     1   238
+22         1  33.2     1   229     1  33.2     1   229     1  33.2     1   229
+23         1  27.5     1   131     1  27.5     1   131     1  27.5     1   131
+24         3  24.9     1   184     3  24.9     1   284     3  24.9     1   186
+25         2  27.4     1   186     2  27.4     1   186     2  27.4     1   186
+   age.4 bmi.4 hyp.4 chl.4 age.5 bmi.5 hyp.5 chl.5
+ 1         1  22.0     1   131     1  28.7     1   187
+ 2         2  22.7     1   187     2  22.7     1   187
+ 3         1  28.7     1   187     1  22.0     1   187
+ 4         3  25.5     1   186     3  20.4     1   204
+ 5         1  20.4     1   113     1  20.4     1   113
+ 6         3  20.4     2   184     3  27.4     2   184
+ 7         1  22.5     1   118     1  22.5     1   118
+ 8         1  30.1     1   187     1  30.1     1   187
+ 9         2  22.0     1   238     2  22.0     1   238
+10         2  27.5     1   186     2  28.7     1   206
+11         1  33.2     1   229     1  35.3     1   229
+12         2  27.2     2   218     2  22.5     1   199
+13         3  21.7     1   206     3  21.7     1   206
+14         2  28.7     2   204     2  28.7     2   204
+15         1  29.6     1   187     1  29.6     1   187
+16         1  30.1     1   184     1  27.2     1   238
+17         3  27.2     2   284     3  27.2     2   284
+18         2  26.3     2   199     2  26.3     2   199
+19         1  35.3     1   218     1  35.3     1   218
+20         3  25.5     2   284     3  25.5     2   229
+21         1  28.7     1   187     1  22.0     1   238
+22         1  33.2     1   229     1  33.2     1   229
+23         1  27.5     1   131     1  27.5     1   131
+24         3  24.9     1   204     3  24.9     1   206
+25         2  27.4     1   186     2  27.4     1   186</code></pre></details>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">c.broad &lt;- complete(imp, &quot;broad&quot;)
 c.broad</code></pre>
-<h5>R output</h5>
-<pre class="language-text"><code class="language-text">   age.1 bmi.1 hyp.1 chl.1 age.2 bmi.2 hyp.2 chl.2 age.3 bmi.3 hyp.3 chl.3
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">   age.1 bmi.1 hyp.1 chl.1 age.2 bmi.2 hyp.2 chl.2 age.3 bmi.3 hyp.3 chl.3
  1         1  24.9     1   187     1  25.5     1   238     1  27.4     1   187
  2         2  22.7     1   187     2  22.7     1   187     2  22.7     1   187
  3         1  28.7     1   187     1  22.0     1   187     1  29.6     1   187
@@ -3070,12 +3529,17 @@ c.broad</code></pre>
 23         1  27.5     1   131     1  27.5     1   131
 24         3  24.9     1   204     3  24.9     1   206
 25         2  27.4     1   186     2  27.4     1   186</code></pre>
-<h5>Python code</h5>
-<pre class="language-python"><code class="language-python">print(format_complete_broad_r(imp_pmm, names))</code></pre>
-<details class="long-output"><summary>Console output (click to expand)</summary>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
 
-```text
-   age.1 bmi.1 hyp.1 chl.1 age.2 bmi.2 hyp.2 chl.2 age.3 bmi.3 hyp.3 chl.3
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_complete_broad_r(imp_pmm, names))">Copy Python</button>
+  </div>
+  <pre class="language-python"><code class="language-python">print(format_complete_broad_r(imp_pmm, names))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">   age.1 bmi.1 hyp.1 chl.1 age.2 bmi.2 hyp.2 chl.2 age.3 bmi.3 hyp.3 chl.3
  1         1  24.9     1   187     1  25.5     1   238     1  27.4     1   187
  2         2  22.7     1   187     2  22.7     1   187     2  22.7     1   187
  3         1  28.7     1   187     1  22.0     1   187     1  29.6     1   187
@@ -3126,10 +3590,67 @@ c.broad</code></pre>
 22         1  33.2     1   229     1  33.2     1   229
 23         1  27.5     1   131     1  27.5     1   131
 24         3  24.9     1   204     3  24.9     1   206
-25         2  27.4     1   186     2  27.4     1   186
-```
+25         2  27.4     1   186     2  27.4     1   186</code></pre></details>
+  </div>
+  <div class="tab-content r">
 
-</details>
+  <pre class="language-r"><code class="language-r">c.broad &lt;- complete(imp, &quot;broad&quot;)
+c.broad</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">   age.1 bmi.1 hyp.1 chl.1 age.2 bmi.2 hyp.2 chl.2 age.3 bmi.3 hyp.3 chl.3
+ 1         1  24.9     1   187     1  25.5     1   238     1  27.4     1   187
+ 2         2  22.7     1   187     2  22.7     1   187     2  22.7     1   187
+ 3         1  28.7     1   187     1  22.0     1   187     1  29.6     1   187
+ 4         3  27.4     2   206     3  29.6     1   218     3  20.4     2   187
+ 5         1  20.4     1   113     1  20.4     1   113     1  20.4     1   113
+ 6         3  25.5     2   184     3  21.7     2   184     3  24.9     2   184
+ 7         1  22.5     1   118     1  22.5     1   118     1  22.5     1   118
+ 8         1  30.1     1   187     1  30.1     1   187     1  30.1     1   187
+ 9         2  22.0     1   238     2  22.0     1   238     2  22.0     1   238
+10         2  21.7     2   187     2  20.4     1   113     2  27.4     1   229
+11         1  22.5     1   113     1  33.2     1   206     1  22.0     1   187
+12         2  27.2     1   206     2  27.5     2   184     2  27.5     1   206
+13         3  21.7     1   206     3  21.7     1   206     3  21.7     1   206
+14         2  28.7     2   204     2  28.7     2   204     2  28.7     2   204
+15         1  29.6     1   229     1  29.6     1   184     1  29.6     1   238
+16         1  30.1     1   187     1  22.5     1   238     1  27.5     1   187
+17         3  27.2     2   284     3  27.2     2   284     3  27.2     2   284
+18         2  26.3     2   199     2  26.3     2   199     2  26.3     2   199
+19         1  35.3     1   218     1  35.3     1   218     1  35.3     1   218
+20         3  25.5     2   186     3  25.5     2   206     3  25.5     2   184
+21         1  30.1     1   199     1  30.1     1   229     1  28.7     1   238
+22         1  33.2     1   229     1  33.2     1   229     1  33.2     1   229
+23         1  27.5     1   131     1  27.5     1   131     1  27.5     1   131
+24         3  24.9     1   184     3  24.9     1   284     3  24.9     1   186
+25         2  27.4     1   186     2  27.4     1   186     2  27.4     1   186
+   age.4 bmi.4 hyp.4 chl.4 age.5 bmi.5 hyp.5 chl.5
+ 1         1  22.0     1   131     1  28.7     1   187
+ 2         2  22.7     1   187     2  22.7     1   187
+ 3         1  28.7     1   187     1  22.0     1   187
+ 4         3  25.5     1   186     3  20.4     1   204
+ 5         1  20.4     1   113     1  20.4     1   113
+ 6         3  20.4     2   184     3  27.4     2   184
+ 7         1  22.5     1   118     1  22.5     1   118
+ 8         1  30.1     1   187     1  30.1     1   187
+ 9         2  22.0     1   238     2  22.0     1   238
+10         2  27.5     1   186     2  28.7     1   206
+11         1  33.2     1   229     1  35.3     1   229
+12         2  27.2     2   218     2  22.5     1   199
+13         3  21.7     1   206     3  21.7     1   206
+14         2  28.7     2   204     2  28.7     2   204
+15         1  29.6     1   187     1  29.6     1   187
+16         1  30.1     1   184     1  27.2     1   238
+17         3  27.2     2   284     3  27.2     2   284
+18         2  26.3     2   199     2  26.3     2   199
+19         1  35.3     1   218     1  35.3     1   218
+20         3  25.5     2   284     3  25.5     2   229
+21         1  28.7     1   187     1  22.0     1   238
+22         1  33.2     1   229     1  33.2     1   229
+23         1  27.5     1   131     1  27.5     1   131
+24         3  24.9     1   204     3  24.9     1   206
+25         2  27.4     1   186     2  27.4     1   186</code></pre>
+  </div>
+</div>
+
     </div>
   </div>
   

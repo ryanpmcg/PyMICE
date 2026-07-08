@@ -1676,11 +1676,83 @@ save_figure(fig, ASSETS, &#x27;v02_stripplot.png&#x27;)</code></pre>
 <h3 id="repeated-analysis-in-mice">Repeated analysis in mice</h3><h2 id="7-pooled-regression-fit">7. Pooled regression fit</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (4 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 4 blocks)</div>
 <p>Regression model on each completed dataset:</p>
 <p>bmi = β₀ + β₁ chl + ε</p>
-<h5>R code</h5>
-<pre class="language-r"><code class="language-r">fit &lt;- with(imp, lm(bmi ~ chl))
+
+<div class="code-tabs dual-code-tabs" id="code-56">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_mira_print_r(fit, nmis=imp3.nmis))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">call :
+with.mids(data = imp, expr = lm(bmi ~ chl))
+
+call1 :
+mice(data = nhanes2, method = meth, printFlag = F)
+
+nmis :
+age bmi hyp chl 
+  0   9   8  10 
+
+analyses :
+[[1]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     26.5370       -0.0042  
+
+[[2]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     21.2479        0.0305  
+
+[[3]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     20.6255        0.0328  
+
+[[4]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     22.2736        0.0249  
+
+[[5]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     18.3207        0.0384</code></pre></details>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">fit &lt;- with(imp, lm(bmi ~ chl))
 fit</code></pre>
-<h5>R output</h5>
-<pre class="language-text"><code class="language-text">call :
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">call :
 with.mids(data = imp, expr = lm(bmi ~ chl))
 
 call1 :
@@ -1735,12 +1807,17 @@ lm(formula = bmi ~ chl)
 Coefficients:
 (Intercept)          chl  
      18.3207        0.0384</code></pre>
-<h5>Python code</h5>
-<pre class="language-python"><code class="language-python">print(format_mira_print_r(fit, nmis=imp3.nmis))</code></pre>
-<details class="long-output"><summary>Console output (click to expand)</summary>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
 
-```text
-call :
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_mira_print_r(fit, nmis=imp3.nmis))">Copy Python</button>
+  </div>
+  <pre class="language-python"><code class="language-python">print(format_mira_print_r(fit, nmis=imp3.nmis))</code></pre>
+  <details class="long-output"><summary>Console output (click to expand)</summary><pre class="language-text"><code class="language-text">call :
 with.mids(data = imp, expr = lm(bmi ~ chl))
 
 call1 :
@@ -1794,10 +1871,70 @@ lm(formula = bmi ~ chl)
 
 Coefficients:
 (Intercept)          chl  
-     18.3207        0.0384
-```
+     18.3207        0.0384</code></pre></details>
+  </div>
+  <div class="tab-content r">
 
-</details>
+  <pre class="language-r"><code class="language-r">fit &lt;- with(imp, lm(bmi ~ chl))
+fit</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">call :
+with.mids(data = imp, expr = lm(bmi ~ chl))
+
+call1 :
+mice(data = nhanes2, method = meth, printFlag = F)
+
+nmis :
+age bmi hyp chl 
+  0   9   8  10 
+
+analyses :
+[[1]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     26.5370       -0.0042  
+
+[[2]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     21.2479        0.0305  
+
+[[3]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     20.6255        0.0328  
+
+[[4]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     22.2736        0.0249  
+
+[[5]]
+
+Call:
+lm(formula = bmi ~ chl)
+
+Coefficients:
+(Intercept)          chl  
+     18.3207        0.0384</code></pre>
+  </div>
+</div>
+
 <p>The <code>fit</code> object contains the regression summaries for each data set. The new object <code>fit</code> is actually of class <code>mira</code> (<em>multiply imputed repeated analyses</em>).</p>
 
 <div class="code-tabs dual-code-tabs" id="code-52">

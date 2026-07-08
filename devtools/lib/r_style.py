@@ -482,29 +482,18 @@ def format_tutorial_step_md(
         ]
     )
     cleaned = _clean_output(output)
-    if collapse_output_over and cleaned.count("\n") + 1 > collapse_output_over:
-        parts.extend(
-            [
-                "",
-                '<details class="long-output"><summary>Console output (click to expand)</summary>',
-                "",
-                f"```{output_lang}",
-                cleaned,
-                "```",
-                "",
-                "</details>",
-            ]
-        )
-    else:
-        parts.extend(
-            [
-                "",
-                "### Output",
-                f"```{output_lang}",
-                cleaned,
-                "```",
-            ]
-        )
+    # Keep ### Output as markdown so report.blocks_to_html can render side-by-side tabs.
+    # Long output collapsing happens in HTML via _wrap_collapsible_output (report.py).
+    _ = collapse_output_over  # retained for caller compatibility; ignored here
+    parts.extend(
+        [
+            "",
+            "### Output",
+            f"```{output_lang}",
+            cleaned,
+            "```",
+        ]
+    )
     return "\n".join(parts)
 
 
