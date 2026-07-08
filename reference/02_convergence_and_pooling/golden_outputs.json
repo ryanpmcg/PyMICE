@@ -96,7 +96,7 @@
     "r_output": "##               estimate  std.error statistic       df     p.value\n## (Intercept)  21.8009113 5.74829615  3.792587 10.22632 0.003390551\n## chl          0.0244790 0.03010637  0.813085 9.14210 0.436831810"
   },
   "_provenance": {
-    "refreshed_at": "2026-07-08T03:01:19Z",
+    "refreshed_at": "2026-07-08T14:34:55Z",
     "python_version": "3.13.5",
     "pymice_version": "0.1.0",
     "r_version": "4.4.1",

@@ -81,40 +81,40 @@
     "step": "10",
     "block_index": "21",
     "r_code": "imp <- mice(mammalsleep, maxit = 10, print=F)",
-    "r_output": "## Warning: Number of logged events: 27"
+    "r_output": "## Warning: Number of logged events: 26"
   },
   "12.24": {
     "step": "12",
     "block_index": "24",
     "r_code": "pool(fit1)",
-    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108\n## log10(bw)     -1.1540768  0.08460947  0.00778340   0.0939495    59  45.62378\n## odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458\n##                   riv    lambda       fmi\n## (Intercept)    0.0689621   0.0645132   0.0994187\n## log10(bw)      0.1103904   0.0994159   0.1364588\n## odi            0.1321015   0.1166870   0.1550547"
+    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.4431851  0.58948507  0.03293712   0.6290096    59  50.82456\n## log10(bw)     -1.1496317  0.08321728  0.00874216   0.0937079    59  43.75372\n## odi           -0.8486023  0.07370241  0.00567497   0.0805124    59  47.79896\n##                   riv    lambda       fmi\n## (Intercept)    0.0670493   0.0628361   0.0976591\n## log10(bw)      0.1260626   0.1119499   0.1499383\n## odi            0.0923981   0.0845828   0.1206236"
   },
   "12.25": {
     "step": "12",
     "block_index": "25",
     "r_code": "summary(pool(fit1))",
-    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00\n## log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04\n## odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03"
+    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.4431851 0.7931013  14.428404 50.824555 0.000000000e+00\n## log10(bw)    -1.1496317 0.3061174  -3.755525 43.753724 5.070473387e-04\n## odi          -0.8486023 0.2837470  -2.990701 47.798959 4.390041545e-03"
   },
   "13.26": {
     "step": "13",
     "block_index": "26",
     "r_code": "impnew <- mice(mammalsleep[ , -1], maxit = 10, print = F)",
-    "r_output": "## Warning: Number of logged events: 15"
+    "r_output": "## Warning: Number of logged events: 18"
   },
   "14.27": {
     "step": "14",
     "block_index": "27",
     "r_code": "fit2 <- with(impnew, lm(sws ~ log10(bw) + odi))\npool(fit2)",
-    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.3500427  0.61817617  0.04037797   0.6666297    59  49.48618\n## log10(bw)     -1.1079037  0.08726759  0.00546546   0.0938261    59  49.87051\n## odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962\n##                   riv    lambda       fmi\n## (Intercept)    0.0783815   0.0726844   0.1080200\n## log10(bw)      0.0751545   0.0699011   0.1050852\n## odi            0.1258433   0.1117769   0.1497517"
+    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.3793283  0.60915145  0.03506849   0.6512336    59  50.58689\n## log10(bw)     -1.1102338  0.08599357  0.00513386   0.0921542    59  50.28633\n## odi           -0.8192183  0.07616126  0.00703427   0.0846024    59  45.57061\n##                   riv    lambda       fmi\n## (Intercept)    0.0690833   0.0646192   0.0995300\n## log10(bw)      0.0716405   0.0668513   0.1018752\n## odi            0.1108322   0.0997740   0.1368428"
   },
   "14.28": {
     "step": "14",
     "block_index": "28",
     "r_code": "summary(pool(fit2))",
-    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00\n## log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04\n## odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03"
+    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.3793283 0.8069905  14.100945 50.586891 0.000000000e+00\n## log10(bw)    -1.1102338 0.3035691  -3.657269 50.286332 6.100042506e-04\n## odi          -0.8192183 0.2908649  -2.816491 45.570608 7.151945055e-03"
   },
   "_provenance": {
-    "refreshed_at": "2026-07-08T03:01:23Z",
+    "refreshed_at": "2026-07-08T14:34:58Z",
     "python_version": "3.13.5",
     "pymice_version": "0.1.0",
     "r_version": "4.4.1",

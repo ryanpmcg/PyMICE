@@ -1058,9 +1058,7 @@ def index_html(
             cls = "fail"
         vnum = int(r.number)
         label = r.short_title or r.title
-        total = (
-            r.n_match + r.n_mismatch + r.n_skip + r.n_partial + r.n_visual + r.n_info
-        )
+        total = r.n_match + r.n_mismatch + r.n_skip + r.n_partial + r.n_visual + r.n_info
         pct = f"{round(100 * r.n_match / total):.0f}%" if total else "—"
         rows += (
             f"<tr><td>V{vnum}</td><td>{_esc(label)}</td>"
@@ -1235,9 +1233,7 @@ def write_reports(
     from lib.figure_map import copy_reference_assets
     from lib.vignette_catalog import all_metas_ordered, get_meta, nav_label
 
-    nav = [
-        (m.number, m.slug, m.short_title, nav_label(m)) for m in all_metas_ordered()
-    ]
+    nav = [(m.number, m.slug, m.short_title, nav_label(m)) for m in all_metas_ordered()]
     generated_at = datetime.now(timezone.utc)
     copy_reference_assets(assets)
 
