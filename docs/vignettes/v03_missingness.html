@@ -152,14 +152,14 @@
       margin: 1rem 0 1.5rem;
       font-size: 0.92rem;
     }
-    .parity-details, .compare-r, .long-output {
+    .parity-details, .long-output {
       margin: 1rem 0;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.75rem 1rem;
       background: #fff;
     }
-    .parity-details summary, .compare-r summary, .long-output summary {
+    .parity-details summary, .long-output summary {
       cursor: pointer;
       font-weight: 600;
       color: var(--primary);
@@ -194,6 +194,12 @@
       margin: 1.25rem 0;
       padding: 0.75rem 1rem 1rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+    .dual-code-tabs .code-toolbar {
+      margin-bottom: 0.5rem;
+    }
+    .code-compare-grid .compare-title {
+      margin-top: 0;
     }
     .code-toolbar {
       display: flex;
@@ -350,7 +356,7 @@
     figure, figure.plot-figure { margin: 1rem 0; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
     img { max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 0 auto; }
     figcaption { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
-    .plot-tabs { margin-top: 1.25rem; }
+    .dual-code-tabs, .plot-tabs { margin-top: 1.25rem; }
     .plot-compare-grid figure { margin: 0; }
     .plot-empty { color: var(--text-muted); font-size: 0.9rem; font-style: italic; }
     
@@ -379,8 +385,48 @@
 <p>In this vignette we will focus on analyzing the relation between the data and the missingness. For non-<code>R</code> users: In <code>R</code> one can simply call the helpfunction for a any specific function <code>func</code> by typing <code>help(func)</code>. E.g. <code>help(mice)</code> directs you to the help page of the <code>mice</code> function.</p></div><h2 id="1-load-packages-and-seed">1. Load packages and seed</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Package load step; no R console output to compare.</p>
 
-<div class="code-card" id="code-56">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-56">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">import numpy as np
+from pymice import mice, complete, with_mids, pool, help, md_pattern, summary_pool
+from pymice.diagnostics.plots import plot_histogram, plot_mids
+from lib.data import load_boys_full_matrix, load_mammalsleep_full
+from lib.viz import save_figure
+from lib.r_style import (
+    format_bool_vector_r,
+    format_dataframe_r,
+    format_md_pattern_r,
+    format_pool_mipo_r,
+    format_pool_v03_summary_r,
+    format_summary_r,
+    format_tv_means_tibble_r
+)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(setup — no console output)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">require(mice)
+require(lattice)
+set.seed(123)</code></pre>
+      
+    
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="import numpy as np
 from pymice import mice, complete, with_mids, pool, help, md_pattern, summary_pool
@@ -412,28 +458,36 @@ from lib.r_style import (
     format_tv_means_tibble_r
 )</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(setup — no console output)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">require(mice)
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">require(mice)
 require(lattice)
 set.seed(123)</code></pre>
       
-    </div>
-  </details>
+    
+  </div>
 </div>
+
 
 <p>We choose seed value <code>123</code>. This is an arbitrary value; any value would be an equally good seed value. Fixing the random seed enables you (and others) to exactly replicate anything that involves random number generators. If you set the seed in your <code>R</code> instance to <code>123</code>, you will get the exact same results and plots as we present in this document.</p><h2 id="2-inspect-boys-dataset">2. Inspect boys dataset</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>To learn more about the contents of the data, use one of the two following help commands:</p>
 <p><strong>Note:</strong> Truncated R help excerpt (full pager is very long).</p>
 
-<div class="code-card" id="code-57">
-  <div class="code-toolbar">
-    <span class="code-toolbar-label">PyMICE</span>
-    <button type="button" class="copy-btn" data-copy="print(format_help_r(&#x27;boys&#x27;, max_lines=32))">Copy Python</button>
+
+<div class="code-tabs dual-code-tabs" id="code-57">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
   </div>
-  <pre class="language-python"><code class="language-python">print(format_help_r(&#x27;boys&#x27;, max_lines=32))</code></pre>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_help_r(&#x27;boys&#x27;, max_lines=32))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">boys                   package:mice                    R Documentation
 
 _G_r_o_w_t_h _o_f _D_u_t_c_h _b_o_y_s
@@ -468,11 +522,11 @@ _D_e_t_a_i_l_s:
 
 
 ... (72 more lines — full R help page omitted)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">help(boys)
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">help(boys)
 ?boys</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">boys                   package:mice                    R Documentation
 
@@ -577,13 +631,200 @@ _E_x_a_m_p_l_e_s:
        xlab = &quot;BMI imputed&quot;
      )
      par(oldpar)</code></pre>
+      </div>
     </div>
-  </details>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_help_r(&#x27;boys&#x27;, max_lines=32))">Copy Python</button>
+  </div>
+  <pre class="language-python"><code class="language-python">print(format_help_r(&#x27;boys&#x27;, max_lines=32))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">boys                   package:mice                    R Documentation
+
+_G_r_o_w_t_h _o_f _D_u_t_c_h _b_o_y_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Height, weight, head circumference and puberty of 748 Dutch boys.
+
+_F_o_r_m_a_t:
+
+     A data frame with 748 rows on the following 9 variables:
+
+     age Decimal age (0-21 years)
+
+     hgt Height (cm)
+
+     wgt Weight (kg)
+
+     bmi Body mass index
+
+     hc Head circumference (cm)
+
+     gen Genital Tanner stage (G1-G5)
+
+     phb Pubic hair (Tanner P1-P6)
+
+     tv Testicular volume (ml)
+
+     reg Region (north, east, west, south, city)
+
+_D_e_t_a_i_l_s:
+
+
+... (72 more lines — full R help page omitted)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">help(boys)
+?boys</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">boys                   package:mice                    R Documentation
+
+_G_r_o_w_t_h _o_f _D_u_t_c_h _b_o_y_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Height, weight, head circumference and puberty of 748 Dutch boys.
+
+_F_o_r_m_a_t:
+
+     A data frame with 748 rows on the following 9 variables:
+
+     age Decimal age (0-21 years)
+
+     hgt Height (cm)
+
+     wgt Weight (kg)
+
+     bmi Body mass index
+
+     hc Head circumference (cm)
+
+     gen Genital Tanner stage (G1-G5)
+
+     phb Pubic hair (Tanner P1-P6)
+
+     tv Testicular volume (ml)
+
+     reg Region (north, east, west, south, city)
+
+_D_e_t_a_i_l_s:
+
+     Random sample of 10\ Dutch growth references 1997. Variables ‘gen’
+     and ‘phb’ are ordered factors. ‘reg’ is a factor.
+
+_S_o_u_r_c_e:
+
+     Fredriks, A.M,, van Buuren, S., Burgmeijer, R.J., Meulmeester JF,
+     Beuker, R.J., Brugman, E., Roede, M.J., Verloove-Vanhorick, S.P.,
+     Wit, J.M. (2000) Continuing positive secular growth change in The
+     Netherlands 1955-1997.  _Pediatric Research_, *47*, 316-323.
+
+     Fredriks, A.M., van Buuren, S., Wit, J.M., Verloove-Vanhorick,
+     S.P. (2000). Body index measurements in 1996-7 compared with 1980.
+     _Archives of Disease in Childhood_, *82*, 107-112.
+
+_E_x_a_m_p_l_e_s:
+
+     # create two imputed data sets
+     imp &lt;- mice(boys, m = 1, maxit = 2)
+     z &lt;- complete(imp, 1)
+     
+     # create imputations for age &lt;8yrs
+     plot(z$age, z$gen,
+       col = mdc(1:2)[1 + is.na(boys$gen)],
+       xlab = &quot;Age (years)&quot;, ylab = &quot;Tanner Stage Genital&quot;
+     )
+     
+     # figure to show that the default imputation method does not impute BMI
+     # consistently
+     plot(z$bmi, z$wgt / (z$hgt / 100)^2,
+       col = mdc(1:2)[1 + is.na(boys$bmi)],
+       xlab = &quot;Imputed BMI&quot;, ylab = &quot;Calculated BMI&quot;
+     )
+     
+     # also, BMI distributions are somewhat different
+     oldpar &lt;- par(mfrow = c(1, 2))
+     MASS::truehist(z$bmi[!is.na(boys$bmi)],
+       h = 1, xlim = c(10, 30), ymax = 0.25,
+       col = mdc(1), xlab = &quot;BMI observed&quot;
+     )
+     MASS::truehist(z$bmi[is.na(boys$bmi)],
+       h = 1, xlim = c(10, 30), ymax = 0.25,
+       col = mdc(2), xlab = &quot;BMI imputed&quot;
+     )
+     par(oldpar)
+     
+     # repair the inconsistency problem by passive imputation
+     meth &lt;- imp$meth
+     meth[&quot;bmi&quot;] &lt;- &quot;~I(wgt/(hgt/100)^2)&quot;
+     pred &lt;- imp$predictorMatrix
+     pred[&quot;hgt&quot;, &quot;bmi&quot;] &lt;- 0
+     pred[&quot;wgt&quot;, &quot;bmi&quot;] &lt;- 0
+     imp2 &lt;- mice(boys, m = 1, maxit = 2, meth = meth, pred = pred)
+     z2 &lt;- complete(imp2, 1)
+     
+     # show that new imputations are consistent
+     plot(z2$bmi, z2$wgt / (z2$hgt / 100)^2,
+       col = mdc(1:2)[1 + is.na(boys$bmi)],
+       ylab = &quot;Calculated BMI&quot;
+     )
+     
+     # and compare distributions
+     oldpar &lt;- par(mfrow = c(1, 2))
+     MASS::truehist(z2$bmi[!is.na(boys$bmi)],
+       h = 1, xlim = c(10, 30), ymax = 0.25, col = mdc(1),
+       xlab = &quot;BMI observed&quot;
+     )
+     MASS::truehist(z2$bmi[is.na(boys$bmi)],
+       h = 1, xlim = c(10, 30), ymax = 0.25, col = mdc(2),
+       xlab = &quot;BMI imputed&quot;
+     )
+     par(oldpar)</code></pre>
+  </div>
 </div>
+
 <h2 id="3-dataset-size-and-missingness">3. Dataset size and missingness</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (3 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 
-<div class="code-card" id="code-58">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-58">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_boys_head_r())</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     age  hgt   wgt   bmi   hc  gen  phb tv   reg
+3  0.035 50.1 3.650 14.54 33.7 &lt;NA&gt; &lt;NA&gt; NA south
+4  0.038 53.5 3.370 11.77 35.0 &lt;NA&gt; &lt;NA&gt; NA south
+18 0.057 50.0 3.140 12.56 35.2 &lt;NA&gt; &lt;NA&gt; NA south
+23 0.060 54.5 4.270 14.37 36.7 &lt;NA&gt; &lt;NA&gt; NA south
+28 0.062 57.5 5.030 15.21 37.3 &lt;NA&gt; &lt;NA&gt; NA south
+36 0.068 55.5 4.655 15.11 37.0 &lt;NA&gt; &lt;NA&gt; NA south</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">head(boys)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age  hgt   wgt   bmi   hc  gen  phb tv   reg
+3  0.035 50.1 3.650 14.54 33.7 &lt;NA&gt; &lt;NA&gt; NA south
+4  0.038 53.5 3.370 11.77 35.0 &lt;NA&gt; &lt;NA&gt; NA south
+18 0.057 50.0 3.140 12.56 35.2 &lt;NA&gt; &lt;NA&gt; NA south
+23 0.060 54.5 4.270 14.37 36.7 &lt;NA&gt; &lt;NA&gt; NA south
+28 0.062 57.5 5.030 15.21 37.3 &lt;NA&gt; &lt;NA&gt; NA south
+36 0.068 55.5 4.655 15.11 37.0 &lt;NA&gt; &lt;NA&gt; NA south</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_boys_head_r())">Copy Python</button>
   </div>
@@ -595,11 +836,10 @@ _E_x_a_m_p_l_e_s:
 23 0.060 54.5 4.270 14.37 36.7 &lt;NA&gt; &lt;NA&gt; NA south
 28 0.062 57.5 5.030 15.21 37.3 &lt;NA&gt; &lt;NA&gt; NA south
 36 0.068 55.5 4.655 15.11 37.0 &lt;NA&gt; &lt;NA&gt; NA south</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">head(boys)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">head(boys)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age  hgt   wgt   bmi   hc  gen  phb tv   reg
 3  0.035 50.1 3.650 14.54 33.7 &lt;NA&gt; &lt;NA&gt; NA south
 4  0.038 53.5 3.370 11.77 35.0 &lt;NA&gt; &lt;NA&gt; NA south
@@ -607,31 +847,108 @@ _E_x_a_m_p_l_e_s:
 23 0.060 54.5 4.270 14.37 36.7 &lt;NA&gt; &lt;NA&gt; NA south
 28 0.062 57.5 5.030 15.21 37.3 &lt;NA&gt; &lt;NA&gt; NA south
 36 0.068 55.5 4.655 15.11 37.0 &lt;NA&gt; &lt;NA&gt; NA south</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-59">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-59">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(f&#x27;[1] {boys.shape[0]}&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 748</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">nrow(boys)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 748</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(f&#x27;[1] {boys.shape[0]}&#x27;)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">print(f&#x27;[1] {boys.shape[0]}&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 748</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">nrow(boys)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">nrow(boys)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 748</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-60">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-60">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_summary_boys_r(boys, boy_names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">      age              hgt              wgt              bmi
+ Min.   : 0.035   Min.   :  50.00   Min.   :   3.14   Min.   :11.77
+ 1st Qu.: 1.581   1st Qu.:  84.88   1st Qu.:  11.70   1st Qu.:15.90
+ Median : 10.505   Median : 147.30   Median :  34.65   Median :17.45
+ Mean   : 9.159   Mean   : 132.15   Mean   :  37.15   Mean   :18.07
+ 3rd Qu.: 15.267   3rd Qu.: 175.22   3rd Qu.:  59.58   3rd Qu.:19.53
+ Max.   : 21.177   Max.   : 198.00   Max.   : 117.40   Max.   :31.74
+                  NA&#x27;s   :20       NA&#x27;s   : 4        NA&#x27;s   :21
+       hc          gen        phb            tv           reg
+ Min.   :33.70   G1  :  56   P1  :  63   Min.   :  1.00   north:  81
+ 1st Qu.:48.12   G2  :  50   P2  :  40   1st Qu.:  4.00   east :161
+ Median :53.00   G3  :  22   P3  :  19   Median :12.00   west :239
+ Mean   :51.51   G4  :  42   P4  :  32   Mean   :11.89   south:191
+ 3rd Qu.:56.00   G5  :  75   P5  :  50   3rd Qu.: 20.00   city : 73
+ Max.   :65.00   NA&#x27;s:503   P6  :  41   Max.   :25.00   NA&#x27;s :   3
+ NA&#x27;s   :46                 NA&#x27;s:503   NA&#x27;s   :522</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">summary(boys)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">      age              hgt              wgt              bmi
+ Min.   : 0.035   Min.   : 50.00   Min.   :  3.14   Min.   :11.77
+ 1st Qu.: 1.581   1st Qu.: 84.88   1st Qu.: 11.70   1st Qu.:15.90
+ Median :10.505   Median :147.30   Median : 34.65   Median :17.45
+ Mean   : 9.159   Mean   :132.15   Mean   : 37.15   Mean   :18.07
+ 3rd Qu.:15.267   3rd Qu.:175.22   3rd Qu.: 59.58   3rd Qu.:19.53
+ Max.   :21.177   Max.   :198.00   Max.   :117.40   Max.   :31.74
+                  NA&#x27;s   :20       NA&#x27;s   :4        NA&#x27;s   :21
+       hc          gen        phb            tv           reg
+ Min.   :33.70   G1  : 56   P1  : 63   Min.   : 1.00   north: 81
+ 1st Qu.:48.12   G2  : 50   P2  : 40   1st Qu.: 4.00   east :161
+ Median :53.00   G3  : 22   P3  : 19   Median :12.00   west :239
+ Mean   :51.51   G4  : 42   P4  : 32   Mean   :11.89   south:191
+ 3rd Qu.:56.00   G5  : 75   P5  : 50   3rd Qu.:20.00   city : 73
+ Max.   :65.00   NA&#x27;s:503   P6  : 41   Max.   :25.00   NA&#x27;s :  3
+ NA&#x27;s   :46                 NA&#x27;s:503   NA&#x27;s   :522</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_summary_boys_r(boys, boy_names))">Copy Python</button>
   </div>
@@ -652,11 +969,10 @@ _E_x_a_m_p_l_e_s:
  3rd Qu.:56.00   G5  :  75   P5  :  50   3rd Qu.: 20.00   city : 73
  Max.   :65.00   NA&#x27;s:503   P6  :  41   Max.   :25.00   NA&#x27;s :   3
  NA&#x27;s   :46                 NA&#x27;s:503   NA&#x27;s   :522</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(boys)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">summary(boys)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">      age              hgt              wgt              bmi
  Min.   : 0.035   Min.   : 50.00   Min.   :  3.14   Min.   :11.77
  1st Qu.: 1.581   1st Qu.: 84.88   1st Qu.: 11.70   1st Qu.:15.90
@@ -673,13 +989,65 @@ _E_x_a_m_p_l_e_s:
  3rd Qu.:56.00   G5  : 75   P5  : 50   3rd Qu.:20.00   city : 73
  Max.   :65.00   NA&#x27;s:503   P6  : 41   Max.   :25.00   NA&#x27;s :  3
  NA&#x27;s   :46                 NA&#x27;s:503   NA&#x27;s   :522</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 <h2 id="4-missing-data-patterns">4. Missing data patterns</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 
-<div class="code-card" id="code-61">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-61">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_md_pattern_r(md_pattern(boys, boy_names)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    age reg wgt hgt bmi  hc gen phb  tv     
+223   1   1   1   1   1   1   1   1   1  0
+ 19   1   1   1   1   1   1   1   1   0  1
+  1   1   1   1   1   1   1   1   0   1  1
+  1   1   1   1   1   1   1   0   1   0  2
+437   1   1   1   1   1   1   0   0   0  3
+ 43   1   1   1   1   1   0   0   0   0  4
+ 16   1   1   1   0   0   1   0   0   0  5
+  1   1   1   1   0   0   0   0   0   0  6
+  1   1   1   0   1   0   1   0   0   0  5
+  1   1   1   0   0   0   1   1   1   1  3
+  1   1   1   0   0   0   0   1   1   1  4
+  1   1   1   0   0   0   0   0   0   0  7
+  3   1   0   1   1   1   1   0   0   0  4
+      0   3   4   20   21   46   503   503   522  1622</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">md.pattern(boys)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age reg wgt hgt bmi hc gen phb  tv
+223   1   1   1   1   1  1   1   1   1    0
+19    1   1   1   1   1  1   1   1   0    1
+1     1   1   1   1   1  1   1   0   1    1
+1     1   1   1   1   1  1   0   1   0    2
+437   1   1   1   1   1  1   0   0   0    3
+43    1   1   1   1   1  0   0   0   0    4
+16    1   1   1   0   0  1   0   0   0    5
+1     1   1   1   0   0  0   0   0   0    6
+1     1   1   0   1   0  1   0   0   0    5
+1     1   1   0   0   0  1   1   1   1    3
+1     1   1   0   0   0  0   1   1   1    4
+1     1   1   0   0   0  0   0   0   0    7
+3     1   0   1   1   1  1   0   0   0    4
+      0   3   4  20  21 46 503 503 522 1622</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_md_pattern_r(md_pattern(boys, boy_names)))">Copy Python</button>
   </div>
@@ -699,11 +1067,10 @@ _E_x_a_m_p_l_e_s:
   1   1   1   0   0   0   0   0   0   0  7
   3   1   0   1   1   1   1   0   0   0  4
       0   3   4   20   21   46   503   503   522  1622</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">md.pattern(boys)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">md.pattern(boys)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age reg wgt hgt bmi hc gen phb  tv
 223   1   1   1   1   1  1   1   1   1    0
 19    1   1   1   1   1  1   1   1   0    1
@@ -719,33 +1086,83 @@ _E_x_a_m_p_l_e_s:
 1     1   1   0   0   0  0   0   0   0    7
 3     1   0   1   1   1  1   0   0   0    4
       0   3   4  20  21 46 503 503 522 1622</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 
 <p>There are 13 patterns in total, with the pattern where <code>gen</code>, <code>phb</code> and <code>tv</code> are missing occuring the most.</p><h2 id="5-patterns-with-missing-gen">5. Patterns with missing gen</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> R draws default <code>md.pattern</code> graphic when assigning <code>mpat</code>.</p>
 
-<div class="code-card" id="code-62">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-62">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">mpat = md_pattern(boys, boy_names)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">mpat &lt;- md.pattern(boys)</code></pre>
+      
+    
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="mpat = md_pattern(boys, boy_names)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">mpat = md_pattern(boys, boy_names)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">mpat &lt;- md.pattern(boys)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">mpat &lt;- md.pattern(boys)</code></pre>
       
-    </div>
-  </details>
+    
+  </div>
 </div>
 
 
-<div class="code-card" id="code-63">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-63">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">gen_col = boy_names.index(&quot;gen&quot;)
+print(f&#x27;[1] {int(np.sum(mpat.matrix[:-1, gen_col] == 0))}&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 8</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">sum(mpat[, &quot;gen&quot;] == 0)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 8</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="gen_col = boy_names.index(&quot;gen&quot;)
 print(f&#x27;[1] {int(np.sum(mpat.matrix[:-1, gen_col] == 0))}&#x27;)">Copy Python</button>
@@ -753,15 +1170,14 @@ print(f&#x27;[1] {int(np.sum(mpat.matrix[:-1, gen_col] == 0))}&#x27;)">Copy Pyth
   <pre class="language-python"><code class="language-python">gen_col = boy_names.index(&quot;gen&quot;)
 print(f&#x27;[1] {int(np.sum(mpat.matrix[:-1, gen_col] == 0))}&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 8</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">sum(mpat[, &quot;gen&quot;] == 0)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">sum(mpat[, &quot;gen&quot;] == 0)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 8</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 
 <p>Answer: 8 patterns (503 cases)</p><h2 id="6-histogram-by-missing-gen">6. Histogram by missing gen</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 <p>To create said histogram in <code>R</code>, a missingness indicator for <code>gen</code> has to be created. A missingness indicator is a dummy variable with value <code>1</code> for observed values (in this case genital status) and <code>0</code> for missing values. Create a missingness indicator for <code>gen</code> by typing</p>
@@ -917,61 +1333,105 @@ R</code></pre>
 <p>A histogram can be made with the function <code>histogram()</code>.</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-64">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-64">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">plot_histogram(boys, boy_names, &#x27;gen&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">histogram(boys$gen)</code></pre>
+      
+    
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_histogram(boys, boy_names, &#x27;gen&#x27;)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">plot_histogram(boys, boy_names, &#x27;gen&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">histogram(boys$gen)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">histogram(boys$gen)</code></pre>
       
-    </div>
-  </details>
+    
+  </div>
 </div>
+
 
 <p>or, equivalently, one could use</p>
 <p><code>histogram(~ gen, data = boys)</code></p>
 <p>Writing the latter line of code for plots is more efficient than selecting every part of the <code>boys</code> data with the <code>boys$...</code> command, especially if plots become more advanced. The code for a conditional histogram of <code>age</code> given <code>R</code> is</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-65">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-65">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">plot_histogram(boys, boy_names, &#x27;age&#x27;, condition=np.isnan(boys[:, gen_col]))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">histogram(~age|R, data=boys)</code></pre>
+      
+    
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_histogram(boys, boy_names, &#x27;age&#x27;, condition=np.isnan(boys[:, gen_col]))">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">plot_histogram(boys, boy_names, &#x27;age&#x27;, condition=np.isnan(boys[:, gen_col]))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">histogram(~age|R, data=boys)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">histogram(~age|R, data=boys)</code></pre>
       
-    </div>
-  </details>
+    
+  </div>
 </div>
+
 
 <p>The histogram shows that the missingness in <code>gen</code> is not equally distributed across <code>age</code>.</p>
 <div class="code-tabs plot-tabs" id="plots-66">
+
   <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
   </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v03_hist_gen.png" alt="6. Histogram by missing gen"><figcaption>v03_hist_gen.png</figcaption></figure>
-<figure class="plot-figure"><img src="assets/v03_hist_age_by_genmiss.png" alt="6. Histogram by missing gen"><figcaption>v03_hist_age_by_genmiss.png</figcaption></figure>
-  </div>
-  <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_003.png" alt="6. Histogram by missing gen"><figcaption>fig_003.png</figcaption></figure>
-<figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_005.png" alt="6. Histogram by missing gen"><figcaption>fig_005.png</figcaption></figure>
-  </div>
-  <div class="tab-content compare">
+  <div class="tab-content compare active">
+
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -983,8 +1443,21 @@ R</code></pre>
         <div class="compare-title">R (Reference)</div>
         <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_003.png" alt="6. Histogram by missing gen">
         <figcaption>fig_003.png</figcaption></figure>
-      </div>
-    </div>
+      
+  </div>
+  <div class="tab-content python">
+
+    <figure class="plot-figure"><img src="assets/v03_hist_gen.png" alt="6. Histogram by missing gen"><figcaption>v03_hist_gen.png</figcaption></figure>
+<figure class="plot-figure"><img src="assets/v03_hist_age_by_genmiss.png" alt="6. Histogram by missing gen"><figcaption>v03_hist_age_by_genmiss.png</figcaption></figure>
+  
+  </div>
+  <div class="tab-content r">
+
+    <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_003.png" alt="6. Histogram by missing gen"><figcaption>fig_003.png</figcaption></figure>
+<figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_005.png" alt="6. Histogram by missing gen"><figcaption>fig_005.png</figcaption></figure>
+  
+  </div>
+</div>
 
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -1003,26 +1476,105 @@ R</code></pre>
 <h2 id="7-default-mice-imputation">7. Default MICE imputation</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Creates <code>imp1</code> object; R vignette prints no console output here.</p>
 
-<div class="code-card" id="code-67">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-67">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">imp1 = mice(boys, column_names=boy_names, m=5, maxit=5, print_flag=False)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(imputation complete — no printed output)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">imp1 &lt;- mice(boys, print=FALSE)</code></pre>
+      
+    
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp1 = mice(boys, column_names=boy_names, m=5, maxit=5, print_flag=False)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">imp1 = mice(boys, column_names=boy_names, m=5, maxit=5, print_flag=False)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(imputation complete — no printed output)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp1 &lt;- mice(boys, print=FALSE)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">imp1 &lt;- mice(boys, print=FALSE)</code></pre>
       
-    </div>
-  </details>
+    
+  </div>
 </div>
+
 <h2 id="8-compare-imputed-means">8. Compare imputed means</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (3 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 3 blocks)</div>
 
-<div class="code-card" id="code-68">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-68">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_summary_boys_r(boys, boy_names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">      age              hgt              wgt              bmi
+ Min.   : 0.035   Min.   :  50.00   Min.   :   3.14   Min.   :11.77
+ 1st Qu.: 1.581   1st Qu.:  84.88   1st Qu.:  11.70   1st Qu.:15.90
+ Median : 10.505   Median : 147.30   Median :  34.65   Median :17.45
+ Mean   : 9.159   Mean   : 132.15   Mean   :  37.15   Mean   :18.07
+ 3rd Qu.: 15.267   3rd Qu.: 175.22   3rd Qu.:  59.58   3rd Qu.:19.53
+ Max.   : 21.177   Max.   : 198.00   Max.   : 117.40   Max.   :31.74
+                  NA&#x27;s   :20       NA&#x27;s   : 4        NA&#x27;s   :21
+       hc          gen        phb            tv           reg
+ Min.   :33.70   G1  :  56   P1  :  63   Min.   :  1.00   north:  81
+ 1st Qu.:48.12   G2  :  50   P2  :  40   1st Qu.:  4.00   east :161
+ Median :53.00   G3  :  22   P3  :  19   Median :12.00   west :239
+ Mean   :51.51   G4  :  42   P4  :  32   Mean   :11.89   south:191
+ 3rd Qu.:56.00   G5  :  75   P5  :  50   3rd Qu.: 20.00   city : 73
+ Max.   :65.00   NA&#x27;s:503   P6  :  41   Max.   :25.00   NA&#x27;s :   3
+ NA&#x27;s   :46                 NA&#x27;s:503   NA&#x27;s   :522</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">summary(boys)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">      age              hgt              wgt              bmi
+ Min.   : 0.035   Min.   : 50.00   Min.   :  3.14   Min.   :11.77
+ 1st Qu.: 1.581   1st Qu.: 84.88   1st Qu.: 11.70   1st Qu.:15.90
+ Median :10.505   Median :147.30   Median : 34.65   Median :17.45
+ Mean   : 9.159   Mean   :132.15   Mean   : 37.15   Mean   :18.07
+ 3rd Qu.:15.267   3rd Qu.:175.22   3rd Qu.: 59.58   3rd Qu.:19.53
+ Max.   :21.177   Max.   :198.00   Max.   :117.40   Max.   :31.74
+                  NA&#x27;s   :20       NA&#x27;s   :4        NA&#x27;s   :21
+       hc          gen        phb            tv           reg
+ Min.   :33.70   G1  : 56   P1  : 63   Min.   : 1.00   north: 81
+ 1st Qu.:48.12   G2  : 50   P2  : 40   1st Qu.: 4.00   east :161
+ Median :53.00   G3  : 22   P3  : 19   Median :12.00   west :239
+ Mean   :51.51   G4  : 42   P4  : 32   Mean   :11.89   south:191
+ 3rd Qu.:56.00   G5  : 75   P5  : 50   3rd Qu.:20.00   city : 73
+ Max.   :65.00   NA&#x27;s:503   P6  : 41   Max.   :25.00   NA&#x27;s :  3
+ NA&#x27;s   :46                 NA&#x27;s:503   NA&#x27;s   :522</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_summary_boys_r(boys, boy_names))">Copy Python</button>
   </div>
@@ -1043,11 +1595,10 @@ R</code></pre>
  3rd Qu.:56.00   G5  :  75   P5  :  50   3rd Qu.: 20.00   city : 73
  Max.   :65.00   NA&#x27;s:503   P6  :  41   Max.   :25.00   NA&#x27;s :   3
  NA&#x27;s   :46                 NA&#x27;s:503   NA&#x27;s   :522</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(boys)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">summary(boys)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">      age              hgt              wgt              bmi
  Min.   : 0.035   Min.   : 50.00   Min.   :  3.14   Min.   :11.77
  1st Qu.: 1.581   1st Qu.: 84.88   1st Qu.: 11.70   1st Qu.:15.90
@@ -1064,13 +1615,64 @@ R</code></pre>
  3rd Qu.:56.00   G5  : 75   P5  : 50   3rd Qu.:20.00   city : 73
  Max.   :65.00   NA&#x27;s:503   P6  : 41   Max.   :25.00   NA&#x27;s :  3
  NA&#x27;s   :46                 NA&#x27;s:503   NA&#x27;s   :522</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-69">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-69">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">filled = complete(imp1, 1)
+print(format_summary_boys_r(filled, boy_names, compact_factors=True))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">age              hgt              wgt              bmi
+ Min.   : 0.035   Min.   :  50.00   Min.   :   3.14   Min.   :11.77
+ 1st Qu.: 1.581   1st Qu.:  82.90   1st Qu.:  11.70   1st Qu.:15.89
+ Median : 10.505   Median : 145.75   Median :  34.55   Median :17.40
+ Mean   : 9.159   Mean   : 131.05   Mean   :  37.15   Mean   :18.04
+ 3rd Qu.: 15.267   3rd Qu.: 175.00   3rd Qu.:  59.58   3rd Qu.:19.45
+ Max.   : 21.177   Max.   : 198.00   Max.   : 117.40   Max.   :31.74
+       hc        gen      phb            tv            reg
+ Min.   :33.70   G1:384   P1:408   Min.   :  1.000   north: 81
+ 1st Qu.:48.45   G2: 87   P2: 56   1st Qu.:  2.000   east :162
+ Median :53.20   G3: 36   P3: 34   Median :  4.000   west :240
+ Mean   :51.63   G4: 87   P4: 60   Mean   :   8.389   south:191
+ 3rd Qu.:56.00   G5:154   P5:106   3rd Qu.: 15.000   city : 74
+ Max.   :65.00             P6: 84   Max.   : 25.000</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">summary(complete(imp1))</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">age              hgt              wgt              bmi
+ Min.   : 0.035   Min.   :  50.00   Min.   :   3.14   Min.   :11.77
+ 1st Qu.: 1.581   1st Qu.:  82.90   1st Qu.:  11.70   1st Qu.:15.89
+ Median : 10.505   Median : 145.75   Median :  34.55   Median :17.40
+ Mean   : 9.159   Mean   : 131.05   Mean   :  37.15   Mean   :18.04
+ 3rd Qu.: 15.267   3rd Qu.: 175.00   3rd Qu.:  59.58   3rd Qu.:19.45
+ Max.   : 21.177   Max.   : 198.00   Max.   : 117.40   Max.   :31.74
+       hc        gen      phb            tv            reg
+ Min.   :33.70   G1:384   P1:408   Min.   :  1.000   north: 81
+ 1st Qu.:48.45   G2: 87   P2: 56   1st Qu.:  2.000   east :162
+ Median :53.20   G3: 36   P3: 34   Median :  4.000   west :240
+ Mean   :51.63   G4: 87   P4: 60   Mean   :   8.389   south:191
+ 3rd Qu.:56.00   G5:154   P5:106   3rd Qu.: 15.000   city : 74
+ Max.   :65.00             P6: 84   Max.   : 25.000</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="filled = complete(imp1, 1)
 print(format_summary_boys_r(filled, boy_names, compact_factors=True))">Copy Python</button>
@@ -1091,11 +1693,10 @@ print(format_summary_boys_r(filled, boy_names, compact_factors=True))</code></pr
  Mean   :51.63   G4: 87   P4: 60   Mean   :   8.389   south:191
  3rd Qu.:56.00   G5:154   P5:106   3rd Qu.: 15.000   city : 74
  Max.   :65.00             P6: 84   Max.   : 25.000</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(complete(imp1))</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">summary(complete(imp1))</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">age              hgt              wgt              bmi
  Min.   : 0.035   Min.   :  50.00   Min.   :   3.14   Min.   :11.77
  1st Qu.: 1.581   1st Qu.:  82.90   1st Qu.:  11.70   1st Qu.:15.89
@@ -1110,15 +1711,54 @@ print(format_summary_boys_r(filled, boy_names, compact_factors=True))</code></pr
  Mean   :51.63   G4: 87   P4: 60   Mean   :   8.389   south:191
  3rd Qu.:56.00   G5:154   P5:106   3rd Qu.: 15.000   city : 74
  Max.   :65.00             P6: 84   Max.   : 25.000</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 
 <p>Most means are roughly equal, except the mean of <code>tv</code>, which is much lower in the first imputed data set, when compared to the incomplete data. This makes sense because most genital measures are unobserved for the lower ages. When imputing these values, the means should decrease.</p>
 <p>Investigating univariate properties by using functions such as <code>summary()</code>, may not be ideal in the case of hundreds of variables. To extract just the information you need, for all imputed datasets, we can make use of the <code>with()</code> function. To obtain summaries for each imputed <code>tv</code> only, type</p>
 
-<div class="code-card" id="code-70">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-70">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">means = [np.nanmean(complete(imp1, i)[:, tv_idx]) for i in range(1, imp1.m + 1)]
+print(format_tv_means_tibble_r(means))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text"># A tibble: 5 x 1
+      x
+  &lt;dbl&gt;
+1  8.39
+2  8.50
+3  8.42
+4  8.48
+5  8.47</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">summary(with(imp1, mean(tv)))</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text"># A tibble: 5 x 1
+      x
+  &lt;dbl&gt;
+1  8.39
+2  8.50
+3  8.42
+4  8.48
+5  8.47</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="means = [np.nanmean(complete(imp1, i)[:, tv_idx]) for i in range(1, imp1.m + 1)]
 print(format_tv_means_tibble_r(means))">Copy Python</button>
@@ -1133,11 +1773,10 @@ print(format_tv_means_tibble_r(means))</code></pre>
 3  8.42
 4  8.48
 5  8.47</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(with(imp1, mean(tv)))</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">summary(with(imp1, mean(tv)))</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text"># A tibble: 5 x 1
       x
   &lt;dbl&gt;
@@ -1146,19 +1785,27 @@ print(format_tv_means_tibble_r(means))</code></pre>
 3  8.42
 4  8.48
 5  8.47</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 <h3 id="the-importance-of-the-imputation-model">The importance of the imputation model</h3><h2 id="9-inspect-mammalsleep-data">9. Inspect mammalsleep data</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (4 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 5 blocks)</div>
 <p>The <code>mammalsleep</code> dataset is part of <code>mice</code>. It contains the Allison and Cicchetti (1976) data for mammalian species. To learn more about this data, type</p>
 <p><strong>Note:</strong> Truncated R help excerpt (full pager is very long).</p>
 
-<div class="code-card" id="code-71">
-  <div class="code-toolbar">
-    <span class="code-toolbar-label">PyMICE</span>
-    <button type="button" class="copy-btn" data-copy="print(format_help_r(&#x27;mammalsleep&#x27;, max_lines=28))">Copy Python</button>
+
+<div class="code-tabs dual-code-tabs" id="code-71">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
   </div>
-  <pre class="language-python"><code class="language-python">print(format_help_r(&#x27;mammalsleep&#x27;, max_lines=28))</code></pre>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_help_r(&#x27;mammalsleep&#x27;, max_lines=28))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">mammalsleep                package:mice                R Documentation
 
 _M_a_m_m_a_l _s_l_e_e_p _d_a_t_a
@@ -1189,11 +1836,11 @@ _F_o_r_m_a_t:
      mls Maximum life span (years)
 
 ... (33 more lines — full R help page omitted)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">help(mammalsleep)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">help(mammalsleep)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">mammalsleep                package:mice                R Documentation
 
 _M_a_m_m_a_l _s_l_e_e_p _d_a_t_a
@@ -1254,13 +1901,166 @@ _S_o_u_r_c_e:
 _E_x_a_m_p_l_e_s:
 
      sleep &lt;- data(mammalsleep)</code></pre>
+      </div>
     </div>
-  </details>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="print(format_help_r(&#x27;mammalsleep&#x27;, max_lines=28))">Copy Python</button>
+  </div>
+  <pre class="language-python"><code class="language-python">print(format_help_r(&#x27;mammalsleep&#x27;, max_lines=28))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">mammalsleep                package:mice                R Documentation
+
+_M_a_m_m_a_l _s_l_e_e_p _d_a_t_a
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Dataset from Allison and Cicchetti (1976) of 62 mammal species on
+     the interrelationship between sleep, ecological, and
+     constitutional variables. The dataset contains missing values on
+     five variables.
+
+_F_o_r_m_a_t:
+
+     ‘mammalsleep’ is a data frame with 62 rows and 11 columns:
+
+     species Species of animal
+
+     bw Body weight (kg)
+
+     brw Brain weight (g)
+
+     sws Slow wave (&quot;nondreaming&quot;) sleep (hrs/day)
+
+     ps Paradoxical (&quot;dreaming&quot;) sleep (hrs/day)
+
+     ts Total sleep (hrs/day) (sum of slow wave and paradoxical sleep)
+
+     mls Maximum life span (years)
+
+... (33 more lines — full R help page omitted)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">help(mammalsleep)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">mammalsleep                package:mice                R Documentation
+
+_M_a_m_m_a_l _s_l_e_e_p _d_a_t_a
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Dataset from Allison and Cicchetti (1976) of 62 mammal species on
+     the interrelationship between sleep, ecological, and
+     constitutional variables. The dataset contains missing values on
+     five variables.
+
+_F_o_r_m_a_t:
+
+     ‘mammalsleep’ is a data frame with 62 rows and 11 columns:
+
+     species Species of animal
+
+     bw Body weight (kg)
+
+     brw Brain weight (g)
+
+     sws Slow wave (&quot;nondreaming&quot;) sleep (hrs/day)
+
+     ps Paradoxical (&quot;dreaming&quot;) sleep (hrs/day)
+
+     ts Total sleep (hrs/day) (sum of slow wave and paradoxical sleep)
+
+     mls Maximum life span (years)
+
+     gt Gestation time (days)
+
+     pi Predation index (1-5), 1 = least likely to be preyed upon
+
+     sei Sleep exposure index (1-5), 1 = least exposed (e.g. animal
+          sleeps in a well-protected den), 5 = most exposed
+
+     odi Overall danger index (1-5) based on the above two indices and
+          other information, 1 = least danger (from other animals), 5 =
+          most danger (from other animals)
+
+_D_e_t_a_i_l_s:
+
+     Allison and Cicchetti (1976) investigated the interrelationship
+     between sleep, ecological, and constitutional variables.  They
+     assessed these variables for 39 mammalian species. The authors
+     concluded that slow-wave sleep is negatively associated with a
+     factor related to body size. This suggests that large amounts of
+     this sleep phase are disadvantageous in large species.  Also,
+     paradoxical sleep (REM sleep) was associated with a factor related
+     to predatory danger, suggesting that large amounts of this sleep
+     phase are disadvantageous in prey species.
+
+_S_o_u_r_c_e:
+
+     Allison, T., Cicchetti, D.V. (1976). Sleep in Mammals: Ecological
+     and Constitutional Correlates. Science, 194(4266), 732-734.
+
+_E_x_a_m_p_l_e_s:
+
+     sleep &lt;- data(mammalsleep)</code></pre>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-72">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-72">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_mammalsleep_head_r())</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">                     species       bw    brw sws  ps   ts  mls  gt pi sei
+1          African elephant 6654.000 5712.0   NA  NA  3.3  38.6  645  3   5
+2 African giant pouched rat    1.000    6.6  6.3 2.0  8.3   4.5   42  3   1
+3                Arctic Fox    3.385   44.5   NA  NA 12.5  14.0   60  1   1
+4    Arctic ground squirrel    0.920    5.7   NA  NA 16.5    NA   25  5   2
+5            Asian elephant 2547.000 4603.0  2.1 1.8  3.9  69.0  624  3   5
+6                    Baboon   10.550  179.5  9.1 0.7  9.8  27.0  180  4   4
+  odi
+1   3
+2   3
+3   1
+4   3
+5   4
+6   4</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">head(mammalsleep)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">                    species       bw    brw sws  ps   ts  mls  gt pi sei
+1          African elephant 6654.000 5712.0  NA  NA  3.3 38.6 645  3   5
+2 African giant pouched rat    1.000    6.6 6.3 2.0  8.3  4.5  42  3   1
+3                Arctic Fox    3.385   44.5  NA  NA 12.5 14.0  60  1   1
+4    Arctic ground squirrel    0.920    5.7  NA  NA 16.5   NA  25  5   2
+5            Asian elephant 2547.000 4603.0 2.1 1.8  3.9 69.0 624  3   5
+6                    Baboon   10.550  179.5 9.1 0.7  9.8 27.0 180  4   4
+  odi
+1   3
+2   3
+3   1
+4   3
+5   4
+6   4</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_mammalsleep_head_r())">Copy Python</button>
   </div>
@@ -1279,11 +2079,10 @@ _E_x_a_m_p_l_e_s:
 4   3
 5   4
 6   4</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">head(mammalsleep)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">head(mammalsleep)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">                    species       bw    brw sws  ps   ts  mls  gt pi sei
 1          African elephant 6654.000 5712.0  NA  NA  3.3 38.6 645  3   5
 2 African giant pouched rat    1.000    6.6 6.3 2.0  8.3  4.5  42  3   1
@@ -1298,13 +2097,83 @@ _E_x_a_m_p_l_e_s:
 4   3
 5   4
 6   4</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-73">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-73">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_summary_mammalsleep_r(ms_full, ms_names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">                      species         bw                brw
+ African elephant         : 1   Min.   :   0.005   Min.   :   0.14
+ African giant pouched rat: 1   1st Qu.:   0.600   1st Qu.:   4.25
+ Arctic Fox               : 1   Median :   3.342   Median :  17.25
+ Arctic ground squirrel   : 1   Mean   : 198.790   Mean   : 283.13
+ Asian elephant           : 1   3rd Qu.:  48.203   3rd Qu.: 166.00
+ Baboon                   : 1   Max.   :6654.000   Max.   :5712.00
+ (Other)                  :56
+      sws               ps              ts             mls
+ Min.   : 2.100   Min.   :0.000   Min.   :  2.60   Min.   :   2.000
+ 1st Qu.: 6.250   1st Qu.:0.900   1st Qu.:  8.05   1st Qu.:   6.625
+ Median : 8.350   Median :1.800   Median :10.45   Median :  15.100
+ Mean   : 8.673   Mean   :1.972   Mean   :10.53   Mean   :  19.878
+ 3rd Qu.: 11.000   3rd Qu.:2.550   3rd Qu.: 13.20   3rd Qu.:  27.750
+ Max.   : 17.900   Max.   :6.600   Max.   : 19.90   Max.   : 100.000
+ NA&#x27;s   :14       NA&#x27;s   :12      NA&#x27;s   : 4       NA&#x27;s   : 4
+       gt               pi             sei             odi
+ Min.   :  12.00   Min.   : 1.000   Min.   : 1.000   Min.   : 1.000
+ 1st Qu.:  35.75   1st Qu.: 2.000   1st Qu.: 1.000   1st Qu.: 1.000
+ Median :  79.00   Median : 3.000   Median : 2.000   Median : 2.000
+ Mean   :  142.35   Mean   : 2.871   Mean   : 2.419   Mean   : 2.613
+ 3rd Qu.: 207.50   3rd Qu.: 4.000   3rd Qu.: 4.000   3rd Qu.: 4.000
+ Max.   : 645.00   Max.   : 5.000   Max.   : 5.000   Max.   : 5.000
+ NA&#x27;s   : 4</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">summary(mammalsleep)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">                      species         bw                brw
+ African elephant         : 1   Min.   :   0.005   Min.   :   0.14
+ African giant pouched rat: 1   1st Qu.:   0.600   1st Qu.:   4.25
+ Arctic Fox               : 1   Median :   3.342   Median :  17.25
+ Arctic ground squirrel   : 1   Mean   : 198.790   Mean   : 283.13
+ Asian elephant           : 1   3rd Qu.:  48.203   3rd Qu.: 166.00
+ Baboon                   : 1   Max.   :6654.000   Max.   :5712.00
+ (Other)                  :56
+      sws               ps              ts             mls
+ Min.   : 2.100   Min.   :0.000   Min.   : 2.60   Min.   :  2.000
+ 1st Qu.: 6.250   1st Qu.:0.900   1st Qu.: 8.05   1st Qu.:  6.625
+ Median : 8.350   Median :1.800   Median :10.45   Median : 15.100
+ Mean   : 8.673   Mean   :1.972   Mean   :10.53   Mean   : 19.878
+ 3rd Qu.:11.000   3rd Qu.:2.550   3rd Qu.:13.20   3rd Qu.: 27.750
+ Max.   :17.900   Max.   :6.600   Max.   :19.90   Max.   :100.000
+ NA&#x27;s   :14       NA&#x27;s   :12      NA&#x27;s   :4       NA&#x27;s   :4
+       gt               pi             sei             odi
+ Min.   : 12.00   Min.   :1.000   Min.   :1.000   Min.   :1.000
+ 1st Qu.: 35.75   1st Qu.:2.000   1st Qu.:1.000   1st Qu.:1.000
+ Median : 79.00   Median :3.000   Median :2.000   Median :2.000
+ Mean   :142.35   Mean   :2.871   Mean   :2.419   Mean   :2.613
+ 3rd Qu.:207.50   3rd Qu.:4.000   3rd Qu.:4.000   3rd Qu.:4.000
+ Max.   :645.00   Max.   :5.000   Max.   :5.000   Max.   :5.000
+ NA&#x27;s   :4</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_summary_mammalsleep_r(ms_full, ms_names))">Copy Python</button>
   </div>
@@ -1333,11 +2202,10 @@ _E_x_a_m_p_l_e_s:
  3rd Qu.: 207.50   3rd Qu.: 4.000   3rd Qu.: 4.000   3rd Qu.: 4.000
  Max.   : 645.00   Max.   : 5.000   Max.   : 5.000   Max.   : 5.000
  NA&#x27;s   : 4</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(mammalsleep)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">summary(mammalsleep)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">                      species         bw                brw
  African elephant         : 1   Min.   :   0.005   Min.   :   0.14
  African giant pouched rat: 1   1st Qu.:   0.600   1st Qu.:   4.25
@@ -1362,13 +2230,59 @@ _E_x_a_m_p_l_e_s:
  3rd Qu.:207.50   3rd Qu.:4.000   3rd Qu.:4.000   3rd Qu.:4.000
  Max.   :645.00   Max.   :5.000   Max.   :5.000   Max.   :5.000
  NA&#x27;s   :4</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-74">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-74">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python"># str() layout — static R reference</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    62 obs. of  11 variables:
+ $ species: Factor w/ 62 levels &quot;African elephant&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ bw     : num  6654 1 3.38 0.92 2547 ...
+ $ brw    : num  5712 6.6 44.5 5.7 4603 ...
+ $ sws    : num  NA 6.3 NA NA 2.1 9.1 15.8 5.2 10.9 8.3 ...
+ $ ps     : num  NA 2 NA NA 1.8 0.7 3.9 1 3.6 1.4 ...
+ $ ts     : num  3.3 8.3 12.5 16.5 3.9 9.8 19.7 6.2 14.5 9.7 ...
+ $ mls    : num  38.6 4.5 14 NA 69 27 19 30.4 28 50 ...
+ $ gt     : num  645 42 60 25 624 180 35 392 63 230 ...
+ $ pi     : int  3 3 1 5 3 4 1 4 1 1 ...
+ $ sei    : int  5 1 1 2 5 4 1 5 2 1 ...
+ $ odi    : int  3 3 1 3 4 4 1 4 1 1 ...</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">str(mammalsleep)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    62 obs. of  11 variables:
+ $ species: Factor w/ 62 levels &quot;African elephant&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ bw     : num  6654 1 3.38 0.92 2547 ...
+ $ brw    : num  5712 6.6 44.5 5.7 4603 ...
+ $ sws    : num  NA 6.3 NA NA 2.1 9.1 15.8 5.2 10.9 8.3 ...
+ $ ps     : num  NA 2 NA NA 1.8 0.7 3.9 1 3.6 1.4 ...
+ $ ts     : num  3.3 8.3 12.5 16.5 3.9 9.8 19.7 6.2 14.5 9.7 ...
+ $ mls    : num  38.6 4.5 14 NA 69 27 19 30.4 28 50 ...
+ $ gt     : num  645 42 60 25 624 180 35 392 63 230 ...
+ $ pi     : int  3 3 1 5 3 4 1 4 1 1 ...
+ $ sei    : int  5 1 1 2 5 4 1 5 2 1 ...
+ $ odi    : int  3 3 1 3 4 4 1 4 1 1 ...</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="# str() layout — static R reference">Copy Python</button>
   </div>
@@ -1385,11 +2299,10 @@ _E_x_a_m_p_l_e_s:
  $ pi     : int  3 3 1 5 3 4 1 4 1 1 ...
  $ sei    : int  5 1 1 2 5 4 1 5 2 1 ...
  $ odi    : int  3 3 1 3 4 4 1 4 1 1 ...</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">str(mammalsleep)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">str(mammalsleep)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    62 obs. of  11 variables:
  $ species: Factor w/ 62 levels &quot;African elephant&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
  $ bw     : num  6654 1 3.38 0.92 2547 ...
@@ -1402,13 +2315,55 @@ _E_x_a_m_p_l_e_s:
  $ pi     : int  3 3 1 5 3 4 1 4 1 1 ...
  $ sei    : int  5 1 1 2 5 4 1 5 2 1 ...
  $ odi    : int  3 3 1 3 4 4 1 4 1 1 ...</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-75">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-75">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_md_pattern_r(md_pattern(ms_full, ms_names)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    species  bw brw  pi sei odi  ts mls  gt  ps sws     
+ 42   1   1   1   1   1   1   1   1   1   1   1  0
+  9   1   1   1   1   1   1   1   1   1   0   0  2
+  3   1   1   1   1   1   1   1   1   0   1   1  1
+  2   1   1   1   1   1   1   1   0   1   1   1  1
+  1   1   1   1   1   1   1   1   0   1   0   0  3
+  1   1   1   1   1   1   1   1   0   0   1   1  2
+  2   1   1   1   1   1   1   0   1   1   1   0  2
+  2   1   1   1   1   1   1   0   1   1   0   0  3
+      0   0   0   0   0   0   4   4   4   12   14  38</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">md.pattern(mammalsleep)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">   species bw brw pi sei odi ts mls gt ps sws
+42       1  1   1  1   1   1  1   1  1  1   1  0
+9        1  1   1  1   1   1  1   1  1  0   0  2
+3        1  1   1  1   1   1  1   1  0  1   1  1
+2        1  1   1  1   1   1  1   0  1  1   1  1
+1        1  1   1  1   1   1  1   0  1  0   0  3
+1        1  1   1  1   1   1  1   0  0  1   1  2
+2        1  1   1  1   1   1  0   1  1  1   0  2
+2        1  1   1  1   1   1  0   1  1  0   0  3
+         0  0   0  0   0   0  4   4  4 12  14 38</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_md_pattern_r(md_pattern(ms_full, ms_names)))">Copy Python</button>
   </div>
@@ -1423,11 +2378,10 @@ _E_x_a_m_p_l_e_s:
   2   1   1   1   1   1   1   0   1   1   1   0  2
   2   1   1   1   1   1   1   0   1   1   0   0  3
       0   0   0   0   0   0   4   4   4   12   14  38</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">md.pattern(mammalsleep)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">md.pattern(mammalsleep)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">   species bw brw pi sei odi ts mls gt ps sws
 42       1  1   1  1   1   1  1   1  1  1   1  0
 9        1  1   1  1   1   1  1   1  1  0   0  2
@@ -1438,62 +2392,106 @@ _E_x_a_m_p_l_e_s:
 2        1  1   1  1   1   1  0   1  1  1   0  2
 2        1  1   1  1   1   1  0   1  1  0   0  3
          0  0   0  0   0   0  4   4  4 12  14 38</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 
 <p>Answer: 8 patterns in total, with the pattern where everything is observed occuring the most (42 times).</p><h2 id="10-impute-mammalsleep-with-pmm">10. Impute mammalsleep with PMM</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 
-<div class="code-card" id="code-76">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-76">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">imp_ms = mice(ms_full, column_names=ms_names, m=5, maxit=10, print_flag=False)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 27</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">imp &lt;- mice(mammalsleep, maxit = 10, print=F)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 27</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp_ms = mice(ms_full, column_names=ms_names, m=5, maxit=10, print_flag=False)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">imp_ms = mice(ms_full, column_names=ms_names, m=5, maxit=10, print_flag=False)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 27</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp &lt;- mice(mammalsleep, maxit = 10, print=F)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">imp &lt;- mice(mammalsleep, maxit = 10, print=F)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 27</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 
 <p>Inspect the trace lines</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-77">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-77">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">plot_mids(imp_ms, variables=[&#x27;sws&#x27;, &#x27;ps&#x27;, &#x27;ts&#x27;])</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">plot(imp)</code></pre>
+      
+    
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_mids(imp_ms, variables=[&#x27;sws&#x27;, &#x27;ps&#x27;, &#x27;ts&#x27;])">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">plot_mids(imp_ms, variables=[&#x27;sws&#x27;, &#x27;ps&#x27;, &#x27;ts&#x27;])</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">plot(imp)</code></pre>
-      
-    </div>
-  </details>
-</div>
-
-<div class="code-tabs plot-tabs" id="plots-78">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
-  </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v03_mammalsleep_trace.png" alt="10. Impute mammalsleep with PMM"><figcaption>v03_mammalsleep_trace.png</figcaption></figure>
+  
   </div>
   <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_009.png" alt="10. Impute mammalsleep with PMM"><figcaption>fig_009.png</figcaption></figure>
+<pre class="language-r"><code class="language-r">plot(imp)</code></pre>
+      
+    
   </div>
-  <div class="tab-content compare">
+</div>
+
+
+<div class="code-tabs plot-tabs" id="plots-78">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -1505,32 +2503,108 @@ _E_x_a_m_p_l_e_s:
         <div class="compare-title">R (Reference)</div>
         <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_009.png" alt="10. Impute mammalsleep with PMM">
         <figcaption>fig_009.png</figcaption></figure>
-      </div>
-    </div>
+      
+  </div>
+  <div class="tab-content python">
+
+    <figure class="plot-figure"><img src="assets/v03_mammalsleep_trace.png" alt="10. Impute mammalsleep with PMM"><figcaption>v03_mammalsleep_trace.png</figcaption></figure>
+  
+  </div>
+  <div class="tab-content r">
+
+    <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_009.png" alt="10. Impute mammalsleep with PMM"><figcaption>fig_009.png</figcaption></figure>
+  
+  </div>
+</div>
   </div>
 </div>
 <h2 id="11-regression-on-mammalsleep">11. Regression on mammalsleep</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 
-<div class="code-card" id="code-79">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-79">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">fit1 = with_mids(imp_ms, formula=&#x27;sws ~ log10(bw) + odi&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(mira object created — no printed output)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">fit1 &lt;- with(imp, lm(sws ~ log10(bw) + odi), print=F)</code></pre>
+      
+    
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="fit1 = with_mids(imp_ms, formula=&#x27;sws ~ log10(bw) + odi&#x27;)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">fit1 = with_mids(imp_ms, formula=&#x27;sws ~ log10(bw) + odi&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(mira object created — no printed output)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">fit1 &lt;- with(imp, lm(sws ~ log10(bw) + odi), print=F)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">fit1 &lt;- with(imp, lm(sws ~ log10(bw) + odi), print=F)</code></pre>
       
-    </div>
-  </details>
+    
+  </div>
 </div>
+
 <h2 id="12-pool-mammalsleep-model">12. Pool mammalsleep model</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 
-<div class="code-card" id="code-80">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-80">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_pool_mipo_r(pool(fit1)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Class: mipo    m = 5 
+              estimate       ubar          b         t dfcom        df
+(Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108
+log10(bw)     -1.1540768  0.08460947  0.00778340   0.0939495    59  45.62378
+odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
+                  riv    lambda       fmi
+(Intercept)    0.0689621   0.0645132   0.0994187
+log10(bw)      0.1103904   0.0994159   0.1364588
+odi            0.1321015   0.1166870   0.1550547</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">pool(fit1)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Class: mipo    m = 5 
+              estimate       ubar          b         t dfcom        df
+(Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108
+log10(bw)     -1.1540768  0.08460947  0.00778340   0.0939495    59  45.62378
+odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
+                  riv    lambda       fmi
+(Intercept)    0.0689621   0.0645132   0.0994187
+log10(bw)      0.1103904   0.0994159   0.1364588
+odi            0.1321015   0.1166870   0.1550547</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_pool_mipo_r(pool(fit1)))">Copy Python</button>
   </div>
@@ -1544,11 +2618,10 @@ odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
 (Intercept)    0.0689621   0.0645132   0.0994187
 log10(bw)      0.1103904   0.0994159   0.1364588
 odi            0.1321015   0.1166870   0.1550547</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">pool(fit1)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">pool(fit1)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Class: mipo    m = 5 
               estimate       ubar          b         t dfcom        df
 (Intercept)   11.3832377  0.59934692  0.03444354   0.6406792    59  50.60108
@@ -1558,13 +2631,43 @@ odi           -0.8281281  0.07493542  0.00824923   0.0848345    59  43.04458
 (Intercept)    0.0689621   0.0645132   0.0994187
 log10(bw)      0.1103904   0.0994159   0.1364588
 odi            0.1321015   0.1166870   0.1550547</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-81">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-81">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_pool_v03_summary_r(summary_pool(pool(fit1))))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">              estimate std.error statistic        df      p.value
+(Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
+log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
+odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">summary(pool(fit1))</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate std.error statistic        df      p.value
+(Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
+log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
+odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_pool_v03_summary_r(summary_pool(pool(fit1))))">Copy Python</button>
   </div>
@@ -1573,41 +2676,105 @@ odi            0.1321015   0.1166870   0.1550547</code></pre>
 (Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
 log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
 odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(pool(fit1))</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">summary(pool(fit1))</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate std.error statistic        df      p.value
 (Intercept)  11.3832377 0.8004244  14.221503 50.601082 0.000000000e+00
 log10(bw)    -1.1540768 0.3065119  -3.765194 45.623781 4.744272933e-04
 odi          -0.8281281 0.2912636  -2.843225 43.044582 6.804305093e-03</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 
 <p>The <code>fmi</code> and <code>lambda</code> are much too high. This is due to <code>species</code> being included in the imputation model. Because there are 62 species and mice automatically converts factors (categorical variables) to dummy variables, each species is modeled by its own imputation model.</p><h2 id="13-drop-species-column">13. Drop species column</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 
-<div class="code-card" id="code-82">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-82">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">impnew = mice(ms_no_sp, column_names=ms_no_names, m=5, maxit=10, print_flag=False)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 15</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">impnew &lt;- mice(mammalsleep[ , -1], maxit = 10, print = F)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 15</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="impnew = mice(ms_no_sp, column_names=ms_no_names, m=5, maxit=10, print_flag=False)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">impnew = mice(ms_no_sp, column_names=ms_no_names, m=5, maxit=10, print_flag=False)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 15</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">impnew &lt;- mice(mammalsleep[ , -1], maxit = 10, print = F)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">impnew &lt;- mice(mammalsleep[ , -1], maxit = 10, print = F)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Warning: Number of logged events: 15</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 <h2 id="14-re-impute-without-species">14. Re-impute without species</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 
-<div class="code-card" id="code-83">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-83">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">fit2 = with_mids(impnew, formula=&#x27;sws ~ log10(bw) + odi&#x27;)
+print(format_pool_mipo_r(pool(fit2)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Class: mipo    m = 5 
+              estimate       ubar          b         t dfcom        df
+(Intercept)   11.3500427  0.61817617  0.04037797   0.6666297    59  49.48618
+log10(bw)     -1.1079037  0.08726759  0.00546546   0.0938261    59  49.87051
+odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
+                  riv    lambda       fmi
+(Intercept)    0.0783815   0.0726844   0.1080200
+log10(bw)      0.0751545   0.0699011   0.1050852
+odi            0.1258433   0.1117769   0.1497517</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">fit2 &lt;- with(impnew, lm(sws ~ log10(bw) + odi))
+pool(fit2)</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Class: mipo    m = 5 
+              estimate       ubar          b         t dfcom        df
+(Intercept)   11.3500427  0.61817617  0.04037797   0.6666297    59  49.48618
+log10(bw)     -1.1079037  0.08726759  0.00546546   0.0938261    59  49.87051
+odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
+                  riv    lambda       fmi
+(Intercept)    0.0783815   0.0726844   0.1080200
+log10(bw)      0.0751545   0.0699011   0.1050852
+odi            0.1258433   0.1117769   0.1497517</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="fit2 = with_mids(impnew, formula=&#x27;sws ~ log10(bw) + odi&#x27;)
 print(format_pool_mipo_r(pool(fit2)))">Copy Python</button>
@@ -1623,11 +2790,10 @@ odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
 (Intercept)    0.0783815   0.0726844   0.1080200
 log10(bw)      0.0751545   0.0699011   0.1050852
 odi            0.1258433   0.1117769   0.1497517</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">fit2 &lt;- with(impnew, lm(sws ~ log10(bw) + odi))
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">fit2 &lt;- with(impnew, lm(sws ~ log10(bw) + odi))
 pool(fit2)</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Class: mipo    m = 5 
               estimate       ubar          b         t dfcom        df
@@ -1638,13 +2804,43 @@ odi           -0.8082814  0.07728961  0.00810531   0.0870160    59  43.77962
 (Intercept)    0.0783815   0.0726844   0.1080200
 log10(bw)      0.0751545   0.0699011   0.1050852
 odi            0.1258433   0.1117769   0.1497517</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-84">
-  <div class="code-toolbar">
+
+
+<div class="code-tabs dual-code-tabs" id="code-84">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">print(format_pool_v03_summary_r(summary_pool(pool(fit2))))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">              estimate std.error statistic        df      p.value
+(Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
+log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
+odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">summary(pool(fit2))</code></pre>
+      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate std.error statistic        df      p.value
+(Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
+log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
+odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_pool_v03_summary_r(summary_pool(pool(fit2))))">Copy Python</button>
   </div>
@@ -1653,38 +2849,62 @@ odi            0.1258433   0.1117769   0.1497517</code></pre>
 (Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
 log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
 odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(pool(fit2))</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">summary(pool(fit2))</code></pre>
       <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate std.error statistic        df      p.value
 (Intercept)  11.3500427 0.8164740  13.901292 49.486180 0.000000000e+00
 log10(bw)    -1.1079037 0.3063105  -3.616930 49.870508 6.945071261e-04
 odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
+
 
 <p>Note that the <code>fmi</code> and <code>lambda</code> have dramatically decreased. The imputation model has been greatly improved.</p><h2 id="15-trace-plot-for-impnew">15. Trace plot for impnew</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-85">
-  <div class="code-toolbar">
+
+<div class="code-tabs dual-code-tabs" id="code-85">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        <pre class="language-python"><code class="language-python">plot_mids(impnew, variables=[&#x27;mls&#x27;, &#x27;gt&#x27;])</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+  
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        <pre class="language-r"><code class="language-r">plot(impnew)</code></pre>
+      
+    
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+<div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_mids(impnew, variables=[&#x27;mls&#x27;, &#x27;gt&#x27;])">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">plot_mids(impnew, variables=[&#x27;mls&#x27;, &#x27;gt&#x27;])</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">plot(impnew)</code></pre>
+  
+  </div>
+  <div class="tab-content r">
+<pre class="language-r"><code class="language-r">plot(impnew)</code></pre>
       
-    </div>
-  </details>
+    
+  </div>
 </div>
+
 
 <p>Even though the fraction of information missing due to nonresponse (fmi) and the relative increase in variance due to nonresponse (lambda) are nice and low, the convergence turns out to be a real problem. The reason is the structure in the data. Total sleep (<code>ts</code>) is the sum of paradoxical sleep (<code>ps</code>) and short wave sleep (<code>sws</code>). This relation is ignored in the imputations, but it is necessary to take this relation into account. <code>mice</code> offers a routine called passive imputation, which allows users to take transformations, combinations and recoded variables into account when imputing their data.</p>
 <p>We explain passive imputation in detail in the this vignette.</p>
@@ -1692,18 +2912,14 @@ odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></p
 <p>It is important to ‘gain’ this control as a user. After all, we are imputing values and we aim to properly adress the uncertainty about the missingness problem.</p>
 <p><strong>- End of Vignette</strong></p>
 <div class="code-tabs plot-tabs" id="plots-86">
+
   <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
   </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v03_mammalsleep_trace2.png" alt="15. Trace plot for impnew"><figcaption>v03_mammalsleep_trace2.png</figcaption></figure>
-  </div>
-  <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_010.png" alt="15. Trace plot for impnew"><figcaption>fig_010.png</figcaption></figure>
-  </div>
-  <div class="tab-content compare">
+  <div class="tab-content compare active">
+
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -1715,8 +2931,19 @@ odi          -0.8082814 0.2949847  -2.740079 43.779621 8.854862806e-03</code></p
         <div class="compare-title">R (Reference)</div>
         <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_010.png" alt="15. Trace plot for impnew">
         <figcaption>fig_010.png</figcaption></figure>
-      </div>
-    </div>
+      
+  </div>
+  <div class="tab-content python">
+
+    <figure class="plot-figure"><img src="assets/v03_mammalsleep_trace2.png" alt="15. Trace plot for impnew"><figcaption>v03_mammalsleep_trace2.png</figcaption></figure>
+  
+  </div>
+  <div class="tab-content r">
+
+    <figure class="plot-figure"><img src="assets/reference/v03_missingness/fig_010.png" alt="15. Trace plot for impnew"><figcaption>fig_010.png</figcaption></figure>
+  
+  </div>
+</div>
   </div>
 </div>
 

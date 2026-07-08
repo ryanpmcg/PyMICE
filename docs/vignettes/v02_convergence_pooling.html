@@ -152,14 +152,14 @@
       margin: 1rem 0 1.5rem;
       font-size: 0.92rem;
     }
-    .parity-details, .compare-r, .long-output {
+    .parity-details, .long-output {
       margin: 1rem 0;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.75rem 1rem;
       background: #fff;
     }
-    .parity-details summary, .compare-r summary, .long-output summary {
+    .parity-details summary, .long-output summary {
       cursor: pointer;
       font-weight: 600;
       color: var(--primary);
@@ -187,13 +187,11 @@
     }
     .series-nav-link:hover { text-decoration: underline; }
     .series-nav-index { margin: 0 auto; }
-    .code-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin: 1.25rem 0;
-      padding: 0.75rem 1rem 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    .dual-code-tabs .code-toolbar {
+      margin-bottom: 0.5rem;
+    }
+    .code-compare-grid .compare-title {
+      margin-top: 0;
     }
     .code-toolbar {
       display: flex;
@@ -350,7 +348,7 @@
     figure, figure.plot-figure { margin: 1rem 0; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
     img { max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 0 auto; }
     figcaption { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
-    .plot-tabs { margin-top: 1.25rem; }
+    .dual-code-tabs, .plot-tabs { margin-top: 1.25rem; }
     .plot-compare-grid figure { margin: 0; }
     .plot-empty { color: var(--text-muted); font-size: 0.9rem; font-style: italic; }
     
@@ -382,7 +380,48 @@
 <p><code>require(mice) require(lattice) set.seed(123)</code></p></div><h2 id="1-vary-number-of-imputations">1. Vary number of imputations</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 2 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p><strong>Note:</strong> Package load step; no R console output to compare.</p>
 
-<div class="code-card" id="code-27">
+<div class="code-tabs dual-code-tabs" id="code-27">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">import numpy as np
+from pymice import mice, pool, with_mids, summary_pool, quickpred, complete
+from pymice.diagnostics.plots import plot_mids, plot_stripplot
+from lib.data import load_nhanes, load_nhanes2
+from lib.viz import save_figure
+from lib.r_style import (
+    format_meth_r,
+    format_pool_print_r,
+    format_pool_tibble_r,
+    format_predictor_matrix,
+    format_summary_r,
+    format_mira_print_r,
+    format_lm_summary_r,
+    format_pool_v02_r
+)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(setup — no console output)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">require(mice)
+require(lattice)
+set.seed(123)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="import numpy as np
@@ -417,41 +456,95 @@ from lib.r_style import (
     format_pool_v02_r
 )</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(setup — no console output)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">require(mice)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">require(mice)
 require(lattice)
 set.seed(123)</code></pre>
-      
-    </div>
-  </details>
+  
+  </div>
 </div>
 
 <p>The number of imputed data sets can be specified by the <code>m = ...</code> argument. For example, to create just three imputed data sets, specify</p>
 <p><strong>Note:</strong> Step creates <code>imp</code> object; R vignette prints no console output here.</p>
 
-<div class="code-card" id="code-28">
+<div class="code-tabs dual-code-tabs" id="code-28">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">imp_m3 = mice(data, column_names=names, m=3, maxit=5, seed=123, print_flag=False)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(m = 3 imputation complete — no printed output in R vignette)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, m = 3, print=F)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp_m3 = mice(data, column_names=names, m=3, maxit=5, seed=123, print_flag=False)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">imp_m3 = mice(data, column_names=names, m=3, maxit=5, seed=123, print_flag=False)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(m = 3 imputation complete — no printed output in R vignette)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, m = 3, print=F)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, m = 3, print=F)</code></pre>
+  
+  </div>
 </div>
 <h2 id="2-edit-predictor-matrix">2. Edit predictor matrix</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (4 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 5 blocks)</div>
 <p>The predictor matrix is a square matrix that specifies the variables that are used to impute each incomplete variable. Let us have a look at the predictor matrix that was used</p>
 
-<div class="code-card" id="code-29">
+<div class="code-tabs dual-code-tabs" id="code-29">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_predictor_matrix(names, imp_m3.predictor_matrix))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+age     0   1   1   1
+bmi     1   0   1   1
+hyp     1   1   0   1
+chl     1   1   1   0</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp$pred</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+age   0   1   1   1
+bmi   1   0   1   1
+hyp   1   1   0   1
+chl   1   1   1   0</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_predictor_matrix(names, imp_m3.predictor_matrix))">Copy Python</button>
@@ -462,23 +555,56 @@ age     0   1   1   1
 bmi     1   0   1   1
 hyp     1   1   0   1
 chl     1   1   1   0</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp$pred</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp$pred</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
 age   0   1   1   1
 bmi   1   0   1   1
 hyp   1   1   0   1
 chl   1   1   1   0</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>Each variable in the data has a row and a column in the predictor matrix. A value <code>1</code> indicates that the column variable was used to impute the row variable. For example, the <code>1</code> at entry <code>[bmi, age]</code> indicates that variable <code>age</code> was used to impute the incomplete variable <code>bmi</code>. Note that the diagonal is zero because a variable is not allowed to impute itself. The row of <code>age</code> contains all zeros because there were no missing values in <code>age</code>. <code>mice</code> gives you complete control over the predictor matrix, enabling you to choose your own predictor relations. This can be very useful, for example, when you have many variables or when you have clear ideas or prior knowledge about relations in the data at hand. You can use <code>mice()</code> to give you the initial predictor matrix, and change it afterwards, without running the algorithm. This can be done by typing</p>
 
-<div class="code-card" id="code-30">
+<div class="code-tabs dual-code-tabs" id="code-30">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_predictor_matrix(names, ini0.predictor_matrix))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+age     0   1   1   1
+bmi     1   0   1   1
+hyp     1   1   0   1
+chl     1   1   1   0</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes, maxit=0, print=F)
+pred &lt;- ini$pred
+pred</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+age   0   1   1   1
+bmi   1   0   1   1
+hyp   1   1   0   1
+chl   1   1   1   0</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_predictor_matrix(names, ini0.predictor_matrix))">Copy Python</button>
@@ -489,25 +615,58 @@ age     0   1   1   1
 bmi     1   0   1   1
 hyp     1   1   0   1
 chl     1   1   1   0</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes, maxit=0, print=F)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes, maxit=0, print=F)
 pred &lt;- ini$pred
 pred</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
 age   0   1   1   1
 bmi   1   0   1   1
 hyp   1   1   0   1
 chl   1   1   1   0</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>The object <code>pred</code> contains the predictor matrix from an initial run of <code>mice</code> with zero iterations, specified by <code>maxit = 0</code>. Altering the predictor matrix and returning it to the mice algorithm is very simple. For example, the following code removes the variable <code>hyp</code> from the set of predictors, but still leaves it to be predicted by the other variables.</p>
 
-<div class="code-card" id="code-31">
+<div class="code-tabs dual-code-tabs" id="code-31">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">pred[:, names.index(&#x27;hyp&#x27;)] = 0
+print(format_predictor_matrix(names, pred))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+age     0   1   0   1
+bmi     1   0   0   1
+hyp     1   1   0   1
+chl     1   1   0   0</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">pred[ ,&quot;hyp&quot;] &lt;- 0
+pred</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+age   0   1   0   1
+bmi   1   0   0   1
+hyp   1   1   0   1
+chl   1   1   0   0</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="pred[:, names.index(&#x27;hyp&#x27;)] = 0
@@ -520,44 +679,99 @@ age     0   1   0   1
 bmi     1   0   0   1
 hyp     1   1   0   1
 chl     1   1   0   0</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">pred[ ,&quot;hyp&quot;] &lt;- 0
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">pred[ ,&quot;hyp&quot;] &lt;- 0
 pred</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
 age   0   1   0   1
 bmi   1   0   0   1
 hyp   1   1   0   1
 chl   1   1   0   0</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>Use your new predictor matrix in <code>mice()</code> as follows</p>
 <p><strong>Note:</strong> R vignette shows code only; no console output to compare.</p>
 
-<div class="code-card" id="code-32">
+<div class="code-tabs dual-code-tabs" id="code-32">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">mice(data, column_names=names, predictor_matrix=pred_mod, seed=123, print_flag=False)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(imputation with custom predictor matrix — no printed output)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, pred=pred, print=F)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="mice(data, column_names=names, predictor_matrix=pred_mod, seed=123, print_flag=False)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">mice(data, column_names=names, predictor_matrix=pred_mod, seed=123, print_flag=False)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(imputation with custom predictor matrix — no printed output)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, pred=pred, print=F)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, pred=pred, print=F)</code></pre>
+  
+  </div>
 </div>
 
 <p>There is a special function called <code>quickpred()</code> for a quick selection procedure of predictors, which can be handy for datasets containing many variables. See <code>?quickpred</code> for more info. Selecting predictors according to data relations with a minimum correlation of ρ = .30 can be done by</p>
 
-<div class="code-card" id="code-33">
+<div class="code-tabs dual-code-tabs" id="code-33">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_predictor_matrix(names, pred_quick))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+age     0   0   0   0
+bmi     1   0   0   1
+hyp     1   0   0   1
+chl     1   1   1   0</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes, pred=quickpred(nhanes, mincor=.3), print=F)
+ini$pred</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+age   0   0   0   0
+bmi   1   0   0   1
+hyp   1   0   0   1
+chl   1   1   1   0</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_predictor_matrix(names, pred_quick))">Copy Python</button>
@@ -568,26 +782,51 @@ age     0   0   0   0
 bmi     1   0   0   1
 hyp     1   0   0   1
 chl     1   1   1   0</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes, pred=quickpred(nhanes, mincor=.3), print=F)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes, pred=quickpred(nhanes, mincor=.3), print=F)
 ini$pred</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age bmi hyp chl
 age   0   0   0   0
 bmi   1   0   0   1
 hyp   1   0   0   1
 chl   1   1   1   0</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>For large predictor matrices, it can be useful to export them to Microsoft Excel for easier configuration (e.g. see the <code>xlsx</code> package for easy exporting and importing of Excel files).</p><h2 id="3-convergence-trace-plot">3. Convergence trace plot</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 1 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>The <code>mice()</code> function implements an iterative Markov Chain Monte Carlo type of algorithm. Let us have a look at the trace lines generated by the algorithm to study convergence:</p>
 <p><strong>Note:</strong> Matplotlib trace plot (mean imputations per iteration).</p>
 
-<div class="code-card" id="code-34">
+<div class="code-tabs dual-code-tabs" id="code-34">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">fig = plot_mids(imp_conv, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])
+save_figure(fig, ASSETS, &#x27;v02_plot_mids.png&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, print=F)
+plot(imp)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="fig = plot_mids(imp_conv, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])
@@ -596,52 +835,68 @@ save_figure(fig, ASSETS, &#x27;v02_plot_mids.png&#x27;)">Copy Python</button>
   <pre class="language-python"><code class="language-python">fig = plot_mids(imp_conv, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])
 save_figure(fig, ASSETS, &#x27;v02_plot_mids.png&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, print=F)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, print=F)
 plot(imp)</code></pre>
-      
-    </div>
-  </details>
+  
+  </div>
 </div>
 
 <p>The plot shows the mean (left) and standard deviation (right) of the imputed values only. In general, we would like the streams to intermingle and be free of any trends at the later iterations.</p>
 <p>The algorithm uses random sampling, and therefore, the results will be (perhaps slightly) different if we repeat the imputations with different seeds. In order to get exactly the same result, use the <code>seed</code> argument</p>
 <p><strong>Note:</strong> Seed argument demonstration; no console output in R vignette.</p>
 
-<div class="code-card" id="code-35">
+<div class="code-tabs dual-code-tabs" id="code-35">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">imp_conv = mice(data, column_names=names, m=5, maxit=5, seed=123, print_flag=False)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(reproducible imputation — no printed output)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, seed=123, print=F)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp_conv = mice(data, column_names=names, m=5, maxit=5, seed=123, print_flag=False)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">imp_conv = mice(data, column_names=names, m=5, maxit=5, seed=123, print_flag=False)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(reproducible imputation — no printed output)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, seed=123, print=F)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes, seed=123, print=F)</code></pre>
+  
+  </div>
 </div>
 
 <p>where <code>123</code> is some arbitrary number that you can choose yourself. Rerunning this command will always yields the same imputed values.</p>
 <div class="code-tabs plot-tabs" id="plots-36">
+
   <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
   </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v02_trace_nhanes.png" alt="3. Convergence trace plot"><figcaption>v02_trace_nhanes.png</figcaption></figure>
-  </div>
-  <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_001.png" alt="3. Convergence trace plot"><figcaption>fig_001.png</figcaption></figure>
-  </div>
-  <div class="tab-content compare">
+  <div class="tab-content compare active">
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -656,11 +911,44 @@ plot(imp)</code></pre>
       </div>
     </div>
   </div>
+  <div class="tab-content python">
+    <figure class="plot-figure"><img src="assets/v02_trace_nhanes.png" alt="3. Convergence trace plot"><figcaption>v02_trace_nhanes.png</figcaption></figure>
+  </div>
+  <div class="tab-content r">
+    <figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_001.png" alt="3. Convergence trace plot"><figcaption>fig_001.png</figcaption></figure>
+  </div>
 </div>
 <h2 id="4-change-imputation-method">4. Change imputation method</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (7 exact, 1 info, 1 visual, 0 skipped, 0 mismatch of 9 blocks)</div>
 <p>For each column, the algorithm requires a specification of the imputation method. To see which method was used by default:</p>
 
-<div class="code-card" id="code-37">
+<div class="code-tabs dual-code-tabs" id="code-37">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_meth_r(names, imp_conv_seed.method, style=&#x27;nhanes&#x27;))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">  age   bmi   hyp   chl
+   &quot;&quot; &quot;pmm&quot; &quot;pmm&quot; &quot;pmm&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp$meth</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">  age   bmi   hyp   chl
+   &quot;&quot; &quot;pmm&quot; &quot;pmm&quot; &quot;pmm&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_meth_r(names, imp_conv_seed.method, style=&#x27;nhanes&#x27;))">Copy Python</button>
@@ -668,20 +956,57 @@ plot(imp)</code></pre>
   <pre class="language-python"><code class="language-python">print(format_meth_r(names, imp_conv_seed.method, style=&#x27;nhanes&#x27;))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">  age   bmi   hyp   chl
    &quot;&quot; &quot;pmm&quot; &quot;pmm&quot; &quot;pmm&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp$meth</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">  age   bmi   hyp   chl
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp$meth</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">  age   bmi   hyp   chl
    &quot;&quot; &quot;pmm&quot; &quot;pmm&quot; &quot;pmm&quot;</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>The variable <code>age</code> is complete and therefore not imputed, denoted by the <code>&quot;&quot;</code> empty string. The other variables have method <code>pmm</code>, which stands for <em>predictive mean matching</em>, the default in <code>mice</code> for numerical and integer data. In reality, the data are better described a as mix of numerical and categorical data. Let us take a look at the <code>nhanes2</code> data frame</p>
 
-<div class="code-card" id="code-38">
+<div class="code-tabs dual-code-tabs" id="code-38">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_summary_nhanes2_r(data2, names2))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">    age          bmi          hyp          chl
+ 20-39:12   Min.   :20.40   no  :13   Min.   :113.0
+ 40-59: 7   1st Qu.:22.65   yes : 4   1st Qu.:185.0
+ 60-99: 6   Median :26.75   NA&#x27;s: 8   Median :187.0
+            Mean   :26.56             Mean   :191.4
+            3rd Qu.:28.93             3rd Qu.:212.0
+            Max.   :35.30             Max.   :284.0
+            NA&#x27;s   : 9                 NA&#x27;s   :10</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">summary(nhanes2)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age          bmi          hyp          chl
+ 20-39:12   Min.   :20.40   no  :13   Min.   :113.0
+ 40-59: 7   1st Qu.:22.65   yes : 4   1st Qu.:185.0
+ 60-99: 6   Median :26.75   NA&#x27;s: 8   Median :187.0
+            Mean   :26.56             Mean   :191.4
+            3rd Qu.:28.93             3rd Qu.:212.0
+            Max.   :35.30             Max.   :284.0
+            NA&#x27;s   :9                 NA&#x27;s   :10</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_summary_nhanes2_r(data2, names2))">Copy Python</button>
@@ -695,12 +1020,11 @@ plot(imp)</code></pre>
             3rd Qu.:28.93             3rd Qu.:212.0
             Max.   :35.30             Max.   :284.0
             NA&#x27;s   : 9                 NA&#x27;s   :10</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(nhanes2)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age          bmi          hyp          chl
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">summary(nhanes2)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">    age          bmi          hyp          chl
  20-39:12   Min.   :20.40   no  :13   Min.   :113.0
  40-59: 7   1st Qu.:22.65   yes : 4   1st Qu.:185.0
  60-99: 6   Median :26.75   NA&#x27;s: 8   Median :187.0
@@ -708,13 +1032,45 @@ plot(imp)</code></pre>
             3rd Qu.:28.93             3rd Qu.:212.0
             Max.   :35.30             Max.   :284.0
             NA&#x27;s   :9                 NA&#x27;s   :10</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>and the structure of the data frame</p>
 
-<div class="code-card" id="code-39">
+<div class="code-tabs dual-code-tabs" id="code-39">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python"># str() layout — R factor labels vs numeric codes in PyMICE</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    25 obs. of  4 variables:
+ $ age: Factor w/ 3 levels &quot;20-39&quot;,&quot;40-59&quot;,..: 1 2 1 3 1 3 1 1 2 2 ...
+ $ bmi: num  NA 22.7 NA NA 20.4 NA 22.5 30.1 22 NA ...
+ $ hyp: Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: NA 1 1 NA 1 NA 1 1 1 NA ...
+ $ chl: num  NA 187 187 NA 113 184 118 187 238 NA ...</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">str(nhanes2)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    25 obs. of  4 variables:
+ $ age: Factor w/ 3 levels &quot;20-39&quot;,&quot;40-59&quot;,..: 1 2 1 3 1 3 1 1 2 2 ...
+ $ bmi: num  NA 22.7 NA NA 20.4 NA 22.5 30.1 22 NA ...
+ $ hyp: Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: NA 1 1 NA 1 NA 1 1 1 NA ...
+ $ chl: num  NA 187 187 NA 113 184 118 187 238 NA ...</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="# str() layout — R factor labels vs numeric codes in PyMICE">Copy Python</button>
@@ -725,23 +1081,49 @@ plot(imp)</code></pre>
  $ bmi: num  NA 22.7 NA NA 20.4 NA 22.5 30.1 22 NA ...
  $ hyp: Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: NA 1 1 NA 1 NA 1 1 1 NA ...
  $ chl: num  NA 187 187 NA 113 184 118 187 238 NA ...</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">str(nhanes2)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    25 obs. of  4 variables:
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">str(nhanes2)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">&#x27;data.frame&#x27;:    25 obs. of  4 variables:
  $ age: Factor w/ 3 levels &quot;20-39&quot;,&quot;40-59&quot;,..: 1 2 1 3 1 3 1 1 2 2 ...
  $ bmi: num  NA 22.7 NA NA 20.4 NA 22.5 30.1 22 NA ...
  $ hyp: Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: NA 1 1 NA 1 NA 1 1 1 NA ...
  $ chl: num  NA 187 187 NA 113 184 118 187 238 NA ...</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>Variable <code>age</code> consists of 3 age categories, while variable <code>hyp</code> is binary. The <code>mice()</code> function takes these properties automatically into account. Impute the <code>nhanes2</code> dataset</p>
 
-<div class="code-card" id="code-40">
+<div class="code-tabs dual-code-tabs" id="code-40">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_meth_r(names2, imp2.method))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+      &quot;&quot;    &quot;pmm&quot;    &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes2, print=F)
+imp$meth</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+      &quot;&quot;    &quot;pmm&quot; &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_meth_r(names2, imp2.method))">Copy Python</button>
@@ -749,22 +1131,75 @@ plot(imp)</code></pre>
   <pre class="language-python"><code class="language-python">print(format_meth_r(names2, imp2.method))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
       &quot;&quot;    &quot;pmm&quot;    &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes2, print=F)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes2, print=F)
 imp$meth</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
       &quot;&quot;    &quot;pmm&quot; &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>Notice that <code>mice</code> has set the imputation method for variable <code>hyp</code> to <code>logreg</code>, which implements multiple imputation by <em>logistic regression</em>.</p>
 <p>An up-to-date overview of the methods in mice can be found by</p>
 
-<div class="code-card" id="code-41">
+<div class="code-tabs dual-code-tabs" id="code-41">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python"># static R methods() listing (reference)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text"> [1] mice.impute.2l.bin       mice.impute.2l.lmer     
+ [3] mice.impute.2l.norm      mice.impute.2l.pan      
+ [5] mice.impute.2lonly.mean  mice.impute.2lonly.norm 
+ [7] mice.impute.2lonly.pmm   mice.impute.cart        
+ [9] mice.impute.jomoImpute   mice.impute.lda         
+[11] mice.impute.logreg       mice.impute.logreg.boot 
+[13] mice.impute.mean         mice.impute.midastouch  
+[15] mice.impute.norm         mice.impute.norm.boot   
+[17] mice.impute.norm.nob     mice.impute.norm.predict
+[19] mice.impute.panImpute    mice.impute.passive     
+[21] mice.impute.pmm          mice.impute.polr        
+[23] mice.impute.polyreg      mice.impute.quadratic   
+[25] mice.impute.rf           mice.impute.ri          
+[27] mice.impute.sample       mice.mids               
+[29] mice.theme              
+see &#x27;?methods&#x27; for accessing help and source code</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">methods(mice)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text"> [1] mice.impute.2l.bin       mice.impute.2l.lmer     
+ [3] mice.impute.2l.norm      mice.impute.2l.pan      
+ [5] mice.impute.2lonly.mean  mice.impute.2lonly.norm 
+ [7] mice.impute.2lonly.pmm   mice.impute.cart        
+ [9] mice.impute.jomoImpute   mice.impute.lda         
+[11] mice.impute.logreg       mice.impute.logreg.boot 
+[13] mice.impute.mean         mice.impute.midastouch  
+[15] mice.impute.norm         mice.impute.norm.boot   
+[17] mice.impute.norm.nob     mice.impute.norm.predict
+[19] mice.impute.panImpute    mice.impute.passive     
+[21] mice.impute.pmm          mice.impute.polr        
+[23] mice.impute.polyreg      mice.impute.quadratic   
+[25] mice.impute.rf           mice.impute.ri          
+[27] mice.impute.sample       mice.mids               
+[29] mice.theme              
+see &#x27;?methods&#x27; for accessing help and source code</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="# static R methods() listing (reference)">Copy Python</button>
@@ -786,12 +1221,11 @@ imp$meth</code></pre>
 [27] mice.impute.sample       mice.mids               
 [29] mice.theme              
 see &#x27;?methods&#x27; for accessing help and source code</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">methods(mice)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text"> [1] mice.impute.2l.bin       mice.impute.2l.lmer     
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">methods(mice)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text"> [1] mice.impute.2l.bin       mice.impute.2l.lmer     
  [3] mice.impute.2l.norm      mice.impute.2l.pan      
  [5] mice.impute.2lonly.mean  mice.impute.2lonly.norm 
  [7] mice.impute.2lonly.pmm   mice.impute.cart        
@@ -807,13 +1241,42 @@ see &#x27;?methods&#x27; for accessing help and source code</code></pre>
 [27] mice.impute.sample       mice.mids               
 [29] mice.theme              
 see &#x27;?methods&#x27; for accessing help and source code</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>Let us change the imputation method for <code>bmi</code> to Bayesian normal linear regression imputation</p>
 
-<div class="code-card" id="code-42">
+<div class="code-tabs dual-code-tabs" id="code-42">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">meth = ini2.method.copy()
+print(format_meth_r(names2, meth))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+      &quot;&quot;    &quot;pmm&quot;    &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes2, maxit = 0)
+meth &lt;- ini$meth
+meth</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+      &quot;&quot;    &quot;pmm&quot; &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="meth = ini2.method.copy()
@@ -823,21 +1286,48 @@ print(format_meth_r(names2, meth))">Copy Python</button>
 print(format_meth_r(names2, meth))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
       &quot;&quot;    &quot;pmm&quot;    &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes2, maxit = 0)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">ini &lt;- mice(nhanes2, maxit = 0)
 meth &lt;- ini$meth
 meth</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
       &quot;&quot;    &quot;pmm&quot; &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-43">
+<div class="code-tabs dual-code-tabs" id="code-43">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">meth[&quot;bmi&quot;] = &quot;norm&quot;
+print(format_meth_r(names2, meth))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+      &quot;&quot;    &quot;norm&quot;    &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">meth[&quot;bmi&quot;] &lt;- &quot;norm&quot;
+meth</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+      &quot;&quot;   &quot;norm&quot; &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="meth[&quot;bmi&quot;] = &quot;norm&quot;
@@ -847,71 +1337,110 @@ print(format_meth_r(names2, meth))">Copy Python</button>
 print(format_meth_r(names2, meth))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
       &quot;&quot;    &quot;norm&quot;    &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">meth[&quot;bmi&quot;] &lt;- &quot;norm&quot;
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">meth[&quot;bmi&quot;] &lt;- &quot;norm&quot;
 meth</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     age      bmi      hyp      chl
       &quot;&quot;   &quot;norm&quot; &quot;logreg&quot;    &quot;pmm&quot;</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>and run the imputations again.</p>
 <p><strong>Note:</strong> R vignette shows code only before trace plot.</p>
 
-<div class="code-card" id="code-44">
+<div class="code-tabs dual-code-tabs" id="code-44">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">imp3 = mice(data2, column_names=names2, variable_specs=NHANES2_SPECS, method=meth, m=5, maxit=5, seed=123, print_flag=False)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(custom methods imputation — no printed output)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes2, meth = meth, print=F)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp3 = mice(data2, column_names=names2, variable_specs=NHANES2_SPECS, method=meth, m=5, maxit=5, seed=123, print_flag=False)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">imp3 = mice(data2, column_names=names2, variable_specs=NHANES2_SPECS, method=meth, m=5, maxit=5, seed=123, print_flag=False)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(custom methods imputation — no printed output)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes2, meth = meth, print=F)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp &lt;- mice(nhanes2, meth = meth, print=F)</code></pre>
+  
+  </div>
 </div>
 
 <p>We may now again plot trace lines to study convergence</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-45">
+<div class="code-tabs dual-code-tabs" id="code-45">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">plot_mids(imp3, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">plot(imp)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_mids(imp3, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">plot_mids(imp3, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">plot(imp)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">plot(imp)</code></pre>
+  
+  </div>
 </div>
 
 <div class="code-tabs plot-tabs" id="plots-46">
+
   <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
   </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v02_trace_nhanes2.png" alt="4. Change imputation method"><figcaption>v02_trace_nhanes2.png</figcaption></figure>
-  </div>
-  <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_002.png" alt="4. Change imputation method"><figcaption>fig_002.png</figcaption></figure>
-  </div>
-  <div class="tab-content compare">
+  <div class="tab-content compare active">
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -926,42 +1455,67 @@ meth</code></pre>
       </div>
     </div>
   </div>
+  <div class="tab-content python">
+    <figure class="plot-figure"><img src="assets/v02_trace_nhanes2.png" alt="4. Change imputation method"><figcaption>v02_trace_nhanes2.png</figcaption></figure>
+  </div>
+  <div class="tab-content r">
+    <figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_002.png" alt="4. Change imputation method"><figcaption>fig_002.png</figcaption></figure>
+  </div>
 </div>
 <h2 id="5-extended-iteration-trace">5. Extended iteration trace</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Though using just five iterations (the default) often works well in practice, we need to extend the number of iterations of the <code>mice</code> algorithm to confirm that there is no trend and that the trace lines intermingle well. We can increase the number of iterations to 40 by running 35 additional iterations using the <code>mice.mids()</code> function.</p>
 <p><strong>Note:</strong> 40-iteration trace via <code>continue_imputation(imp3, maxit=35)</code>.</p>
 
-<div class="code-card" id="code-47">
+<div class="code-tabs dual-code-tabs" id="code-47">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">plot_mids(imp40, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp40 &lt;- mice.mids(imp, maxit=35, print=F)
+plot(imp40)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_mids(imp40, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">plot_mids(imp40, variables=[&#x27;bmi&#x27;, &#x27;hyp&#x27;, &#x27;chl&#x27;])</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp40 &lt;- mice.mids(imp, maxit=35, print=F)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp40 &lt;- mice.mids(imp, maxit=35, print=F)
 plot(imp40)</code></pre>
-      
-    </div>
-  </details>
+  
+  </div>
 </div>
 
 <div class="code-tabs plot-tabs" id="plots-48">
+
   <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
   </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v02_trace_40.png" alt="5. Extended iteration trace"><figcaption>v02_trace_40.png</figcaption></figure>
-  </div>
-  <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_003.png" alt="5. Extended iteration trace"><figcaption>fig_003.png</figcaption></figure>
-  </div>
-  <div class="tab-content compare">
+  <div class="tab-content compare active">
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -976,12 +1530,44 @@ plot(imp40)</code></pre>
       </div>
     </div>
   </div>
+  <div class="tab-content python">
+    <figure class="plot-figure"><img src="assets/v02_trace_40.png" alt="5. Extended iteration trace"><figcaption>v02_trace_40.png</figcaption></figure>
+  </div>
+  <div class="tab-content r">
+    <figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_003.png" alt="5. Extended iteration trace"><figcaption>fig_003.png</figcaption></figure>
+  </div>
 </div>
 <h2 id="6-stripplot-diagnostics">6. Stripplot diagnostics</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 2 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>Generally, one would prefer for the imputed data to be plausible values, i.e. values that could have been observed if they had not been missing. In order to form an idea about plausibility, one may check the imputations and compare them against the observed values. If we are willing to assume that the data are missing completely at random (MCAR), then the imputations should have the same distribution as the observed data. In general, distributions may be different because the missing data are MAR (or even MNAR). However, very large discrepancies need to be screened. Let us plot the observed and imputed data of <code>chl</code> by</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-49">
+<div class="code-tabs dual-code-tabs" id="code-49">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">fig = plot_stripplot(imp3, &#x27;chl&#x27;)
+save_figure(fig, ASSETS, &#x27;v02_stripplot.png&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">stripplot(imp, chl~.imp, pch=20, cex=2)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="fig = plot_stripplot(imp3, &#x27;chl&#x27;)
@@ -990,53 +1576,67 @@ save_figure(fig, ASSETS, &#x27;v02_stripplot.png&#x27;)">Copy Python</button>
   <pre class="language-python"><code class="language-python">fig = plot_stripplot(imp3, &#x27;chl&#x27;)
 save_figure(fig, ASSETS, &#x27;v02_stripplot.png&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">stripplot(imp, chl~.imp, pch=20, cex=2)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">stripplot(imp, chl~.imp, pch=20, cex=2)</code></pre>
+  
+  </div>
 </div>
 
 <p>The convention is to plot observed data in blue and the imputed data in red. The figure graphs the data values of <code>chl</code> before and after imputation. Since the PMM method draws imputations from the observed data, imputed values have the same gaps as in the observed data, and are always within the range of the observed data. The figure indicates that the distributions of the imputed and the observed values are similar. The observed data have a particular feature that, for some reason, the data cluster around the value of 187. The imputations reflect this feature, and are close to the data. Under MCAR, univariate distributions of the observed and imputed data are expected to be identical. Under MAR, they can be different, both in location and spread, but their multivariate distribution is assumed to be identical. There are many other ways to look at the imputed data.</p>
 <p>The following command creates a simpler version of the graph from the previous step and adds the plot for <code>bmi</code>.</p>
 <p><strong>Note:</strong> Matplotlib equivalent of the R lattice plot.</p>
 
-<div class="code-card" id="code-50">
+<div class="code-tabs dual-code-tabs" id="code-50">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">_stripplot_panel(imp3, [&#x27;chl&#x27;, &#x27;bmi&#x27;])</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">stripplot(imp)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="_stripplot_panel(imp3, [&#x27;chl&#x27;, &#x27;bmi&#x27;])">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">_stripplot_panel(imp3, [&#x27;chl&#x27;, &#x27;bmi&#x27;])</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">stripplot(imp)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">stripplot(imp)</code></pre>
+  
+  </div>
 </div>
 
 <p>Remember that <code>bmi</code> was imputed by Bayesian linear regression and (the range of) imputed values may therefore be different than observed values.</p>
 <div class="code-tabs plot-tabs" id="plots-51">
+
   <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
   </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v02_stripplot_chl.png" alt="6. Stripplot diagnostics"><figcaption>v02_stripplot_chl.png</figcaption></figure>
-<figure class="plot-figure"><img src="assets/v02_stripplot_multi.png" alt="6. Stripplot diagnostics"><figcaption>v02_stripplot_multi.png</figcaption></figure>
-  </div>
-  <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_004.png" alt="6. Stripplot diagnostics"><figcaption>fig_004.png</figcaption></figure>
-<figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_005.png" alt="6. Stripplot diagnostics"><figcaption>fig_005.png</figcaption></figure>
-  </div>
-  <div class="tab-content compare">
+  <div class="tab-content compare active">
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -1063,6 +1663,14 @@ save_figure(fig, ASSETS, &#x27;v02_stripplot.png&#x27;)</code></pre>
         <figcaption>fig_005.png</figcaption></figure>
       </div>
     </div>
+  </div>
+  <div class="tab-content python">
+    <figure class="plot-figure"><img src="assets/v02_stripplot_chl.png" alt="6. Stripplot diagnostics"><figcaption>v02_stripplot_chl.png</figcaption></figure>
+<figure class="plot-figure"><img src="assets/v02_stripplot_multi.png" alt="6. Stripplot diagnostics"><figcaption>v02_stripplot_multi.png</figcaption></figure>
+  </div>
+  <div class="tab-content r">
+    <figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_004.png" alt="6. Stripplot diagnostics"><figcaption>fig_004.png</figcaption></figure>
+<figure class="plot-figure"><img src="assets/reference/v02_convergence_pooling/fig_005.png" alt="6. Stripplot diagnostics"><figcaption>fig_005.png</figcaption></figure>
   </div>
 </div>
 <h3 id="repeated-analysis-in-mice">Repeated analysis in mice</h3><h2 id="7-pooled-regression-fit">7. Pooled regression fit</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (4 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 4 blocks)</div>
@@ -1192,45 +1800,149 @@ Coefficients:
 </details>
 <p>The <code>fit</code> object contains the regression summaries for each data set. The new object <code>fit</code> is actually of class <code>mira</code> (<em>multiply imputed repeated analyses</em>).</p>
 
-<div class="code-card" id="code-52">
+<div class="code-tabs dual-code-tabs" id="code-52">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(&#x27;[1] &quot;mira&quot;   &quot;matrix&quot;&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mira&quot;   &quot;matrix&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">class(fit)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mira&quot;   &quot;matrix&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(&#x27;[1] &quot;mira&quot;   &quot;matrix&quot;&#x27;)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">print(&#x27;[1] &quot;mira&quot;   &quot;matrix&quot;&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mira&quot;   &quot;matrix&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">class(fit)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mira&quot;   &quot;matrix&quot;</code></pre>
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">class(fit)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mira&quot;   &quot;matrix&quot;</code></pre>
+  </div>
 </div>
 
 <p>Use the <code>ls()</code> function to what out what is in the object.</p>
 
-<div class="code-card" id="code-53">
+<div class="code-tabs dual-code-tabs" id="code-53">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(&#x27;[1] &quot;analyses&quot; &quot;call&quot;     &quot;call1&quot;    &quot;nmis&quot;&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;analyses&quot; &quot;call&quot;     &quot;call1&quot;    &quot;nmis&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">ls(fit)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;analyses&quot; &quot;call&quot;     &quot;call1&quot;    &quot;nmis&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(&#x27;[1] &quot;analyses&quot; &quot;call&quot;     &quot;call1&quot;    &quot;nmis&quot;&#x27;)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">print(&#x27;[1] &quot;analyses&quot; &quot;call&quot;     &quot;call1&quot;    &quot;nmis&quot;&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;analyses&quot; &quot;call&quot;     &quot;call1&quot;    &quot;nmis&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">ls(fit)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;analyses&quot; &quot;call&quot;     &quot;call1&quot;    &quot;nmis&quot;</code></pre>
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">ls(fit)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;analyses&quot; &quot;call&quot;     &quot;call1&quot;    &quot;nmis&quot;</code></pre>
+  </div>
 </div>
 
 <p>Suppose we want to find the regression model fitted to the second imputed data set. It can be found as</p>
 
-<div class="code-card" id="code-54">
+<div class="code-tabs dual-code-tabs" id="code-54">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">filled2 = complete(imp3, 2)
+print(format_lm_summary_r(&#x27;bmi ~ chl&#x27;, filled2, names2))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Call:
+lm(formula = bmi ~ chl)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+  -6.5111   -2.5430   -0.3816    2.6453    7.3992 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)  21.24786    4.19493   5.065  0.0000 ***
+chl           0.03052    0.02149   1.420  0.1689  
+---
+Signif. codes:  0 &#x27;***&#x27; 0.001 &#x27;**&#x27; 0.01 &#x27;*&#x27; 0.05 &#x27;.&#x27; 0.1 &#x27; &#x27; 1
+
+Residual standard error: 4.0552 on 23 degrees of freedom
+Multiple R-squared:  0.0806, Adjusted R-squared:  0.04067 
+F-statistic: 2.018 on 1 and 23 DF,  p-value: 0.1689</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">summary(fit$analyses[[2]])</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Call:
+lm(formula = bmi ~ chl)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+  -6.5111   -2.5430   -0.3816    2.6453    7.3992 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)  21.24786    4.19493   5.065  0.0000 ***
+chl           0.03052    0.02149   1.420  0.1689  
+---
+Signif. codes:  0 &#x27;***&#x27; 0.001 &#x27;**&#x27; 0.01 &#x27;*&#x27; 0.05 &#x27;.&#x27; 0.1 &#x27; &#x27; 1
+
+Residual standard error: 4.0552 on 23 degrees of freedom
+Multiple R-squared:  0.0806, Adjusted R-squared:  0.04067 
+F-statistic: 2.018 on 1 and 23 DF,  p-value: 0.1689</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="filled2 = complete(imp3, 2)
@@ -1255,12 +1967,11 @@ Signif. codes:  0 &#x27;***&#x27; 0.001 &#x27;**&#x27; 0.01 &#x27;*&#x27; 0.05 &
 Residual standard error: 4.0552 on 23 degrees of freedom
 Multiple R-squared:  0.0806, Adjusted R-squared:  0.04067 
 F-statistic: 2.018 on 1 and 23 DF,  p-value: 0.1689</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">summary(fit$analyses[[2]])</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Call:
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">summary(fit$analyses[[2]])</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Call:
 lm(formula = bmi ~ chl)
 
 Residuals:
@@ -1277,13 +1988,43 @@ Signif. codes:  0 &#x27;***&#x27; 0.001 &#x27;**&#x27; 0.01 &#x27;*&#x27; 0.05 &
 Residual standard error: 4.0552 on 23 degrees of freedom
 Multiple R-squared:  0.0806, Adjusted R-squared:  0.04067 
 F-statistic: 2.018 on 1 and 23 DF,  p-value: 0.1689</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 <h2 id="8-pool-multiply-imputed-model">8. Pool multiply imputed model</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Pooling the repeated regression analyses can be done simply by typing</p>
 
-<div class="code-card" id="code-55">
+<div class="code-tabs dual-code-tabs" id="code-55">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">pooled = pool(fit)
+print(format_pool_v02_r(summary_pool(pooled)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">              estimate  std.error statistic       df     p.value
+(Intercept)  21.8009113 5.74829615  3.792587 10.22632 0.003390551
+chl          0.0244790 0.03010637  0.813085 9.14210 0.436831810</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">pool.fit &lt;- pool(fit)
+summary(pool.fit)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate  std.error statistic       df     p.value
+(Intercept)  21.8009113 5.74829615  3.792587 10.22632 0.003390551
+chl          0.0244790 0.03010637  0.813085 9.14210 0.436831810</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="pooled = pool(fit)
@@ -1294,17 +2035,15 @@ print(format_pool_v02_r(summary_pool(pooled)))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">              estimate  std.error statistic       df     p.value
 (Intercept)  21.8009113 5.74829615  3.792587 10.22632 0.003390551
 chl          0.0244790 0.03010637  0.813085 9.14210 0.436831810</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">pool.fit &lt;- pool(fit)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">pool.fit &lt;- pool(fit)
 summary(pool.fit)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate  std.error statistic       df     p.value
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">              estimate  std.error statistic       df     p.value
 (Intercept)  21.8009113 5.74829615  3.792587 10.22632 0.003390551
 chl          0.0244790 0.03010637  0.813085 9.14210 0.436831810</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 <p>which gives the relevant pooled regression coefficients and parameters, as well as the fraction of information about the coefficients missing due to nonresponse (<code>fmi</code>) and the proportion of the variation attributable to the missing data (<code>lambda</code>). The pooled fit object is of class <code>mipo</code>, which stands for <em>multiply imputed pooled object</em>.</p>

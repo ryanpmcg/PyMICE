@@ -152,14 +152,14 @@
       margin: 1rem 0 1.5rem;
       font-size: 0.92rem;
     }
-    .parity-details, .compare-r, .long-output {
+    .parity-details, .long-output {
       margin: 1rem 0;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.75rem 1rem;
       background: #fff;
     }
-    .parity-details summary, .compare-r summary, .long-output summary {
+    .parity-details summary, .long-output summary {
       cursor: pointer;
       font-weight: 600;
       color: var(--primary);
@@ -187,13 +187,11 @@
     }
     .series-nav-link:hover { text-decoration: underline; }
     .series-nav-index { margin: 0 auto; }
-    .code-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin: 1.25rem 0;
-      padding: 0.75rem 1rem 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    .dual-code-tabs .code-toolbar {
+      margin-bottom: 0.5rem;
+    }
+    .code-compare-grid .compare-title {
+      margin-top: 0;
     }
     .code-toolbar {
       display: flex;
@@ -350,7 +348,7 @@
     figure, figure.plot-figure { margin: 1rem 0; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
     img { max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 0 auto; }
     figcaption { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
-    .plot-tabs { margin-top: 1.25rem; }
+    .dual-code-tabs, .plot-tabs { margin-top: 1.25rem; }
     .plot-compare-grid figure { margin: 0; }
     .plot-empty { color: var(--text-muted); font-size: 0.9rem; font-style: italic; }
     
@@ -384,7 +382,33 @@
 <p>We will now discuss the arguments of function <code>futuremice</code>. Easy imputation of an incomplete dataset (say, <code>nhanes</code>) can be performed with <code>futuremice</code> in the following way.</p>
 <p><strong>Note:</strong> n.core message is informational; core count may differ by machine.</p>
 
-<div class="code-card" id="code-225">
+<div class="code-tabs dual-code-tabs" id="code-225">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">imp = futuremice(data, column_names=names, m=5, maxit=5, print=False)
+print(core_selection_message(5))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Number of cores not specified. Based on your machine a value of n.core = 5 is chosen; the imputations are distributed about equally over the cores.</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp &lt;- futuremice(nhanes)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Number of cores not specified. Based on your machine a value of n.core = 3 is chosen; the imputations are distributed about equally over the cores.</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp = futuremice(data, column_names=names, m=5, maxit=5, print=False)
@@ -393,59 +417,130 @@ print(core_selection_message(5))">Copy Python</button>
   <pre class="language-python"><code class="language-python">imp = futuremice(data, column_names=names, m=5, maxit=5, print=False)
 print(core_selection_message(5))</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">Number of cores not specified. Based on your machine a value of n.core = 5 is chosen; the imputations are distributed about equally over the cores.</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp &lt;- futuremice(nhanes)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Number of cores not specified. Based on your machine a value of n.core = 3 is chosen; the imputations are distributed about equally over the cores.</code></pre>
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp &lt;- futuremice(nhanes)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">Number of cores not specified. Based on your machine a value of n.core = 3 is chosen; the imputations are distributed about equally over the cores.</code></pre>
+  </div>
 </div>
 
 <p>The function returns a <code>mids</code> object as created by <code>mice</code>. In fact, <code>futuremice</code> makes use of function <code>mice::ibind</code> to combine the <code>mids</code> objects returned by the different cores. PyMICE provides <code>futuremice()</code> / <code>parallel_mice()</code> with the same API, distributing imputations across worker processes via <code>ProcessPoolExecutor</code>.</p><h2 id="2-inspect-mids-object">2. Inspect mids object</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>All other parts of the <code>mids</code> object are standard. Inspect the imputation metadata with <code>print(imp)</code>.</p>
 <p><strong>Note:</strong> PyMICE returns Mids object (same role as R mids).</p>
 
-<div class="code-card" id="code-226">
+<div class="code-tabs dual-code-tabs" id="code-226">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">type(imp).__name__</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;Mids&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">class(imp)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mids&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="type(imp).__name__">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">type(imp).__name__</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;Mids&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">class(imp)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mids&quot;</code></pre>
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">class(imp)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mids&quot;</code></pre>
+  </div>
 </div>
 <h3 id="argument-ncore">Argument `n.core`</h3><h2 id="3-number-of-imputations">3. Number of imputations</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>With <code>n.core</code>, the number of cores (or CPUs) is given, and the number of imputations <code>m</code> is (about) equally distributed over the cores. As a default, <code>m = 5</code>, just as in a regular <code>mice</code> call. We can check this by evaluating the <code>m</code> that is shown in the <code>mids</code> object.</p>
 
-<div class="code-card" id="code-227">
+<div class="code-tabs dual-code-tabs" id="code-227">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">imp.m</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 5</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp$m</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp.m">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">imp.m</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 5</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp$m</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp$m</code></pre>
+  
+  </div>
 </div>
 <h3 id="using-mice-arguments">Using `mice` arguments</h3><h2 id="4-change-imputation-method">4. Change imputation method</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Function <code>futuremice</code> is able to deal with the conventional <code>mice</code> arguments. In order to change the imputation method from its default (predictive mean matching) to, for example, Bayesian linear regression, the <code>method</code> argument can be adjusted.</p>
 
-<div class="code-card" id="code-228">
+<div class="code-tabs dual-code-tabs" id="code-228">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">format_meth_r(names, imp_norm.method, style=&#x27;futuremice&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">age   bmi   hyp   chl
+&quot;&quot;   &quot;norm&quot;   &quot;norm&quot;   &quot;norm&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp$method</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">age    bmi    hyp    chl
+    &quot;&quot; &quot;norm&quot; &quot;norm&quot; &quot;norm&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="format_meth_r(names, imp_norm.method, style=&#x27;futuremice&#x27;)">Copy Python</button>
@@ -453,21 +548,52 @@ print(core_selection_message(5))</code></pre>
   <pre class="language-python"><code class="language-python">format_meth_r(names, imp_norm.method, style=&#x27;futuremice&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">age   bmi   hyp   chl
 &quot;&quot;   &quot;norm&quot;   &quot;norm&quot;   &quot;norm&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp$method</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">age    bmi    hyp    chl
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp$method</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">age    bmi    hyp    chl
     &quot;&quot; &quot;norm&quot; &quot;norm&quot; &quot;norm&quot;</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 <h3 id="argument-parallelseed">Argument `parallelseed`</h3><h2 id="5-global-seed-reproducibility">5. Global seed reproducibility</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>In simulation studies, it is often desired to set a seed to make the results reproducible. Similarly to <code>mice</code>, the seed value for <code>futuremice</code> can be defined outside the function. Hence users can specify the following code to obtain identical results.</p>
 <p><strong>Note:</strong> PyMICE reproducibility demo; R snapshot has no pooled table.</p>
 
-<div class="code-card" id="code-229">
+<div class="code-tabs dual-code-tabs" id="code-229">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">imp1 = futuremice(data, column_names=names, m=5, maxit=5, parallelseed=123, n_core=3, print=False)
+format_pool_pooled_df_r(pool(with_mids(imp1, formula=&#x27;chl ~ bmi&#x27;)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
+1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
+2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">library(magrittr)
+set.seed(123)
+imp1 &lt;- futuremice(nhanes, n.core = 3)
+set.seed(123)
+imp2 &lt;- futuremice(nhanes, n.core = 3)
+imp1 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp1 = futuremice(data, column_names=names, m=5, maxit=5, parallelseed=123, n_core=3, print=False)
@@ -478,23 +604,49 @@ format_pool_pooled_df_r(pool(with_mids(imp1, formula=&#x27;chl ~ bmi&#x27;)))</c
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
 1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">library(magrittr)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">library(magrittr)
 set.seed(123)
 imp1 &lt;- futuremice(nhanes, n.core = 3)
 set.seed(123)
 imp2 &lt;- futuremice(nhanes, n.core = 3)
 imp1 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
-      
-    </div>
-  </details>
+  
+  </div>
 </div>
 
 
-<div class="code-card" id="code-230">
+<div class="code-tabs dual-code-tabs" id="code-230">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">imp2 = futuremice(data, column_names=names, m=5, maxit=5, parallelseed=123, n_core=3, print=False)
+format_pool_pooled_df_r(pool(with_mids(imp2, formula=&#x27;chl ~ bmi&#x27;)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
+1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
+2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp2 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="imp2 = futuremice(data, column_names=names, m=5, maxit=5, parallelseed=123, n_core=3, print=False)
@@ -505,20 +657,47 @@ format_pool_pooled_df_r(pool(with_mids(imp2, formula=&#x27;chl ~ bmi&#x27;)))</c
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
 1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp2 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp2 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+  </div>
 </div>
 <h2 id="6-parallelseed-reproducibility">6. Parallelseed reproducibility</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>A user can also specify a seed within the <code>futuremice</code> call, by specifying the argument <code>parallelseed</code>. This seed is parsed to <code>withr::local_seed()</code>, such that the global environment is not affected by a different seed within the <code>futuremice</code> function.</p>
 <p><strong>Note:</strong> PyMICE reproducibility demo; R snapshot has no pooled output.</p>
 
-<div class="code-card" id="code-231">
+<div class="code-tabs dual-code-tabs" id="code-231">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">format_pool_pooled_df_r(pool(with_mids(imp3, formula=&#x27;chl ~ bmi&#x27;)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
+1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
+2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp3 &lt;- futuremice(nhanes, parallelseed = 123, n.core = 3)
+imp4 &lt;- futuremice(nhanes, parallelseed = 123, n.core = 3)
+imp3 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="format_pool_pooled_df_r(pool(with_mids(imp3, formula=&#x27;chl ~ bmi&#x27;)))">Copy Python</button>
@@ -527,20 +706,45 @@ format_pool_pooled_df_r(pool(with_mids(imp2, formula=&#x27;chl ~ bmi&#x27;)))</c
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
 1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp3 &lt;- futuremice(nhanes, parallelseed = 123, n.core = 3)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp3 &lt;- futuremice(nhanes, parallelseed = 123, n.core = 3)
 imp4 &lt;- futuremice(nhanes, parallelseed = 123, n.core = 3)
 imp3 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
-      
-    </div>
-  </details>
+  
+  </div>
 </div>
 
 
-<div class="code-card" id="code-232">
+<div class="code-tabs dual-code-tabs" id="code-232">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">format_pool_pooled_df_r(pool(with_mids(imp4, formula=&#x27;chl ~ bmi&#x27;)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
+1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
+2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp4 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="format_pool_pooled_df_r(pool(with_mids(imp4, formula=&#x27;chl ~ bmi&#x27;)))">Copy Python</button>
@@ -549,20 +753,48 @@ imp3 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
 1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp4 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp4 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+  </div>
 </div>
 <h2 id="7-drawn-parallelseed">7. Drawn parallelseed</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 1 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>If no seed is specified by the user, a seed will be drawn randomly and returned in <code>imp$parallelseed</code>, such that the user can reproduce the obtained results even when no seed is specified.</p>
 <p><strong>Note:</strong> PyMICE reproducibility demo; drawn parallelseed differs from R golden.</p>
 
-<div class="code-card" id="code-233">
+<div class="code-tabs dual-code-tabs" id="code-233">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">format_pool_pooled_df_r(pool(with_mids(imp5, formula=&#x27;chl ~ bmi&#x27;)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
+1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
+2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp5 &lt;- futuremice(nhanes, n.core = 3)
+parallelseed &lt;- imp5$parallelseed
+imp6 &lt;- futuremice(nhanes, parallelseed = parallelseed, n.core = 3)
+imp5 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="format_pool_pooled_df_r(pool(with_mids(imp5, formula=&#x27;chl ~ bmi&#x27;)))">Copy Python</button>
@@ -571,21 +803,46 @@ imp3 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
 1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp5 &lt;- futuremice(nhanes, n.core = 3)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp5 &lt;- futuremice(nhanes, n.core = 3)
 parallelseed &lt;- imp5$parallelseed
 imp6 &lt;- futuremice(nhanes, parallelseed = parallelseed, n.core = 3)
 imp5 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
-      
-    </div>
-  </details>
+  
+  </div>
 </div>
 
 
-<div class="code-card" id="code-234">
+<div class="code-tabs dual-code-tabs" id="code-234">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">format_pool_pooled_df_r(pool(with_mids(imp6, formula=&#x27;chl ~ bmi&#x27;)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
+1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
+2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp6 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="format_pool_pooled_df_r(pool(with_mids(imp6, formula=&#x27;chl ~ bmi&#x27;)))">Copy Python</button>
@@ -594,38 +851,86 @@ imp5 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         term m   estimate      ubar         b         t dfcom       df       riv    lambda       fmi
 1 (Intercept) 5 108.153063 3140.9871 977.27398 4313.7159    23.0 12.02437 0.3733631 0.2718605  0.368788
 2 bmi         5   3.171752    4.4191   1.51810    6.2408    23.0 11.38684 0.4122396 0.2919049  0.390341</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp6 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp6 %$% lm(chl ~ bmi) %&gt;% pool %$% pooled</code></pre>
+  
+  </div>
 </div>
 <h3 id="ampute-and-parallel-imputation">Ampute and parallel imputation</h3><h2 id="8-ampute-then-impute">8. Ampute then impute</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⏭️ SKIP (0 exact, 1 info, 0 visual, 1 skipped, 0 mismatch of 2 blocks)</div>
 <p>The original vignette also demonstrates timing benchmarks on simulated data (Figures 1–2). Those wall-clock comparisons are <strong>R-only</strong> and skipped here. As a closing example, we ampute a small multivariate dataset and impute it with the same PyMICE workflow.</p>
 
-<div class="code-card" id="code-235">
+<div class="code-tabs dual-code-tabs" id="code-235">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python"># Skipped — R-only timing figures; not reproduced in PyMICE</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(not run — )</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r"># Figures 1–2: wall-clock benchmarks (small vs large simulated data)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="# Skipped — R-only timing figures; not reproduced in PyMICE">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python"># Skipped — R-only timing figures; not reproduced in PyMICE</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(not run — )</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r"># Figures 1–2: wall-clock benchmarks (small vs large simulated data)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r"># Figures 1–2: wall-clock benchmarks (small vs large simulated data)</code></pre>
+  
+  </div>
 </div>
 
 <p><strong>Note:</strong> PyMICE closing demo (ampute + parallel impute); no R snapshot output.</p>
 
-<div class="code-card" id="code-236">
+<div class="code-tabs dual-code-tabs" id="code-236">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">amputed_res = ampute(small_data, prop=0.8, mech=&#x27;MCAR&#x27;, seed=123)
+imp_amp = futuremice(amputed_res.amp, column_names=names, m=5, maxit=5, print=False)
+print(f&#x27;[1] {imp_amp.m}&#x27;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 5</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">imp_amp &lt;- futuremice(ampute(nhanes, prop = 0.8, mech = &#x27;MCAR&#x27;)$amp)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="amputed_res = ampute(small_data, prop=0.8, mech=&#x27;MCAR&#x27;, seed=123)
@@ -636,14 +941,12 @@ print(f&#x27;[1] {imp_amp.m}&#x27;)">Copy Python</button>
 imp_amp = futuremice(amputed_res.amp, column_names=names, m=5, maxit=5, print=False)
 print(f&#x27;[1] {imp_amp.m}&#x27;)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 5</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">imp_amp &lt;- futuremice(ampute(nhanes, prop = 0.8, mech = &#x27;MCAR&#x27;)$amp)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">imp_amp &lt;- futuremice(ampute(nhanes, prop = 0.8, mech = &#x27;MCAR&#x27;)$amp)</code></pre>
+  
+  </div>
 </div>
 
     </div>

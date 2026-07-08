@@ -152,14 +152,14 @@
       margin: 1rem 0 1.5rem;
       font-size: 0.92rem;
     }
-    .parity-details, .compare-r, .long-output {
+    .parity-details, .long-output {
       margin: 1rem 0;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.75rem 1rem;
       background: #fff;
     }
-    .parity-details summary, .compare-r summary, .long-output summary {
+    .parity-details summary, .long-output summary {
       cursor: pointer;
       font-weight: 600;
       color: var(--primary);
@@ -187,13 +187,11 @@
     }
     .series-nav-link:hover { text-decoration: underline; }
     .series-nav-index { margin: 0 auto; }
-    .code-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin: 1.25rem 0;
-      padding: 0.75rem 1rem 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    .dual-code-tabs .code-toolbar {
+      margin-bottom: 0.5rem;
+    }
+    .code-compare-grid .compare-title {
+      margin-top: 0;
     }
     .code-toolbar {
       display: flex;
@@ -350,7 +348,7 @@
     figure, figure.plot-figure { margin: 1rem 0; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
     img { max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 0 auto; }
     figcaption { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
-    .plot-tabs { margin-top: 1.25rem; }
+    .dual-code-tabs, .plot-tabs { margin-top: 1.25rem; }
     .plot-compare-grid figure { margin: 0; }
     .plot-empty { color: var(--text-muted); font-size: 0.9rem; font-style: italic; }
     
@@ -383,7 +381,71 @@
 <p>Use the help function to read <code>ampute</code>&#x27;s documentation. The function is available in multiple imputation package <strong>mice</strong>.</p>
 <p><strong>Note:</strong> PyMICE help page; R opens a separate pager.</p>
 
-<div class="code-card" id="code-208">
+<div class="code-tabs dual-code-tabs" id="code-208">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">from pymice import help
+help(&quot;ampute&quot;)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">ampute(function)
+================
+
+Description
+-----------
+Introduce missing values under MCAR, MAR, or MNAR mechanisms for
+simulation and sensitivity analysis.
+
+Usage
+-----
+from pymice import ampute
+result = ampute(data, prop=0.3, mech=&#x27;MAR&#x27;, seed=2016)
+amp = result.amp  # amputed data
+
+Parameters
+----------
+  data
+    Complete numeric array.
+  prop
+    Target proportion of missing cells.
+  mech
+    &#x27;MCAR&#x27;, &#x27;MAR&#x27;, or &#x27;MNAR&#x27;.
+  weights
+    Column weights for MAR/MNAR sum-score mechanism.
+  patterns
+    Binary pattern matrix (optional).
+  bycases
+    If True, delete rows; if False, delete cells per column.
+  seed
+    RNG seed.
+
+Source
+------
+Schouten, Lugtig &amp; Vink (2018); mice_ampute vignette.
+
+See Also
+--------
+  mice, md_pattern</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">library(&quot;mice&quot;)
+help(ampute)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="from pymice import help
@@ -429,20 +491,64 @@ Schouten, Lugtig &amp; Vink (2018); mice_ampute vignette.
 See Also
 --------
   mice, md_pattern</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">library(&quot;mice&quot;)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">library(&quot;mice&quot;)
 help(ampute)</code></pre>
-      
-    </div>
-  </details>
+  
+  </div>
 </div>
 <h2 id="2-generate-complete-data">2. Generate complete data</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>The first argument <code>data</code> is an input argument for a complete dataset. In this tutorial, as in many simulation studies, we will randomly generate a dataset to be our complete dataset. Here, we will use function <code>mvrnorm</code> from R-package <strong>MASS</strong> to sample from a multivariate normal distribution.</p>
 
-<div class="code-card" id="code-209">
+<div class="code-tabs dual-code-tabs" id="code-209">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">testdata, names = load_ampute_testdata()
+print(format_ampute_summary_r(testdata, names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">       V1                V2                V3  
+ Min.   :6.180   Min.   :1.411   Min.   :-3.9607102  
+ 1st Qu.:9.316   1st Qu.:4.332   1st Qu.:-0.6773767  
+ Median :10.003   Median :4.997   Median :-0.0008242  
+ Mean   :10.003   Mean   :5.000   Mean   :0.0012490  
+ 3rd Qu.:10.703   3rd Qu.:5.673   3rd Qu.:0.6760525  
+ Max.   :13.721   Max.   :8.692   Max.   :4.1653921</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">set.seed(2016)
+testdata &lt;- as.data.frame(MASS::mvrnorm(n = 10000,
+                                        mu = c(10, 5, 0),
+                                        Sigma = matrix(data = c(1.0, 0.2, 0.2,
+                                                                0.2, 1.0, 0.2,
+                                                                0.2, 0.2, 1.0),
+                                                       nrow = 3,
+                                                       byrow = T)))
+summary(testdata)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">       V1                V2                V3  
+ Min.   :6.180   Min.   :1.411   Min.   :-3.9607102  
+ 1st Qu.:9.316   1st Qu.:4.332   1st Qu.:-0.6773767  
+ Median :10.003   Median :4.997   Median :-0.0008242  
+ Mean   :10.003   Mean   :5.000   Mean   :0.0012490  
+ 3rd Qu.:10.703   3rd Qu.:5.673   3rd Qu.:0.6760525  
+ Max.   :13.721   Max.   :8.692   Max.   :4.1653921</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="testdata, names = load_ampute_testdata()
@@ -457,11 +563,10 @@ print(format_ampute_summary_r(testdata, names))</code></pre>
  Mean   :10.003   Mean   :5.000   Mean   :0.0012490  
  3rd Qu.:10.703   3rd Qu.:5.673   3rd Qu.:0.6760525  
  Max.   :13.721   Max.   :8.692   Max.   :4.1653921</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">set.seed(2016)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">set.seed(2016)
 testdata &lt;- as.data.frame(MASS::mvrnorm(n = 10000,
                                         mu = c(10, 5, 0),
                                         Sigma = matrix(data = c(1.0, 0.2, 0.2,
@@ -470,39 +575,99 @@ testdata &lt;- as.data.frame(MASS::mvrnorm(n = 10000,
                                                        nrow = 3,
                                                        byrow = T)))
 summary(testdata)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">       V1                V2                V3  
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">       V1                V2                V3  
  Min.   :6.180   Min.   :1.411   Min.   :-3.9607102  
  1st Qu.:9.316   1st Qu.:4.332   1st Qu.:-0.6773767  
  Median :10.003   Median :4.997   Median :-0.0008242  
  Mean   :10.003   Mean   :5.000   Mean   :0.0012490  
  3rd Qu.:10.703   3rd Qu.:5.673   3rd Qu.:0.6760525  
  Max.   :13.721   Max.   :8.692   Max.   :4.1653921</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 <h2 id="3-default-amputation">3. Default amputation</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>We can immediately generate missing values by calling <code>ampute</code>. The resulting object is of class <code>mads</code> and contains the default values that are used as arguments. It is important to know that the incomplete dataset is stored under object <code>amp</code> in class <code>mads</code>.</p>
 
-<div class="code-card" id="code-210">
+<div class="code-tabs dual-code-tabs" id="code-210">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">result = chain[&#x27;result&#x27;]</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mads&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">result &lt;- ampute(data = testdata)
+class(result)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mads&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="result = chain[&#x27;result&#x27;]">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">result = chain[&#x27;result&#x27;]</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mads&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">result &lt;- ampute(data = testdata)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">result &lt;- ampute(data = testdata)
 class(result)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mads&quot;</code></pre>
-    </div>
-  </details>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;mads&quot;</code></pre>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-211">
+<div class="code-tabs dual-code-tabs" id="code-211">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_ampute_head_r(result.amp[:6], names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">         V1       V2         V3
+1 9.2233067 4.7715856 -0.8695553
+2        NA 5.8927951 0.9322673
+3 9.9892764 4.6194295 0.2756616
+4  10.410801 4.4804258         NA
+5 7.9680786 3.3664286 -2.055320
+6 9.2389696 4.8457801 0.3358049</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">head(result$amp)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">V1       V2         V3
+1  9.223307 4.771586 -0.8695553
+2        NA 5.892795  0.9322673
+3  9.989276 4.619429  0.2756616
+4 10.410801 4.480426         NA
+5  7.968079 3.366429 -2.0553200
+6  9.238970 4.845780  0.3358049</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_ampute_head_r(result.amp[:6], names))">Copy Python</button>
@@ -515,25 +680,52 @@ class(result)</code></pre>
 4  10.410801 4.4804258         NA
 5 7.9680786 3.3664286 -2.055320
 6 9.2389696 4.8457801 0.3358049</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">head(result$amp)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">V1       V2         V3
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">head(result$amp)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">V1       V2         V3
 1  9.223307 4.771586 -0.8695553
 2        NA 5.892795  0.9322673
 3  9.989276 4.619429  0.2756616
 4 10.410801 4.480426         NA
 5  7.968079 3.366429 -2.0553200
 6  9.238970 4.845780  0.3358049</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 <h2 id="4-inspect-mads-metadata">4. Inspect mads metadata</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Apart from the argument values and the incomplete dataset, the <code>mads</code> object contains the assigned subset for each data row (<code>cand</code>), the weighted sum scores (<code>scores</code>) and the original data (<code>data</code>).</p>
 
-<div class="code-card" id="code-212">
+<div class="code-tabs dual-code-tabs" id="code-212">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_ampute_names_r())</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;call&quot;     &quot;prop&quot;     &quot;patterns&quot; &quot;freq&quot;     &quot;mech&quot;     &quot;weights&quot;
+ [7] &quot;cont&quot;     &quot;std&quot;      &quot;type&quot;     &quot;odds&quot;     &quot;amp&quot;      &quot;cand&quot;
+[13] &quot;scores&quot;   &quot;data&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">names(result)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;call&quot;     &quot;prop&quot;     &quot;patterns&quot; &quot;freq&quot;     &quot;mech&quot;     &quot;weights&quot;
+ [7] &quot;cont&quot;     &quot;std&quot;      &quot;type&quot;     &quot;odds&quot;     &quot;amp&quot;      &quot;cand&quot;
+[13] &quot;scores&quot;   &quot;data&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_ampute_names_r())">Copy Python</button>
@@ -542,21 +734,54 @@ class(result)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;call&quot;     &quot;prop&quot;     &quot;patterns&quot; &quot;freq&quot;     &quot;mech&quot;     &quot;weights&quot;
  [7] &quot;cont&quot;     &quot;std&quot;      &quot;type&quot;     &quot;odds&quot;     &quot;amp&quot;      &quot;cand&quot;
 [13] &quot;scores&quot;   &quot;data&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">names(result)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;call&quot;     &quot;prop&quot;     &quot;patterns&quot; &quot;freq&quot;     &quot;mech&quot;     &quot;weights&quot;
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">names(result)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;call&quot;     &quot;prop&quot;     &quot;patterns&quot; &quot;freq&quot;     &quot;mech&quot;     &quot;weights&quot;
  [7] &quot;cont&quot;     &quot;std&quot;      &quot;type&quot;     &quot;odds&quot;     &quot;amp&quot;      &quot;cand&quot;
 [13] &quot;scores&quot;   &quot;data&quot;</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 <h2 id="5-missing-data-pattern">5. Missing data pattern</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>We can quickly investigate the incomplete dataset with function <code>md.pattern</code>, where the resulting visualization shows the missing data in red and the observed data in blue. The first row always shows the complete cases, of which we have approximately 50%. Each subsequent row depicts a specific missing data pattern. By default, <code>ampute</code> generates missing values in each variable. Note that because <code>md.pattern</code> sorts the columns in increasing order of missing data proportion, the variables are displayed in a different order than in the dataset itself.</p>
 
-<div class="code-card" id="code-213">
+<div class="code-tabs dual-code-tabs" id="code-213">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_md_pattern_r(md_pattern(result.amp, names)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     V3  V1  V2     
+4964   1   1   1  0
+1722   1   1   0  1
+1665   1   0   1  1
+1649   0   1   1  1
+      1649   1665   1722  5036</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">md.pattern(result$amp)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     V3  V1  V2     
+4964   1   1   1  0
+1722   1   1   0  1
+1665   1   0   1  1
+1649   0   1   1  1
+      1649   1665   1722  5036</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_md_pattern_r(md_pattern(result.amp, names)))">Copy Python</button>
@@ -568,73 +793,112 @@ class(result)</code></pre>
 1665   1   0   1  1
 1649   0   1   1  1
       1649   1665   1722  5036</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">md.pattern(result$amp)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     V3  V1  V2     
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">md.pattern(result$amp)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     V3  V1  V2     
 4964   1   1   1  0
 1722   1   1   0  1
 1665   1   0   1  1
 1649   0   1   1  1
       1649   1665   1722  5036</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 <h3 id="additional-features-in-ampute">Additional features in `ampute`</h3><h2 id="6-pattern-heatmap">6. Pattern heatmap</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⏭️ SKIP (0 exact, 0 info, 0 visual, 1 skipped, 0 mismatch of 1 blocks)</div>
 <p>The missingness pattern heatmap (<code>md.pattern(..., plot=TRUE)</code>) visualizes which cells are observed (blue) versus missing (red). PyMICE reproduces the pattern counts in the console table above; the lattice heatmap is reference-only in this walkthrough.</p>
 
-<div class="code-card" id="code-214">
+<div class="code-tabs dual-code-tabs" id="code-214">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python"># R draws md.pattern heatmap — PyMICE plot omitted for alignment</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(not run — )</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">md.pattern(result$amp, plot=TRUE)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="# R draws md.pattern heatmap — PyMICE plot omitted for alignment">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python"># R draws md.pattern heatmap — PyMICE plot omitted for alignment</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(not run — )</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">md.pattern(result$amp, plot=TRUE)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">md.pattern(result$amp, plot=TRUE)</code></pre>
+  
+  </div>
 </div>
 <h2 id="7-amputed-boxplots">7. Amputed boxplots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Function <code>bwplot</code> allows for a comparison between amputed and non-amputed data. Note that the function uses as input the <code>mads</code> object and not the incomplete dataset.</p>
 <p><strong>Note:</strong> Boxplot after MNAR amputation (pattern 1).</p>
 
-<div class="code-card" id="code-215">
+<div class="code-tabs dual-code-tabs" id="code-215">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">plot_ampute_bwplot(result_mnar, names, which_pat=0, descriptives=True)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">bwplot(result, which.pat = 1, descriptives = TRUE)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_ampute_bwplot(result_mnar, names, which_pat=0, descriptives=True)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">plot_ampute_bwplot(result_mnar, names, which_pat=0, descriptives=True)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">bwplot(result, which.pat = 1, descriptives = TRUE)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">bwplot(result, which.pat = 1, descriptives = TRUE)</code></pre>
+  
+  </div>
 </div>
 
 <div class="code-tabs plot-tabs" id="plots-216">
+
   <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
   </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v07_bwplot_pat1.png" alt="7. Amputed boxplots"><figcaption>v07_bwplot_pat1.png</figcaption></figure>
-  </div>
-  <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v07_ampute/fig_010.png" alt="7. Amputed boxplots"><figcaption>fig_010.png</figcaption></figure>
-  </div>
-  <div class="tab-content compare">
+  <div class="tab-content compare active">
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -649,41 +913,65 @@ class(result)</code></pre>
       </div>
     </div>
   </div>
+  <div class="tab-content python">
+    <figure class="plot-figure"><img src="assets/v07_bwplot_pat1.png" alt="7. Amputed boxplots"><figcaption>v07_bwplot_pat1.png</figcaption></figure>
+  </div>
+  <div class="tab-content r">
+    <figure class="plot-figure"><img src="assets/reference/v07_ampute/fig_010.png" alt="7. Amputed boxplots"><figcaption>fig_010.png</figcaption></figure>
+  </div>
 </div>
 <h2 id="8-amputed-scatterplots">8. Amputed scatterplots</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (0 exact, 0 info, 1 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>Similar inspections can be done using the function <code>xyplot</code>. The scatterplots show the correlation between the variable values and the weighted sum scores.</p>
 <p><strong>Note:</strong> Scatter plot for pattern 4 after weighted continuous amputation.</p>
 
-<div class="code-card" id="code-217">
+<div class="code-tabs dual-code-tabs" id="code-217">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">plot_ampute_xyplot(result_xy, names, which_pat=3)</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">xyplot(result, which.pat = 4)</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="plot_ampute_xyplot(result_xy, names, which_pat=3)">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">plot_ampute_xyplot(result_xy, names, which_pat=3)</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(plot below)</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">xyplot(result, which.pat = 4)</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">xyplot(result, which.pat = 4)</code></pre>
+  
+  </div>
 </div>
 
 <div class="code-tabs plot-tabs" id="plots-218">
+
   <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
     <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
   </div>
-  <div class="tab-content python active">
-    <figure class="plot-figure"><img src="assets/v07_xyplot_pat4.png" alt="8. Amputed scatterplots"><figcaption>v07_xyplot_pat4.png</figcaption></figure>
-  </div>
-  <div class="tab-content r">
-    <figure class="plot-figure"><img src="assets/reference/v07_ampute/fig_011.png" alt="8. Amputed scatterplots"><figcaption>fig_011.png</figcaption></figure>
-  </div>
-  <div class="tab-content compare">
+  <div class="tab-content compare active">
     
     <div class="compare-grid plot-compare-grid plot-compare-pair">
       <div>
@@ -698,30 +986,96 @@ class(result)</code></pre>
       </div>
     </div>
   </div>
+  <div class="tab-content python">
+    <figure class="plot-figure"><img src="assets/v07_xyplot_pat4.png" alt="8. Amputed scatterplots"><figcaption>v07_xyplot_pat4.png</figcaption></figure>
+  </div>
+  <div class="tab-content r">
+    <figure class="plot-figure"><img src="assets/reference/v07_ampute/fig_011.png" alt="8. Amputed scatterplots"><figcaption>fig_011.png</figcaption></figure>
+  </div>
 </div>
 <h3 id="argument-prop">Argument `prop`</h3><h2 id="9-proportion-of-incomplete-cases">9. Proportion of incomplete cases</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (1 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 1 blocks)</div>
 <p>The argument <code>prop</code> specifies the <strong>proportion</strong> of incomplete rows. As a default, the missingness proportion is 0.5. A proportion of 0.5 means that 50% of the data rows will have missing values. This is not the same as the proportion of missing cells, because incomplete cases will still have some observed values for some variables.</p>
 
-<div class="code-card" id="code-219">
+<div class="code-tabs dual-code-tabs" id="code-219">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">result.prop</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 0.5</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">result$prop</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 0.5</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="result.prop">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">result.prop</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 0.5</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">result$prop</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 0.5</code></pre>
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">result$prop</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 0.5</code></pre>
+  </div>
 </div>
 <h2 id="10-proportion-of-missing-cells">10. Proportion of missing cells</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>To specify the proportion of missing cells, additional argument <code>bycases</code> should be set to <code>FALSE</code>. As the <code>testdata</code> contains 10000 × 3 = 30000 cells, a missing data proportion of 0.2 means that approximately 6000 cells will become missing.</p>
 
-<div class="code-card" id="code-220">
+<div class="code-tabs dual-code-tabs" id="code-220">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">result2 = chain[&#x27;result2&#x27;]
+print(format_md_pattern_r(md_pattern(result2.amp, names)))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">     V3  V2  V1     
+3994   1   1   1  0
+2070   1   1   0  1
+1990   1   0   1  1
+1946   0   1   1  1
+      1946   1990   2070  6006</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">result &lt;- ampute(testdata, prop = 0.2, bycases = FALSE)
+md.pattern(result$amp)</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     V3  V2  V1     
+3994   1   1   1  0
+2070   1   1   0  1
+1990   1   0   1  1
+1946   0   1   1  1
+      1946   1990   2070  6006</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="result2 = chain[&#x27;result2&#x27;]
@@ -735,62 +1089,141 @@ print(format_md_pattern_r(md_pattern(result2.amp, names)))</code></pre>
 1990   1   0   1  1
 1946   0   1   1  1
       1946   1990   2070  6006</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">result &lt;- ampute(testdata, prop = 0.2, bycases = FALSE)
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">result &lt;- ampute(testdata, prop = 0.2, bycases = FALSE)
 md.pattern(result$amp)</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     V3  V2  V1     
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">     V3  V2  V1     
 3994   1   1   1  0
 2070   1   1   0  1
 1990   1   0   1  1
 1946   0   1   1  1
       1946   1990   2070  6006</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-221">
+<div class="code-tabs dual-code-tabs" id="code-221">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">result2.prop</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 0.6</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">result$prop</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 0.6</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="result2.prop">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">result2.prop</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] 0.6</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">result$prop</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 0.6</code></pre>
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">result$prop</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] 0.6</code></pre>
+  </div>
 </div>
 
 <p>In combination with the current set of missing data patterns, the resulting proportion of incomplete cases is returned by <code>result$prop</code>.</p><h3 id="missingness-mechanisms">Missingness mechanisms</h3><h2 id="11-mar-and-mnar-mechanisms">11. MAR and MNAR mechanisms</h2><div class="step-parity-badge"><strong>Step parity:</strong> ✅ MATCH (2 exact, 0 info, 0 visual, 0 skipped, 0 mismatch of 2 blocks)</div>
 <p>Argument <code>mech</code> in function <code>ampute</code> is a string with either <code>MCAR</code>, <code>MAR</code> or <code>MNAR</code>. For MAR missingness, the information about the missing data is in the observed data; for MNAR missingness, the information about the missing data is missing itself.</p>
 
-<div class="code-card" id="code-222">
+<div class="code-tabs dual-code-tabs" id="code-222">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">result_mar.mech</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;MAR&quot;</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">result$mech</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;MAR&quot;</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="result_mar.mech">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python">result_mar.mech</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;MAR&quot;</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">result$mech</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;MAR&quot;</code></pre>
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">result$mech</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">[1] &quot;MAR&quot;</code></pre>
+  </div>
 </div>
 
 
-<div class="code-card" id="code-223">
+<div class="code-tabs dual-code-tabs" id="code-223">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python">print(format_patterns_matrix_r(result_mnar.patterns, names))</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">  V1 V2 V3
+1   0  1  1
+2   0  0  1
+3   1  1  0
+4   0  1  0</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r">result &lt;- ampute(testdata, freq = myfreq,
+                 patterns = mypatterns, mech = &quot;MNAR&quot;)
+result$patterns</code></pre>
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">  V1 V2 V3
+1   0  1  1
+2   0  0  1
+3   1  1  0
+4   0  1  0</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="print(format_patterns_matrix_r(result_mnar.patterns, names))">Copy Python</button>
@@ -801,20 +1234,18 @@ md.pattern(result$amp)</code></pre>
 2   0  0  1
 3   1  1  0
 4   0  1  0</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">result &lt;- ampute(testdata, freq = myfreq,
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r">result &lt;- ampute(testdata, freq = myfreq,
                  patterns = mypatterns, mech = &quot;MNAR&quot;)
 result$patterns</code></pre>
-      <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">  V1 V2 V3
+  <div class="output-header">R Console Output</div><pre class="language-text"><code class="language-text">  V1 V2 V3
 1   0  1  1
 2   0  0  1
 3   1  1  0
 4   0  1  0</code></pre>
-    </div>
-  </details>
+  </div>
 </div>
 <h3 id="reference-not-in-r-snapshot-walkthrough">Reference (not in R snapshot walkthrough)</h3><h2 id="12-deep-reference-patterns-freq-weights-type-run-and-odds">12. Deep reference: `patterns`, `freq`, `weights`, `type`, `run`, and `odds`</h2><div class="step-parity-badge"><strong>Step parity:</strong> ⏭️ SKIP (0 exact, 0 info, 0 visual, 1 skipped, 0 mismatch of 1 blocks)</div>
 <p>The R tutorial discusses custom missingness patterns, frequency vectors, MAR weights, variable <code>type</code>, the <code>run</code> flag, and MNAR <code>odds</code> in depth. PyMICE exposes the same concepts on <code>ampute()</code>:</p>
@@ -827,21 +1258,44 @@ res.freq      # pattern weights
 res.weights   # MAR odds / weights matrix</code></pre>
 <p>See <code>docs/dev/PARITY_STATUS.md</code> and <code>help(&#x27;ampute&#x27;)</code> for full API notes.</p>
 
-<div class="code-card" id="code-224">
+<div class="code-tabs dual-code-tabs" id="code-224">
+
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>
+  <div class="tab-content compare active">
+
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        
+  <pre class="language-python"><code class="language-python"># Reference-only — not a separate console block in the R snapshot</code></pre>
+  <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(not run — )</code></pre>
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        
+  <pre class="language-r"><code class="language-r"># See reference/07_ampute/vignette_extracted.R sections on patterns/odds/run</code></pre>
+  
+      </div>
+    </div>
+  </div>
+  <div class="tab-content python">
+
   <div class="code-toolbar">
     <span class="code-toolbar-label">PyMICE</span>
     <button type="button" class="copy-btn" data-copy="# Reference-only — not a separate console block in the R snapshot">Copy Python</button>
   </div>
   <pre class="language-python"><code class="language-python"># Reference-only — not a separate console block in the R snapshot</code></pre>
   <div class="output-header">Console Output</div><pre class="language-text"><code class="language-text">(not run — )</code></pre>
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r"># See reference/07_ampute/vignette_extracted.R sections on patterns/odds/run</code></pre>
-      
-    </div>
-  </details>
+  </div>
+  <div class="tab-content r">
+
+  <pre class="language-r"><code class="language-r"># See reference/07_ampute/vignette_extracted.R sections on patterns/odds/run</code></pre>
+  
+  </div>
 </div>
 
     </div>

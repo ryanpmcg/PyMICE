@@ -214,6 +214,40 @@ def _wrap_collapsible_output(out_code: str, out_lang: str, *, threshold: int = 4
     )
 
 
+def _comparison_tab_headers() -> str:
+    return """
+  <div class="tab-headers">
+    <button class="tab-btn active" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+    <button class="tab-btn" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
+    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
+  </div>"""
+
+
+def _python_step_panel(py_code: str, out_code: str, out_lang: str, *, toolbar: bool) -> str:
+    toolbar_html = ""
+    if toolbar:
+        toolbar_html = f"""
+  <div class="code-toolbar">
+    <span class="code-toolbar-label">PyMICE</span>
+    <button type="button" class="copy-btn" data-copy="{_esc(py_code)}">Copy Python</button>
+  </div>"""
+    return f"""{toolbar_html}
+  <pre class="language-python"><code class="language-python">{_esc(py_code)}</code></pre>
+  {_wrap_collapsible_output(out_code, out_lang)}"""
+
+
+def _r_step_panel(r_code: str, r_out: str) -> str:
+    r_output_html = ""
+    if r_out.strip():
+        r_output_html = (
+            '<div class="output-header">R Console Output</div>'
+            f'<pre class="language-text"><code class="language-text">{_esc(r_out)}</code></pre>'
+        )
+    return f"""
+  <pre class="language-r"><code class="language-r">{_esc(r_code)}</code></pre>
+  {r_output_html}"""
+
+
 def render_dual_code_tabs(
     r_code: str, py_code: str, out_code: str, out_lang: str, r_out: str = ""
 ) -> str:
@@ -221,31 +255,32 @@ def render_dual_code_tabs(
     _tab_index += 1
     idx = _tab_index
 
-    r_output_html = ""
-    if r_out.strip():
-        r_output_html = (
-            '<div class="output-header">R Console Output</div>'
-            f'<pre class="language-text"><code class="language-text">{_esc(r_out)}</code></pre>'
-        )
-
-    py_output_html = _wrap_collapsible_output(out_code, out_lang)
+    python_panel = _python_step_panel(py_code, out_code, out_lang, toolbar=True)
+    r_panel = _r_step_panel(r_code, r_out)
+    compare_html = f"""
+    <div class="compare-grid code-compare-grid">
+      <div>
+        <div class="compare-title">Python (PyMICE)</div>
+        {_python_step_panel(py_code, out_code, out_lang, toolbar=False)}
+      </div>
+      <div>
+        <div class="compare-title">R (Reference)</div>
+        {r_panel}
+      </div>
+    </div>"""
 
     return f"""
-<div class="code-card" id="code-{idx}">
-  <div class="code-toolbar">
-    <span class="code-toolbar-label">PyMICE</span>
-    <button type="button" class="copy-btn" data-copy="{_esc(py_code)}">Copy Python</button>
+<div class="code-tabs dual-code-tabs" id="code-{idx}">
+{_comparison_tab_headers()}
+  <div class="tab-content compare active">
+{compare_html}
   </div>
-  <pre class="language-python"><code class="language-python">{_esc(py_code)}</code></pre>
-  {py_output_html}
-  <details class="compare-r">
-    <summary>Compare to R reference</summary>
-    <div class="compare-r-body">
-      <div class="compare-title">R code</div>
-      <pre class="language-r"><code class="language-r">{_esc(r_code)}</code></pre>
-      {r_output_html}
-    </div>
-  </details>
+  <div class="tab-content python">
+{python_panel}
+  </div>
+  <div class="tab-content r">
+{r_panel}
+  </div>
 </div>
 """
 
@@ -319,19 +354,15 @@ def render_plot_tabs(
 
     return f"""
 <div class="code-tabs plot-tabs" id="plots-{idx}">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
+{_comparison_tab_headers()}
+  <div class="tab-content compare active">
+    {compare_html}
   </div>
-  <div class="tab-content python active">
+  <div class="tab-content python">
     {py_html}
   </div>
   <div class="tab-content r">
     {r_html}
-  </div>
-  <div class="tab-content compare">
-    {compare_html}
   </div>
 </div>
 """
@@ -343,20 +374,8 @@ def render_comparison_tabs(r_expected: str, py_output: str) -> str:
     idx = _tab_index
     return f"""
 <div class="code-tabs" id="tabs-{idx}">
-  <div class="tab-headers">
-    <button class="tab-btn active" onclick="switchTab(this, 'python')">Python (PyMICE)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'r')">R (Reference)</button>
-    <button class="tab-btn" onclick="switchTab(this, 'compare')">Side-by-Side</button>
-  </div>
-  <div class="tab-content python active">
-    <div class="output-header">PyMICE Output</div>
-    <pre class="language-text"><code class="language-text">{_esc(py_output)}</code></pre>
-  </div>
-  <div class="tab-content r">
-    <div class="output-header">R Vignette Expected</div>
-    <pre class="language-text"><code class="language-text">{_esc(r_expected)}</code></pre>
-  </div>
-  <div class="tab-content compare">
+{_comparison_tab_headers()}
+  <div class="tab-content compare active">
     <div class="compare-grid">
       <div>
         <div class="compare-title">PyMICE Output</div>
@@ -367,6 +386,14 @@ def render_comparison_tabs(r_expected: str, py_output: str) -> str:
         <pre class="language-text"><code class="language-text">{_esc(r_expected)}</code></pre>
       </div>
     </div>
+  </div>
+  <div class="tab-content python">
+    <div class="output-header">PyMICE Output</div>
+    <pre class="language-text"><code class="language-text">{_esc(py_output)}</code></pre>
+  </div>
+  <div class="tab-content r">
+    <div class="output-header">R Vignette Expected</div>
+    <pre class="language-text"><code class="language-text">{_esc(r_expected)}</code></pre>
   </div>
 </div>
 """
@@ -763,14 +790,14 @@ def vignette_html(report: VignetteReport, *, all_slugs: list[tuple[str, str, str
       margin: 1rem 0 1.5rem;
       font-size: 0.92rem;
     }}
-    .parity-details, .compare-r, .long-output {{
+    .parity-details, .long-output {{
       margin: 1rem 0;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.75rem 1rem;
       background: #fff;
     }}
-    .parity-details summary, .compare-r summary, .long-output summary {{
+    .parity-details summary, .long-output summary {{
       cursor: pointer;
       font-weight: 600;
       color: var(--primary);
@@ -798,13 +825,11 @@ def vignette_html(report: VignetteReport, *, all_slugs: list[tuple[str, str, str
     }}
     .series-nav-link:hover {{ text-decoration: underline; }}
     .series-nav-index {{ margin: 0 auto; }}
-    .code-card {{
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin: 1.25rem 0;
-      padding: 0.75rem 1rem 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    .dual-code-tabs .code-toolbar {{
+      margin-bottom: 0.5rem;
+    }}
+    .code-compare-grid .compare-title {{
+      margin-top: 0;
     }}
     .code-toolbar {{
       display: flex;
@@ -961,7 +986,7 @@ def vignette_html(report: VignetteReport, *, all_slugs: list[tuple[str, str, str
     figure, figure.plot-figure {{ margin: 1rem 0; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }}
     img {{ max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 0 auto; }}
     figcaption {{ font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }}
-    .plot-tabs {{ margin-top: 1.25rem; }}
+    .dual-code-tabs, .plot-tabs {{ margin-top: 1.25rem; }}
     .plot-compare-grid figure {{ margin: 0; }}
     .plot-empty {{ color: var(--text-muted); font-size: 0.9rem; font-style: italic; }}
     
