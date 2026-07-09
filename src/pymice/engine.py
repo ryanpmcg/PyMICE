@@ -421,10 +421,17 @@ def _sampler(
 
                     type_row = predictor_matrix[j, :]
                     pred_idx = [c for c in range(len(type_row)) if c != j and type_row[c] != 0]
+                    pred_types = [int(type_row[c]) for c in pred_idx]
                     if meth.startswith("2l.") or meth.startswith("2lonly."):
                         x = data[:, pred_idx].astype(np.float64)
                     else:
-                        x = obtain_design(data, j, pred_idx, specs)
+                        x = obtain_design(
+                            data,
+                            j,
+                            pred_idx,
+                            specs,
+                            predictor_types=pred_types,
+                        )
                     y = data[:, j]
                     spec = specs[j]
 
@@ -432,7 +439,12 @@ def _sampler(
                     ry = _complete_cases(x, y) & observed[:, j] & ~ignore
                     keep = remove_lindep(x, y, ry)
                     if not np.all(keep):
-                        pred_labels = predictor_labels(pred_idx, specs, column_names)
+                        pred_labels = predictor_labels(
+                            pred_idx,
+                            specs,
+                            column_names,
+                            predictor_types=pred_types,
+                        )
                         for drop_local, kept in enumerate(keep):
                             if kept:
                                 continue

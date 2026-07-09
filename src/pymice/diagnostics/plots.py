@@ -35,10 +35,14 @@ def _plot_mids_chains(
     iterations: NDArray[np.integer],
     show_xlabel: bool,
 ) -> None:
+    from matplotlib.ticker import ScalarFormatter
+
     for j in range(mids_m):
         ax_i.plot(iterations, chains[:, j], marker="o", markersize=3)
     if show_xlabel:
         ax_i.set_xlabel("Iteration")
+    ax_i.yaxis.set_major_formatter(ScalarFormatter(useOffset=False))
+    ax_i.ticklabel_format(style="plain", axis="y", useOffset=False)
     ax_i.grid(True, alpha=0.3)
 
 
