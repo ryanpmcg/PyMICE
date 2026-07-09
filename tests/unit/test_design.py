@@ -40,7 +40,6 @@ def test_predictor_matrix_type_two_dummy_codes_class():
     data, names = load_popncr()
     specs = popncr_variable_specs(data, names)
     class_i = names.index("class")
-    texp_i = names.index("texp")
 
     expanded = expand_predictors(
         data,
