@@ -9,6 +9,17 @@ make check          # lint + unit tests + structural parity (no R chains)
 make check-full     # adds RNG parity + full vignette reports (needs R)
 ```
 
+### Before every commit or push
+
+CI fails fast on lint. Run this on the **whole repo** before committing Python or test changes:
+
+```bash
+ruff format --check .
+ruff check .
+```
+
+Or `make lint`. Passing `pytest` alone is not sufficient. See `AGENTS.md` for agent-specific requirements.
+
 Or manually:
 
 ```bash
@@ -61,5 +72,6 @@ R-marked tests (`@pytest.mark.r_backend`) are skipped in the cross-platform matr
 
 ## Code style
 
-- Ruff for format and lint (`ruff format .`, `ruff check .`)
+- Ruff for format and lint — CI runs `ruff format --check .` then `ruff check .` (format first)
+- Auto-fix locally: `ruff format .` then `ruff check . --fix`, then re-run both `--check` commands
 - Match existing naming and import style in touched modules
