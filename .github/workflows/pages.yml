@@ -62,22 +62,46 @@ jobs:
         with:
           script: |
             const branch = context.ref.replace('refs/heads/', '');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const { data: commit } = await github.rest.repos.getCommit({
+              owner,
+              repo,
+              ref: branch,
+            });
+            const headSha = commit.sha;
+
             const { data } = await github.rest.actions.listWorkflowRuns({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              owner,
+              repo,
               workflow_id: 'ci.yml',
               branch,
               status: 'completed',
-              per_page: 1,
+              per_page: 30,
             });
-            const run = data.workflow_runs[0];
-            if (!run || run.conclusion !== 'success') {
-              const msg = run
-                ? `Latest CI/CD on ${branch} concluded: ${run.conclusion}`
-                : `No completed CI/CD run found on ${branch}`;
-              core.setFailed(`${msg}. Push PyMICE code changes (or workflow_dispatch CI/CD) before publishing docs-only updates.`);
+
+            let green = data.workflow_runs.find(
+              (run) => run.conclusion === 'success' && run.head_sha === headSha
+            );
+            if (!green) {
+              green = data.workflow_runs.find((run) => run.conclusion === 'success');
             }
-            core.info(`CI/CD run #${run.run_number} (${run.head_sha.slice(0, 7)}) is green.`);
+
+            if (!green) {
+              const latest = data.workflow_runs[0];
+              const msg = latest
+                ? `No successful CI/CD on ${branch} (latest run #${latest.run_number}: ${latest.conclusion})`
+                : `No completed CI/CD runs found on ${branch}`;
+              core.setFailed(
+                `${msg}. Push PyMICE code changes (or workflow_dispatch CI/CD) before publishing docs-only updates.`
+              );
+              return;
+            }
+
+            core.info(
+              `CI/CD run #${green.run_number} (${green.head_sha.slice(0, 7)}) is green for ${branch}.`
+            );
 
   deploy:
     name: Deploy GitHub Pages
