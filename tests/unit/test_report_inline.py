@@ -7,8 +7,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "devtools"))
 
-from lib.report import _inline_md, blocks_to_html, parse_blocks
 from lib.r_style import format_tutorial_step_md
+from lib.report import _inline_md, blocks_to_html, parse_blocks
 
 
 def test_inline_md_italic():
