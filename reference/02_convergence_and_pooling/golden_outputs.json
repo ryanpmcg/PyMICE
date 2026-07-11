@@ -69,7 +69,7 @@
     "step": "7",
     "block_index": "21",
     "r_code": "fit <- with(imp, lm(bmi ~ chl))\nfit",
-    "r_output": "## call :\n## with.mids(data = imp, expr = lm(bmi ~ chl))\n##\n## call1 :\n## mice(data = nhanes2, method = meth, printFlag = F)\n##\n## nmis :\n## age bmi hyp chl \n##   0   9   8  10 \n##\n## analyses :\n## [[1]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      26.5370       -0.0042  \n##\n## [[2]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      21.2479        0.0305  \n##\n## [[3]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      20.6255        0.0328  \n##\n## [[4]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      22.2736        0.0249  \n##\n## [[5]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      18.3207        0.0384"
+    "r_output": "## call :\n## with.mids(data = imp, expr = lm(bmi ~ chl))\n##\n## call1 :\n## mice(data = nhanes2, method = meth, printFlag = F)\n##\n## nmis :\n## age bmi hyp chl \n##   0   9   8  10 \n##\n## analyses :\n## [[1]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      19.7180        0.0370  \n##\n## [[2]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      19.7724        0.0369  \n##\n## [[3]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      20.6910        0.0305  \n##\n## [[4]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      19.0735        0.0424  \n##\n## [[5]]\n##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Coefficients:\n## (Intercept)          chl  \n##      20.4942        0.0297"
   },
   "7.22": {
     "step": "7",
@@ -87,16 +87,16 @@
     "step": "7",
     "block_index": "24",
     "r_code": "summary(fit$analyses[[2]])",
-    "r_output": "##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Residuals:\n##     Min      1Q  Median      3Q     Max \n##   -6.5111   -2.5430   -0.3816    2.6453    7.3992 \n##\n## Coefficients:\n##             Estimate Std. Error t value Pr(>|t|)  \n## (Intercept)  21.24786    4.19493   5.065  0.0000 ***\n## chl           0.03052    0.02149   1.420  0.1689  \n## ---\n## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n##\n## Residual standard error: 4.0552 on 23 degrees of freedom\n## Multiple R-squared:  0.0806, Adjusted R-squared:  0.04067 \n## F-statistic: 2.018 on 1 and 23 DF,  p-value: 0.1689"
+    "r_output": "##\n## Call:\n## lm(formula = bmi ~ chl)\n##\n## Residuals:\n##     Min      1Q  Median      3Q     Max \n##   -6.5488   -3.0451    0.7687    2.8968    7.4887 \n##\n## Coefficients:\n##             Estimate Std. Error t value Pr(>|t|)  \n## (Intercept)  19.77244    4.26517   4.636  0.0001 ***\n## chl           0.03688    0.02173   1.697  0.1032  \n## ---\n## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n##\n## Residual standard error: 3.8025 on 23 degrees of freedom\n## Multiple R-squared:  0.1113, Adjusted R-squared:  0.07262 \n## F-statistic: 2.879 on 1 and 23 DF,  p-value: 0.1032"
   },
   "8.25": {
     "step": "8",
     "block_index": "25",
     "r_code": "pool.fit <- pool(fit)\nsummary(pool.fit)",
-    "r_output": "##               estimate  std.error statistic       df     p.value\n## (Intercept)  21.8009113 5.74829615  3.792587 10.22632 0.003390551\n## chl          0.0244790 0.03010637  0.813085 9.14210 0.436831810"
+    "r_output": "##               estimate  std.error statistic       df     p.value\n## (Intercept)  19.9498231 4.32328852  4.614502 20.57292 0.000156917\n## chl          0.0352794 0.02218058  1.590554 19.37647 0.127893607"
   },
   "_provenance": {
-    "refreshed_at": "2026-07-08T14:34:55Z",
+    "refreshed_at": "2026-07-11T15:31:42Z",
     "python_version": "3.13.5",
     "pymice_version": "0.1.0",
     "r_version": "4.4.1",

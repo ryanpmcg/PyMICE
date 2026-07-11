@@ -503,7 +503,7 @@ def audit_v05() -> list[AuditRow]:
             format_logged_events_warning_r(len(imp2.logged_events)),
             exact=True,
             category=ParityCategory.ALGORITHM,
-            recommendation="MATCH (90 events) after R remove.lindep + factor class.",
+            recommendation="MATCH logged-event count on session chain after type-1 factor design fix.",
         ),
         _row(
             "V05",
@@ -513,7 +513,7 @@ def audit_v05() -> list[AuditRow]:
             format_logged_events_warning_r(len(imp8.logged_events)),
             exact=True,
             category=ParityCategory.ALGORITHM,
-            recommendation="MATCH (90 events) after R remove.lindep + factor class.",
+            recommendation="MATCH logged-event count on session chain after type-1 factor design fix.",
         ),
     ]
 

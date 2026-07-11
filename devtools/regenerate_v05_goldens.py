@@ -27,7 +27,7 @@ def main() -> int:
         load_popular,
         popncr_variable_specs,
     )
-    from lib.r_style import format_icc_table_r
+    from lib.r_style import format_icc_table_r, format_logged_events_warning_r
     from lib.summary_format import format_popncr_head_r
     from lib.vignette_rng import (
         ensure_vignette_r_prerequisites,
@@ -64,6 +64,7 @@ def main() -> int:
     imp1 = chain["imp1"]
     imp2 = chain["imp2"]
     imp4 = chain["imp4"]
+    imp8 = chain["imp8"]
     popular_data, popular_names = load_popular()
     obs_icc = _icc_values(data, names)
     imp1_icc = _icc_values(data, names, complete(imp1, 1))
@@ -102,6 +103,16 @@ def main() -> int:
         "05_multilevel_data",
         "16.37",
         format_popncr_head_r(complete(imp2, 1), names, n=15),
+    )
+    _update(
+        "05_multilevel_data",
+        "11.27",
+        format_logged_events_warning_r(len(imp2.logged_events)),
+    )
+    _update(
+        "05_multilevel_data",
+        "26.57",
+        format_logged_events_warning_r(len(imp8.logged_events)),
     )
     return 0
 

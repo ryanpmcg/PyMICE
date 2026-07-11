@@ -100,10 +100,10 @@ Checked against `reference/05_multilevel_data/golden_outputs.json` (refreshed fr
 - **Step 4** — full `is.na(popular)` logical vector (`width=12`, R `[1]` print)
 - **Step 7** — observed ICCs for `popular`, `popteach`, `texp` on incomplete data
 - **Step 8** — default `meth` / modified `meth`, `pred` matrices, `pred` with `class` and `pupil` zeroed
-- **Steps 9.25, 10–12, 17, 20, 26** — ICC tables, iteration log, logged-event warnings (90 events) on session chain
+- **Steps 9.25, 10–12, 17, 20, 26** — ICC tables, iteration log, logged-event warnings on session chain
 - **Steps 21–24** — `pred` / `meth` setup matrices (console output only; deterministic)
 - **Step 16** — `head(complete(imp2))` exact via `format_popncr_head_r` (session chain golden refreshed 2026-07-05)
-- **Step 26** — logged-events warning (90 events) exact on session chain
+- **Step 26** — logged-events warning exact on session chain
 
 ### Expected to differ (RNG / rendering)
 

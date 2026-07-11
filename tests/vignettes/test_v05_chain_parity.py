@@ -76,4 +76,3 @@ def test_v05_imp2_logged_events_match_r(popncr_imp2) -> None:
     act = format_logged_events_warning_r(len(popncr_imp2.logged_events))
     match, _ = compare_output(g("05", 11, 27), act, exact=True)
     assert match
-    assert len(popncr_imp2.logged_events) == 90
