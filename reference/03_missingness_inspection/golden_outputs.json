@@ -81,19 +81,19 @@
     "step": "10",
     "block_index": "21",
     "r_code": "imp <- mice(mammalsleep, maxit = 10, print=F)",
-    "r_output": "## Warning: Number of logged events: 26"
+    "r_output": "## Warning: Number of logged events: 25"
   },
   "12.24": {
     "step": "12",
     "block_index": "24",
     "r_code": "pool(fit1)",
-    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.4431851  0.58948507  0.03293712   0.6290096    59  50.82456\n## log10(bw)     -1.1496317  0.08321728  0.00874216   0.0937079    59  43.75372\n## odi           -0.8486023  0.07370241  0.00567497   0.0805124    59  47.79896\n##                   riv    lambda       fmi\n## (Intercept)    0.0670493   0.0628361   0.0976591\n## log10(bw)      0.1260626   0.1119499   0.1499383\n## odi            0.0923981   0.0845828   0.1206236"
+    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.3957936  0.60180710  0.04146991   0.6515710    59  48.96998\n## log10(bw)     -1.1355459  0.08495678  0.00761112   0.0940901    59  45.97141\n## odi           -0.8292754  0.07524301  0.01078724   0.0881877    59  38.58957\n##                   riv    lambda       fmi\n## (Intercept)    0.0826908   0.0763752   0.1119198\n## log10(bw)      0.1075058   0.0970702   0.1339460\n## odi            0.1720385   0.1467857   0.1878159"
   },
   "12.25": {
     "step": "12",
     "block_index": "25",
     "r_code": "summary(pool(fit1))",
-    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.4431851 0.7931013  14.428404 50.824555 0.000000000e+00\n## log10(bw)    -1.1496317 0.3061174  -3.755525 43.753724 5.070473387e-04\n## odi          -0.8486023 0.2837470  -2.990701 47.798959 4.390041545e-03"
+    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.3957936 0.8071995  14.117692 48.969977 0.000000000e+00\n## log10(bw)    -1.1355459 0.3067411  -3.701968 45.971408 5.712235989e-04\n## odi          -0.8292754 0.2969641  -2.792510 38.589572 8.094379298e-03"
   },
   "13.26": {
     "step": "13",
@@ -105,20 +105,21 @@
     "step": "14",
     "block_index": "27",
     "r_code": "fit2 <- with(impnew, lm(sws ~ log10(bw) + odi))\npool(fit2)",
-    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.3793283  0.60915145  0.03506849   0.6512336    59  50.58689\n## log10(bw)     -1.1102338  0.08599357  0.00513386   0.0921542    59  50.28633\n## odi           -0.8192183  0.07616126  0.00703427   0.0846024    59  45.57061\n##                   riv    lambda       fmi\n## (Intercept)    0.0690833   0.0646192   0.0995300\n## log10(bw)      0.0716405   0.0668513   0.1018752\n## odi            0.1108322   0.0997740   0.1368428"
+    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.4385444  0.60037960  0.10967526   0.7319899    59  33.97287\n## log10(bw)     -1.1386282  0.08475526  0.00702060   0.0931800    59  46.95126\n## odi           -0.8511244  0.07506453  0.01678681   0.0952087    59  29.93509\n##                   riv    lambda       fmi\n## (Intercept)    0.2192118   0.1797980   0.2241658\n## log10(bw)      0.0994005   0.0904134   0.1268323\n## odi            0.2683581   0.2115791   0.2594564"
   },
   "14.28": {
     "step": "14",
     "block_index": "28",
     "r_code": "summary(pool(fit2))",
-    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.3793283 0.8069905  14.100945 50.586891 0.000000000e+00\n## log10(bw)    -1.1102338 0.3035691  -3.657269 50.286332 6.100042506e-04\n## odi          -0.8192183 0.2908649  -2.816491 45.570608 7.151945055e-03"
+    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.4385444 0.8555641  13.369594 33.972866 4.218847494e-15\n## log10(bw)    -1.1386282 0.3052539  -3.730102 46.951265 5.152127445e-04\n## odi          -0.8511244 0.3085591  -2.758384 29.935088 9.808000100e-03"
   },
   "_provenance": {
-    "refreshed_at": "2026-07-11T15:31:45Z",
-    "python_version": "3.13.5",
+    "refreshed_at": "2026-07-18T23:39:44Z",
+    "python_version": "3.12",
     "pymice_version": "0.1.0",
     "r_version": "4.4.1",
     "mice_version": "3.19.0",
-    "platform": "Windows-10-10.0.19045-SP0"
+    "platform": "Windows-GHA-windows-latest",
+    "note": "V03 mammalsleep draw-order after hardened remove_lindep (stable 25/18 events)"
   }
 }

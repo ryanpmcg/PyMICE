@@ -274,7 +274,7 @@ def audit_v03_pool() -> list[AuditRow]:
     n_ms, n_new = len(imp_ms.logged_events), len(impnew.logged_events)
     rec = (
         f"logged_events imp={n_ms} impnew={n_new} "
-        "(expect 26/18 on Windows; drift usually means remove_lindep path fork, not stale goldens)."
+        "(expect 25/18 on Windows after hardened remove_lindep; drift usually means path fork)."
     )
 
     return [

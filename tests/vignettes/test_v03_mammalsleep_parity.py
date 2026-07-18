@@ -47,7 +47,7 @@ def v03_mammalsleep_imps():
 
 
 def test_v03_mammalsleep_logged_events_match_golden(v03_mammalsleep_imps) -> None:
-    """Lock R-aligned logged-event counts (CI flake was 25 vs 26 on old lindep)."""
+    """Lock Windows draw-order logged-event counts (hardened lindep: stable 25/18)."""
     imp_ms, impnew = v03_mammalsleep_imps
     act_ms = format_logged_events_warning_r(len(imp_ms.logged_events))
     act_new = format_logged_events_warning_r(len(impnew.logged_events))
@@ -55,8 +55,8 @@ def test_v03_mammalsleep_logged_events_match_golden(v03_mammalsleep_imps) -> Non
     match_new, _ = compare_output(g("03", 13, 26), act_new, exact=True)
     assert match_ms, f"imp logged events: {act_ms!r}"
     assert match_new, f"impnew logged events: {act_new!r}"
-    # Windows draw-order path (was flaky 25 vs 26 under old eigen loop).
-    assert len(imp_ms.logged_events) == 26
+    # Windows draw-order path after hardened remove_lindep (stable 25/18).
+    assert len(imp_ms.logged_events) == 25
     assert len(impnew.logged_events) == 18
 
 
@@ -101,4 +101,4 @@ def test_v03_mammalsleep_logged_events_stable_across_reruns() -> None:
             imp_ms, impnew = run_v03_mammalsleep_chain(ms_full, ms_names, ms_no, ms_no_names)
         counts.append((len(imp_ms.logged_events), len(impnew.logged_events)))
     assert len(set(counts)) == 1, f"non-deterministic logged-event counts: {counts}"
-    assert counts[0] == (26, 18)
+    assert counts[0] == (25, 18)
