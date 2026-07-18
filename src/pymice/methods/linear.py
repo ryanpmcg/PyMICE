@@ -83,7 +83,10 @@ def remove_lindep(
     cx = np.corrcoef(x_obs[:, keep], rowvar=False)
     if cx.ndim == 0:
         return keep
+    # Symmetrize and quantize so LAPACK null-space bases don't flip across
+    # runners / BLAS builds (the 25 vs 26 mammalsleep logged-event flake).
     cx = np.nan_to_num((cx + cx.T) * 0.5, nan=0.0)
+    cx = np.round(cx, decimals=12)
     np.fill_diagonal(cx, 1.0)
 
     # R ``eigen(..., symmetric=TRUE)``: eigenvalues in decreasing order.
@@ -92,17 +95,22 @@ def remove_lindep(
     eigvecs = eigvecs[:, ::-1].copy()
 
     # R keeps the original ``cx`` size while decrementing ``k`` (logical index
-    # recycling leaves ``ncx`` full-rank-shaped); reusing one eigenbasis makes
-    # the drop sequence platform-stable for a fixed correlation matrix.
-    while k > 1 and eigvals[k - 1] / eigvals[0] < eps:
-        vec = eigvecs[:, k - 1]
-        # j <- seq_len(k)[order(abs(eig$vectors[, k]), decreasing=TRUE)[1]]
-        o = int(np.argsort(-np.abs(vec), kind="stable")[0])
-        o1 = o + 1
-        if o1 > k:
+    # recycling leaves ``ncx`` full-rank-shaped); reusing one eigenbasis matches
+    # that recycle and keeps the drop sequence stable for a fixed matrix.
+    while k > 1 and eigvals[0] > 0 and eigvals[k - 1] / eigvals[0] < eps:
+        vec = eigvecs[:, k - 1].copy()
+        # Deterministic sign: largest-magnitude entry is non-negative.
+        pivot = int(np.argmax(np.abs(vec)))
+        if vec[pivot] < 0:
+            vec = -vec
+        # R: j <- seq_len(k)[order(abs(eig$vectors[, k]), decreasing=TRUE)[1]]
+        # lexsort: primary -abs (desc), secondary index (asc) for ties.
+        o = int(np.lexsort((np.arange(vec.shape[0]), -np.abs(vec)))[0])
+        # seq_len(k)[o+1] is NA in R when o+1 > k.
+        if o >= k:
             break
         active = np.flatnonzero(keep)
-        keep[active[o1 - 1]] = False
+        keep[active[o]] = False
         k -= 1
 
     return keep
