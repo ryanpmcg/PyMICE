@@ -270,6 +270,12 @@ def audit_v03_pool() -> list[AuditRow]:
     imp_ms, impnew = run_v03_mammalsleep_chain(ms_full, ms_names, ms_no_sp, ms_no_names)
     fit1 = with_mids(imp_ms, formula="sws ~ log10(bw) + odi")
     fit2 = with_mids(impnew, formula="sws ~ log10(bw) + odi")
+    # Path forks in remove_lindep change logged-event counts and desync the RNG stream.
+    n_ms, n_new = len(imp_ms.logged_events), len(impnew.logged_events)
+    rec = (
+        f"logged_events imp={n_ms} impnew={n_new} "
+        "(expect 26/21; drift usually means remove_lindep path fork, not stale goldens)."
+    )
 
     return [
         _row(
@@ -280,7 +286,7 @@ def audit_v03_pool() -> list[AuditRow]:
             format_pool_mipo_r(pool(fit1)),
             atol=0.5,
             category=ParityCategory.DRAW_ORDER,
-            recommendation="Should MATCH after golden refresh.",
+            recommendation=rec,
         ),
         _row(
             "V03",
@@ -290,7 +296,7 @@ def audit_v03_pool() -> list[AuditRow]:
             format_pool_v03_summary_r(summary_pool(pool(fit1))),
             atol=0.5,
             category=ParityCategory.DRAW_ORDER,
-            recommendation="Should MATCH after golden refresh.",
+            recommendation=rec,
         ),
         _row(
             "V03",
@@ -300,7 +306,7 @@ def audit_v03_pool() -> list[AuditRow]:
             format_pool_mipo_r(pool(fit2)),
             atol=0.5,
             category=ParityCategory.DRAW_ORDER,
-            recommendation="Should MATCH after golden refresh.",
+            recommendation=rec,
         ),
         _row(
             "V03",
@@ -310,7 +316,7 @@ def audit_v03_pool() -> list[AuditRow]:
             format_pool_v03_summary_r(summary_pool(pool(fit2))),
             atol=0.5,
             category=ParityCategory.DRAW_ORDER,
-            recommendation="Should MATCH after golden refresh.",
+            recommendation=rec,
         ),
     ]
 

@@ -162,11 +162,11 @@
     "r_output": "## Warning: Number of logged events: 0"
   },
   "_provenance": {
-    "refreshed_at": "2026-07-11T15:12:27Z",
-    "python_version": "3.13.5",
+    "refreshed_at": "2026-07-18T22:45:43Z",
+    "python_version": "3.11.5",
     "pymice_version": "0.1.0",
-    "r_version": "4.4.1",
+    "r_version": "4.5.2",
     "mice_version": "3.19.0",
-    "platform": "Windows-10-10.0.19045-SP0"
+    "platform": "macOS-26.3.1-arm64-arm-64bit"
   }
 }

@@ -36,8 +36,14 @@ def remove_lindep(
     eps: float = 1e-4,
     maxcor: float = 0.99,
 ) -> NDArray[np.bool_]:
-    """Identify usable predictors (R ``mice:::remove.lindep`` eigen + correlation rules)."""
-    n_pred = x.shape[1]
+    """Identify usable predictors (R ``mice:::remove.lindep``).
+
+    Mirrors CRAN ``mice`` (sample variances, one-sided ``cor < maxcor``, and the
+    eigen while-loop that indexes ``keep[keep][j]`` without shrinking the original
+    correlation matrix). Matching R here keeps logged-event / pool paths stable
+    across platforms instead of re-factoring a null-space basis each drop.
+    """
+    n_pred = int(x.shape[1])
     if n_pred == 0:
         return np.zeros(0, dtype=bool)
     if eps == 0:
@@ -48,53 +54,56 @@ def remove_lindep(
     if not np.any(ry):
         return np.ones(n_pred, dtype=bool)
 
-    x_obs = x[ry, :]
-    y_obs = y[ry].astype(np.float64, copy=False)
+    x_obs = np.asarray(x[ry, :], dtype=np.float64)
+    y_obs = np.asarray(y[ry], dtype=np.float64)
     if x_obs.shape[0] == 0:
         return np.ones(n_pred, dtype=bool)
 
-    y_var = float(np.var(y_obs))
-    if y_var < eps:
+    # R ``stats::var`` uses divisor n-1.
+    if float(np.var(y_obs, ddof=1)) < eps:
         return np.zeros(n_pred, dtype=bool)
 
     keep = np.ones(n_pred, dtype=bool)
     for j in range(n_pred):
         col = x_obs[:, j]
-        col_var = float(np.var(col))
-        if col_var < eps or not np.isfinite(col_var):
+        col_var = float(np.var(col, ddof=1))
+        if not np.isfinite(col_var) or col_var <= eps:
             keep[j] = False
             continue
         with np.errstate(invalid="ignore", divide="ignore"):
-            corr = np.corrcoef(col, y_obs)[0, 1]
-        if not np.isfinite(corr) or abs(corr) >= maxcor:
+            corr = float(np.corrcoef(col, y_obs)[0, 1])
+        # R: ``cor(x, y) < maxcor`` (one-sided; NA / non-finite → drop).
+        if not (np.isfinite(corr) and corr < maxcor):
             keep[j] = False
 
     k = int(np.sum(keep))
     if k <= 1:
         return keep
 
-    active = np.flatnonzero(keep)
     cx = np.corrcoef(x_obs[:, keep], rowvar=False)
     if cx.ndim == 0:
-        cx = np.array([[1.0]], dtype=np.float64)
+        return keep
+    cx = np.nan_to_num((cx + cx.T) * 0.5, nan=0.0)
+    np.fill_diagonal(cx, 1.0)
 
-    while k > 1:
-        eigvals, eigvecs = np.linalg.eigh(cx)
-        if eigvals[-1] <= 0 or eigvals[-1] < eps:
-            break
-        ratio = eigvals[0] / eigvals[-1]
-        if ratio >= eps:
-            break
-        vec = eigvecs[:, 0]
-        drop_local = int(np.argmax(np.abs(vec)))
-        keep[active[drop_local]] = False
-        k -= 1
-        if k <= 1:
+    # R ``eigen(..., symmetric=TRUE)``: eigenvalues in decreasing order.
+    eigvals, eigvecs = np.linalg.eigh(cx)
+    eigvals = eigvals[::-1].copy()
+    eigvecs = eigvecs[:, ::-1].copy()
+
+    # R keeps the original ``cx`` size while decrementing ``k`` (logical index
+    # recycling leaves ``ncx`` full-rank-shaped); reusing one eigenbasis makes
+    # the drop sequence platform-stable for a fixed correlation matrix.
+    while k > 1 and eigvals[k - 1] / eigvals[0] < eps:
+        vec = eigvecs[:, k - 1]
+        # j <- seq_len(k)[order(abs(eig$vectors[, k]), decreasing=TRUE)[1]]
+        o = int(np.argsort(-np.abs(vec), kind="stable")[0])
+        o1 = o + 1
+        if o1 > k:
             break
         active = np.flatnonzero(keep)
-        cx = np.corrcoef(x_obs[:, keep], rowvar=False)
-        if cx.ndim == 0:
-            break
+        keep[active[o1 - 1]] = False
+        k -= 1
 
     return keep
 

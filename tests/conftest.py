@@ -2,10 +2,21 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
 import pytest
+
+# Stable BLAS for parity / remove_lindep (avoids multi-thread GEMM drift).
+for _blas_var in (
+    "OMP_NUM_THREADS",
+    "OPENBLAS_NUM_THREADS",
+    "MKL_NUM_THREADS",
+    "VECLIB_MAXIMUM_THREADS",
+    "NUMEXPR_NUM_THREADS",
+):
+    os.environ.setdefault(_blas_var, "1")
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEVTOOLS_DIR = REPO_ROOT / "devtools"

@@ -54,11 +54,11 @@
     "r_output": "##\n##  iter imp variable\n##   1   1  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   1   2  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   1   3  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   1   4  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   1   5  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   2   1  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   2   2  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   2   3  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   2   4  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   2   5  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   3   1  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   3   2  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   3   3  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   3   4  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   3   5  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   4   1  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   4   2  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   4   3  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   4   4  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   4   5  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   5   1  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   5   2  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   5   3  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   5   4  hgt  wgt  bmi  hc  gen  phb  tv  reg\n##   5   5  hgt  wgt  bmi  hc  gen  phb  tv  reg"
   },
   "_provenance": {
-    "refreshed_at": "2026-07-11T15:31:48Z",
-    "python_version": "3.13.5",
+    "refreshed_at": "2026-07-18T22:42:18Z",
+    "python_version": "3.11.5",
     "pymice_version": "0.1.0",
-    "r_version": "4.4.1",
+    "r_version": "4.5.2",
     "mice_version": "3.19.0",
-    "platform": "Windows-10-10.0.19045-SP0"
+    "platform": "macOS-26.3.1-arm64-arm-64bit"
   }
 }

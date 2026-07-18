@@ -19,6 +19,13 @@ jobs:
     # Draw-order goldens are generated on Windows (see golden _provenance); Linux BLAS
     # yields different mammalsleep logged-event counts and pool tables.
     runs-on: windows-latest
+    env:
+      # Single-thread BLAS: multi-thread GEMM can flip remove_lindep / logged-event paths.
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      VECLIB_MAXIMUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -40,6 +47,12 @@ jobs:
 
       - name: Structural alignment
         run: python -m pytest tests/parity/test_structural_alignment.py -q --rootdir="${{ github.workspace }}"
+
+      - name: remove_lindep R parity
+        run: python -m pytest tests/unit/test_remove_lindep_r_parity.py -q --rootdir="${{ github.workspace }}"
+
+      - name: V03 mammalsleep chain parity
+        run: python -m pytest tests/vignettes/test_v03_mammalsleep_parity.py -q --rootdir="${{ github.workspace }}"
 
       - name: RNG chain parity (V01–V05)
         run: python -m pytest tests/parity/test_rng_parity.py -q --rootdir="${{ github.workspace }}"
