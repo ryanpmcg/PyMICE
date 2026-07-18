@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import subprocess
 import tempfile
 import textwrap
@@ -13,12 +12,6 @@ import pytest
 
 from pymice.methods.linear import remove_lindep
 from tests.r_support import r_backend_available, r_backend_skip_reason
-
-
-def _r_path(path: Path) -> str:
-    """Path string safe to embed in R double-quoted strings (Windows-friendly)."""
-    return path.resolve().as_posix().replace("\\", "/")
-
 
 pytestmark = [
     pytest.mark.r_backend,
@@ -57,40 +50,72 @@ _R_REMOVE_LINDEP = textwrap.dedent(
 )
 
 
+def _r_path(path: Path) -> str:
+    """Path string safe for R file.path / read.csv (Windows-friendly)."""
+    return path.resolve().as_posix().replace("\\", "/")
+
+
+def _run_rscript(script_path: Path, *, timeout: int = 120) -> subprocess.CompletedProcess[str]:
+    """Run an R script file (avoids Windows command-line length / quoting issues)."""
+    return subprocess.run(
+        ["Rscript", _r_path(script_path)],
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+        check=False,
+    )
+
+
 def _r_remove_lindep_batch(cases: list[dict]) -> list[list[int]]:
     """Run pure R remove.lindep on a list of {x,y,ry} cases; return keep masks."""
     with tempfile.TemporaryDirectory(prefix="pymice_lindep_") as tmp:
-        payload = Path(tmp) / "cases.json"
-        payload.write_text(json.dumps(cases), encoding="utf-8")
-        script = _R_REMOVE_LINDEP + textwrap.dedent(
-            f"""
-            if (!requireNamespace("jsonlite", quietly = TRUE)) {{
-              install.packages("jsonlite", repos = "https://cloud.r-project.org", quiet = TRUE)
-            }}
-            suppressPackageStartupMessages(library(jsonlite))
-            cases <- fromJSON("{_r_path(payload)}", simplifyVector = FALSE)
-            out <- list()
-            for (i in seq_along(cases)) {{
-              c <- cases[[i]]
-              x <- matrix(unlist(c$x), nrow = length(c$x), byrow = TRUE)
-              y <- unlist(c$y)
-              ry <- as.logical(unlist(c$ry))
-              keep <- remove_lindep_pure(x, y, ry)
-              out[[i]] <- as.integer(keep)
-            }}
-            cat(toJSON(out, auto_unbox = TRUE))
-            """
+        tmp_path = Path(tmp)
+        n_cases = len(cases)
+        for i, case in enumerate(cases):
+            np.savetxt(tmp_path / f"x_{i}.csv", np.asarray(case["x"], dtype=float), delimiter=",")
+            np.savetxt(tmp_path / f"y_{i}.csv", np.asarray(case["y"], dtype=float), delimiter=",")
+            np.savetxt(
+                tmp_path / f"ry_{i}.csv",
+                np.asarray(case["ry"], dtype=int),
+                delimiter=",",
+                fmt="%d",
+            )
+
+        script_path = tmp_path / "batch.R"
+        script_path.write_text(
+            _R_REMOVE_LINDEP
+            + textwrap.dedent(
+                f"""
+                dir <- "{_r_path(tmp_path)}"
+                n <- {n_cases}
+                lines <- character(n)
+                for (i in seq_len(n) - 1L) {{
+                  x <- as.matrix(read.csv(file.path(dir, paste0("x_", i, ".csv")), header = FALSE))
+                  y <- as.numeric(read.csv(file.path(dir, paste0("y_", i, ".csv")), header = FALSE)[[1]])
+                  ry <- as.logical(as.integer(
+                    read.csv(file.path(dir, paste0("ry_", i, ".csv")), header = FALSE)[[1]]
+                  ))
+                  keep <- remove_lindep_pure(x, y, ry)
+                  lines[i + 1L] <- paste(as.integer(keep), collapse = ",")
+                }}
+                cat(paste(lines, collapse = "\\n"))
+                cat("\\n")
+                """
+            ),
+            encoding="utf-8",
         )
-        proc = subprocess.run(
-            ["Rscript", "-e", script],
-            capture_output=True,
-            text=True,
-            timeout=120,
-            check=False,
-        )
-    if proc.returncode != 0:
-        raise RuntimeError(f"R remove.lindep failed:\n{proc.stderr}\n{proc.stdout}")
-    return json.loads(proc.stdout)
+        proc = _run_rscript(script_path)
+        if proc.returncode != 0:
+            raise RuntimeError(
+                f"R remove.lindep failed (code {proc.returncode}):\n"
+                f"stderr:\n{proc.stderr}\nstdout:\n{proc.stdout}"
+            )
+        lines = [ln.strip() for ln in proc.stdout.splitlines() if ln.strip()]
+        if len(lines) != n_cases:
+            raise RuntimeError(
+                f"expected {n_cases} keep lines from R, got {len(lines)}:\n{proc.stdout!r}"
+            )
+        return [[int(v) for v in ln.split(",")] for ln in lines]
 
 
 def test_remove_lindep_constant_y_drops_all() -> None:
@@ -205,39 +230,42 @@ def test_remove_lindep_matches_r_on_mammalsleep_mls_design() -> None:
         pytest.skip("mammalsleep.csv not found")
 
     with tempfile.TemporaryDirectory(prefix="pymice_ms_mls_") as tmp:
-        design_csv = Path(tmp) / "design.csv"
-        script = _R_REMOVE_LINDEP + textwrap.dedent(
-            f"""
-            suppressPackageStartupMessages(library(mice))
-            ms <- read.csv("{_r_path(data_path)}")
-            ms$species <- as.numeric(factor(ms$species))
-            j <- "mls"
-            pred <- rep(1, ncol(ms)); names(pred) <- names(ms); pred[j] <- 0
-            xnames <- setdiff(names(ms)[pred != 0], j)
-            formula <- reformulate(xnames, response = j)
-            x <- mice:::obtain.design(ms, formula)
-            x <- x[, -1, drop = FALSE]
-            y <- ms[[j]]
-            ry <- stats::complete.cases(x, y) & !is.na(ms[[j]])
-            keep <- remove_lindep_pure(x, y, ry)
-            cat("KEEP", paste(as.integer(keep), collapse = ","), "\\n")
-            cat("DROP", paste(colnames(x)[!keep], collapse = ","), "\\n")
-            write.csv(
-              cbind(as.data.frame(x), `.y` = y, `.ry` = as.integer(ry)),
-              "{_r_path(design_csv)}",
-              row.names = FALSE
-            )
-            """
+        tmp_path = Path(tmp)
+        design_csv = tmp_path / "design.csv"
+        script_path = tmp_path / "mls.R"
+        script_path.write_text(
+            _R_REMOVE_LINDEP
+            + textwrap.dedent(
+                f"""
+                suppressPackageStartupMessages(library(mice))
+                ms <- read.csv("{_r_path(data_path)}")
+                ms$species <- as.numeric(factor(ms$species))
+                j <- "mls"
+                pred <- rep(1, ncol(ms)); names(pred) <- names(ms); pred[j] <- 0
+                xnames <- setdiff(names(ms)[pred != 0], j)
+                formula <- reformulate(xnames, response = j)
+                x <- mice:::obtain.design(ms, formula)
+                x <- x[, -1, drop = FALSE]
+                y <- ms[[j]]
+                ry <- stats::complete.cases(x, y) & !is.na(ms[[j]])
+                keep <- remove_lindep_pure(x, y, ry)
+                cat("KEEP", paste(as.integer(keep), collapse = ","), "\\n")
+                cat("DROP", paste(colnames(x)[!keep], collapse = ","), "\\n")
+                write.csv(
+                  cbind(as.data.frame(x), `.y` = y, `.ry` = as.integer(ry)),
+                  "{_r_path(design_csv)}",
+                  row.names = FALSE
+                )
+                """
+            ),
+            encoding="utf-8",
         )
-        proc = subprocess.run(
-            ["Rscript", "-e", script],
-            capture_output=True,
-            text=True,
-            timeout=120,
-            check=False,
-        )
+        proc = _run_rscript(script_path)
         if proc.returncode != 0:
-            raise RuntimeError(proc.stderr or proc.stdout)
+            raise RuntimeError(
+                f"R mammalsleep design failed (code {proc.returncode}):\n"
+                f"stderr:\n{proc.stderr}\nstdout:\n{proc.stdout}"
+            )
         keep_line = next(ln for ln in proc.stdout.splitlines() if ln.startswith("KEEP"))
         drop_line = next(ln for ln in proc.stdout.splitlines() if ln.startswith("DROP"))
         r_keep = [int(v) for v in keep_line.split()[1].split(",")]
