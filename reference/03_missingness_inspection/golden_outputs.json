@@ -87,38 +87,38 @@
     "step": "12",
     "block_index": "24",
     "r_code": "pool(fit1)",
-    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.4066124  0.60027702  0.04846839   0.6584391    59  47.25497\n## log10(bw)     -1.1555903  0.08474077  0.00843536   0.0948632    59  44.53801\n## odi           -0.8331573  0.07505171  0.01018541   0.0872742    59  39.57314\n##                   riv    lambda       fmi\n## (Intercept)    0.0968921   0.0883333   0.1246149\n## log10(bw)      0.1194517   0.1067055   0.1442878\n## odi            0.1628542   0.1400470   0.1804458"
+    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.4431851  0.58948507  0.03293712   0.6290096    59  50.82456\n## log10(bw)     -1.1496317  0.08321728  0.00874216   0.0937079    59  43.75372\n## odi           -0.8486023  0.07370241  0.00567497   0.0805124    59  47.79896\n##                   riv    lambda       fmi\n## (Intercept)    0.0670493   0.0628361   0.0976591\n## log10(bw)      0.1260626   0.1119499   0.1499383\n## odi            0.0923981   0.0845828   0.1206236"
   },
   "12.25": {
     "step": "12",
     "block_index": "25",
     "r_code": "summary(pool(fit1))",
-    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.4066124 0.8114426  14.057202 47.254970 0.000000000e+00\n## log10(bw)    -1.1555903 0.3079987  -3.751932 44.538010 5.045268468e-04\n## odi          -0.8331573 0.2954221  -2.820227 39.573145 7.463132080e-03"
+    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.4431851 0.7931013  14.428404 50.824555 0.000000000e+00\n## log10(bw)    -1.1496317 0.3061174  -3.755525 43.753724 5.070473387e-04\n## odi          -0.8486023 0.2837470  -2.990701 47.798959 4.390041545e-03"
   },
   "13.26": {
     "step": "13",
     "block_index": "26",
     "r_code": "impnew <- mice(mammalsleep[ , -1], maxit = 10, print = F)",
-    "r_output": "## Warning: Number of logged events: 21"
+    "r_output": "## Warning: Number of logged events: 18"
   },
   "14.27": {
     "step": "14",
     "block_index": "27",
     "r_code": "fit2 <- with(impnew, lm(sws ~ log10(bw) + odi))\npool(fit2)",
-    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.4343391  0.59970461  0.02690873   0.6319951    59  52.32924\n## log10(bw)     -1.1313958  0.08465997  0.00524031   0.0909483    59  49.97451\n## odi           -0.8429747  0.07498014  0.00654934   0.0828393    59  46.29604\n##                   riv    lambda       fmi\n## (Intercept)    0.0538440   0.0510929   0.0853933\n## log10(bw)      0.0742780   0.0691423   0.1042859\n## odi            0.1048172   0.0948729   0.1315950"
+    "r_output": "## Class: mipo    m = 5 \n##               estimate       ubar          b         t dfcom        df\n## (Intercept)   11.3793283  0.60915145  0.03506849   0.6512336    59  50.58689\n## log10(bw)     -1.1102338  0.08599357  0.00513386   0.0921542    59  50.28633\n## odi           -0.8192183  0.07616126  0.00703427   0.0846024    59  45.57061\n##                   riv    lambda       fmi\n## (Intercept)    0.0690833   0.0646192   0.0995300\n## log10(bw)      0.0716405   0.0668513   0.1018752\n## odi            0.1108322   0.0997740   0.1368428"
   },
   "14.28": {
     "step": "14",
     "block_index": "28",
     "r_code": "summary(pool(fit2))",
-    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.4343391 0.7949812  14.383157 52.329237 0.000000000e+00\n## log10(bw)    -1.1313958 0.3015764  -3.751606 49.974509 4.579348101e-04\n## odi          -0.8429747 0.2878183  -2.928844 46.296037 5.264205990e-03"
+    "r_output": "##               estimate std.error statistic        df      p.value\n## (Intercept)  11.3793283 0.8069905  14.100945 50.586891 0.000000000e+00\n## log10(bw)    -1.1102338 0.3035691  -3.657269 50.286332 6.100042506e-04\n## odi          -0.8192183 0.2908649  -2.816491 45.570608 7.151945055e-03"
   },
   "_provenance": {
-    "refreshed_at": "2026-07-18T22:42:14Z",
-    "python_version": "3.11.5",
+    "refreshed_at": "2026-07-11T15:31:45Z",
+    "python_version": "3.13.5",
     "pymice_version": "0.1.0",
-    "r_version": "4.5.2",
+    "r_version": "4.4.1",
     "mice_version": "3.19.0",
-    "platform": "macOS-26.3.1-arm64-arm-64bit"
+    "platform": "Windows-10-10.0.19045-SP0"
   }
 }

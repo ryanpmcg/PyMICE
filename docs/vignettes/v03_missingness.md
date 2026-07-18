@@ -18,7 +18,7 @@ These numbered steps are checked against `reference/03_missingness_inspection/vi
 - **Step 5** — `sum(mpat[,"gen"]==0)` → 8
 - **Step 6** — `R <- is.na(boys$gen)` logical vector print
 - **Step 9** — `help('mammalsleep')` R pager snapshot; `head(mammalsleep)` species labels; `str(mammalsleep)` layout (static reference); `summary(mammalsleep)` species counts; `md.pattern(mammalsleep)` with species column
-- **Steps 10 & 13** — logged-event warnings on session mammalsleep chain (26 / 21 events; numeric `species` codes).
+- **Steps 10 & 13** — logged-event warnings on session mammalsleep chain (26 / 18 events; numeric `species` codes; Windows goldens).
 - **Steps 12 & 14** — `pool(fit)` / `summary(pool())` on mammalsleep (`sws ~ log10(bw) + odi`).
 
 ### Expected to differ (RNG / rendering)
