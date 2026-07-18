@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import tempfile
 import textwrap
 from pathlib import Path
 
@@ -12,6 +13,12 @@ import pytest
 
 from pymice.methods.linear import remove_lindep
 from tests.r_support import r_backend_available, r_backend_skip_reason
+
+
+def _r_path(path: Path) -> str:
+    """Path string safe to embed in R double-quoted strings (Windows-friendly)."""
+    return path.resolve().as_posix().replace("\\", "/")
+
 
 pytestmark = [
     pytest.mark.r_backend,
@@ -52,31 +59,35 @@ _R_REMOVE_LINDEP = textwrap.dedent(
 
 def _r_remove_lindep_batch(cases: list[dict]) -> list[list[int]]:
     """Run pure R remove.lindep on a list of {x,y,ry} cases; return keep masks."""
-    payload = Path("/tmp/pymice_lindep_cases.json")
-    payload.write_text(json.dumps(cases), encoding="utf-8")
-    script = _R_REMOVE_LINDEP + textwrap.dedent(
-        f"""
-        suppressPackageStartupMessages(library(jsonlite))
-        cases <- fromJSON("{payload}", simplifyVector = FALSE)
-        out <- list()
-        for (i in seq_along(cases)) {{
-          c <- cases[[i]]
-          x <- matrix(unlist(c$x), nrow = length(c$x), byrow = TRUE)
-          y <- unlist(c$y)
-          ry <- as.logical(unlist(c$ry))
-          keep <- remove_lindep_pure(x, y, ry)
-          out[[i]] <- as.integer(keep)
-        }}
-        cat(toJSON(out, auto_unbox = TRUE))
-        """
-    )
-    proc = subprocess.run(
-        ["Rscript", "-e", script],
-        capture_output=True,
-        text=True,
-        timeout=120,
-        check=False,
-    )
+    with tempfile.TemporaryDirectory(prefix="pymice_lindep_") as tmp:
+        payload = Path(tmp) / "cases.json"
+        payload.write_text(json.dumps(cases), encoding="utf-8")
+        script = _R_REMOVE_LINDEP + textwrap.dedent(
+            f"""
+            if (!requireNamespace("jsonlite", quietly = TRUE)) {{
+              install.packages("jsonlite", repos = "https://cloud.r-project.org", quiet = TRUE)
+            }}
+            suppressPackageStartupMessages(library(jsonlite))
+            cases <- fromJSON("{_r_path(payload)}", simplifyVector = FALSE)
+            out <- list()
+            for (i in seq_along(cases)) {{
+              c <- cases[[i]]
+              x <- matrix(unlist(c$x), nrow = length(c$x), byrow = TRUE)
+              y <- unlist(c$y)
+              ry <- as.logical(unlist(c$ry))
+              keep <- remove_lindep_pure(x, y, ry)
+              out[[i]] <- as.integer(keep)
+            }}
+            cat(toJSON(out, auto_unbox = TRUE))
+            """
+        )
+        proc = subprocess.run(
+            ["Rscript", "-e", script],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            check=False,
+        )
     if proc.returncode != 0:
         raise RuntimeError(f"R remove.lindep failed:\n{proc.stderr}\n{proc.stdout}")
     return json.loads(proc.stdout)
@@ -193,53 +204,55 @@ def test_remove_lindep_matches_r_on_mammalsleep_mls_design() -> None:
     if not data_path.is_file():
         pytest.skip("mammalsleep.csv not found")
 
-    script = _R_REMOVE_LINDEP + textwrap.dedent(
-        f"""
-        suppressPackageStartupMessages(library(mice))
-        ms <- read.csv("{data_path}")
-        ms$species <- as.numeric(factor(ms$species))
-        j <- "mls"
-        pred <- rep(1, ncol(ms)); names(pred) <- names(ms); pred[j] <- 0
-        xnames <- setdiff(names(ms)[pred != 0], j)
-        formula <- reformulate(xnames, response = j)
-        x <- mice:::obtain.design(ms, formula)
-        x <- x[, -1, drop = FALSE]
-        y <- ms[[j]]
-        ry <- stats::complete.cases(x, y) & !is.na(ms[[j]])
-        keep <- remove_lindep_pure(x, y, ry)
-        cat("KEEP", paste(as.integer(keep), collapse = ","), "\\n")
-        cat("DROP", paste(colnames(x)[!keep], collapse = ","), "\\n")
-        write.csv(
-          cbind(as.data.frame(x), `.y` = y, `.ry` = as.integer(ry)),
-          "/tmp/pymice_ms_mls_design.csv",
-          row.names = FALSE
+    with tempfile.TemporaryDirectory(prefix="pymice_ms_mls_") as tmp:
+        design_csv = Path(tmp) / "design.csv"
+        script = _R_REMOVE_LINDEP + textwrap.dedent(
+            f"""
+            suppressPackageStartupMessages(library(mice))
+            ms <- read.csv("{_r_path(data_path)}")
+            ms$species <- as.numeric(factor(ms$species))
+            j <- "mls"
+            pred <- rep(1, ncol(ms)); names(pred) <- names(ms); pred[j] <- 0
+            xnames <- setdiff(names(ms)[pred != 0], j)
+            formula <- reformulate(xnames, response = j)
+            x <- mice:::obtain.design(ms, formula)
+            x <- x[, -1, drop = FALSE]
+            y <- ms[[j]]
+            ry <- stats::complete.cases(x, y) & !is.na(ms[[j]])
+            keep <- remove_lindep_pure(x, y, ry)
+            cat("KEEP", paste(as.integer(keep), collapse = ","), "\\n")
+            cat("DROP", paste(colnames(x)[!keep], collapse = ","), "\\n")
+            write.csv(
+              cbind(as.data.frame(x), `.y` = y, `.ry` = as.integer(ry)),
+              "{_r_path(design_csv)}",
+              row.names = FALSE
+            )
+            """
         )
-        """
-    )
-    proc = subprocess.run(
-        ["Rscript", "-e", script],
-        capture_output=True,
-        text=True,
-        timeout=120,
-        check=False,
-    )
-    if proc.returncode != 0:
-        raise RuntimeError(proc.stderr)
-    keep_line = next(ln for ln in proc.stdout.splitlines() if ln.startswith("KEEP"))
-    drop_line = next(ln for ln in proc.stdout.splitlines() if ln.startswith("DROP"))
-    r_keep = [int(v) for v in keep_line.split()[1].split(",")]
-    r_drop_raw = drop_line.split(maxsplit=1)[1] if len(drop_line.split(maxsplit=1)) > 1 else ""
-    r_drop = [s.strip() for s in r_drop_raw.split(",") if s.strip()]
+        proc = subprocess.run(
+            ["Rscript", "-e", script],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            check=False,
+        )
+        if proc.returncode != 0:
+            raise RuntimeError(proc.stderr or proc.stdout)
+        keep_line = next(ln for ln in proc.stdout.splitlines() if ln.startswith("KEEP"))
+        drop_line = next(ln for ln in proc.stdout.splitlines() if ln.startswith("DROP"))
+        r_keep = [int(v) for v in keep_line.split()[1].split(",")]
+        r_drop_raw = drop_line.split(maxsplit=1)[1] if len(drop_line.split(maxsplit=1)) > 1 else ""
+        r_drop = [s.strip() for s in r_drop_raw.split(",") if s.strip()]
 
-    import pandas as pd
+        import pandas as pd
 
-    df = pd.read_csv("/tmp/pymice_ms_mls_design.csv")
-    ry = df[".ry"].to_numpy(dtype=bool)
-    y = df[".y"].to_numpy(dtype=np.float64)
-    x = df.drop(columns=[".y", ".ry"]).to_numpy(dtype=np.float64)
-    names = list(df.drop(columns=[".y", ".ry"]).columns)
-    py_keep = remove_lindep(x, y, ry)
-    py_drop = [n for n, k in zip(names, py_keep, strict=True) if not k]
-    assert py_keep.astype(int).tolist() == r_keep
-    assert py_drop == r_drop
-    assert r_drop == ["ts"]
+        df = pd.read_csv(design_csv)
+        ry = df[".ry"].to_numpy(dtype=bool)
+        y = df[".y"].to_numpy(dtype=np.float64)
+        x = df.drop(columns=[".y", ".ry"]).to_numpy(dtype=np.float64)
+        names = list(df.drop(columns=[".y", ".ry"]).columns)
+        py_keep = remove_lindep(x, y, ry)
+        py_drop = [n for n, k in zip(names, py_keep, strict=True) if not k]
+        assert py_keep.astype(int).tolist() == r_keep
+        assert py_drop == r_drop
+        assert r_drop == ["ts"]
